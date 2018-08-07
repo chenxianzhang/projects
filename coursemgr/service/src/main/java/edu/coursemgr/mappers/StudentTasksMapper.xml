@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.StudentTasksMapper" >
+  <resultMap id="BaseResultMap" type="edu.coursemgr.model.StudentTasks" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+    <result column="taskId" property="taskId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="submitTime" property="submitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, studentNo, taskId, status, score, submitTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_tasks
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student_tasks
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.coursemgr.model.StudentTasks" >
+    insert into student_tasks (id, studentNo, taskId, 
+      status, score, submitTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR},
+      #{status,jdbcType=CHAR}, #{score,jdbcType=REAL}, #{submitTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.coursemgr.model.StudentTasks" >
+    insert into student_tasks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentNo != null" >
+        studentNo,
+      </if>
+      <if test="taskId != null" >
+        taskId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="submitTime != null" >
+        submitTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentNo != null" >
+        #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=REAL},
+      </if>
+      <if test="submitTime != null" >
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.StudentTasks" >
+    update student_tasks
+    <set >
+      <if test="studentNo != null" >
+        studentNo = #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        taskId = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=REAL},
+      </if>
+      <if test="submitTime != null" >
+        submitTime = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.StudentTasks" >
+    update student_tasks
+    set studentNo = #{studentNo,jdbcType=VARCHAR},
+      taskId = #{taskId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      score = #{score,jdbcType=REAL},
+      submitTime = #{submitTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

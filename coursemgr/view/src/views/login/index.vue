@@ -34,6 +34,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { login } from '@/api/login'
 
 export default {
   components: {  },
@@ -79,12 +80,14 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+
+          login(this.loginForm).then(response => {
+            console.log(response);
             this.loading = false
             this.$router.push({ path: '/' })
-          }).catch(() => {
-            this.loading = false
-          })
+          }).catch(err => {
+            console.log(err);
+          });
         } else {
           console.log('error submit!!')
           return false
@@ -101,7 +104,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
   /* 修复input 背景不协调 和光标变色 */
- 
+
   $bg:#283443;
   $light_gray:#eee;
   $cursor: #fff;

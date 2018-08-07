@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="edu.coursemgr.model.Group" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="groupLeaderNo" property="groupLeaderNo" jdbcType="VARCHAR" />
+    <result column="courseId" property="courseId" jdbcType="INTEGER" />
+    <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, groupLeaderNo, courseId, createDate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from group
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.coursemgr.model.Group" >
+    insert into group (id, groupLeaderNo, courseId, 
+      createDate)
+    values (#{id,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.coursemgr.model.Group" >
+    insert into group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="groupLeaderNo != null" >
+        groupLeaderNo,
+      </if>
+      <if test="courseId != null" >
+        courseId,
+      </if>
+      <if test="createDate != null" >
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupLeaderNo != null" >
+        #{groupLeaderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.Group" >
+    update group
+    <set >
+      <if test="groupLeaderNo != null" >
+        groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null" >
+        courseId = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.Group" >
+    update group
+    set groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
+      courseId = #{courseId,jdbcType=INTEGER},
+      createDate = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

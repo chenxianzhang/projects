@@ -38,7 +38,7 @@
         <!-- 给出需要扫描Dao接口包 -->
         <property name="basePackage" value="edu.coursemgr.dao"/>
         <!-- 注入sqlSessionFactory -->
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
     <!-- 配置事务管理器 -->

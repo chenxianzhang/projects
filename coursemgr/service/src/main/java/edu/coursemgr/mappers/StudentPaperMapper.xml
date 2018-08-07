@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.StudentPaperMapper" >
+  <resultMap id="BaseResultMap" type="edu.coursemgr.model.StudentPaper" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+    <result column="questionId" property="questionId" jdbcType="BIGINT" />
+    <result column="answers" property="answers" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, studentNo, questionId, answers, score
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_paper
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student_paper
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.coursemgr.model.StudentPaper" >
+    insert into student_paper (id, studentNo, questionId, 
+      answers, score)
+    values (#{id,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR}, #{questionId,jdbcType=BIGINT},
+      #{answers,jdbcType=VARCHAR}, #{score,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.coursemgr.model.StudentPaper" >
+    insert into student_paper
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentNo != null" >
+        studentNo,
+      </if>
+      <if test="questionId != null" >
+        questionId,
+      </if>
+      <if test="answers != null" >
+        answers,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentNo != null" >
+        #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="answers != null" >
+        #{answers,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.StudentPaper" >
+    update student_paper
+    <set >
+      <if test="studentNo != null" >
+        studentNo = #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null" >
+        questionId = #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="answers != null" >
+        answers = #{answers,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.StudentPaper" >
+    update student_paper
+    set studentNo = #{studentNo,jdbcType=VARCHAR},
+      questionId = #{questionId,jdbcType=BIGINT},
+      answers = #{answers,jdbcType=VARCHAR},
+      score = #{score,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

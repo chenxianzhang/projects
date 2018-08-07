@@ -38,7 +38,7 @@ CREATE TABLE `course_tasks` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `courseId` INT NOT NULL,  #课程id
 	`name` varchar(20) NOT NULL,    #任务名称
-	`weight` decimal(3, 2),        #任务权重
+	`weight` float,        #任务权重
 	`publishTime` datetime,        #发布时间
 	`deadline` datetime,             #截止时间
 	`totalScore` INT              #总分
