@@ -1,10 +1,17 @@
 import request from '@/utils/request'
+import global from '../../static/global.config'
+//import qs from 'qs'
 
 
-export function login (params) {
+export function login (data) {
   return request({
     url: '/login/login',
     method: 'post',
-    data: params
+    data: data
   });
+}
+
+export function getVerCodeImageUrl () {
+  var rad = Math.floor(Math.random() * Math.pow(10, 8));
+  return global.BASE_API + "/verificationCode/generate?random=" + rad;
 }

@@ -9,9 +9,16 @@ CREATE TABLE `user` (
 	`profession` varchar(50),         #专业
 	`cellphone` varchar(11),          #手机号
 	`email` varchar(50),              #邮箱
-	`role` ENUM('student', 'teacher', 'manager') NOT NULL default 'teacher',   #角色
+	`roleId` INT,   #角色id
   `sex` ENUM('男', '女') NOT NULL default '男',     #性别  男，女
 	`createDate` datetime
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+	`name` varchar(20) NOT NULL,     #显示名称
+	`value` varchar(30) NOT NULL		 #枚举值
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

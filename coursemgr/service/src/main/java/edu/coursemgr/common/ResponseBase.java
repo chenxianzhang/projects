@@ -3,7 +3,7 @@ package edu.coursemgr.common;
 public class ResponseBase {
 
     public ResponseBase() {
-
+        this.status = 1;
     }
 
     private int status;

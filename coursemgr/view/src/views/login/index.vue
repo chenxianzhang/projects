@@ -4,7 +4,7 @@
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">登录界面</h3>
+        <h3 class="title">课程管理系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -26,6 +26,17 @@
         </span>
       </el-form-item>
 
+      <div class="verification-code">
+        <el-form-item prop="verificationCode">
+            <span class="svg-container svg-container_login">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input name="verificationCode" type="text" v-model="loginForm.verificationCode" autoComplete="on" placeholder="请输入验证码"/>
+        </el-form-item>
+        <a href="javascript:void(0);" @click="generateVerCode">
+            <img alt="验证码" :src="verCodeImageUrl" />
+        </a>
+      </div>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
     </el-form>
 
@@ -34,7 +45,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-import { login } from '@/api/login'
+import { login, getVerCodeImageUrl } from '@/api/login'
 
 export default {
   components: {  },
@@ -57,7 +68,8 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '1111111'
+        password: '1111111',
+        verificationCode: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -65,7 +77,7 @@ export default {
       },
       passwordType: 'password',
       loading: false,
-      showDialog: false
+      verCodeImageUrl: ''
     }
   },
   methods: {
@@ -77,15 +89,19 @@ export default {
       }
     },
     handleLogin() {
+      let self = this;
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          self.loading = true
 
-          login(this.loginForm).then(response => {
-            console.log(response);
-            this.loading = false
-            this.$router.push({ path: '/' })
+          login(self.loginForm).then(data => {
+            if (data.status === 0) {
+              self.generateVerCode();
+            }
+             self.loading = false
+            self.$router.push({ path: '/' })
           }).catch(err => {
+            debugger
             console.log(err);
           });
         } else {
@@ -93,9 +109,14 @@ export default {
           return false
         }
       })
+    },
+    generateVerCode() {
+      this.verCodeImageUrl = getVerCodeImageUrl();
+      this.loginForm.verificationCode = "";
     }
   },
   created() {
+    this.verCodeImageUrl = getVerCodeImageUrl();
   },
   destroyed() {
   }
@@ -144,6 +165,19 @@ export default {
       background: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       color: #454545;
+    }
+    .verification-code {
+      display: flex;
+      justify-content: space-between;
+      .el-form-item{
+        width: calc(100% - 150px);
+      }
+      .el-input {
+        width: 80%;
+      }
+      a {
+        margin-top: 5px;
+      }
     }
   }
 </style>

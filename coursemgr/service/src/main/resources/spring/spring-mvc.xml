@@ -51,6 +51,44 @@
         </property>
     </bean>
 
+    <!-- 跨域配置 -->
+    <bean id="corsFilter" class="org.springframework.web.filter.CorsFilter">
+        <constructor-arg index="0">
+            <bean class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
+                <property name="corsConfigurations">
+                    <map>
+                        <entry key="/**">
+                            <bean class="org.springframework.web.cors.CorsConfiguration">
+                                <property name="allowedOrigins">
+                                    <list>
+                                        <value>http://127.0.0.1:8080</value>
+                                        <value>http://localhost:8080</value>
+                                        <value>http://127.0.0.1:8443</value>
+                                        <value>http://localhost:8443</value>
+                                    </list>
+                                </property>
+                                <property name="allowedMethods" value="*"></property>
+                                <property name="allowedHeaders" value="*"></property>
+                                <property name="exposedHeaders">
+                                    <list>
+                                        <value>Accept</value>
+                                        <value>Origin</value>
+                                        <value>X-Requested-With</value>
+                                        <value>Content-Type</value>
+                                        <value>Last-Modified</value>
+                                        <value>Set-Cookie</value>
+                                        <value>x-auth-token</value>
+                                    </list>
+                                </property>
+                                <property name="allowCredentials" value="true"></property>
+                                <property name="maxAge" value="3600"></property>
+                            </bean>
+                        </entry>
+                    </map>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
 
 
 </beans>

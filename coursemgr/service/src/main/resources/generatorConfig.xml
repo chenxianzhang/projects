@@ -67,52 +67,63 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
+        <!--<table schema="coursemgr" tableName="user"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="course"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="course_students"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="course_tasks"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="group"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="group_member"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="question_type"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="student_paper"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="student_tasks"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+        <!--<table schema="coursemgr" tableName="task_questions"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--</table>-->
+
         <table schema="coursemgr" tableName="user"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>
         </table>
-        <table schema="coursemgr" tableName="course"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="course_students"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="course_tasks"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="group"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="group_member"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="question_type"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="student_paper"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="student_tasks"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-        <table schema="coursemgr" tableName="task_questions"
+        <table schema="coursemgr" tableName="role"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>

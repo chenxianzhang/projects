@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -36,6 +37,7 @@ import java.io.IOException;
 其中被注解的方法只需要关心data的内容即可
  */
 @Aspect
+@Order(0)
 @Component
 public class ResponseAspect {
 
@@ -71,7 +73,10 @@ public class ResponseAspect {
         ResponseBase responseBase = new ResponseBase();
         responseBase.setData(ret);
 
-        HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+        HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder
+                .getRequestAttributes()).getResponse();
+        // 使用了cors处理跨域，则不能做如下操作
+//        response.setHeader("Access-Control-Allow-Origin", "*");
         HttpOutputMessage outputMessage = new ServletServerHttpResponse(response);
         converter.write(responseBase, MediaType.APPLICATION_JSON, outputMessage);
         shutdownResponse(response);
@@ -92,6 +97,8 @@ public class ResponseAspect {
         responseBase.setStatus(0);
         responseBase.setMsg(error.getMessage());
         HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+        // 使用了cors处理跨域，则不能做如下操作
+//        response.setHeader("Access-Control-Allow-Origin", "*");
         logger.error(jp.getSignature().getName() + "-error!", error);
         HttpOutputMessage outputMessage = new ServletServerHttpResponse(response);
         converter.write(responseBase, MediaType.APPLICATION_JSON, outputMessage);
