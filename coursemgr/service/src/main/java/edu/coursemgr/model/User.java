@@ -20,7 +20,11 @@ public class User implements Serializable {
 
     private String email;
 
-    private Integer roleId;
+    /**
+     * 存储角色ids，角色id之间以','分隔
+     *
+     */
+    private String roles;
 
     private String sex;
 
@@ -92,12 +96,12 @@ public class User implements Serializable {
         this.email = email == null ? null : email.trim();
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     public String getSex() {

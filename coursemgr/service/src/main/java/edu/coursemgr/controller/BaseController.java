@@ -7,6 +7,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -68,6 +69,19 @@ public class BaseController {
             return value == null ? null : value.toString();
         }
         return null;
+    }
+
+    /**
+     * 自定义返回到前端的json对象，对于没必要新建一个param实体类的返回结果，
+     * 可使用该方法向前端传递简单的json对象
+     * @param key
+     * @param value
+     * @return
+     */
+    protected Map<String, Object> customResponse(String key, Object value) {
+        Map<String, Object> cResponse = new HashMap<String, Object>(1);
+        cResponse.put(key, value);
+        return cResponse;
     }
 
 }

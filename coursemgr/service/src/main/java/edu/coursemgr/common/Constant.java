@@ -1,4 +1,4 @@
-package edu.coursemgr.utils;
+package edu.coursemgr.common;
 
 /**
  * 常量类，使用接口实现
@@ -10,7 +10,7 @@ public interface Constant {
      * 公共常量
      */
     final class Common {
-
+        public static final String SEPARATE_COMMA = ",";
     }
 
     /**

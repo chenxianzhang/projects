@@ -1,7 +1,7 @@
 package edu.coursemgr.controller;
 
 import edu.coursemgr.service.interfaces.LoginService;
-import edu.coursemgr.utils.Constant;
+import edu.coursemgr.common.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +29,13 @@ public class LoginController extends BaseController {
         }
         String serialNo = getParam(requestMap,"username");
         String password = getParam(requestMap,"password");
-        return loginService.login(serialNo, password);
+        return customResponse("token", loginService.login(serialNo, password));
+    }
+
+    @RequestMapping(value="/getUserInfo", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getUserInfo(@RequestBody Map<String, Object> requestMap) throws Exception {
+        String serialNo = getParam(requestMap, "serialNo");
+        return loginService.getUserInfo(serialNo);
     }
 }

@@ -1,7 +1,7 @@
 package edu.coursemgr.service.impl;
 
 import edu.coursemgr.service.interfaces.VerificationCodeService;
-import edu.coursemgr.utils.Constant;
+import edu.coursemgr.common.Constant;
 import edu.coursemgr.utils.ResourceUtil;
 import org.springframework.stereotype.Service;
 

@@ -10,12 +10,12 @@
     <result column="profession" property="profession" jdbcType="VARCHAR" />
     <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="roles" property="roles" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="CHAR" />
     <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, serialNo, password, name, college, profession, cellphone, email, roleId, sex, 
+    id, serialNo, password, name, college, profession, cellphone, email, roles, sex, 
     createDate
   </sql>
   <select id="selectBySerialNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -31,11 +31,11 @@
   <insert id="insert" parameterType="edu.coursemgr.model.User" >
     insert into user (id, serialNo, password, 
       name, college, profession, 
-      cellphone, email, roleId, 
+      cellphone, email, roles, 
       sex, createDate)
     values (#{id,jdbcType=INTEGER}, #{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, 
-      #{cellphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER},
+      #{cellphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR},
       #{sex,jdbcType=CHAR}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.User" >
@@ -65,8 +65,8 @@
       <if test="email != null" >
         email,
       </if>
-      <if test="roleId != null" >
-        roleId,
+      <if test="roles != null" >
+        roles,
       </if>
       <if test="sex != null" >
         sex,
@@ -100,8 +100,8 @@
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="roleId != null" >
-        #{roleId,jdbcType=INTEGER},
+      <if test="roles != null" >
+        #{roles,jdbcType=VARCHAR},
       </if>
       <if test="sex != null" >
         #{sex,jdbcType=CHAR},
@@ -135,8 +135,8 @@
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="roleid != null" >
-        roleId = #{roleId,jdbcType=INTEGER},
+      <if test="roles != null" >
+        roles = #{roles,jdbcType=VARCHAR},
       </if>
       <if test="sex != null" >
         sex = #{sex,jdbcType=CHAR},
@@ -156,7 +156,7 @@
       profession = #{profession,jdbcType=VARCHAR},
       cellphone = #{cellphone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      roleId = #{roleId,jdbcType=INTEGER},
+      roles = #{roles,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

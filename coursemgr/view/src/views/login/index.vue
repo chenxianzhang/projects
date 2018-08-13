@@ -19,7 +19,7 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
+        <el-input name="password" :type="passwordType" v-model="loginForm.password" autoComplete="on"
           placeholder="Password" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
@@ -31,7 +31,7 @@
             <span class="svg-container svg-container_login">
               <svg-icon icon-class="user" />
             </span>
-            <el-input name="verificationCode" type="text" v-model="loginForm.verificationCode" autoComplete="on" placeholder="请输入验证码"/>
+            <el-input name="verificationCode" type="text" v-model="loginForm.verificationCode" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="请输入验证码"/>
         </el-form-item>
         <a href="javascript:void(0);" @click="generateVerCode">
             <img alt="验证码" :src="verCodeImageUrl" />
@@ -93,16 +93,17 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           self.loading = true
-
-          login(self.loginForm).then(data => {
-            if (data.status === 0) {
+          this.$store.dispatch('loginProcess', this.loginForm).then(() => {
+            self.loading = false;
+            self.$router.push({ path: '/' });
+          }).catch (err => {
+            self.loading = false;
+            self.$message({
+                showClose: true,
+                type: 'error',
+                message: err
+              });
               self.generateVerCode();
-            }
-             self.loading = false
-            self.$router.push({ path: '/' })
-          }).catch(err => {
-            debugger
-            console.log(err);
           });
         } else {
           console.log('error submit!!')

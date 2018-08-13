@@ -9,7 +9,7 @@ CREATE TABLE `user` (
 	`profession` varchar(50),         #专业
 	`cellphone` varchar(11),          #手机号
 	`email` varchar(50),              #邮箱
-	`roleId` INT,   #角色id
+	`roles` varchar(50),   #所拥有的角色,存储角色id，每个id之间‘,’分隔
   `sex` ENUM('男', '女') NOT NULL default '男',     #性别  男，女
 	`createDate` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
