@@ -29,7 +29,8 @@ public class LoginController extends BaseController {
         }
         String serialNo = getParam(requestMap,"username");
         String password = getParam(requestMap,"password");
-        return customResponse("token", loginService.login(serialNo, password));
+        String roleId = getParam(requestMap,"role");
+        return customResponse("token", loginService.login(serialNo, password, roleId));
     }
 
     @RequestMapping(value="/getUserInfo", method=RequestMethod.POST)
@@ -37,5 +38,11 @@ public class LoginController extends BaseController {
     public Object getUserInfo(@RequestBody Map<String, Object> requestMap) throws Exception {
         String serialNo = getParam(requestMap, "serialNo");
         return loginService.getUserInfo(serialNo);
+    }
+
+    @RequestMapping(value="/getRoleList", method=RequestMethod.GET)
+    @ResponseBody
+    public Object getRoleList() throws Exception {
+        return loginService.getRoleList();
     }
 }

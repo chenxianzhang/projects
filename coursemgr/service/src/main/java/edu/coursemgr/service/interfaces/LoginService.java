@@ -1,6 +1,9 @@
 package edu.coursemgr.service.interfaces;
 
+import edu.coursemgr.model.Role;
 import edu.coursemgr.pojo.UserInfo;
+
+import java.util.List;
 
 
 /**
@@ -12,10 +15,11 @@ public interface LoginService {
      * 登录操作
      * @param serialNo
      * @param password
+     * @param roleId
      * @return
      * @throws Exception
      */
-    String login(String serialNo, String password) throws Exception;
+    String login(String serialNo, String password, String roleId) throws Exception;
 
     /**
      * 获取用户信息
@@ -24,5 +28,12 @@ public interface LoginService {
      * @throws Exception
      */
     UserInfo getUserInfo(String serialNo) throws Exception;
+
+    /**
+     * 获取所有角色
+     * @return
+     * @throws Exception
+     */
+    List<Role> getRoleList() throws Exception;
 
 }

@@ -4,7 +4,16 @@
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">课程管理系统</h3>
+        <!--<h3 class="title">课程管理系统</h3>-->
+        <span class="title">课程管理系统</span>
+        <el-select v-model="loginForm.role" placeholder="角色选择" @change="roleChange">
+          <el-option
+            v-for="item in roleList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </div>
 
       <el-form-item prop="username">
@@ -38,14 +47,17 @@
         </a>
       </div>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+      <div class="login-foot">
+        <el-button type="text">忘记密码？</el-button>
+        <el-button type="text" v-if="selectRoleValue === 'teacher'">立即注册！</el-button>
+      </div>
     </el-form>
-
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-import { login, getVerCodeImageUrl } from '@/api/login'
+import { getVerCodeImageUrl, getRoleList } from '@/api/login'
 
 export default {
   components: {  },
@@ -53,31 +65,42 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的用户名称'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码长度不能少于6个字符'))
       } else {
         callback()
+      }
+    }
+    const validateCode = (rule, value, callback) => {
+      if (value === '' || value === 'undefined' || value === null) {
+        callback(new Error('验证码不能为空'))
+      } else {
+        callback();
       }
     }
     return {
       loginForm: {
         username: 'admin',
         password: '1111111',
-        verificationCode: ''
+        verificationCode: '',
+        role: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        verificationCode: [{ required: true, trigger: 'blur', validator: validateCode }]
       },
       passwordType: 'password',
       loading: false,
-      verCodeImageUrl: ''
+      verCodeImageUrl: '',
+      roleList: [],
+      selectRoleValue: ''
     }
   },
   methods: {
@@ -90,6 +113,14 @@ export default {
     },
     handleLogin() {
       let self = this;
+      if (this.loginForm.role === '') {
+        self.$message({
+                showClose: true,
+                type: 'warning',
+                message: '用户角色不能为空'
+              });
+              return;
+      }
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           self.loading = true
@@ -114,10 +145,32 @@ export default {
     generateVerCode() {
       this.verCodeImageUrl = getVerCodeImageUrl();
       this.loginForm.verificationCode = "";
+    },
+    getRoleList() {
+      getRoleList().then(response => {
+        if (response.status == 1) {
+          this.roleList = response.data;
+        } else {
+          self.$message({
+                  showClose: true,
+                  type: 'error',
+                  message: response.msg
+             });
+        }
+      })
+    },
+    roleChange(val) {
+      let self = this;
+      this.roleList && this.roleList.forEach(rItem => {
+        if (rItem.id === val) {
+          self.selectRoleValue = rItem.value;
+        }
+      });
     }
   },
   created() {
     this.verCodeImageUrl = getVerCodeImageUrl();
+    this.getRoleList();
   },
   destroyed() {
   }
@@ -180,6 +233,15 @@ export default {
         margin-top: 5px;
       }
     }
+    .el-select {
+      width: 83px;
+      .el-input {
+        width: 100%;
+        input {
+           padding: 0;
+        }
+      }
+    }
   }
 </style>
 
@@ -200,6 +262,10 @@ $light_gray:#eee;
     width: 520px;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
+    .login-foot {
+      display: flex;
+      justify-content: space-between;
+    }
   }
   .tips {
     font-size: 14px;
@@ -223,18 +289,16 @@ $light_gray:#eee;
   }
   .title-container {
     position: relative;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 0 10px;
     .title {
-      font-size: 26px;
+      //font-size: 26px;
       color: $light_gray;
-      margin: 0px auto 40px auto;
+      //margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
-    }
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 5px;
-      right: 0px;
     }
   }
   .show-pwd {

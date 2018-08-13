@@ -47,6 +47,7 @@ router.beforeEach((to, from, next) => {
          if (hasPermission(store.getters.roles, to.meta.roles)) {
             next();
           } else {
+              // TODO 增加401页面
              next({ path: '/401', replace: true, query: { noGoBack: true }})
           }
       }

@@ -23,3 +23,10 @@ export function getVerCodeImageUrl() {
   var rad = Math.floor(Math.random() * Math.pow(10, 8));
   return global.BASE_API + "/verificationCode/generate?random=" + rad;
 }
+
+export function getRoleList() {
+  return request({
+      url: '/login/getRoleList',
+      method: 'get'
+    });
+}

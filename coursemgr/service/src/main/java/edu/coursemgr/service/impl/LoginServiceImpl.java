@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
     private RoleMapper roleMapper;
 
     @Override
-    public String login(String serialNo, String password) throws Exception {
+    public String login(String serialNo, String password, String roleId) throws Exception {
         boolean illegal = serialNo == null || serialNo.isEmpty()
                 || password == null || password.isEmpty();
         if (illegal) {
@@ -40,6 +40,10 @@ public class LoginServiceImpl implements LoginService {
         }
         if (!user.getPassword().equals(password)) {
             throw new Exception("密码错误, 请重新输入");
+        }
+        illegal = roleId.isEmpty() || !user.getRoles().contains(roleId);
+        if (illegal) {
+            throw new Exception("当前所选角色不匹配");
         }
         return serialNo;
     }
@@ -67,5 +71,10 @@ public class LoginServiceImpl implements LoginService {
             return userInfo;
         };
         return transfer.call(user);
+    }
+
+    @Override
+    public List<Role> getRoleList() throws Exception {
+        return roleMapper.selectAll();
     }
 }
