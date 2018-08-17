@@ -1,7 +1,9 @@
 package edu.coursemgr.controller;
 
+import edu.coursemgr.pojo.UserInfo;
 import edu.coursemgr.service.interfaces.LoginService;
 import edu.coursemgr.common.Constant;
+import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +46,14 @@ public class LoginController extends BaseController {
     @ResponseBody
     public Object getRoleList() throws Exception {
         return loginService.getRoleList();
+    }
+
+    @RequestMapping(value="/update", method=RequestMethod.POST)
+    @ResponseBody
+    public Object update(@RequestBody UserInfo userInfo) throws Exception {
+        if (CommonUtils.isEmpty(userInfo.getName())) {
+            throw new Exception("姓名不能为空");
+        }
+        return loginService.update(userInfo);
     }
 }

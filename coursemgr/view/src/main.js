@@ -10,6 +10,7 @@ import './icons' // icon
 import store from './store'
 
 import '@/styles/index.scss' // global css
+import '@/utils/extension.js'
 
 Vue.config.productionTip = false
 

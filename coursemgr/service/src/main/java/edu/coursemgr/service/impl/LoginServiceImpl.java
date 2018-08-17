@@ -66,6 +66,9 @@ public class LoginServiceImpl implements LoginService {
             List<Role> roleList = roleMapper.selectByIds(roleIdList);
             userInfo.setName(param.getName());
             userInfo.setSerialNo(param.getSerialNo());
+            userInfo.setCellphone(param.getCellphone());
+            userInfo.setCollege(param.getCollege());
+            userInfo.setEmail(param.getEmail());
             userInfo.setRoles(CollectionUtils.arrayListTypeCast(roleList,
                     role -> role.getValue()));
             return userInfo;
@@ -76,5 +79,10 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public List<Role> getRoleList() throws Exception {
         return roleMapper.selectAll();
+    }
+
+    @Override
+    public int update(UserInfo userInfo) {
+        return userMapper.updateBySerialNo(userInfo);
     }
 }

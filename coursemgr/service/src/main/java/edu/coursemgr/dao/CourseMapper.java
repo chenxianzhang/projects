@@ -2,6 +2,8 @@ package edu.coursemgr.dao;
 
 import edu.coursemgr.model.Course;
 
+import java.util.List;
+
 public interface CourseMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,10 @@ public interface CourseMapper {
     int updateByPrimaryKeyWithBLOBs(Course record);
 
     int updateByPrimaryKey(Course record);
+
+    List<Course> selectAll();
+
+    List<Course> selectTeacherCourse(String teacherNo);
+
+    List<Course> selectStuCourse(String stuNo);
 }

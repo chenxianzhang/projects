@@ -19,7 +19,7 @@ public final class CollectionUtils {
      * @return
      */
     public static <R, T> List<R> arrayListTypeCast(List<T> origin, Function<R, T> func) {
-        if (origin == null) {
+        if (origin == null || func == null) {
             return null;
         }
         List<R> rList = new ArrayList<>(origin.size());

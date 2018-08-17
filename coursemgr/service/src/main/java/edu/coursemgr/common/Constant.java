@@ -11,6 +11,8 @@ public interface Constant {
      */
     final class Common {
         public static final String SEPARATE_COMMA = ",";
+
+        public static final String UNDEFINED = "undefined";
     }
 
     /**

@@ -26,6 +26,29 @@
     from course
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from course
+  </select>
+  <select id="selectTeacherCourse" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from course
+    where creatorNo = #{teacherNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectStuCourse" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from course
+    where id in (select courseId from course_students where studentNo = #{stuNo,jdbcType=VARCHAR})
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from course
     where id = #{id,jdbcType=INTEGER}

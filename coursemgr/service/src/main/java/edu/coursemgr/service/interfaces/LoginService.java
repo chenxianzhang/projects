@@ -36,4 +36,6 @@ public interface LoginService {
      */
     List<Role> getRoleList() throws Exception;
 
+    int update(UserInfo userInfo);
+
 }
