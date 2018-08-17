@@ -4,10 +4,18 @@ import layout from '@/views/layout/layout'
 
 Vue.use(Router)
 
+export const studentRouter = [
+  { path: '/studentHome/basicInfo', component: () => import('@/views/studentHome/basicInfo'), hidden: true },
+  { path: '/studentHome/groupInfo', component: () => import('@/views/studentHome/groupInfo'), hidden: true },
+];
+
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/home', component: () => import('@/views/home/index'), hidden: true },
   { path: '', component: () => import('@/views/home/index'), hidden: true },
+  { path: '/register', component: () => import('@/views/register/register'), hidden: true },
+  { path: '/studentHome', component: () => import('@/views/studentHome/index'), hidden: true, children: studentRouter},
+
 //  { path: '/', component: () => import('@/views/home/index'), hidden: true }
 ]
 

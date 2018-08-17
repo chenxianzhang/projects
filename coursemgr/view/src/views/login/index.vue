@@ -78,11 +78,11 @@ export default {
       }
     }
     const validateCode = (rule, value, callback) => {
-      if (value === '' || value === 'undefined' || value === null) {
-        callback(new Error('验证码不能为空'))
-      } else {
-        callback();
-      }
+      // if (value === '' || value === 'undefined' || value === null) {
+      //   callback(new Error('验证码不能为空'))
+      // } else {
+      //   callback();
+      // }
     }
     return {
       loginForm: {
@@ -113,33 +113,36 @@ export default {
     },
     handleLogin() {
       let self = this;
-      if (this.loginForm.role === '') {
-        self.$message({
-                showClose: true,
-                type: 'warning',
-                message: '用户角色不能为空'
-              });
-              return;
-      }
+      // if (this.loginForm.role === '') {
+      //   self.$message({
+      //           showClose: true,
+      //           type: 'warning',
+      //           message: '用户角色不能为空'
+      //         });
+      //         return;
+      // }
       this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          self.loading = true
           this.$store.dispatch('loginProcess', this.loginForm).then(() => {
             self.loading = false;
-            self.$router.push({ path: '/' });
-          }).catch (err => {
-            self.loading = false;
-            self.$message({
-                showClose: true,
-                type: 'error',
-                message: err
-              });
-              self.generateVerCode();
-          });
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+            self.$router.push({ path: '/' });})
+        // if (valid) {
+        //   self.loading = true
+        //   this.$store.dispatch('loginProcess', this.loginForm).then(() => {
+        //     self.loading = false;
+        //     self.$router.push({ path: '/' });
+        //   }).catch (err => {
+        //     self.loading = false;
+        //     self.$message({
+        //         showClose: true,
+        //         type: 'error',
+        //         message: err
+        //       });
+        //       self.generateVerCode();
+        //   });
+        // } else {
+        //   console.log('error submit!!')
+        //   return false
+        // }
       })
     },
     generateVerCode() {
