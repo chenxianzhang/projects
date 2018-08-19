@@ -7,8 +7,7 @@ Vue.use(Router)
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/home', component: () => import('@/views/home/index'), hidden: true },
-  { path: '', component: () => import('@/views/home/index'), hidden: true },
-//  { path: '/', component: () => import('@/views/home/index'), hidden: true }
+  { path: '', component: () => import('@/views/home/index'), hidden: true }
 ]
 
 export default new Router({
