@@ -15,16 +15,16 @@
         </div>
       </div>
       <div class="container-right">
-        <!--<div class="userinfo">-->
           <div class="module-title">
             <span>用户信息</span>
             <!--<svg-icon icon-class="edit"></svg-icon>-->
-            <i class="el-icon-edit-outline"></i>
+            <i class="el-icon-edit-outline" @click="handleEdit"></i>
           </div>
           <div class="content">
             <div class="info-row">
               <span class="label">姓名</span>
-              <span class="value"> {{ userInfo.name }} </span>
+              <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
+              <el-input v-model="userInfo.name" v-if="editUserInfo"/>
             </div>
             <div class="info-row">
               <span class="label">{{ getSearialLabel() }} </span>
@@ -32,18 +32,24 @@
             </div>
             <div class="info-row">
               <span class="label">学院</span>
-              <span class="value">{{ userInfo.college }}</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
+              <el-input v-model="userInfo.college" v-if="editUserInfo"/>
             </div>
             <div class="info-row">
               <span class="label">电话</span>
-              <span class="value">{{ userInfo.cellphone }}</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
+              <el-input v-model="userInfo.cellphone" v-if="editUserInfo"/>
             </div>
             <div class="info-row">
               <span class="label">邮箱</span>
-              <span class="value">{{ userInfo.email }}</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
+              <el-input v-model="userInfo.email" v-if="editUserInfo"/>
+            </div>
+            <div class="edit-oper" v-if="editUserInfo">
+              <el-button type="warning" plain @click="cancel" >取消</el-button>
+              <el-button type="info" plain @click="save">修改</el-button>
             </div>
           </div>
-        <!--</div>-->
       </div>
     </div>
 
@@ -76,7 +82,8 @@
 <script>
 
 import { getTeacherCourseList, saveCourse, getStuCourseList } from '@/api/home';
-import { getUserInfo } from '@/api/login';
+import { findUser,update } from '@/api/login';
+import { validateEmail, validatePhone } from '@/utils/validate';
 import dragDialog from '@/components/dragDialog';
 
 export default {
@@ -92,7 +99,9 @@ export default {
         credit: 0,
         description: '',
         userNo: this.$store.state.user.token
-      }
+      },
+      editUserInfo: false,
+      userInfoBak: {}
     };
   },
   components:{
@@ -113,6 +122,67 @@ export default {
 
   },
   methods: {
+    cancel() {
+      this.editUserInfo = false;
+      this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
+    },
+    save() {
+      if (this.userInfo.college.trim() === "") {
+        this.$message({
+                showClose: true,
+                type: 'warning',
+                message: "学院信息不能为空"
+             });
+             return;
+      }
+      if (!validatePhone(this.userInfo.cellphone)) {
+        this.$message({
+                showClose: true,
+                type: 'warning',
+                message: "请输入有效的手机号码"
+             });
+           return;
+      }
+      /*if (!validateEmail(this.userInfo.email)) {
+         this.$message({
+              showClose: true,
+              type: 'warning',
+              message: "请输入有效的邮箱地址"
+           });
+           return;
+      }*/
+      let self = this;
+      update(this.userInfo).then(response => {
+        if (response.status === 0) {
+          self.$message({
+              showClose: true,
+              type: 'warning',
+              message: response.msg
+           });
+           return;
+        }
+        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
+        this.editUserInfo = false;
+        self.$message({
+              showClose: true,
+              type: 'success',
+              message: "修改成功"
+           });
+      }).catch(err => {
+        console.log(err);
+        self.$message({
+              showClose: true,
+              type: 'error',
+              message: "保存个人信息异常"
+           });
+      });
+    },
+    handleEdit() {
+      this.editUserInfo = !this.editUserInfo;
+      if (!this.editUserInfo) {
+        this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
+      }
+    },
     canAddCourse() {
       if (this.$store.state.user.roles.in_array('teacher')) {
         return true;
@@ -153,7 +223,7 @@ export default {
     },
     initUserInfo () {
       let self = this;
-      getUserInfo(this.$store.state.user.token).then(response => {
+      findUser(this.$store.state.user.token).then(response => {
         if (response.status === 0) {
           self.$message({
               showClose: true,
@@ -162,6 +232,7 @@ export default {
            });
         }
         self.userInfo = response.data;
+        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
       })
     },
     addCourse() {
@@ -174,10 +245,10 @@ export default {
        this.courseDlgVisible = false;
     },
     getSearialLabel() {
-      if (!this.userInfo.roles) {
+      if (!this.$store.state.user.roles) {
         return "";
       }
-      return this.userInfo.roles.in_array('teacher') ? "教工号" : "学号";
+      return this.$store.state.user.roles.in_array('teacher') ? "教工号" : "学号";
     },
     saveCourse() {
        if (this.editCourse.name.trim() === '' ) {
@@ -288,6 +359,8 @@ export default {
           border-bottom: 1px solid #ccc;
           padding: 10px;
           font-size:  13px;
+          display: flex;
+          align-items: center;
           span {
             display: inline-block;
           }
@@ -301,6 +374,15 @@ export default {
             padding-left: 15px;
             color: #888;
           }
+          .el-input {
+            width: calc(80% - 60px);
+            margin-left: 10px;
+          }
+        }
+        .edit-oper {
+          margin-top: 15px;
+          display: flex;
+          justify-content: center;
         }
       }
     }

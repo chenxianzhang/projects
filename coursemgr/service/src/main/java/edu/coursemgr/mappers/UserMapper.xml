@@ -161,12 +161,25 @@
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateBySerialNo" parameterType="edu.coursemgr.pojo.UserInfo">
+  <update id="updateBySerialNo" parameterType="edu.coursemgr.model.User">
     update user
-    set name = #{name, jdbcType=VARCHAR},
-    set college = #{college, jdbcType=VARCHAR},
-    set cellphone = #{cellphone, jdbcType=VARCHAR},
-    set email = #{email, jdbcType=VARCHAR}
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null" >
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null" >
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
     where serialNo = #{serialNo, jdbcType=VARCHAR}
   </update>
 </mapper>

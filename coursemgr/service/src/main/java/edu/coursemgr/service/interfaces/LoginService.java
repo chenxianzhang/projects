@@ -1,6 +1,7 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.Role;
+import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.UserInfo;
 
 import java.util.List;
@@ -36,6 +37,19 @@ public interface LoginService {
      */
     List<Role> getRoleList() throws Exception;
 
-    int update(UserInfo userInfo);
+    /**
+     *
+     * @param userInfo
+     * @return
+     */
+    int update(User userInfo);
+
+    /**
+     *
+     * @param serialNo
+     * @return
+     * @throws Exception
+     */
+    User findUser(String serialNo) throws Exception;
 
 }

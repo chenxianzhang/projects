@@ -82,7 +82,17 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int update(UserInfo userInfo) {
+    public int update(User userInfo) {
         return userMapper.updateBySerialNo(userInfo);
+    }
+
+    @Override
+    public User findUser(String serialNo) throws Exception {
+        // 获取用户信息
+        User user = userMapper.selectBySerialNo(serialNo);
+        if (user == null) {
+            throw new Exception("用户信息丢失");
+        }
+        return user;
     }
 }

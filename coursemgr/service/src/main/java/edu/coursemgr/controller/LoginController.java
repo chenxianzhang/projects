@@ -1,5 +1,6 @@
 package edu.coursemgr.controller;
 
+import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.UserInfo;
 import edu.coursemgr.service.interfaces.LoginService;
 import edu.coursemgr.common.Constant;
@@ -50,10 +51,17 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value="/update", method=RequestMethod.POST)
     @ResponseBody
-    public Object update(@RequestBody UserInfo userInfo) throws Exception {
+    public Object update(@RequestBody User userInfo) throws Exception {
         if (CommonUtils.isEmpty(userInfo.getName())) {
             throw new Exception("姓名不能为空");
         }
         return loginService.update(userInfo);
+    }
+
+    @RequestMapping(value="/findUser", method=RequestMethod.POST)
+    @ResponseBody
+    public Object findUser(@RequestBody Map<String, Object> requestMap) throws Exception {
+        String serialNo = getParam(requestMap, "serialNo");
+        return loginService.findUser(serialNo);
     }
 }

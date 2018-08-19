@@ -40,3 +40,8 @@ export function validateEmail(email) {
   return re.test(email)
 }
 
+export function validatePhone(phone) {
+  const reg = /^[1][3,4,5,7,8][0-9]{9}$/;
+  return reg.test(phone);
+}
+

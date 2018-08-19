@@ -16,5 +16,5 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    int updateBySerialNo(UserInfo userInfo);
+    int updateBySerialNo(User userInfo);
 }
