@@ -30,3 +30,19 @@ export function getRoleList() {
       method: 'get'
     });
 }
+
+export function update(data) {
+  return request({
+      url: '/login/update',
+      method: 'post',
+      data: data
+    });
+}
+
+export function findUser(serialNo) {
+  return request({
+      url: '/login/findUser',
+      method: 'post',
+      data: { serialNo: serialNo }
+    });
+}

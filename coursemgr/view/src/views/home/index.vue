@@ -9,56 +9,279 @@
           <div class="card-panel" v-for="(item, index) in courseList" :key="index">
             <span>{{ item.name }}</span>
           </div>
-          <div class="card-panel">
+          <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse()">
             <i class="el-icon-plus"></i>
           </div>
         </div>
       </div>
       <div class="container-right">
-        <!--<div class="userinfo">-->
           <div class="module-title">
             <span>用户信息</span>
             <!--<svg-icon icon-class="edit"></svg-icon>-->
-            <i class="el-icon-edit-outline"></i>
+            <i class="el-icon-edit-outline" @click="handleEdit"></i>
           </div>
           <div class="content">
             <div class="info-row">
               <span class="label">姓名</span>
-              <span class="value">陈献章</span>
+              <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
+              <el-input v-model="userInfo.name" v-if="editUserInfo"/>
             </div>
             <div class="info-row">
-              <span class="label">教工号</span>
-              <span class="value">陈献章</span>
+              <span class="label">{{ getSearialLabel() }} </span>
+              <span class="value">{{ userInfo.serialNo }}</span>
             </div>
             <div class="info-row">
               <span class="label">学院</span>
-              <span class="value">陈献章</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
+              <el-input v-model="userInfo.college" v-if="editUserInfo"/>
             </div>
             <div class="info-row">
               <span class="label">电话</span>
-              <span class="value">陈献章</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
+              <el-input v-model="userInfo.cellphone" v-if="editUserInfo"/>
             </div>
             <div class="info-row">
               <span class="label">邮箱</span>
-              <span class="value">陈献章</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
+              <el-input v-model="userInfo.email" v-if="editUserInfo"/>
+            </div>
+            <div class="edit-oper" v-if="editUserInfo">
+              <el-button type="warning" plain @click="cancel" >取消</el-button>
+              <el-button type="info" plain @click="save">修改</el-button>
             </div>
           </div>
-        <!--</div>-->
       </div>
     </div>
+
+    <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible"
+                 @close="handleCourseClose" @confirm="saveCourse">
+      <div class="edit-container">
+        <div class="edit-row">
+          <span class="label">课程名称</span>
+          <el-input placeholder="请输入课程名称" v-model="editCourse.name" clearable>
+          </el-input>
+        </div>
+        <div class="edit-row">
+          <span class="label">学分</span>
+          <el-input-number v-model="editCourse.credit" :step="1" :min="0"></el-input-number>
+        </div>
+        <div class="edit-row">
+          <span class="label">课程描述</span>
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 10}"
+            placeholder="请输入课程描述"
+            v-model="editCourse.description">
+          </el-input>
+        </div>
+      </div>
+
+    </drag-dialog>
   </div>
 </template>
 <script>
+
+import { getTeacherCourseList, saveCourse, getStuCourseList } from '@/api/home';
+import { findUser,update } from '@/api/login';
+import { validateEmail, validatePhone } from '@/utils/validate';
+import dragDialog from '@/components/dragDialog';
+
 export default {
   name: "home",
   data() {
     return {
-      courseList: []
+      courseList: [],
+      userInfo: {},
+      courseDlgTitle: "增加课程",
+      courseDlgVisible: false,
+      editCourse: {
+        name: '',
+        credit: 0,
+        description: '',
+        userNo: this.$store.state.user.token
+      },
+      editUserInfo: false,
+      userInfoBak: {}
     };
   },
+  components:{
+    dragDialog
+  },
+  created () {
+    if (!this.$store.state.user.roles) {
+      // TODO 弹出提示，并调回登录页面
+    }
+    if (this.$store.state.user.roles.in_array('student')) {
+      this.getStuCourseList();
+    } else {
+      this.getTeacherCourseList();
+    }
+    this.initUserInfo();
+  },
   mounted () {
-    for (let i = 0; i < 7; i++) {
-      this.courseList.push({name: "数学"});
+
+  },
+  methods: {
+    cancel() {
+      this.editUserInfo = false;
+      this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
+    },
+    save() {
+      if (this.userInfo.college.trim() === "") {
+        this.$message({
+                showClose: true,
+                type: 'warning',
+                message: "学院信息不能为空"
+             });
+             return;
+      }
+      if (!validatePhone(this.userInfo.cellphone)) {
+        this.$message({
+                showClose: true,
+                type: 'warning',
+                message: "请输入有效的手机号码"
+             });
+           return;
+      }
+      /*if (!validateEmail(this.userInfo.email)) {
+         this.$message({
+              showClose: true,
+              type: 'warning',
+              message: "请输入有效的邮箱地址"
+           });
+           return;
+      }*/
+      let self = this;
+      update(this.userInfo).then(response => {
+        if (response.status === 0) {
+          self.$message({
+              showClose: true,
+              type: 'warning',
+              message: response.msg
+           });
+           return;
+        }
+        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
+        this.editUserInfo = false;
+        self.$message({
+              showClose: true,
+              type: 'success',
+              message: "修改成功"
+           });
+      }).catch(err => {
+        console.log(err);
+        self.$message({
+              showClose: true,
+              type: 'error',
+              message: "保存个人信息异常"
+           });
+      });
+    },
+    handleEdit() {
+      this.editUserInfo = !this.editUserInfo;
+      if (!this.editUserInfo) {
+        this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
+      }
+    },
+    canAddCourse() {
+      if (this.$store.state.user.roles.in_array('teacher')) {
+        return true;
+      }
+      return false;
+    },
+    getTeacherCourseList() {
+      let self = this;
+      getTeacherCourseList({teacherNo: this.$store.state.user.token}).then(response => {
+        if (response.status === 0) {
+          self.$message({
+              showClose: true,
+              type: 'error',
+              message: response.msg
+           });
+          return;
+        }
+        self.courseList = response.data;
+      }).catch (err => {
+        console.log(err);
+      });
+    },
+    getStuCourseList() {
+        let self = this;
+        getStuCourseList({studentNo: this.$store.state.user.token}).then(response => {
+          if (response.status === 0) {
+            self.$message({
+                showClose: true,
+                type: 'error',
+                message: response.msg
+             });
+            return;
+          }
+          self.courseList = response.data;
+        }).catch (err => {
+          console.log(err);
+        });
+    },
+    initUserInfo () {
+      let self = this;
+      findUser(this.$store.state.user.token).then(response => {
+        if (response.status === 0) {
+          self.$message({
+              showClose: true,
+              type: 'error',
+              message: response.msg
+           });
+        }
+        self.userInfo = response.data;
+        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
+      })
+    },
+    addCourse() {
+      this.editCourse.name = "";
+      this.editCourse.credit = 0;
+      this.editCourse.description = "";
+      this.courseDlgVisible = true;
+    },
+    handleCourseClose () {
+       this.courseDlgVisible = false;
+    },
+    getSearialLabel() {
+      if (!this.$store.state.user.roles) {
+        return "";
+      }
+      return this.$store.state.user.roles.in_array('teacher') ? "教工号" : "学号";
+    },
+    saveCourse() {
+       if (this.editCourse.name.trim() === '' ) {
+          this.$message({
+              showClose: true,
+              type: 'warning',
+              message: "名称不能为空"
+           });
+           return;
+       }
+       if (this.editCourse.credit === 0) {
+          this.$message({
+              showClose: true,
+              type: 'warning',
+              message: "学分不能为0"
+           });
+           return;
+       }
+       let self = this;
+       saveCourse(this.editCourse).then(response => {
+          if (response.status === 0) {
+            self.$message({
+              showClose: true,
+              type: 'error',
+              message: response.msg
+           });
+           return;
+          }
+          self.courseDlgVisible = false;
+          self.getAllCourseList();
+       }).catch(err => {
+          console.log(err);
+       });
     }
   }
 }
@@ -136,6 +359,8 @@ export default {
           border-bottom: 1px solid #ccc;
           padding: 10px;
           font-size:  13px;
+          display: flex;
+          align-items: center;
           span {
             display: inline-block;
           }
@@ -149,6 +374,15 @@ export default {
             padding-left: 15px;
             color: #888;
           }
+          .el-input {
+            width: calc(80% - 60px);
+            margin-left: 10px;
+          }
+        }
+        .edit-oper {
+          margin-top: 15px;
+          display: flex;
+          justify-content: center;
         }
       }
     }
@@ -174,7 +408,26 @@ export default {
       }
     }
   }
-
+  .edit-container {
+    padding: 0 20px;
+    .edit-row {
+      display:flex;
+      align-items: center;
+      padding: 10px 0;
+      .label {
+        width: 70px;
+        text-align: right;
+        margin-right: 20px;
+      }
+      .el-input{
+         // width: calc(100% - 90px);
+         width: 180px;
+      }
+      .el-textarea {
+        width: calc(100% - 90px);
+      }
+    }
+  }
 }
 
 

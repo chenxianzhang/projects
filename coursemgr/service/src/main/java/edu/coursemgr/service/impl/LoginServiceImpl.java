@@ -66,6 +66,9 @@ public class LoginServiceImpl implements LoginService {
             List<Role> roleList = roleMapper.selectByIds(roleIdList);
             userInfo.setName(param.getName());
             userInfo.setSerialNo(param.getSerialNo());
+            userInfo.setCellphone(param.getCellphone());
+            userInfo.setCollege(param.getCollege());
+            userInfo.setEmail(param.getEmail());
             userInfo.setRoles(CollectionUtils.arrayListTypeCast(roleList,
                     role -> role.getValue()));
             return userInfo;
@@ -76,5 +79,20 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public List<Role> getRoleList() throws Exception {
         return roleMapper.selectAll();
+    }
+
+    @Override
+    public int update(User userInfo) {
+        return userMapper.updateBySerialNo(userInfo);
+    }
+
+    @Override
+    public User findUser(String serialNo) throws Exception {
+        // 获取用户信息
+        User user = userMapper.selectBySerialNo(serialNo);
+        if (user == null) {
+            throw new Exception("用户信息丢失");
+        }
+        return user;
     }
 }
