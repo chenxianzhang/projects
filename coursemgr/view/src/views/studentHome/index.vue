@@ -19,15 +19,15 @@
             <i class="el-icon-menu"></i>
             <span slot="title">我的分组</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="/studentHome/taskInfo">
             <i class="el-icon-document"></i>
             <span slot="title">我的任务</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="/studentHome/courseInfo">
             <i class="el-icon-setting"></i>
             <span slot="title">我的课程</span>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="/studentHome/gTaskInfo">
             <i class="el-icon-setting"></i>
             <span slot="title">我的待办</span>
           </el-menu-item>
