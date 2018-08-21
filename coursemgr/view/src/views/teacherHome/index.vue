@@ -8,9 +8,7 @@
         <div>电话：{{teacher.tel}}</div>
         <div>邮箱：{{teacher.email}}</div>
       </div>
-      <div class="p-info-edit">
-        编辑
-      </div>
+      <div class="p-info-edit el-icon-edit" @click="modifyBasicInfo()"></div>
     </div>
     <div class="course-container">
       <div class="course" v-for="course in teacher.courses" @click="addCourse(course)">
@@ -33,6 +31,30 @@
         <el-button type="primary" @click="addCourse">添加课程</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="信息修改" :visible.sync="modifyFormVisible">
+      <el-form :label-position="labelPosition" label-width="80px" :model="teacher">
+        <el-form-item label="课程名称">
+          <el-input v-model="teacher.name"></el-input>
+        </el-form-item>
+        <el-form-item label="教工号">
+          <el-input v-model="teacher.tNo"></el-input>
+        </el-form-item>
+        <el-form-item label="学院">
+          <el-input v-model="teacher.school"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="teacher.tel"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="teacher.email"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="modifyConfirm">确定</el-button>
+        <el-button type="primary" @click="modifyCancel">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,6 +64,7 @@
       name: "teacherHome",
       data(){
         return{
+          modifyFormVisible:false,
           teacher:{
             name:'xxx',
             tNo:'123567',
@@ -65,7 +88,16 @@
             return;
           }
           this.dialogFormVisible = true;
-        }
+        },
+        modifyBasicInfo(){
+          this.modifyFormVisible = true;
+        },
+        modifyConfirm(){
+          //todo 保存修改后的结果
+        },
+        modifyCancel(){
+          this.modifyFormVisible = false;
+        },
       }
     }
 </script>
@@ -77,18 +109,25 @@
   }
   .p-info{
     width: 100%;
-    height: 300px;
-    box-shadow: 0px 0px 0px 4px gray;
+    height: 200px;
+    box-shadow: 0px 0px 9px 4px #a09595;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .p-info-span{
-    height: 100%;
-    width: 90%;
+    height: 80%;
+    width: 80%;
     float: left;
+    display: grid;
+    padding: 10px;
+    background: yellowgreen;
+    box-shadow: 0px 0px 9px 4px #a09595;
   }
   .p-info-edit{
-    height: 100%;
-    width: 10%;
-    float: left;
+    position: relative;
+    right: 25px;
+    top: -65px;
   }
   .course-container{
     display:flex;
@@ -105,6 +144,6 @@
     cursor: pointer;
   }
   .course:hover{
-    box-shadow: 0px 0px 0px 4px gray;
+    box-shadow: 0px 0px 9px 4px #a09595;
   }
 </style>

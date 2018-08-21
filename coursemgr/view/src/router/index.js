@@ -27,6 +27,7 @@ export const constantRouterMap = [
   { path: '/register', component: () => import('@/views/register/register'), hidden: true },
   { path: '/studentHome', component: () => import('@/views/studentHome/index'), hidden: true, children: studentRouter},
   { path: '/teacherHome', component: () => import('@/views/teacherHome/index'), hidden: true, children: teacherRouter},
+  { path: '/teacherHome/newTask', component: () => import('@/views/teacherHome/newTask'), hidden: true },
 
 //  { path: '/', component: () => import('@/views/home/index'), hidden: true }
 ];
