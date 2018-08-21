@@ -12,12 +12,21 @@ export const studentRouter = [
   { path: '/studentHome/gTaskInfo', component: () => import('@/views/studentHome/gTaskInfo'), hidden: true },//待办
 ];
 
+export const teacherRouter = [
+  { path: '/teacherHome/basicInfo', component: () => import('@/views/teacherHome/basicInfo'), hidden: true },
+  // { path: '/teacherHome/groupInfo', component: () => import('@/views/teacherHome/groupInfo'), hidden: true },
+  // { path: '/teacherHome/taskInfo', component: () => import('@/views/teacherHome/taskInfo'), hidden: true },
+  // { path: '/teacherHome/gradeInfo', component: () => import('@/views/teacherHome/gradeInfo'), hidden: true },
+  // { path: '/teacherHome/gTaskInfo', component: () => import('@/views/teacherHome/gTaskInfo'), hidden: true },//待办
+];
+
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/home', component: () => import('@/views/home/index'), hidden: true },
   { path: '', component: () => import('@/views/home/index'), hidden: true },
   { path: '/register', component: () => import('@/views/register/register'), hidden: true },
-  { path: '/studentHome', component: () => import('@/views/studentHome/index'), hidden: true, children: studentRouter}
+  { path: '/studentHome', component: () => import('@/views/studentHome/index'), hidden: true, children: studentRouter},
+  { path: '/teacherHome', component: () => import('@/views/teacherHome/index'), hidden: true, children: teacherRouter},
 
 //  { path: '/', component: () => import('@/views/home/index'), hidden: true }
 ];
