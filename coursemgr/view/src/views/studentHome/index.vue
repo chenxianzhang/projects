@@ -83,6 +83,5 @@
     height: 100%;
     margin-left: 2px;
     float: left;
-    background: aqua;
   }
 </style>

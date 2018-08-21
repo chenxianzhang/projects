@@ -42,7 +42,10 @@
   .main-container .course-info{
     height: 30%;
     width: 100%;
-    background: aqua;
+    box-shadow: 0px 0px 0px 5px #3276bd;
+    -moz-box-shadow: 0px 0px 0px 5px #3276bd;
+    -webkit-box-shadow: 0px 0px 0px 5px #3276bd;
+    border-radius: 3px;
   }
 
   .main-container .course-info .course-title{

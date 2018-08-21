@@ -19,17 +19,23 @@
           <span>该课程分组方式为“{{basicInfo.divideType}}”，你目前还没有加入任何小组，你可以点击“新建分组”按钮自己创建分组，或者线下通知组长将你加入小组。</span>
         </div>
         <div>
-          <el-button class="el-button--primary">新建分组</el-button>
+          <el-button class="el-button--primary" @click="createGroup">新建分组</el-button>
         </div>
       </div>
+
+      <new-group-container v-if="showDialog"></new-group-container>
     </div>
 </template>
 
 <script>
+  import newGroup from './newGroup'
+
     export default {
       name: "group-info",
+      components:{'new-group-container': newGroup},
       data(){
           return{
+            showDialog: false,
             basicInfo:{
               hasGroup:false,
               groupLeader:{name:'xxx', code:'12345678'},
@@ -43,7 +49,7 @@
           //todo 后台获取基本信息
         },
         createGroup(){
-
+          this.showDialog = true;
         },
       },
     }
