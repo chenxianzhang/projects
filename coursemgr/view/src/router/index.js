@@ -8,7 +8,7 @@ export const studentRouter = [
   { path: '/studentHome/basicInfo', component: () => import('@/views/studentHome/basicInfo'), hidden: true },
   { path: '/studentHome/groupInfo', component: () => import('@/views/studentHome/groupInfo'), hidden: true },
   { path: '/studentHome/taskInfo', component: () => import('@/views/studentHome/taskInfo'), hidden: true },
-  { path: '/studentHome/courseInfo', component: () => import('@/views/studentHome/courseInfo'), hidden: true },
+  { path: '/studentHome/gradeInfo', component: () => import('@/views/studentHome/gradeInfo'), hidden: true },
   { path: '/studentHome/gTaskInfo', component: () => import('@/views/studentHome/gTaskInfo'), hidden: true },//待办
 ];
 

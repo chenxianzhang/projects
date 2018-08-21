@@ -23,9 +23,9 @@
             <i class="el-icon-document"></i>
             <span slot="title">我的任务</span>
           </el-menu-item>
-          <el-menu-item index="/studentHome/courseInfo">
+          <el-menu-item index="/studentHome/gradeInfo">
             <i class="el-icon-setting"></i>
-            <span slot="title">我的课程</span>
+            <span slot="title">我的成绩</span>
           </el-menu-item>
           <el-menu-item index="/studentHome/gTaskInfo">
             <i class="el-icon-setting"></i>
