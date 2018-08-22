@@ -6,9 +6,15 @@
         <div class="el-icon-plus setting-plus" @click="addSelection"></div>
       </div>
 
+      <div class="divider" style="height: 1px; background-color: gray; margin: 10px 0"></div>
+
       <div class="selection-container">
-        <div class="select-item" v-for="(select,index) in selections">{{select}}
-          <div class="el-icon-remove" @click="removeSelection(index)"></div>
+        <div style="height: 30px">选项列表</div>
+        <div style="width: 100%; height: 270px; border: 1px solid gray; padding: 10px;">
+          <div v-if="selections.length === 0">暂无数据</div>
+          <div class="select-item" v-for="(select,index) in selections">{{select}}
+            <div class="el-icon-remove" @click="removeSelection(index)"></div>
+          </div>
         </div>
       </div>
 
@@ -38,8 +44,9 @@
           this.selections.splice(index, 1);
         },
         confirmSelections(){
-          this.$emit('selections', this.selections);
+          this.$emit('selectionsHandle', this.selections);
           this.cancel();
+          this.selections = [];
         },
         cancel(){
           this.$emit('hide', false);
@@ -60,5 +67,8 @@
   }
   .selection-setting > .setting-plus{
     margin-left: 10px;
+  }
+  .selection-container{
+    height: 300px;
   }
 </style>
