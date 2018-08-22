@@ -20,6 +20,8 @@ public class TaskQuestions implements Serializable {
 
     private String answers;
 
+    private String answerAttachment;
+
     private String markType;
 
     private String options;
@@ -94,5 +96,13 @@ public class TaskQuestions implements Serializable {
 
     public void setOptions(String options) {
         this.options = options == null ? null : options.trim();
+    }
+
+    public String getAnswerAttachment() {
+        return answerAttachment;
+    }
+
+    public void setAnswerAttachment(String answerAttachment) {
+        this.answerAttachment = answerAttachment == null ? null : answerAttachment.trim();
     }
 }

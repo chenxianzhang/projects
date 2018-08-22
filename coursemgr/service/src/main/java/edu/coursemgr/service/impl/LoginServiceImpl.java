@@ -58,7 +58,7 @@ public class LoginServiceImpl implements LoginService {
         Function<UserInfo, User> transfer = param -> {
             UserInfo userInfo = new UserInfo();
             String[] roles = param.getRoles().split(Constant.Common.SEPARATE_COMMA);
-            List<Integer> roleIdList = CollectionUtils.arrayListTypeCast(Arrays.asList(roles),
+            List<Integer> roleIdList = CollectionUtils.arrayListCast(Arrays.asList(roles),
                     id -> Integer.valueOf(id));
             if (roleIdList == null) {
                 return userInfo;
@@ -69,7 +69,7 @@ public class LoginServiceImpl implements LoginService {
             userInfo.setCellphone(param.getCellphone());
             userInfo.setCollege(param.getCollege());
             userInfo.setEmail(param.getEmail());
-            userInfo.setRoles(CollectionUtils.arrayListTypeCast(roleList,
+            userInfo.setRoles(CollectionUtils.arrayListCast(roleList,
                     role -> role.getValue()));
             return userInfo;
         };

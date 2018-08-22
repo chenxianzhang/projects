@@ -9,13 +9,14 @@
     <result column="questionType" property="questionType" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="REAL" />
     <result column="answers" property="answers" jdbcType="VARCHAR" />
+    <result column="answerAttachment" property="answerAttachment" jdbcType="VARCHAR" />
     <result column="markType" property="markType" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="edu.coursemgr.model.TaskQuestions" extends="BaseResultMap" >
     <result column="options" property="options" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, taskId, questionNo, stems, questionType, score, answers, markType
+    id, taskId, questionNo, stems, questionType, score, answers, answerAttachment, markType
   </sql>
   <sql id="Blob_Column_List" >
     options
@@ -28,6 +29,14 @@
     from task_questions
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectSomeByTaskId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_questions
+    where taskId = #{taskId, jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from task_questions
     where id = #{id,jdbcType=BIGINT}
@@ -35,19 +44,16 @@
   <insert id="insert" parameterType="edu.coursemgr.model.TaskQuestions" >
     insert into task_questions (id, taskId, questionNo, 
       stems, questionType, score, 
-      answers, markType, options
+      answers, answerAttachment, markType, options
       )
     values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=INTEGER}, #{questionNo,jdbcType=INTEGER},
       #{stems,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{score,jdbcType=REAL},
-      #{answers,jdbcType=VARCHAR}, #{markType,jdbcType=VARCHAR}, #{options,jdbcType=LONGVARCHAR}
+      #{answers,jdbcType=VARCHAR},#{answerAttachment,jdbcType=VARCHAR}, #{markType,jdbcType=VARCHAR}, #{options,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="edu.coursemgr.model.TaskQuestions" >
+  <insert id="insertBatch" parameterType="java.util.List" >
     insert into task_questions
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="taskId != null" >
         taskId,
       </if>
@@ -66,6 +72,9 @@
       <if test="answers != null" >
         answers,
       </if>
+      <if test="answerAttachment != null" >
+        answerAttachment,
+      </if>
       <if test="markType != null" >
         markType,
       </if>
@@ -73,35 +82,37 @@
         options,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+    <foreach collection="list" item="item">
+      <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="item.taskId != null" >
+        #{item.taskId,jdbcType=INTEGER},
       </if>
-      <if test="taskId != null" >
-        #{taskId,jdbcType=INTEGER},
+      <if test="item.questionNo != null" >
+        #{item.questionNo,jdbcType=INTEGER},
       </if>
-      <if test="questionNo != null" >
-        #{questionNo,jdbcType=INTEGER},
+      <if test="item.stems != null" >
+        #{item.stems,jdbcType=VARCHAR},
       </if>
-      <if test="stems != null" >
-        #{stems,jdbcType=VARCHAR},
+      <if test="item.questionType != null" >
+        #{item.questionType,jdbcType=VARCHAR},
       </if>
-      <if test="questionType != null" >
-        #{questionType,jdbcType=VARCHAR},
+      <if test="item.score != null" >
+        #{ite.score,jdbcType=REAL},
       </if>
-      <if test="score != null" >
-        #{score,jdbcType=REAL},
+      <if test="item.answers != null" >
+        #{item.answers,jdbcType=VARCHAR},
       </if>
-      <if test="answers != null" >
-        #{answers,jdbcType=VARCHAR},
+      <if test="item.answerAttachment != null" >
+        #{item.answerAttachment,jdbcType=VARCHAR},
       </if>
-      <if test="markType != null" >
-        #{markType,jdbcType=VARCHAR},
+      <if test="item.markType != null" >
+        #{item.markType,jdbcType=VARCHAR},
       </if>
-      <if test="options != null" >
-        #{options,jdbcType=LONGVARCHAR},
+      <if test="item.options != null" >
+        #{item.options,jdbcType=LONGVARCHAR},
       </if>
     </trim>
+    </foreach>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.TaskQuestions" >
     update task_questions
@@ -124,6 +135,9 @@
       <if test="answers != null" >
         answers = #{answers,jdbcType=VARCHAR},
       </if>
+      <if test="answerAttachment != null" >
+        answerAttachment = #{answerAttachment,jdbcType=VARCHAR},
+      </if>
       <if test="markType != null" >
         markType = #{markType,jdbcType=VARCHAR},
       </if>
@@ -141,6 +155,7 @@
       questionType = #{questionType,jdbcType=VARCHAR},
       score = #{score,jdbcType=REAL},
       answers = #{answers,jdbcType=VARCHAR},
+      answerAttachment = #{answerAttachment,jdbcType=VARCHAR},
       markType = #{markType,jdbcType=VARCHAR},
       options = #{options,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -153,6 +168,7 @@
       questionType = #{questionType,jdbcType=VARCHAR},
       score = #{score,jdbcType=REAL},
       answers = #{answers,jdbcType=VARCHAR},
+      answerAttachment = #{answerAttachment,jdbcType=VARCHAR},
       markType = #{markType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
