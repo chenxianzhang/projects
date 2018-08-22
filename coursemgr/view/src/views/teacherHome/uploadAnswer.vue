@@ -10,7 +10,7 @@
       <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">单选题</div>
       <div style="float: left; line-height: 40px;">每题 <span>{{subjectTask.subjectForChooseScore}}</span> 分</div>
       <div class="subject-item" :class="sub.answer === '' ? 'invalid':''" v-for="(sub,index) in subjectTask.subjectForChoose">
-        <el-input style="width: calc(100% - 130px)" placeholder="请输入题目"  v-model="sub.stem" disabled/>
+        <el-input style="width: calc(100% - 130px); margin-top: 10px;" placeholder="请输入题目"  v-model="sub.stem" disabled/>
         <div style="margin: 20px;">
           <el-radio-group v-model="sub.answer" style=" display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap">
             <el-radio v-for="(cItem,idx) in sub.chooseItem" :label="cItem" :key="idx" style="margin: 5px;">{{cItem}}</el-radio>
@@ -23,7 +23,7 @@
       <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">判断题</div>
       <div style="float: left; line-height: 40px;">每题 <span>{{subjectTask.subjectForJudgeScore}}</span> 分</div>
       <div class="subject-item" :class="sub.answer === '' ? 'invalid':''" v-for="(sub,index) in subjectTask.subjectForJudge">
-        <el-input style="width: calc(100% - 130px)" placeholder="请输入题目" v-model="sub.stem"/>
+        <el-input style="width: calc(100% - 130px); margin-top: 10px;" placeholder="请输入题目" v-model="sub.stem"/>
         <div style="margin: 20px;">
           <el-radio-group v-model="sub.answer" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
             <el-radio v-for="(cItem,idx) in sub.chooseItem" :label="cItem" :key="idx" style="margin: 5px;">{{cItem}}</el-radio>
@@ -33,10 +33,11 @@
     </div>
 
     <div class="subject-for-subjective" v-if="subjectTask.subjectForSubjective.length !== 0">
-      <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">主观题
+      <div style="float: left; width: 100%;">
+        <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">主观题</div>
       </div>
       <div class="subject-item" :class="sub.answer === '' ? 'invalid':''" v-for="(sub,index) in subjectTask.subjectForSubjective">
-        <el-input style="width: calc(100% - 450px); float: left;" placeholder="请输入题目" v-model="sub.stem" disabled/>
+        <el-input style="width: calc(100% - 450px); float: left; margin-top: 10px;" placeholder="请输入题目" v-model="sub.stem" disabled/>
         <div style="float: left; line-height: 40px;">分值： <span>{{sub.score}}</span> 分</div>
         <div style="margin: 0px 20px; float: left; line-height: 40px;">
           {{sub.answerType}}
@@ -53,7 +54,9 @@
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; justify-content: center">
+    <div class="divider" style="height: 1px; background-color: gray; margin: 10px;"></div>
+
+    <div style="display: flex; align-items: center; justify-content: center; margin: 10px 0">
       <el-button type="primary" @click="submit">提交</el-button>
     </div>
 
