@@ -46,4 +46,18 @@ public interface Constant {
          */
         public static final int INTERFERING_LINE_COUNT = 200;
     }
+
+    final class ExceptionMessage {
+
+        public static final String LOGIN_TIMEOUT = "用户登录超时，请重新登录";
+
+        public static final String PARAM_EXCEPTION = "参数异常";
+
+        public static final String DATA_SAVE_EXCEPTION = "数据存储异常";
+
+        public static final String DATA_QUERY_EXCEPTION = "数据查询异常";
+
+        public static final String PARAM_EMPTY = "参数为空";
+
+    }
 }

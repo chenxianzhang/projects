@@ -1,5 +1,7 @@
 package edu.coursemgr.controller;
 
+import edu.coursemgr.common.Constant;
+import edu.coursemgr.pojo.CourseTaskDetail;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +51,28 @@ public class CourseMgrController extends BaseController {
             throws Exception {
         String studentNo = getParam(requestMap, "studentNo");
         if (CommonUtils.isEmpty(studentNo)) {
-            throw new Exception("用户登录超时，请重新登录");
+            throw new Exception(Constant.ExceptionMessage.LOGIN_TIMEOUT);
         }
         return courseMgrService.getStuCourseList(studentNo);
+    }
+
+    @RequestMapping(value="/saveTask", method=RequestMethod.POST)
+    @ResponseBody
+    public Object saveTask(@RequestBody CourseTaskDetail taskDetail) throws Exception {
+        if (taskDetail == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
+        }
+        return courseMgrService.saveTask(taskDetail);
+    }
+
+    @RequestMapping(value="/getTaskDetailByTaskId", method=RequestMethod.POST)
+    @ResponseBody
+    public CourseTaskDetail getTaskDetailByTaskId(@RequestBody Map<String, Object> requestMap)
+        throws Exception {
+        String taskId = getParam(requestMap, "taskId");
+        if (CommonUtils.isEmpty(taskId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return courseMgrService.getTaskDetailByTaskId(Integer.valueOf(taskId));
     }
 }

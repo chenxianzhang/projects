@@ -4,13 +4,13 @@ CREATE TABLE `user` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`serialNo` varchar(10) NOT NULL, #学号或者教工号，管理员登录账号
 	`password` varchar(20) DEFAULT NULL,
-  `name` varchar(20) NOT NULL,  #姓名
+    `name` varchar(20) NOT NULL,  #姓名
 	`college` varchar(50),            #学院
 	`profession` varchar(50),         #专业
 	`cellphone` varchar(11),          #手机号
 	`email` varchar(50),              #邮箱
 	`roles` varchar(50),   #所拥有的角色,存储角色id，每个id之间‘,’分隔
-  `sex` ENUM('男', '女') NOT NULL default '男',     #性别  男，女
+    `sex` ENUM('男', '女') NOT NULL default '男',     #性别  男，女
 	`createDate` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -61,13 +61,14 @@ CREATE TABLE `question_type` (
 DROP TABLE IF EXISTS `task_questions`;
 CREATE TABLE `task_questions` (
   `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
-  `taskId` INT NOT NULL,  #课程id
+  `taskId` INT NOT NULL,  #任务id
 	`questionNo` INT,         #试题题号
 	`stems`  varchar(255),  #题干
 	`questionType`  varchar(15),   # 题目类型  单选题，多选题，判断题，主观题等
 	`score` FLOAT,          #分数
 	`options` LONGTEXT,        #选择题的选项(每个选项之间以#号分隔，前端需校验选项的输入，不能输入#)，主观题则为空
-	`answers` varchar(15),      #如果是多选题，每个选项之间以;分隔,；主观题无标准答案;判断题为正确或错误
+	`answers` varchar(15),      #标准答案，如果是多选题，每个选项之间以;分隔,；主观题无标准答案;判断题为正确或错误
+	`answerAttachment` varchar(255),   #主观题答案附件地址
 	`markType` varchar(15)     #主观题评分类型，自评，组内互评，组间互评
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

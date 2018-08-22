@@ -9,7 +9,7 @@ public interface CourseTasksMapper {
 
     int insertSelective(CourseTasks record);
 
-    CourseTasks selectByPrimaryKey(Integer id);
+    CourseTasks selectByTaskId(Integer id);
 
     int updateByPrimaryKeySelective(CourseTasks record);
 

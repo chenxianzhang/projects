@@ -13,7 +13,7 @@
   <sql id="Base_Column_List" >
     id, courseId, name, weight, publishTime, deadline, totalScore
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from course_tasks
@@ -23,11 +23,11 @@
     delete from course_tasks
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="edu.coursemgr.model.CourseTasks" >
-    insert into course_tasks (id, courseId, name, 
+  <insert id="insert" parameterType="edu.coursemgr.model.CourseTasks" useGeneratedKeys="true" keyProperty="id">
+    insert into course_tasks (courseId, name,
       weight, publishTime, deadline, 
       totalScore)
-    values (#{id,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+    values (#{courseId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
       #{weight,jdbcType=REAL}, #{publishTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP},
       #{totalScore,jdbcType=INTEGER})
   </insert>
