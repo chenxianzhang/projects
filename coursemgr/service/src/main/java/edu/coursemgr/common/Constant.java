@@ -59,5 +59,7 @@ public interface Constant {
 
         public static final String PARAM_EMPTY = "参数为空";
 
+        public static final String EXCEL_EMPTY = "空Excel文件";
+
     }
 }

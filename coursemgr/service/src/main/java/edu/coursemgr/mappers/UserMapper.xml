@@ -24,16 +24,26 @@
     from user
     where serialNo = #{serialNo,jdbcType=VARCHAR}
   </select>
+  <select id="selectSomeByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where serialNo in (
+      select studentNo
+      from course_students
+      where courseId= #{courseId, jdbcType=INTEGER}
+    )
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.User" >
-    insert into user (id, serialNo, password, 
+    insert into user (serialNo, password,
       name, college, profession, 
       cellphone, email, roles, 
       sex, createDate)
-    values (#{id,jdbcType=INTEGER}, #{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    values (#{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, 
       #{cellphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR},
       #{sex,jdbcType=CHAR}, #{createDate,jdbcType=TIMESTAMP})

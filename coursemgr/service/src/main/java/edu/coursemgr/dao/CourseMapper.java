@@ -11,13 +11,13 @@ public interface CourseMapper {
 
     int insertSelective(Course record);
 
-    Course selectByPrimaryKey(Integer id);
+    Course selectById(Integer id);
 
-    int updateByPrimaryKeySelective(Course record);
+    int updateByIdSelective(Course record);
 
-    int updateByPrimaryKeyWithBLOBs(Course record);
+    int updateByIdWithBLOBs(Course record);
 
-    int updateByPrimaryKey(Course record);
+    int updateById(Course record);
 
     List<Course> selectAll();
 

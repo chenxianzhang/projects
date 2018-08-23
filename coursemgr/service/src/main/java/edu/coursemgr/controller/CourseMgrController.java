@@ -1,6 +1,7 @@
 package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
+import edu.coursemgr.model.Course;
 import edu.coursemgr.pojo.CourseTaskDetail;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.utils.CommonUtils;
@@ -56,23 +57,35 @@ public class CourseMgrController extends BaseController {
         return courseMgrService.getStuCourseList(studentNo);
     }
 
-    @RequestMapping(value="/saveTask", method=RequestMethod.POST)
+    @RequestMapping(value="/getCourseById", method=RequestMethod.POST)
     @ResponseBody
-    public Object saveTask(@RequestBody CourseTaskDetail taskDetail) throws Exception {
-        if (taskDetail == null) {
-            throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
-        }
-        return courseMgrService.saveTask(taskDetail);
-    }
-
-    @RequestMapping(value="/getTaskDetailByTaskId", method=RequestMethod.POST)
-    @ResponseBody
-    public CourseTaskDetail getTaskDetailByTaskId(@RequestBody Map<String, Object> requestMap)
+    public Course getCourseById(@RequestBody Map<String, Object> requestMap)
         throws Exception {
-        String taskId = getParam(requestMap, "taskId");
-        if (CommonUtils.isEmpty(taskId)) {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        return courseMgrService.getTaskDetailByTaskId(Integer.valueOf(taskId));
+        return courseMgrService.getCourseById(courseId);
     }
+
+    @RequestMapping(value="/updateCourseSelective", method=RequestMethod.POST)
+    @ResponseBody
+    public int updateCourseSelective(@RequestBody Course course) throws Exception {
+        if (course == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
+        }
+        return courseMgrService.updateCourse(course, true);
+    }
+
+    @RequestMapping(value="/updateCourse", method=RequestMethod.POST)
+    @ResponseBody
+    public int updateCourse(@RequestBody Course course) throws Exception {
+        if (course == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
+        }
+        return courseMgrService.updateCourse(course, false);
+    }
+
+
+
 }

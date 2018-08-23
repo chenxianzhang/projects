@@ -1,7 +1,6 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.Course;
-import edu.coursemgr.pojo.CourseTaskDetail;
 
 import java.util.List;
 
@@ -18,16 +17,20 @@ public interface CourseMgrService {
     List<Course> getStuCourseList(String stuNo);
 
     /**
-     * 保存task详细信息
-     * @param taskDetail
+     * 根据课程id获取课程信息
+     * @param courseId
      * @return
      */
-    int saveTask(CourseTaskDetail taskDetail) throws Exception;
+    Course getCourseById(String courseId);
 
     /**
-     * 根据任务id获取当前任务详细信息
-     * @param taskId
+     * 更新课程信息
+     * @param course
+     * @param isSelective  为true则选择性的更新，及如果对象属性值为空，则不更新，
+     *                     反之则不管是否为空都更新
      * @return
      */
-    CourseTaskDetail getTaskDetailByTaskId(Integer taskId) throws Exception;
+    int updateCourse(Course course, boolean isSelective);
+
+
 }

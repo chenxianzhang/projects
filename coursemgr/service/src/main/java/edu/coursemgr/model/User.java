@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private Integer id;
 
     private String serialNo;
@@ -29,8 +32,6 @@ public class User implements Serializable {
     private String sex;
 
     private Date createDate;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

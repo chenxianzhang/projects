@@ -18,7 +18,7 @@
   <sql id="Blob_Column_List" >
     description
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     ,
@@ -110,7 +110,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.Course" >
+  <update id="updateByIdSelective" parameterType="edu.coursemgr.model.Course" >
     update course
     <set >
       <if test="name != null" >
@@ -134,7 +134,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.coursemgr.model.Course" >
+  <update id="updateByIdWithBLOBs" parameterType="edu.coursemgr.model.Course" >
     update course
     set name = #{name,jdbcType=VARCHAR},
       credit = #{credit,jdbcType=INTEGER},
@@ -144,7 +144,7 @@
       description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.Course" >
+  <update id="updateById" parameterType="edu.coursemgr.model.Course" >
     update course
     set name = #{name,jdbcType=VARCHAR},
       credit = #{credit,jdbcType=INTEGER},

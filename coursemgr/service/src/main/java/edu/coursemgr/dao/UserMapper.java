@@ -3,6 +3,8 @@ package edu.coursemgr.dao;
 import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.UserInfo;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -17,4 +19,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     int updateBySerialNo(User userInfo);
+
+    List<User> selectSomeByCourseId(Integer courseId);
 }
