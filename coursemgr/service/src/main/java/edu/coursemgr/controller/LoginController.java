@@ -1,7 +1,6 @@
 package edu.coursemgr.controller;
 
 import edu.coursemgr.model.User;
-import edu.coursemgr.pojo.UserInfo;
 import edu.coursemgr.service.interfaces.LoginService;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.utils.CommonUtils;

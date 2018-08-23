@@ -2,6 +2,8 @@ package edu.coursemgr.dao;
 
 import edu.coursemgr.model.CourseTasks;
 
+import java.util.List;
+
 public interface CourseTasksMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface CourseTasksMapper {
     int updateByPrimaryKeySelective(CourseTasks record);
 
     int updateByPrimaryKey(CourseTasks record);
+
+    List<CourseTasks> selectSomeByCourseId(Integer courseId);
 }

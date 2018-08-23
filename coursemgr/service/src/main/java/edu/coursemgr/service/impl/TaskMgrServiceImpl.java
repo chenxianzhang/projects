@@ -6,14 +6,17 @@ import edu.coursemgr.dao.TaskQuestionsMapper;
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.CourseTaskDetail;
+import edu.coursemgr.pojo.StudentTaskDetail;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by chenxianzhang on 2018/8/24 0024 上午 12:14
  */
+@Service
 public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Autowired
@@ -63,5 +66,22 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         taskDetail.setQuestionList(questionsList);
         return taskDetail;
     }
+
+    @Override
+    public CourseTasks getCourseTaskById(String taskId) {
+        return courseTasksMapper.selectByTaskId(Integer.valueOf(taskId));
+    }
+
+    @Override
+    public List<CourseTasks> getCourseTasksByCourseId(String courseId) {
+        return courseTasksMapper.selectSomeByCourseId(Integer.valueOf(courseId));
+    }
+
+    @Override
+    public List<StudentTaskDetail> getStudentTaskSituation(String taskId, String courseId) {
+
+        return null;
+    }
+
 
 }

@@ -1,7 +1,9 @@
 package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
+import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.pojo.CourseTaskDetail;
+import edu.coursemgr.pojo.StudentTaskDetail;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,4 +46,41 @@ public class TaskMgrController extends BaseController {
         }
         return taskMgrService.getTaskDetailByTaskId(Integer.valueOf(taskId));
     }
+
+    @RequestMapping(value="/getCourseTaskById", method=RequestMethod.POST)
+    @ResponseBody
+    public CourseTasks getCourseTaskById(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String taskId = getParam(requestMap, "taskId");
+        if (CommonUtils.isEmpty(taskId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return taskMgrService.getCourseTaskById(taskId);
+    }
+
+    @RequestMapping(value="/getCourseTasksByCourseId", method=RequestMethod.POST)
+    @ResponseBody
+    public List<CourseTasks> getCourseTasksByCourseId(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return taskMgrService.getCourseTasksByCourseId(courseId);
+    }
+
+    @RequestMapping(value="/getStudentTaskSituation", method=RequestMethod.POST)
+    @ResponseBody
+    public List<StudentTaskDetail> getStudentTaskSituation(
+            @RequestBody Map<String, Object> requestMap) throws Exception {
+        String taskId = getParam(requestMap, "taskId");
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(taskId) || CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return taskMgrService.getStudentTaskSituation(taskId, courseId);
+    }
+
 }

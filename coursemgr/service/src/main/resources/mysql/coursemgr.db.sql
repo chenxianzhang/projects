@@ -99,7 +99,7 @@ CREATE TABLE `group` (
 	`createDate` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `group_memeber`;
+DROP TABLE IF EXISTS `group_member`;
 CREATE TABLE `group_memeber` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`groupId` INT,    #所属分组id
