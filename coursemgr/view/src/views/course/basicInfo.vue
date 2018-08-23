@@ -3,17 +3,17 @@
     <div class="course-info">
       <div class="course-title">
         <span class="course-name">课程名称：{{course.name}}</span>
-        <span class="course-score">学分：<span>{{course.score}}</span></span>
+        <span class="course-score">学分：<span>{{course.credit}}</span></span>
         <div v-if="editable" class="el-icon-edit edit" @click="handleEditCourse"></div>
       </div>
       <div class="course-comments">
         <span class="course-comments-span">课程描述：</span>
-        <span class="course-comments-content">{{course.comments}}</span>
+        <span class="course-comments-content">{{course.description}}</span>
       </div>
     </div>
     <div style="width: calc(100% - 60px); margin-left: 30px;">
       <div>
-        <span>学生信息（总人数：{{course.studentsCnt}}）</span>
+        <span>学生信息（总人数：{{studentsInCourse.length}}）</span>
         <div v-if="editable === true">
           <el-button type="primary" @click="addStudents2Course">添加学生</el-button>
           <el-button type="primary" @click="uploadStudents2Course">批量导入学生名单</el-button>
@@ -43,17 +43,12 @@
       return{
         editable:false,
         studentsInCourse:[],
-        course:{
-          name:'',
-          score:0,
-          comments:'',
-          studentsCnt:0,
-        },
+        course:null,
       }
     },
     created(){
       //todo 获取课程信息
-      let cId = this.$route.params.cId;
+      let cId = this.$route.params.courseId;
       this.getCourseInfo(cId);
       this.getStudentsOfCourse(cId);
 
