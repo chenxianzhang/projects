@@ -11,7 +11,43 @@
         <span class="course-comments-content">{{courseCommentsContent}}</span>
       </div>
     </div>
-    <div></div>
+    <el-table
+      :data="tableData"
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="code"
+        label="学号">
+      </el-table-column>
+      <el-table-column
+        prop="school"
+        label="学院">
+      </el-table-column>
+      <el-table-column
+        prop="proffecial"
+        label="专业">
+      </el-table-column>
+      <el-table-column
+        prop="tel"
+        label="电话">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        label="邮箱">
+      </el-table-column>
+      <el-table-column
+        prop="proffecial"
+        label="操作">
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -20,9 +56,13 @@
         name: "basicInfo",
       data(){
           return{
+            tableData:[],
             courseScore:3,
             courseCommentsContent:'系统地介绍了计算机的基本组成原理和内部工作机制，课程主要内容分成两个部分：第1、2章介绍了计算机的基础知识；第3～8章介绍了计算机的各子系统（包括运算器、存储器、控制器、外部设备和输入输出子系统等）的基本组成原理、设计方法、相互关系以及各子系统互相连接构成整机系统的技术。',
           }
+      },
+      created(){
+          //todo 通过路由获取角色信息
       },
       methods:{
         handleEditCourse: function () {

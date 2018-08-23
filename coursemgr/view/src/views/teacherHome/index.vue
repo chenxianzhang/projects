@@ -28,7 +28,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addCourse">添加课程</el-button>
+        <el-button type="primary" @click="addCourseSubmit">添加课程</el-button>
       </div>
     </el-dialog>
 
@@ -82,12 +82,21 @@
           }
         }
       },
+      created(){
+        //todo 获取当前教师所有课程列表
+      },
       methods: {
         addCourse(course){
           if(course && course !== 'add'){
             return;
           }
           this.dialogFormVisible = true;
+        },
+        addCourseSubmit(){
+          //todo 保存课程到数据库
+          //todo 添加课程信息到循环显示列表
+          this.teacher.courses.splice(0, 0, this.course.name);
+          this.modifyFormVisible = false;
         },
         modifyBasicInfo(){
           this.modifyFormVisible = true;

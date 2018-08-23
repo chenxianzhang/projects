@@ -49,7 +49,7 @@
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
       <div class="login-foot">
         <el-button type="text">忘记密码？</el-button>
-        <el-button type="text" v-if="selectRoleValue === 'teacher'">立即注册！</el-button>
+        <el-button type="text" v-if="selectRoleValue === 'teacher'" @click="registery">立即注册！</el-button>
       </div>
     </el-form>
   </div>
@@ -78,11 +78,11 @@ export default {
       }
     }
     const validateCode = (rule, value, callback) => {
-      // if (value === '' || value === 'undefined' || value === null) {
-      //   callback(new Error('验证码不能为空'))
-      // } else {
-      //   callback();
-      // }
+      if (value === '' || value === 'undefined' || value === null) {
+        callback(new Error('验证码不能为空'))
+      } else {
+        callback();
+      }
     }
     return {
       loginForm: {
@@ -113,36 +113,48 @@ export default {
     },
     handleLogin() {
       let self = this;
-      // if (this.loginForm.role === '') {
-      //   self.$message({
-      //           showClose: true,
-      //           type: 'warning',
-      //           message: '用户角色不能为空'
-      //         });
-      //         return;
-      // }
+      if (this.loginForm.role === '') {
+        self.$message({
+                showClose: true,
+                type: 'warning',
+                message: '用户角色不能为空'
+              });
+              return;
+      }
       this.$refs.loginForm.validate(valid => {
-          this.$store.dispatch('loginProcess', this.loginForm).then(() => {
+        if (valid) {
+          self.loading = true
+          self.$store.dispatch('loginProcess', self.loginForm).then(() => {
             self.loading = false;
-            self.$router.push({ path: '/' });})
-        // if (valid) {
-        //   self.loading = true
-        //   this.$store.dispatch('loginProcess', this.loginForm).then(() => {
-        //     self.loading = false;
-        //     self.$router.push({ path: '/' });
-        //   }).catch (err => {
-        //     self.loading = false;
-        //     self.$message({
-        //         showClose: true,
-        //         type: 'error',
-        //         message: err
-        //       });
-        //       self.generateVerCode();
-        //   });
-        // } else {
-        //   console.log('error submit!!')
-        //   return false
-        // }
+            // self.$router.push({ path: '/' });
+
+            switch (self.loginForm.role) {
+              case 2:
+                self.$router.push({name:'tHome', params:{}});
+                break;
+              case 3:
+                self.$router.push({name:'sHome', params:{}});
+                break;
+              case 1:
+                break;
+              default:
+                break;
+            }
+
+
+          }).catch (err => {
+            self.loading = false;
+            self.$message({
+                showClose: true,
+                type: 'error',
+                message: err
+              });
+              self.generateVerCode();
+          });
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
     generateVerCode() {
@@ -169,11 +181,19 @@ export default {
           self.selectRoleValue = rItem.value;
         }
       });
+    },
+    registery(){
+      this.$router.push('/register');
     }
   },
   created() {
     this.verCodeImageUrl = getVerCodeImageUrl();
     this.getRoleList();
+    if(this.$route.params && this.$route.params.from && this.$route.params.from === 'registery'){
+      this.loginForm.role = this.$route.params.role;
+      this.loginForm.username = this.$route.params.name;
+      this.loginForm.password = this.$route.params.pwd;
+    }
   },
   destroyed() {
   }

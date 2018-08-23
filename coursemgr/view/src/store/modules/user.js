@@ -57,7 +57,7 @@ const user = {
         },
         // 前端页面登出
         PageLogOut({ commit }) {
-            return new Promise(resove => {
+            return new Promise(resolve => {
                 commit('SET_TOKEN', '');
                 removeToken();
                 resolve();
