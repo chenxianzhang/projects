@@ -6,7 +6,7 @@
           <span>课程列表</span>
         </div>
         <div class="course-list">
-          <div class="card-panel" v-for="(item, index) in courseList" :key="index">
+          <div class="card-panel" v-for="(item, index) in courseList" :key="index" @click="handleCourseClick">
             <span>{{ item.name }}</span>
           </div>
           <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse()">
@@ -278,11 +278,14 @@ export default {
            return;
           }
           self.courseDlgVisible = false;
-          self.getAllCourseList();
+          self.getTeacherCourseList();
        }).catch(err => {
           console.log(err);
        });
-    }
+    },
+    handleCourseClick(){
+      this.$router.push({name:'basicInfo', params:{}});
+    },
   }
 }
 

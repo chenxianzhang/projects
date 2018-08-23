@@ -126,8 +126,6 @@ export default {
           self.loading = true
           self.$store.dispatch('loginProcess', self.loginForm).then(() => {
             self.loading = false;
-            // self.$router.push({ path: '/' });
-
             switch (self.loginForm.role) {
               case 2:
                 self.$router.push({name:'tHome', params:{}});
@@ -140,8 +138,6 @@ export default {
               default:
                 break;
             }
-
-
           }).catch (err => {
             self.loading = false;
             self.$message({

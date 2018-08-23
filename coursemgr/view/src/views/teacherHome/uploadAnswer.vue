@@ -102,6 +102,16 @@
   .main-container{
 
   }
+  .main-container .step{
+    height: 40px;
+    line-height: 40px;
+    width: 150px;
+    background: #456;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 0 5px 4px #35506b;
+    margin-bottom: 10px;
+  }
   .subject-item{
     margin: 10px 0;
   }
