@@ -77,7 +77,7 @@ CREATE TABLE `student_tasks` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`studentNo` varchar(10),    #学号 关联user serialNo
   `taskId` varchar(15),  #任务id
-	`status` ENUM('完成', '带审阅', '未提交') NOT NULL default '未提交',
+	`status` ENUM('FINISHED', 'TO_REVIEW', 'UNCOMMITTED') NOT NULL default '未提交',
 	`score` FLOAT,       #分数
 	`submitTime` datetime     #提交时间或完成时间
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

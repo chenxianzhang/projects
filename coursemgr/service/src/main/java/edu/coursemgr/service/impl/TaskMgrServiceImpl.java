@@ -1,17 +1,22 @@
 package edu.coursemgr.service.impl;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.dao.CourseTasksMapper;
+import edu.coursemgr.dao.StudentTasksMapper;
 import edu.coursemgr.dao.TaskQuestionsMapper;
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.CourseTaskDetail;
 import edu.coursemgr.pojo.StudentTaskDetail;
 import edu.coursemgr.service.interfaces.TaskMgrService;
+import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenxianzhang on 2018/8/24 0024 上午 12:14
@@ -24,6 +29,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Autowired
     private TaskQuestionsMapper taskQuestionsMapper;
+
+    @Autowired
+    private StudentTasksMapper studentTasksMapper;
 
     @Override
     public int saveTask(CourseTaskDetail taskDetail) throws Exception {
@@ -79,8 +87,20 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Override
     public List<StudentTaskDetail> getStudentTaskSituation(String taskId, String courseId) {
+        Map<String, Object> paramMap = new HashMap<>(2);
+        paramMap.put("taskId", taskId);
+        paramMap.put("courseId", Integer.valueOf(courseId));
+        List<StudentTaskDetail> studentTaskDetails = studentTasksMapper.getStudentTaskSituation(paramMap);
 
-        return null;
+        if (studentTaskDetails != null) {
+            studentTaskDetails.forEach(item -> {
+                if (CommonUtils.isEmpty(item.getStatus())) {
+                    item.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getName());
+                }
+            });
+        }
+
+        return studentTaskDetails;
     }
 
 

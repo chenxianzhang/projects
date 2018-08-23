@@ -9,6 +9,14 @@
     <result column="score" property="score" jdbcType="REAL" />
     <result column="submitTime" property="submitTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="StudentTaskDetailMap" type="edu.coursemgr.pojo.StudentTaskDetail" >
+    <id column="groupId" property="groupId" jdbcType="INTEGER" />
+    <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+    <result column="studentName" property="studentName" jdbcType="VARCHAR" />
+    <result column="taskId" property="taskId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="score" property="score" jdbcType="REAL" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, studentNo, taskId, status, score, submitTime
   </sql>
@@ -17,6 +25,16 @@
     <include refid="Base_Column_List" />
     from student_tasks
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getStudentTaskSituation" resultMap="StudentTaskDetailMap" parameterType="java.util.HashMap" >
+    select
+    gm.groupId, cs.studentNo, u.name as studentName, st.taskId, st.status, st.score
+    from course_students cs
+    left join student_tasks st
+    on st.taskId=#{taskId, jdbcType=VARCHAR} and st.studentNo=cs.studentNo
+    left join group_member gm on gm.studentNo = st.studentNo
+    left join user u on u.serialNo = cs.studentNo
+    where cs.courseId=#{courseId, jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from student_tasks
