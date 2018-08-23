@@ -126,18 +126,7 @@ export default {
           self.loading = true
           self.$store.dispatch('loginProcess', self.loginForm).then(() => {
             self.loading = false;
-            switch (self.loginForm.role) {
-              case 2:
-                self.$router.push({name:'tHome', params:{}});
-                break;
-              case 3:
-                self.$router.push({name:'sHome', params:{}});
-                break;
-              case 1:
-                break;
-              default:
-                break;
-            }
+            self.$router.push({name:'home', params:{}});
           }).catch (err => {
             self.loading = false;
             self.$message({

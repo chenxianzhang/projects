@@ -19,28 +19,28 @@
             <i class="el-icon-location"></i>
             <span slot="title">基本信息</span>
           </el-menu-item>
-          <el-menu-item index="/course/groupInfo">
+          <el-menu-item v-if="isStudent" index="/course/groupInfo">
             <i class="el-icon-menu"></i>
             <span slot="title">我的分组</span>
           </el-menu-item>
-          <el-menu-item index="/course/taskInfo">
+          <el-menu-item v-if="isStudent" index="/course/taskInfo">
             <i class="el-icon-document"></i>
             <span slot="title">我的任务</span>
           </el-menu-item>
-          <el-menu-item index="/course/gradeInfo">
+          <el-menu-item v-if="isStudent" index="/course/gradeInfo">
             <i class="el-icon-setting"></i>
             <span slot="title">我的成绩</span>
           </el-menu-item>
-          <el-menu-item index="/course/gTaskInfo">
+          <el-menu-item v-if="isStudent" index="/course/gTaskInfo">
             <i class="el-icon-setting"></i>
             <span slot="title">我的待办</span>
           </el-menu-item>
 
-          <el-menu-item index="/teacherHome/groupInfo">
+          <el-menu-item v-if="!isStudent" index="/teacherHome/groupInfo">
             <i class="el-icon-setting"></i>
             <span slot="title">分组情况</span>
           </el-menu-item>
-          <el-menu-item index="/teacherHome/newTask">
+          <el-menu-item v-if="!isStudent" index="/teacherHome/newTask">
             <i class="el-icon-setting"></i>
             <span slot="title">新建任务</span>
           </el-menu-item>
@@ -58,8 +58,11 @@
       name: "course",
       data(){
         return{
-
+          isStudent:false,
         }
+      },
+      created(){
+        this.isStudent = this.$store.state.user.roles.in_array('student');
       },
       methods: {
         handleOpen(key, keyPath) {
