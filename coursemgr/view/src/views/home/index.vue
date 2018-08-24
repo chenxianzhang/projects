@@ -284,7 +284,8 @@ export default {
        });
     },
     handleCourseClick(cId){
-      this.$router.push({name:'basicInfo', params:{courseId:cId}});
+      this.$store.commit('SET_COURSE_ID', cId);
+      this.$router.push({name:'basicInfo'});
     },
   }
 }

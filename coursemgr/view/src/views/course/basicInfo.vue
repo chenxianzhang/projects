@@ -12,9 +12,9 @@
       </div>
     </div>
     <div style="width: calc(100% - 60px); margin-left: 30px;">
-      <div>
+      <div class="course-student-title">
         <span>学生信息（总人数：{{studentsInCourse.length}}）</span>
-        <div v-if="editable === true">
+        <div v-if="editable" class="add-student-btn">
           <el-button type="primary" @click="addStudents2Course">添加学生</el-button>
           <el-button type="primary" @click="uploadStudents2Course">批量导入学生名单</el-button>
         </div>
@@ -27,28 +27,38 @@
         <el-table-column prop="proffecial" label="专业"></el-table-column>
         <el-table-column prop="tel" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="proffecial" label="操作"></el-table-column>
+        <el-table-column
+          label="操作"
+          width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
-
+  <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog"></upload-student-comp>
   </div>
 </template>
 
 <script>
   import {getCourseById, getStudentsByCourseId} from '@/api/course';
+  import UploadStudentComp from "../../components/uploadStudentComp";
 
   export default {
     name: "basicInfo",
+    components: {UploadStudentComp},
     data(){
       return{
+        showUploadDialog:false,
         editable:false,
         studentsInCourse:[],
         course:null,
       }
     },
     created(){
-      //todo 获取课程信息
-      let cId = this.$route.params.courseId;
+      let cId = this.$store.getters.courseId;
       this.getCourseInfo(cId);
       this.getStudentsOfCourse(cId);
 
@@ -93,8 +103,17 @@
           self.studentsInCourse = response.data;
         });
       },
-      addStudents2Course(){},//添加学生
-      uploadStudents2Course(){},//批量导入学生名单
+      //添加学生
+      addStudents2Course(){
+
+      },
+      //批量导入学生名单
+      uploadStudents2Course(){
+        this.showUploadDialog = true;
+      },
+      hideUploadDialog(val){
+        this.showUploadDialog = val;
+      }
     }
   }
 </script>
@@ -140,5 +159,14 @@
 
   .course-comments .course-comments-content{
     font-size: 12px;
+  }
+  .add-student-btn{
+    float: right;
+  }
+  .course-student-title{
+    height: 44px;
+    line-height: 44px;
+    margin: 10px 0px;
+    border-bottom: 1px solid gray;
   }
 </style>

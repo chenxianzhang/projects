@@ -16,3 +16,19 @@ export function getStudentsByCourseId(params) {
   });
 }
 
+// 通过课程id获取当前课程下所有任务信息courseId
+/**
+ * 通过课程id获取当前课程下所有任务信息
+ * params courseId
+ * return List<CourseTasks>
+ * */
+export function getCourseTasksByCourseId(params) {
+  return request({
+    url: '/taskMgr/getCourseTasksByCourseId',
+    method: 'post',
+    data: params
+  });
+}
+
+
+

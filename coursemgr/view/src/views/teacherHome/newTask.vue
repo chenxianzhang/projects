@@ -135,7 +135,7 @@
           this.subject.subjectForChoose[this.curSubjectIndex].chooseItem = selections;
         },
         nextStep(){
-          //todo 题目校验--选项是否存在、题干是否存在、分值是否存在、总分值是否存在
+          //题目校验--选项是否存在、题干是否存在、分值是否存在、总分值是否存在
           if(this.subject.subjectForChoose.length + this.subject.subjectForJudge.length + this.subject.subjectForSubjective.length === 0){
             this.$message.warning('请添加相关题目！');
             return;
@@ -164,6 +164,9 @@
               }
             }
           }
+
+          let task = {name:'', weight: this.subject.weight, deadline:this.subject.inspireDate, totalScore: this.subject.totalScore};
+          let questions = [];
 
           this.subject.inspireDate = this.subject.inspireDate.toLocaleDateString();
           this.$router.push({name:'uploadAnswer', params:this.subject});

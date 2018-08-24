@@ -40,6 +40,14 @@
             <i class="el-icon-setting"></i>
             <span slot="title">分组情况</span>
           </el-menu-item>
+          <el-menu-item v-if="!isStudent" index="/course/taskInfo">
+            <i class="el-icon-setting"></i>
+            <span slot="title">课程任务</span>
+          </el-menu-item>
+          <el-menu-item v-if="!isStudent" index="/course/gradeInfo">
+            <i class="el-icon-setting"></i>
+            <span slot="title">所有成绩</span>
+          </el-menu-item>
           <el-menu-item v-if="!isStudent" index="/teacherHome/newTask">
             <i class="el-icon-setting"></i>
             <span slot="title">新建任务</span>
