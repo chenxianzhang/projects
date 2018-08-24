@@ -39,22 +39,56 @@
       </el-table>
     </div>
   <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog"></upload-student-comp>
+
+    <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible"
+                 @close="handleCourseClose" @confirm="updateCourse">
+      <div class="edit-container">
+        <div class="edit-row">
+          <span class="label">课程名称</span>
+          <el-input placeholder="请输入课程名称" v-model="course.name" clearable>
+          </el-input>
+        </div>
+        <div class="edit-row">
+          <span class="label">学分</span>
+          <el-input-number v-model="course.credit" :step="1" :min="0"></el-input-number>
+        </div>
+        <div class="edit-row">
+          <span class="label">课程描述</span>
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 10}"
+            placeholder="请输入课程描述"
+            v-model="course.description">
+          </el-input>
+        </div>
+      </div>
+    </drag-dialog>
   </div>
 </template>
 
 <script>
   import {getCourseById, getStudentsByCourseId} from '@/api/course';
   import UploadStudentComp from "../../components/uploadStudentComp";
+  import { updateCourse } from '@/api/course';
+  import dragDialog from '@/components/dragDialog';
 
   export default {
     name: "basicInfo",
-    components: {UploadStudentComp},
+    components: {UploadStudentComp, dragDialog},
     data(){
       return{
+        courseDlgTitle:'课程编辑',
+        courseDlgVisible: false,
+
         showUploadDialog:false,
         editable:false,
         studentsInCourse:[],
-        course:null,
+        course:{
+          name: '',
+          credit: 0,
+          description: '',
+          userNo: this.$store.state.user.token
+        },
       }
     },
     created(){
@@ -70,9 +104,6 @@
       }
     },
     methods:{
-      handleEditCourse: function () {
-        this.$message('编辑课程');
-      },
       getCourseInfo(cId){
         let self = this;
         getCourseById({courseId: cId}).then(response => {
@@ -113,7 +144,49 @@
       },
       hideUploadDialog(val){
         this.showUploadDialog = val;
-      }
+      },
+
+
+      handleEditCourse: function () {
+        this.courseDlgVisible = true;
+      },
+      handleCourseClose () {
+        this.courseDlgVisible = false;
+      },
+      updateCourse() {
+        if (this.course.name.trim() === '' ) {
+          this.$message({
+            showClose: true,
+            type: 'warning',
+            message: "名称不能为空"
+          });
+          return;
+        }
+        if (this.course.credit === 0) {
+          this.$message({
+            showClose: true,
+            type: 'warning',
+            message: "学分不能为0"
+          });
+          return;
+        }
+        let self = this;
+        updateCourse(this.course).then(response => {
+          if (response.status === 0) {
+            self.$message({
+              showClose: true,
+              type: 'error',
+              message: response.msg
+            });
+            return;
+          }
+          self.$message.success('修改成功！');
+          self.courseDlgVisible = false;
+          self.getTeacherCourseList();
+        }).catch(err => {
+          console.log(err);
+        });
+      },
     }
   }
 </script>
@@ -168,5 +241,27 @@
     line-height: 44px;
     margin: 10px 0px;
     border-bottom: 1px solid gray;
+  }
+</style>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .edit-container {
+    padding: 0 20px;
+    .edit-row {
+      display:flex;
+      align-items: center;
+      padding: 10px 0;
+      .label {
+        width: 70px;
+        text-align: right;
+        margin-right: 20px;
+      }
+      .el-input{
+        // width: calc(100% - 90px);
+        width: 180px;
+      }
+      .el-textarea {
+        width: calc(100% - 90px);
+      }
+    }
   }
 </style>

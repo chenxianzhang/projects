@@ -108,18 +108,17 @@ export default {
   components:{
     dragDialog
   },
-  computed:{
-    canAddCourse() {
-      if (this.$store.state.user.roles.in_array('teacher')) {
-        return true;
-      }
-      return false;
-    },
-  },
   created () {
     if (!this.$store.state.user.roles) {
       // TODO 弹出提示，并调回登录页面
     }
+    if (this.$store.state.user.roles.in_array('teacher')) {
+      this.canAddCourse = true;
+    }
+    else {
+      this.canAddCourse = false;
+    }
+
     if (this.$store.state.user.roles.in_array('student')) {
       this.getStuCourseList();
     } else {

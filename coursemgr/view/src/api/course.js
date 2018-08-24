@@ -30,5 +30,13 @@ export function getCourseTasksByCourseId(params) {
   });
 }
 
+export function updateCourse(params) {
+  return request({
+    url: '/course/updateCourse',
+    method: 'post',
+    data: params
+  });
+}
+
 
 
