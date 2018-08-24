@@ -3,7 +3,9 @@
     <div class="title"></div>
     <div class="step">{{currentStep}}</div>
     <div class="subjectStatic">选择题 {{subject.subjectForChoose.length}} 道，判断题 {{subject.subjectForJudge.length}} 道，
-      主观题 {{subject.subjectForSubjective.length}} 道，总分值 {{subject.totalScore}} 分，权重： {{subject.weight}} %。</div>
+      主观题 {{subject.subjectForSubjective.length}} 道，
+      总分值 <input v-model="subject.totalScore" style="width: 30px; height: 30px;" /> 分，
+      权重：<input v-model="subject.weight" style="width: 30px; height: 30px;" /> %。</div>
 
     <div class="subject-for-choose">
         <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">单选题</div>
@@ -87,8 +89,8 @@
               subjectForJudge:[],
               subjectForJudgeScore:'',
               subjectForSubjective:[],
-              totalScore:100,
-              weight:20,
+              totalScore:'',
+              weight:'',
               inspireDate:'',
             }
           }

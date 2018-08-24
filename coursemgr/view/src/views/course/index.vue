@@ -16,7 +16,7 @@
           text-color="#fff"
           active-text-color="#ffd04b">
           <el-menu-item index="/course/basicInfo">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-info"></i>
             <span slot="title">基本信息</span>
           </el-menu-item>
           <el-menu-item v-if="isStudent" index="/course/groupInfo">
@@ -37,20 +37,24 @@
           </el-menu-item>
 
           <el-menu-item v-if="!isStudent" index="/teacherHome/groupInfo">
-            <i class="el-icon-setting"></i>
+            <i class="el-icon-menu"></i>
             <span slot="title">分组情况</span>
           </el-menu-item>
-          <el-menu-item v-if="!isStudent" index="/course/taskInfo">
-            <i class="el-icon-setting"></i>
-            <span slot="title">课程任务</span>
-          </el-menu-item>
+
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-document"></i>
+              <span>课程任务</span>
+            </template>
+            <el-menu-item-group v-if="!isStudent">
+              <el-menu-item index="/course/taskInfo">任务列表</el-menu-item>
+              <el-menu-item index="/teacherHome/newTask">新建任务</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
           <el-menu-item v-if="!isStudent" index="/course/gradeInfo">
-            <i class="el-icon-setting"></i>
+            <i class="el-icon-tickets"></i>
             <span slot="title">所有成绩</span>
-          </el-menu-item>
-          <el-menu-item v-if="!isStudent" index="/teacherHome/newTask">
-            <i class="el-icon-setting"></i>
-            <span slot="title">新建任务</span>
           </el-menu-item>
         </el-menu>
       </div>
@@ -108,5 +112,6 @@
     margin-left: 2px;
     float: left;
     padding: 20px;
+    overflow: auto;
   }
 </style>

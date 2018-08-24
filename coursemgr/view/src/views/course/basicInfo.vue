@@ -4,7 +4,7 @@
       <div class="course-title">
         <span class="course-name">课程名称：{{course.name}}</span>
         <span class="course-score">学分：<span>{{course.credit}}</span></span>
-        <div v-if="editable" class="el-icon-edit edit" @click="handleEditCourse"></div>
+        <div v-if="editable" class="el-icon-edit-outline edit" @click="handleEditCourse"></div>
       </div>
       <div class="course-comments">
         <span class="course-comments-span">课程描述：</span>
