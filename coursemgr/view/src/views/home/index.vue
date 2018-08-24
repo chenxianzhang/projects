@@ -9,7 +9,7 @@
           <div class="card-panel" v-for="(item, index) in courseList" :key="index" @click="handleCourseClick(item.id)">
             <span>{{ item.name }}</span>
           </div>
-          <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse()">
+          <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse">
             <i class="el-icon-plus"></i>
           </div>
         </div>
@@ -90,6 +90,7 @@ export default {
   name: "home",
   data() {
     return {
+      canAddCourse: false,
       courseList: [],
       userInfo: {},
       courseDlgTitle: "增加课程",
@@ -106,6 +107,14 @@ export default {
   },
   components:{
     dragDialog
+  },
+  computed:{
+    canAddCourse() {
+      if (this.$store.state.user.roles.in_array('teacher')) {
+        return true;
+      }
+      return false;
+    },
   },
   created () {
     if (!this.$store.state.user.roles) {
@@ -182,12 +191,6 @@ export default {
       if (!this.editUserInfo) {
         this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
       }
-    },
-    canAddCourse() {
-      if (this.$store.state.user.roles.in_array('teacher')) {
-        return true;
-      }
-      return false;
     },
     getTeacherCourseList() {
       let self = this;
