@@ -75,6 +75,7 @@
 
 <script>
   import SubjectSelectItemSetting from './subjectSelectItemSetting'
+  import {saveTask} from '@/api/task'
     export default {
       name: "newTask",
       components:{'select-setting': SubjectSelectItemSetting},
@@ -166,12 +167,60 @@
               }
             }
           }
+          // this.subject.inspireDate = this.subject.inspireDate.toLocaleDateString();
 
-          let task = {name:'', weight: this.subject.weight, deadline:this.subject.inspireDate, totalScore: this.subject.totalScore};
+
+          let self  = this;
+          let task = {name:'',courseId:this.$store.getters.courseId, weight: this.subject.weight, deadline:this.subject.inspireDate, totalScore: this.subject.totalScore};
           let questions = [];
+          let questionNo = 1;
+          for(let item of this.subject.subjectForChoose){
+            questions.push({
+              stems:item.stem,
+              questionType:'单选题',
+              score:this.subject.subjectForChooseScore,
+              options:item.chooseItem.join(','),
+              questionNo: questionNo
+            });
+            ++questionNo;
+          }
+          for(let item of this.subject.subjectForJudge){
+            ++questionNo;
+            questions.push({
+              stems:item.stem,
+              questionType:'判断题',
+              score:this.subject.subjectForJudgeScore,
+              questionNo:questionNo
+            });
+          }
+          for(let item of this.subject.subjectForSubjective){
+            ++questionNo;
+            questions.push({
+              stems:item.stem,
+              questionType:'主观题',
+              score:item.score,
+              markType: item.answerType,
+              questionNo:questionNo
+            });
+          }
+          saveTask({task:task, questionList:questions}).then(response=>{
+            if(response.status === 0){
+              self.$message({
+                showClose: true,
+                type: 'warning',
+                message: response.msg
+              });
+              return;
+            }
+            self.$message({
+              showClose: true,
+              type: 'success',
+              message: "保存成功！"
+            });
+            self.$router.push({name:'uploadAnswer', params:self.subject});
+          });
 
-          this.subject.inspireDate = this.subject.inspireDate.toLocaleDateString();
-          this.$router.push({name:'uploadAnswer', params:this.subject});
+
         }
       },
     }
