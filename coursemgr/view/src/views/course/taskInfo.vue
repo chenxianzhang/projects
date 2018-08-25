@@ -5,9 +5,12 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="name" label="任务名称"> </el-table-column>
         <el-table-column prop="publishTime" label="发布日期" :formatter="dateFormat"> </el-table-column>
+        <el-table-column prop="startTime" label="开始日期" :formatter="dateFormat"> </el-table-column>
         <el-table-column prop="deadline" label="截止日期" :formatter="dateFormat"> </el-table-column>
-        <!--<el-table-column prop="finishState" label="完成状态"> </el-table-column>-->
-        <el-table-column fixed="right" label="操作" width="140">
+        <el-table-column prop="finishState" label="完成状态"> </el-table-column>
+        <el-table-column align="center"
+                         label="操作"
+                         width="140">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
             <el-button @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>

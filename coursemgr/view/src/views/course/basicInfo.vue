@@ -21,19 +21,19 @@
       </div>
       <el-table :data="studentsInCourse" style="width: 100%;">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="code" label="学号"></el-table-column>
-        <el-table-column prop="school" label="学院"></el-table-column>
-        <el-table-column prop="proffecial" label="专业"></el-table-column>
-        <el-table-column prop="tel" label="电话"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column
+        <el-table-column align="center" prop="name" label="姓名" width="180"></el-table-column>
+        <el-table-column align="center" prop="serialNo" label="学号"></el-table-column>
+        <el-table-column align="center" prop="college" label="学院"></el-table-column>
+        <el-table-column align="center" prop="profession" label="专业"></el-table-column>
+        <el-table-column align="center" prop="cellphone" label="电话"></el-table-column>
+        <el-table-column align="center" prop="email" label="邮箱"></el-table-column>
+        <el-table-column align="center"
           label="操作"
-          width="100">
+          width="140">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button @click="handleStudentDetailClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="handleStudentEditClick(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleStudentDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -64,7 +64,7 @@
       </div>
     </drag-dialog>
 
-    <student-add-comp :showStudentAddDialog="showStudentAddDialog" @hideStudentAddDialog="handleHideStudentAddDialog">
+    <student-add-comp :studentOperInfo="studentOperInfo" :showStudentAddDialog="showStudentAddDialog" @hideStudentAddDialog="handleHideStudentAddDialog">
     </student-add-comp>
   </div>
 </template>
@@ -88,6 +88,21 @@
         showUploadDialog:false,
         editable:false,
         studentsInCourse:[],
+        //学生操作  add、detail、edit
+        studentOperInfo:{
+          operType:'',
+          student:{
+            roles:3,
+            name:'',
+            serialNo:'',
+            password:'',
+            college:'',
+            profession:'',
+            cellphone:'',
+            sex:'',
+            email:''
+          }
+        },
         course:{
           name: '',
           credit: 0,
@@ -141,6 +156,18 @@
       },
       //添加学生
       addStudents2Course(){
+        this.studentOperInfo.operType = 'add';
+        this.studentOperInfo.student = {
+          roles:3,
+          name:'',
+          serialNo:'',
+          password:'',
+          college:'',
+          profession:'',
+          cellphone:'',
+          sex:'',
+          email:''
+        };
         this.showStudentAddDialog = true;
       },
       handleHideStudentAddDialog(val){
@@ -155,6 +182,28 @@
       },
       hideUploadDialog(val){
         this.showUploadDialog = val;
+      },
+      /**
+       * 查看学生详情信息
+       * */
+      handleStudentDetailClick(data){
+        this.studentOperInfo.operType = 'detail';
+        this.studentOperInfo.student = data;
+        this.showStudentAddDialog = true;
+      },
+      /**
+       * 编辑学生详情信息
+       * */
+      handleStudentEditClick(data){
+        this.studentOperInfo.operType = 'edit';
+        this.studentOperInfo.student = data;
+        this.showStudentAddDialog = true;
+      },
+      /**
+       * 删除学生详情信息
+       * */
+      handleStudentDeleteClick(data){
+        //todo remove from course stack
       },
 
 
