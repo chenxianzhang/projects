@@ -17,11 +17,19 @@
     from group
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getLastGroupNo" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select
+    groupNo
+    from `group`
+    where courseId = #{courseId,jdbcType=INTEGER}
+    order by groupNo desc
+    limit 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from group
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="edu.coursemgr.model.Group" >
+  <insert id="insert" parameterType="edu.coursemgr.model.Group" useGeneratedKeys="true" keyProperty="id">
     insert into group (id, groupNo, groupLeaderNo, courseId,
       createDate)
     values (#{id,jdbcType=INTEGER}, #{groupNo,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},

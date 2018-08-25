@@ -22,7 +22,7 @@ public class GroupMgrController extends BaseController {
     @Autowired
     private GroupMgrService groupMgrService;
 
-    @RequestMapping(value="/freeGroup", method=RequestMethod.GET)
+    @RequestMapping(value="/freeGroup", method=RequestMethod.POST)
     @ResponseBody
     public Object freeGroup(@RequestBody Map<String, Object> requestMap)
             throws Exception {
@@ -33,6 +33,13 @@ public class GroupMgrController extends BaseController {
         }
 
         return groupMgrService.freeGroup(courseId, memberCnt);
+    }
+
+
+    @RequestMapping(value="/appendStudent2Group", method=RequestMethod.POST)
+    @ResponseBody
+    public Object appendStudent2Group(@RequestBody Map<String, Object> requestMap) {
+        return null;
     }
 
 }

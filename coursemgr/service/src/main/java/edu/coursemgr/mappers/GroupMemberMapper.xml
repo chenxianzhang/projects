@@ -50,6 +50,27 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertBatch" parameterType="java.util.List" >
+    insert into group_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        groupId,
+      </if>
+      <if test="studentNo != null" >
+        studentNo,
+      </if>
+    </trim>
+    <foreach collection="list" item="item">
+      <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="item.groupId != null" >
+          #{groupId,jdbcType=INTEGER},
+        </if>
+        <if test="item.studentNo != null" >
+          #{studentNo,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.GroupMember" >
     update group_member
     <set >

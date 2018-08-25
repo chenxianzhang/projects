@@ -22,9 +22,9 @@ public class CourseTaskSituation implements Serializable {
 
     private Date deadline;
 
-    private Integer finishPersonCnt;
-
     private Integer totalPersonCnt;
+
+    private Integer finishPersonCnt;
 
     public Integer getId() {
         return id;

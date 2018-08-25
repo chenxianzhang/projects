@@ -2,6 +2,8 @@ package edu.coursemgr.dao;
 
 import edu.coursemgr.model.GroupMember;
 
+import java.util.List;
+
 public interface GroupMemberMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,11 @@ public interface GroupMemberMapper {
     int updateByPrimaryKeySelective(GroupMember record);
 
     int updateByPrimaryKey(GroupMember record);
+
+    /**
+     * 批量插入组员信息
+     * @param groupMembers
+     * @return
+     */
+    int insertBatch(List<GroupMember> groupMembers);
 }

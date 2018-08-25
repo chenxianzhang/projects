@@ -6,6 +6,7 @@ import edu.coursemgr.service.interfaces.CourseMgrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by chenxianzhang on 2018/8/16 0016 下午 10:43
  */
 @Service
+@Transactional
 public class CourseMgrServiceImpl implements CourseMgrService {
 
     @Autowired
