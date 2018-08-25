@@ -2,6 +2,7 @@ package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.model.Course;
+import edu.coursemgr.pojo.GradeDetail;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,6 +87,15 @@ public class CourseMgrController extends BaseController {
         return courseMgrService.updateCourse(course, false);
     }
 
+    @RequestMapping(value="/getAllGradeInfo", method=RequestMethod.POST)
+    @ResponseBody
+    public List<GradeDetail> getAllGradeInfo(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
 
-
+        return courseMgrService.getAllGradeInfo(courseId);
+    }
 }

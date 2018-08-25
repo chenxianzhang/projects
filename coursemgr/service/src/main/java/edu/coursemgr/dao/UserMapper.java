@@ -1,6 +1,7 @@
 package edu.coursemgr.dao;
 
 import edu.coursemgr.model.User;
+import edu.coursemgr.pojo.UserGroup;
 import edu.coursemgr.pojo.UserInfo;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserMapper {
     List<User> selectSomeByCourseId(Integer courseId);
 
     List<User> selectSomByGroupId(Integer groupId);
+
+    List<UserGroup> selectUserGroup(Integer courseId);
 }

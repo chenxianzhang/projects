@@ -21,9 +21,21 @@
     <result column="totalPersonCnt" property="totalPersonCnt" jdbcType="INTEGER" />
     <result column="finishPersonCnt" property="finishPersonCnt" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="StudentTaskInfoMap" type="edu.coursemgr.pojo.StudentTaskInfo" >
+    <result column="taskName" property="taskName" jdbcType="VARCHAR" />
+    <result column="taskWeight" property="taskWeight" jdbcType="REAL" />
+    <result column="score" property="score" jdbcType="REAL" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, courseId, name, weight, publishTime, startTime, deadline, totalScore
   </sql>
+  <select id="selectStuTaskInfo" resultMap="StudentTaskInfoMap" parameterType="java.util.HashMap" >
+    select ct.name as taskName, ct.weight as taskWeight, st.score
+    from course_tasks ct
+    left join student_tasks st
+    on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
+    where ct.courseId=#{courseId, jdbcType=INTEGER}
+  </select>
   <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

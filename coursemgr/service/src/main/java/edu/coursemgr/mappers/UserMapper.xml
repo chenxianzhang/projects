@@ -14,10 +14,23 @@
     <result column="sex" property="sex" jdbcType="CHAR" />
     <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="UserGroupMap" type="edu.coursemgr.pojo.UserGroup" >
+    <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+    <result column="studentName" property="studentName" jdbcType="VARCHAR" />
+    <result column="groupNo" property="groupNo" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, serialNo, password, name, college, profession, cellphone, email, roles, sex, 
     createDate
   </sql>
+  <select id="selectUserGroup" resultMap="UserGroupMap" parameterType="java.lang.Integer" >
+    select gm.studentNo, g.groupNo, u.name as studentName
+    from group_member gm left join `group` g
+    on g.id=gm.groupId left join user u
+    on gm.studentNo = u.serialNo
+    where groupId in (select id from `group`
+    where courseId=#{courseId, jdbcType=INTEGER})
+  </select>
   <select id="selectBySerialNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

@@ -1,6 +1,7 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.Course;
+import edu.coursemgr.pojo.GradeDetail;
 
 import java.util.List;
 
@@ -32,5 +33,11 @@ public interface CourseMgrService {
      */
     int updateCourse(Course course, boolean isSelective);
 
+    /**
+     * 获取课程下所有学员的成绩信息
+     * @param courseId
+     * @return
+     */
+    List<GradeDetail> getAllGradeInfo(String courseId);
 
 }
