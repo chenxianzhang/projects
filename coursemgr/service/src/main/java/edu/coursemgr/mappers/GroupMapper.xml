@@ -3,12 +3,13 @@
 <mapper namespace="edu.coursemgr.dao.GroupMapper" >
   <resultMap id="BaseResultMap" type="edu.coursemgr.model.Group" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="groupNo" property="groupNo" jdbcType="INTEGER" />
     <result column="groupLeaderNo" property="groupLeaderNo" jdbcType="VARCHAR" />
     <result column="courseId" property="courseId" jdbcType="INTEGER" />
     <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, groupLeaderNo, courseId, createDate
+    id, groupNo, groupLeaderNo, courseId, createDate
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -21,9 +22,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.Group" >
-    insert into group (id, groupLeaderNo, courseId, 
+    insert into group (id, groupNo, groupLeaderNo, courseId,
       createDate)
-    values (#{id,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
+    values (#{id,jdbcType=INTEGER}, #{groupNo,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.Group" >
@@ -31,6 +32,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="groupNo != null" >
+        groupNo,
       </if>
       <if test="groupLeaderNo != null" >
         groupLeaderNo,
@@ -46,6 +50,9 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=INTEGER},
+      </if>
       <if test="groupLeaderNo != null" >
         #{groupLeaderNo,jdbcType=VARCHAR},
       </if>
@@ -60,6 +67,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.Group" >
     update group
     <set >
+      <if test="groupNo != null" >
+        groupNo = #{groupNo,jdbcType=INTEGER},
+      </if>
       <if test="groupLeaderNo != null" >
         groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
       </if>
@@ -74,7 +84,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.Group" >
     update group
-    set groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
+    set groupNo = #{groupNo,jdbcType=INTEGER},
+      groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
       courseId = #{courseId,jdbcType=INTEGER},
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

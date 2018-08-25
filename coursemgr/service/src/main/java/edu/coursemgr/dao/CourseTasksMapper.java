@@ -1,6 +1,7 @@
 package edu.coursemgr.dao;
 
 import edu.coursemgr.model.CourseTasks;
+import edu.coursemgr.pojo.CourseTaskSituation;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface CourseTasksMapper {
     int updateByPrimaryKey(CourseTasks record);
 
     List<CourseTasks> selectSomeByCourseId(Integer courseId);
+
+    List<CourseTaskSituation> getCourseTaskSituation(Integer courseId);
 }

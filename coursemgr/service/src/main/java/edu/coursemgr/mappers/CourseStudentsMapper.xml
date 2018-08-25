@@ -15,6 +15,13 @@
     from course_students
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getUngroupedStudent" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select studentNo from course_students
+    where courseId=#{courseId,jdbcType=INTEGER} and studentNo not in (select studentNo
+    from group_member
+    where groupId in (select id from `group`
+    where courseId=#{courseId,jdbcType=INTEGER})) order by RAND()
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from course_students
     where id = #{id,jdbcType=INTEGER}

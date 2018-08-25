@@ -1,6 +1,7 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.User;
+import edu.coursemgr.pojo.UserEditModel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface UserMgrService {
      * @param user
      * @return
      */
-    int addStudent(User user);
+    int addStudent(UserEditModel userEditModel) throws Exception;
 
 //    boolean importStudents(MultipartFile file);
 }

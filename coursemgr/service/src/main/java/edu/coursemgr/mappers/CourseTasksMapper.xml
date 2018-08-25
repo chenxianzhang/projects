@@ -7,11 +7,22 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="REAL" />
     <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
     <result column="totalScore" property="totalScore" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="CourseTaskSituationMap" type="edu.coursemgr.pojo.CourseTaskSituation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="courseId" property="courseId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <id column="finishPersonCnt" property="finishPersonCnt" jdbcType="INTEGER" />
+    <id column="totalPersonCnt" property="totalPersonCnt" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, courseId, name, weight, publishTime, deadline, totalScore
+    id, courseId, name, weight, publishTime, startTime, deadline, totalScore
   </sql>
   <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,16 +36,22 @@
     from course_tasks
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getCourseTaskSituation" resultMap="CourseTaskSituationMap" parameterType="java.lang.Integer" >
+    select id, name, courseId,publishTime,startTime,deadline
+    (select COUNT(studentNo) from course_students where courseId=#{courseId, jdbcType=INTEGER} GROUP BY studentNo) as totalPersonCnt,
+    (select COUNT(studentNo) from student_tasks where taskId=ct.id GROUP BY studentNo) as finishPersonCnt
+    from course_tasks ct where courseId=#{courseId, jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from course_tasks
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.CourseTasks" useGeneratedKeys="true" keyProperty="id">
     insert into course_tasks (courseId, name,
-      weight, publishTime, deadline, 
+      weight, publishTime, startTime, deadline,
       totalScore)
     values (#{courseId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
-      #{weight,jdbcType=REAL}, #{publishTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP},
+      #{weight,jdbcType=REAL}, #{publishTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP},
       #{totalScore,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.CourseTasks" >
@@ -54,6 +71,9 @@
       </if>
       <if test="publishTime != null" >
         publishTime,
+      </if>
+      <if test="startTime != null" >
+        startTime,
       </if>
       <if test="deadline != null" >
         deadline,
@@ -78,6 +98,9 @@
       <if test="publishTime != null" >
         #{publishTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="deadline != null" >
         #{deadline,jdbcType=TIMESTAMP},
       </if>
@@ -101,6 +124,9 @@
       <if test="publishTime != null" >
         publishTime = #{publishTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="startTime != null" >
+        startTime = #{startTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="deadline != null" >
         deadline = #{deadline,jdbcType=TIMESTAMP},
       </if>
@@ -116,6 +142,7 @@
       name = #{name,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=REAL},
       publishTime = #{publishTime,jdbcType=TIMESTAMP},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
       deadline = #{deadline,jdbcType=TIMESTAMP},
       totalScore = #{totalScore,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

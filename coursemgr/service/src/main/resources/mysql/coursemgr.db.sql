@@ -47,6 +47,7 @@ CREATE TABLE `course_tasks` (
 	`name` varchar(20) NOT NULL,    #任务名称
 	`weight` float,        #任务权重
 	`publishTime` datetime,        #发布时间
+	`startTime` datetime,     #任务开始时间
 	`deadline` datetime,             #截止时间
 	`totalScore` INT              #总分
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -94,6 +95,7 @@ CREATE TABLE `student_paper` (
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `groupNo` INT,                 #当前课程下的第几组
 	`groupLeaderNo` varchar(10),    #组长  关联user serialNo
   `courseId` INT NOT NULL,  #课程id
 	`createDate` datetime

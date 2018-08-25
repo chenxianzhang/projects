@@ -4,6 +4,7 @@ import edu.coursemgr.common.Constant;
 import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.excel.ExcelUtil;
 import edu.coursemgr.model.User;
+import edu.coursemgr.pojo.UserEditModel;
 import edu.coursemgr.service.interfaces.UserMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class UserMgrController extends BaseController {
 
     @RequestMapping(value="/addStudent", method=RequestMethod.POST)
     @ResponseBody
-    public int addStudent(@RequestBody User user)
+    public int addStudent(@RequestBody UserEditModel user)
             throws Exception {
         if (user == null) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);

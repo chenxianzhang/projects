@@ -2,6 +2,7 @@ package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.pojo.CourseTaskDetail;
+import edu.coursemgr.pojo.CourseTaskSituation;
 import edu.coursemgr.pojo.StudentTaskDetail;
 
 import java.util.List;
@@ -45,5 +46,13 @@ public interface TaskMgrService {
      * @return
      */
     List<StudentTaskDetail> getStudentTaskSituation(String taskId, String courseId);
+
+
+    /**
+     * 根据课程id获取课程任务详情
+     * @param courseId
+     * @return
+     */
+    List<CourseTaskSituation> getCourseTaskSituation(String courseId);
 
 }

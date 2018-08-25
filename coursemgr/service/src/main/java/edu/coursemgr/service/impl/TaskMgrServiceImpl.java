@@ -8,6 +8,7 @@ import edu.coursemgr.dao.TaskQuestionsMapper;
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.CourseTaskDetail;
+import edu.coursemgr.pojo.CourseTaskSituation;
 import edu.coursemgr.pojo.StudentTaskDetail;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CommonUtils;
@@ -101,6 +102,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
 
         return studentTaskDetails;
+    }
+
+    @Override
+    public List<CourseTaskSituation> getCourseTaskSituation(String courseId) {
+        return courseTasksMapper.getCourseTaskSituation(Integer.valueOf(courseId));
     }
 
 

@@ -3,6 +3,7 @@ package edu.coursemgr.controller;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.pojo.CourseTaskDetail;
+import edu.coursemgr.pojo.CourseTaskSituation;
 import edu.coursemgr.pojo.StudentTaskDetail;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CommonUtils;
@@ -81,6 +82,17 @@ public class TaskMgrController extends BaseController {
         }
 
         return taskMgrService.getStudentTaskSituation(taskId, courseId);
+    }
+
+    @RequestMapping(value="/getCourseTaskSituation", method=RequestMethod.POST)
+    @ResponseBody
+    public List<CourseTaskSituation> getCourseTaskSituation(
+            @RequestBody Map<String, Object> requestMap) throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return taskMgrService.getCourseTaskSituation(courseId);
     }
 
 }

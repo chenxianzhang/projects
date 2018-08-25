@@ -2,7 +2,6 @@ package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.model.Course;
-import edu.coursemgr.pojo.CourseTaskDetail;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;

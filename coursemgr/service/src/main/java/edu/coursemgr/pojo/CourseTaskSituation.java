@@ -1,9 +1,12 @@
-package edu.coursemgr.model;
+package edu.coursemgr.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class CourseTasks implements Serializable {
+/**
+ * Created by chenxianzhang on 2018/8/25 0025 下午 11:42
+ */
+public class CourseTaskSituation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -13,16 +16,15 @@ public class CourseTasks implements Serializable {
 
     private String name;
 
-    private Float weight;
-
     private Date publishTime;
 
     private Date startTime;
 
     private Date deadline;
 
-    private Integer totalScore;
+    private Integer finishPersonCnt;
 
+    private Integer totalPersonCnt;
 
     public Integer getId() {
         return id;
@@ -45,15 +47,7 @@ public class CourseTasks implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public Float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Float weight) {
-        this.weight = weight;
+        this.name = name;
     }
 
     public Date getPublishTime() {
@@ -64,6 +58,14 @@ public class CourseTasks implements Serializable {
         this.publishTime = publishTime;
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
     public Date getDeadline() {
         return deadline;
     }
@@ -72,19 +74,19 @@ public class CourseTasks implements Serializable {
         this.deadline = deadline;
     }
 
-    public Integer getTotalScore() {
-        return totalScore;
+    public Integer getFinishPersonCnt() {
+        return finishPersonCnt;
     }
 
-    public void setTotalScore(Integer totalScore) {
-        this.totalScore = totalScore;
+    public void setFinishPersonCnt(Integer finishPersonCnt) {
+        this.finishPersonCnt = finishPersonCnt;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Integer getTotalPersonCnt() {
+        return totalPersonCnt;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setTotalPersonCnt(Integer totalPersonCnt) {
+        this.totalPersonCnt = totalPersonCnt;
     }
 }

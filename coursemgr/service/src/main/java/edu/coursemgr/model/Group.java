@@ -9,6 +9,8 @@ public class Group implements Serializable {
 
     private Integer id;
 
+    private Integer groupNo;
+
     private String groupLeaderNo;
 
     private Integer courseId;
@@ -46,5 +48,13 @@ public class Group implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Integer getGroupNo() {
+        return groupNo;
+    }
+
+    public void setGroupNo(Integer groupNo) {
+        this.groupNo = groupNo;
     }
 }
