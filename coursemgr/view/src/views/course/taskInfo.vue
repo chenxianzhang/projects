@@ -4,14 +4,14 @@
       <el-table :data="tasks" style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="name" label="任务名称"> </el-table-column>
-        <el-table-column prop="publishTime" label="发布日期"> </el-table-column>
-        <el-table-column prop="deadline" label="截止日期"> </el-table-column>
+        <el-table-column prop="publishTime" label="发布日期" :formatter="dateFormat"> </el-table-column>
+        <el-table-column prop="deadline" label="截止日期" :formatter="dateFormat"> </el-table-column>
         <!--<el-table-column prop="finishState" label="完成状态"> </el-table-column>-->
         <el-table-column fixed="right" label="操作" width="140">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">详情</el-button>
-            <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button>
-            <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
+            <el-button @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
+            <el-button @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -30,7 +30,7 @@
           }
       },
       created() {
-          let self = this;
+        let self = this;
         let cId = this.$store.getters.courseId;
         if (!cId || cId === '') {
           this.$message.warning('无效的课程id');
@@ -48,9 +48,34 @@
         });
       },
       methods: {
-        handleClick(row) {
+        /**
+         * 查看详情
+         * */
+        handleDetailClick(row) {
           console.log(row);
-        }
+        },
+        /**
+         * 修改任务
+         * */
+        handleModifyClick(row) {
+          console.log(row);
+        },
+        /**
+         * 删除任务
+         * */
+        handleDeleteClick(row) {
+          console.log(row);
+        },
+        /**
+         * 时间格式转换
+         * */
+        dateFormat:function(row, column) {
+          let date = row[column.property];
+          if (date == undefined) {
+            return "";
+          }
+          return new Date(date).toLocaleDateString();
+        },
       },
     }
 </script>

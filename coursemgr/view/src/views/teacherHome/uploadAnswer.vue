@@ -83,9 +83,11 @@
       }
     },
     created(){
-      //todo 截取路由传过来的数据
+      //截取路由传过来的数据
       debugger
-      this.subjectTask = this.$route.params;
+      if(this.$route.params){
+        this.subjectTask = this.$route.params;
+      }
     },
     methods:{
       handleChange(file, fileList) {

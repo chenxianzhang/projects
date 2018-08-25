@@ -63,6 +63,9 @@
         </div>
       </div>
     </drag-dialog>
+
+    <student-add-comp :showStudentAddDialog="showStudentAddDialog" @hideStudentAddDialog="handleHideStudentAddDialog">
+    </student-add-comp>
   </div>
 </template>
 
@@ -71,15 +74,17 @@
   import UploadStudentComp from "../../components/uploadStudentComp";
   import { updateCourse } from '@/api/course';
   import dragDialog from '@/components/dragDialog';
+  import studentAddComp from '@/components/studentAddComp'
 
   export default {
     name: "basicInfo",
-    components: {UploadStudentComp, dragDialog},
+    components: {UploadStudentComp, dragDialog, studentAddComp},
     data(){
       return{
         courseDlgTitle:'课程编辑',
         courseDlgVisible: false,
 
+        showStudentAddDialog:false,//是否显示 手动添加学生弹出框
         showUploadDialog:false,
         editable:false,
         studentsInCourse:[],
@@ -136,7 +141,13 @@
       },
       //添加学生
       addStudents2Course(){
-
+        this.showStudentAddDialog = true;
+      },
+      handleHideStudentAddDialog(val){
+        this.showStudentAddDialog = val;
+        let cId = this.$store.getters.courseId;
+        // this.getCourseInfo(cId);
+        this.getStudentsOfCourse(cId);
       },
       //批量导入学生名单
       uploadStudents2Course(){
