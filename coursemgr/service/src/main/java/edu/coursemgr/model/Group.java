@@ -17,6 +17,8 @@ public class Group implements Serializable {
 
     private Date createDate;
 
+    private String groupedType;
+
 
     public Integer getId() {
         return id;
@@ -56,5 +58,13 @@ public class Group implements Serializable {
 
     public void setGroupNo(Integer groupNo) {
         this.groupNo = groupNo;
+    }
+
+    public String getGroupedType() {
+        return groupedType;
+    }
+
+    public void setGroupedType(String groupedType) {
+        this.groupedType = groupedType;
     }
 }

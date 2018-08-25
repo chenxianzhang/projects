@@ -35,4 +35,21 @@ public class CommonEnum {
         }
     }
 
+
+    public enum GroupedType {
+        ASSIGN("指定"),
+        FREEDOM("自由分组"),
+        RAND("随机分组");
+
+        private String name;
+
+        GroupedType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
 }

@@ -34,6 +34,11 @@
       where courseId= #{courseId, jdbcType=INTEGER}
     )
   </select>
+  <select id="selectSomByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from User where serialNo in (select studentNo from group_member where groupId=#{groupId,jdbcType=INTEGER})
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
     where id = #{id,jdbcType=INTEGER}

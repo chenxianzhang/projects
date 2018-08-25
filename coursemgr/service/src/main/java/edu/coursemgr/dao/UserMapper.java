@@ -21,4 +21,6 @@ public interface UserMapper {
     int updateBySerialNo(User userInfo);
 
     List<User> selectSomeByCourseId(Integer courseId);
+
+    List<User> selectSomByGroupId(Integer groupId);
 }

@@ -2,8 +2,10 @@ package edu.coursemgr.dao;
 
 import edu.coursemgr.model.Group;
 
+import java.util.List;
+
 public interface GroupMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteById(Integer id);
 
     int insert(Group record);
 
@@ -11,9 +13,13 @@ public interface GroupMapper {
 
     Group selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Group record);
+    int updateByIdSelective(Group record);
 
     int updateByPrimaryKey(Group record);
 
     Integer getLastGroupNo(Integer courseId);
+
+    int updateGroupNo(Group group);
+
+    List<Group> getGroupList(Integer courseId);
 }

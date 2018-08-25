@@ -7,15 +7,22 @@
     <result column="groupLeaderNo" property="groupLeaderNo" jdbcType="VARCHAR" />
     <result column="courseId" property="courseId" jdbcType="INTEGER" />
     <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="groupedType" property="groupedType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, groupNo, groupLeaderNo, courseId, createDate
+    id, groupNo, groupLeaderNo, courseId, createDate, groupedType
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from group
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getGroupList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group
+    where courseId = #{courseId,jdbcType=INTEGER}
   </select>
   <select id="getLastGroupNo" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select
@@ -25,15 +32,16 @@
     order by groupNo desc
     limit 1
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from group
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER};
+    delete from group_member where groupId=#{id,jdbcType=INTEGER};
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.Group" useGeneratedKeys="true" keyProperty="id">
     insert into group (id, groupNo, groupLeaderNo, courseId,
-      createDate)
+      createDate,groupedType)
     values (#{id,jdbcType=INTEGER}, #{groupNo,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
-      #{createDate,jdbcType=TIMESTAMP})
+      #{createDate,jdbcType=TIMESTAMP}, #{groupedType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.Group" >
     insert into group
@@ -53,6 +61,9 @@
       <if test="createDate != null" >
         createDate,
       </if>
+      <if test="groupedType != null" >
+        groupedType,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -70,9 +81,12 @@
       <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="groupedType != null" >
+        #{groupedType,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.Group" >
+  <update id="updateByIdSelective" parameterType="edu.coursemgr.model.Group" >
     update group
     <set >
       <if test="groupNo != null" >
@@ -87,6 +101,9 @@
       <if test="createDate != null" >
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="groupedType != null" >
+        groupedType = #{groupedType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -95,7 +112,13 @@
     set groupNo = #{groupNo,jdbcType=INTEGER},
       groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
       courseId = #{courseId,jdbcType=INTEGER},
-      createDate = #{createDate,jdbcType=TIMESTAMP}
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+    groupedType=#{groupedType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateGroupNo" parameterType="edu.coursemgr.model.Group" >
+    update group
+    set groupNo = groupNo - 1
+    where groupNo > #{groupNo,jdbcType=INTEGER} and id = #{id, jdbcType=INTEGER}
   </update>
 </mapper>

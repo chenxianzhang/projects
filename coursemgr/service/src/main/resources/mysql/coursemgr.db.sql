@@ -98,7 +98,8 @@ CREATE TABLE `group` (
   `groupNo` INT,                 #当前课程下的第几组
 	`groupLeaderNo` varchar(10),    #组长  关联user serialNo
   `courseId` INT NOT NULL,  #课程id
-	`createDate` datetime
+	`createDate` datetime,
+	`groupedType` varchar(50)  #分组方式
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `group_member`;
