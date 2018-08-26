@@ -26,4 +26,6 @@ public interface UserMapper {
     List<User> selectSomByGroupId(Integer groupId);
 
     List<UserGroup> selectUserGroup(Integer courseId);
+
+    List<User> selectSomeNoGroup(Integer courseId);
 }

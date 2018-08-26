@@ -14,7 +14,7 @@ public class GroupDetail implements Serializable {
 
     private String groupLeaderNo;
 
-//    private String groupLeaderName;
+    private String groupLeaderName;
 
     private Integer groupId;
 
@@ -31,13 +31,13 @@ public class GroupDetail implements Serializable {
         this.groupLeaderNo = groupLeaderNo;
     }
 
-//    public String getGroupLeaderName() {
-//        return groupLeaderName;
-//    }
-//
-//    public void setGroupLeaderName(String groupLeaderName) {
-//        this.groupLeaderName = groupLeaderName;
-//    }
+    public String getGroupLeaderName() {
+        return groupLeaderName;
+    }
+
+    public void setGroupLeaderName(String groupLeaderName) {
+        this.groupLeaderName = groupLeaderName;
+    }
 
     public Integer getGroupId() {
         return groupId;

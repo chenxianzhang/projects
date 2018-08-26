@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
     private RoleMapper roleMapper;
 
     @Override
-    public String login(String serialNo, String password, String roleId) throws Exception {
+    public String login(String serialNo, String password, String role) throws Exception {
         boolean illegal = serialNo == null || serialNo.isEmpty()
                 || password == null || password.isEmpty();
         if (illegal) {
@@ -41,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
         if (!user.getPassword().equals(password)) {
             throw new Exception("密码错误, 请重新输入");
         }
-        illegal = roleId.isEmpty() || !user.getRoles().contains(roleId);
+        illegal = role.isEmpty() || !user.getRoles().contains(role);
         if (illegal) {
             throw new Exception("当前所选角色不匹配");
         }
@@ -58,19 +58,12 @@ public class LoginServiceImpl implements LoginService {
         Function<UserInfo, User> transfer = param -> {
             UserInfo userInfo = new UserInfo();
             String[] roles = param.getRoles().split(Constant.Common.SEPARATE_COMMA);
-            List<Integer> roleIdList = CollectionUtils.arrayListCast(Arrays.asList(roles),
-                    id -> Integer.valueOf(id));
-            if (roleIdList == null) {
-                return userInfo;
-            }
-            List<Role> roleList = roleMapper.selectByIds(roleIdList);
             userInfo.setName(param.getName());
             userInfo.setSerialNo(param.getSerialNo());
             userInfo.setCellphone(param.getCellphone());
             userInfo.setCollege(param.getCollege());
             userInfo.setEmail(param.getEmail());
-            userInfo.setRoles(CollectionUtils.arrayListCast(roleList,
-                    role -> role.getValue()));
+            userInfo.setRoles(Arrays.asList(roles));
             return userInfo;
         };
         return transfer.call(user);

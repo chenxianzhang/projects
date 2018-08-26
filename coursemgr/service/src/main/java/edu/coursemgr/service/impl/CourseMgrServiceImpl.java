@@ -1,5 +1,6 @@
 package edu.coursemgr.service.impl;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.dao.CourseMapper;
 import edu.coursemgr.dao.CourseTasksMapper;
 import edu.coursemgr.dao.UserMapper;
@@ -103,5 +104,13 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                 });
 
         return gradeDetails;
+    }
+
+    @Override
+    public int updateCourseGroupType(Course course, CommonEnum.GroupedType type) {
+
+        course.setGroupingType(type.getName());
+
+        return courseMapper.updateByIdSelective(course);
     }
 }

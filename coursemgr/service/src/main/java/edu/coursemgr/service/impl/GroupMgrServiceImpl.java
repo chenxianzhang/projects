@@ -1,10 +1,8 @@
 package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
-import edu.coursemgr.dao.CourseStudentsMapper;
-import edu.coursemgr.dao.GroupMapper;
-import edu.coursemgr.dao.GroupMemberMapper;
-import edu.coursemgr.dao.UserMapper;
+import edu.coursemgr.dao.*;
+import edu.coursemgr.model.Course;
 import edu.coursemgr.model.Group;
 import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.User;
@@ -17,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by chenxianzhang on 2018/8/26 0026 上午 12:47
@@ -40,13 +36,15 @@ public class GroupMgrServiceImpl implements GroupMgrService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CourseMapper courseMapper;
+
     @Override
     public boolean randGroup(String courseId, String memberCnt) {
         Integer cseId = Integer.valueOf(courseId);
-        // 获取当前所有未分组的学生学号,随机排序
-        List<String> studentNoList = courseStudentsMapper.getUngroupedStudent(
-                cseId);
-        if (studentNoList == null || studentNoList.size() == 0) {
+        // 获取当前所有未分组的学生,随机排序
+        List<User> studentList =userMapper.selectSomeNoGroup(cseId);
+        if (studentList == null || studentList.size() == 0) {
             return true;
         }
         // 遍历剩下的学生信息，进行分组
@@ -60,12 +58,13 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         // 插入一个分组信息,并获取其主键id
         Group group = new Group();
         List<GroupMember> groupMembers = new ArrayList<>(memCnt);
-        for (String studentNo : studentNoList) {
+        for (User student : studentList) {
             if (groupMembers.size() == 0) {
                 groupNo += 1;
                 group.setCourseId(cseId);
                 group.setCreateDate(new Date());
-                group.setGroupLeaderNo(studentNo);
+                group.setGroupLeaderNo(student.getSerialNo());
+                group.setLeaderName(student.getName());
                 group.setGroupNo(groupNo);
                 group.setGroupedType(CommonEnum.GroupedType.RAND.getName());
                 int flag = groupMapper.insert(group);
@@ -75,7 +74,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             }
             GroupMember member = new GroupMember();
             member.setGroupId(group.getId());
-            member.setStudentNo(studentNo);
+            member.setStudentNo(student.getSerialNo());
             groupMembers.add(member);
             if (groupMembers.size() == 10) {
                 groupMemberMapper.insertBatch(groupMembers);
@@ -86,7 +85,13 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             groupMemberMapper.insertBatch(groupMembers);
             groupMembers.clear();
         }
-        return true;
+
+        // 更新分组模式
+        Course course = new Course();
+        course.setId(cseId);
+        course.setGroupingType(CommonEnum.GroupedType.RAND.getName());
+
+        return courseMapper.updateByIdSelective(course) > 0 ? true : false;
     }
 
     @Override
@@ -110,6 +115,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         group.setCourseId(assignGroupModel.getCourseId());
         group.setCreateDate(new Date());
         group.setGroupLeaderNo(assignGroupModel.getGroupLeaderNo());
+        group.setLeaderName(assignGroupModel.getLeaderName());
         group.setGroupNo(groupNo);
         group.setGroupedType(type.getName());
         int flag = groupMapper.insert(group);
@@ -127,14 +133,20 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         if (groupMembers != null) {
             groupMemberMapper.insertBatch(groupMembers);
         }
-        return true;
+
+        // 更新分组模式
+        Course course = new Course();
+        course.setId(assignGroupModel.getCourseId());
+        course.setGroupingType(CommonEnum.GroupedType.ASSIGN.getName());
+        return courseMapper.updateByIdSelective(course) > 0 ? true : false;
     }
 
     @Override
-    public int changeGroupLeader(String groupId, String studentNo) {
+    public int changeGroupLeader(String groupId, String studentNo, String studentName) {
 
         Group group = new Group();
         group.setGroupLeaderNo(studentNo);
+        group.setLeaderName(studentName);
         group.setId(Integer.valueOf(groupId));
         return groupMapper.updateByIdSelective(group);
     }
@@ -167,11 +179,31 @@ public class GroupMgrServiceImpl implements GroupMgrService {
                     detail.setGroupedType(group.getGroupedType());
                     detail.setGroupId(group.getId());
                     detail.setGroupLeaderNo(group.getGroupLeaderNo());
+                    detail.setGroupLeaderName(group.getLeaderName());
                     List<User> members = userMapper.selectSomByGroupId(group.getId());
                     detail.setGroupMemberList(members);
 
                     return detail;
                 });
         return groupDetails;
+    }
+
+    @Override
+    public GroupDetail getGroupDetailByStudent(String courseId, String studentNo) {
+
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        Group group = groupMapper.selectByStudent(params);
+        if (group != null) {
+            GroupDetail detail = new GroupDetail();
+            detail.setGroupedType(group.getGroupedType());
+            detail.setGroupId(group.getId());
+            detail.setGroupLeaderNo(group.getGroupLeaderNo());
+            detail.setGroupLeaderName(group.getLeaderName());
+            List<User> members = userMapper.selectSomByGroupId(group.getId());
+            detail.setGroupMemberList(members);
+        }
+        return null;
     }
 }

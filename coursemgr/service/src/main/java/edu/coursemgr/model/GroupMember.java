@@ -9,6 +9,8 @@ public class GroupMember implements Serializable {
 
     private String studentNo;
 
+    private Integer courseId;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -33,5 +35,13 @@ public class GroupMember implements Serializable {
 
     public void setStudentNo(String studentNo) {
         this.studentNo = studentNo == null ? null : studentNo.trim();
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }

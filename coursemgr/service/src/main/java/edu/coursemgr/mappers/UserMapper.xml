@@ -52,6 +52,14 @@
     <include refid="Base_Column_List" />
     from User where serialNo in (select studentNo from group_member where groupId=#{groupId,jdbcType=INTEGER})
   </select>
+  <select id="selectSomeNoGroup" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    user where serialNo in (select cs.studentNo
+    from course_students cs left join group_member gm
+    on gm.studentNo!=cs.studentNo and gm.courseId=cs.courseId
+    where cs.courseId=#{courseId,jdbcType=INTEGER})
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
     where id = #{id,jdbcType=INTEGER}

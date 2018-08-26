@@ -1,5 +1,6 @@
 package edu.coursemgr.service.impl;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.dao.CourseStudentsMapper;
 import edu.coursemgr.dao.UserMapper;
 import edu.coursemgr.model.CourseStudents;
@@ -35,6 +36,7 @@ public class UserMgrServiceImpl implements UserMgrService {
         if (null != user) {
             throw new Exception("当前用户已存在，不可重复添加");
         }
+        userEditModel.getUser().setRoles(CommonEnum.Role.STUDENT.getValue());
         if (userMapper.insert(userEditModel.getUser()) > 0) {
             // 保存课程与学员关系
             CourseStudents cs = new CourseStudents();
@@ -45,5 +47,11 @@ public class UserMgrServiceImpl implements UserMgrService {
             }
         }
         return 1;
+    }
+
+    @Override
+    public List<User> getNoGroupStuList(String courseId) {
+
+        return userMapper.selectSomeNoGroup(Integer.valueOf(courseId));
     }
 }

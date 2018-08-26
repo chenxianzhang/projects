@@ -1,5 +1,6 @@
 package edu.coursemgr.service.interfaces;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.model.Course;
 import edu.coursemgr.pojo.GradeDetail;
 
@@ -39,5 +40,12 @@ public interface CourseMgrService {
      * @return
      */
     List<GradeDetail> getAllGradeInfo(String courseId);
+
+    /**
+     * 根据课程id更新，课程分组方式
+     * @param course
+     * @return
+     */
+    int updateCourseGroupType(Course course, CommonEnum.GroupedType type);
 
 }

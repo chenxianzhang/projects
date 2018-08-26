@@ -52,4 +52,20 @@ public class CommonEnum {
         }
     }
 
+    public enum Role {
+        ADMIN("admin"),
+        TEACHER("teacher"),
+        STUDENT("student");
+
+        private String value;
+
+        Role(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
 }

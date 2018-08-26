@@ -38,9 +38,10 @@ public interface GroupMgrService {
      * 更换组长
      * @param groupId
      * @param studentNo
+     * @param studentName
      * @return
      */
-    int changeGroupLeader(String groupId, String studentNo);
+    int changeGroupLeader(String groupId, String studentNo, String studentName);
 
     /**
      * 解除分组
@@ -55,5 +56,13 @@ public interface GroupMgrService {
      * @return
      */
     List<GroupDetail> getGroupDetail(String courseId);
+
+    /**
+     * 查询我的分组
+     * @param courseId
+     * @param studentNo
+     * @return
+     */
+    GroupDetail getGroupDetailByStudent(String courseId, String studentNo);
 
 }

@@ -13,6 +13,8 @@ public class Group implements Serializable {
 
     private String groupLeaderNo;
 
+    private String leaderName;
+
     private Integer courseId;
 
     private Date createDate;
@@ -66,5 +68,13 @@ public class Group implements Serializable {
 
     public void setGroupedType(String groupedType) {
         this.groupedType = groupedType;
+    }
+
+    public String getLeaderName() {
+        return leaderName;
+    }
+
+    public void setLeaderName(String leaderName) {
+        this.leaderName = leaderName;
     }
 }

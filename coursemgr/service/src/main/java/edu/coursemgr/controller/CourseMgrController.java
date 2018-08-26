@@ -1,5 +1,6 @@
 package edu.coursemgr.controller;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.model.Course;
 import edu.coursemgr.pojo.GradeDetail;
@@ -97,5 +98,19 @@ public class CourseMgrController extends BaseController {
         }
 
         return courseMgrService.getAllGradeInfo(courseId);
+    }
+
+    @RequestMapping(value="/updateFreedomGroup", method=RequestMethod.POST)
+    @ResponseBody
+    public int updateFreedomGroup(@RequestBody Course course) throws Exception {
+        if (null == course) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        if (courseMgrService.updateCourseGroupType(course,
+                CommonEnum.GroupedType.FREEDOM) == 0) {
+            throw new Exception("修改为自由分组出错");
+        }
+        return 1;
     }
 }

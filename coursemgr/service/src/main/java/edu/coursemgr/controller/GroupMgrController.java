@@ -71,10 +71,13 @@ public class GroupMgrController extends BaseController {
             throws Exception {
         String groupId = getParam(requestMap, "groupId");
         String studentNo = getParam(requestMap, "studentNo");
-        if (CommonUtils.isEmpty(groupId) || CommonUtils.isEmpty(studentNo)) {
+        String studentName = getParam(requestMap, "studentName");
+        boolean illegal = CommonUtils.isEmpty(groupId) || CommonUtils.isEmpty(studentNo)
+                || CommonUtils.isEmpty(studentName);
+        if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        return groupMgrService.changeGroupLeader(groupId, studentNo);
+        return groupMgrService.changeGroupLeader(groupId, studentNo, studentName);
     }
 
     @RequestMapping(value="/relieveGroup", method=RequestMethod.POST)
@@ -102,6 +105,19 @@ public class GroupMgrController extends BaseController {
         }
 
         return groupMgrService.getGroupDetail(courseId);
+    }
+
+    @RequestMapping(value="/getGroupDetailByStudent", method=RequestMethod.POST)
+    @ResponseBody
+    public GroupDetail getGroupDetailByStudent(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        String studentNo = getParam(requestMap, "studentNo");
+        if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(studentNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return groupMgrService.getGroupDetailByStudent(courseId, studentNo);
     }
 
 }

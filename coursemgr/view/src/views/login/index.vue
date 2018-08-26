@@ -9,7 +9,7 @@
         <el-select v-model="loginForm.role" placeholder="角色选择" @change="roleChange">
           <el-option
             v-for="item in roleList"
-            :key="item.id"
+            :key="item.value"
             :label="item.name"
             :value="item.id">
           </el-option>

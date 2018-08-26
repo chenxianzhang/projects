@@ -71,4 +71,15 @@ public class UserMgrController extends BaseController {
         return true;
     }
 
+    @RequestMapping(value="/getNoGroupStuList", method=RequestMethod.POST)
+    @ResponseBody
+    public List<User> getNoGroupStuList(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return userMgrService.getNoGroupStuList(courseId);
+    }
+
 }
