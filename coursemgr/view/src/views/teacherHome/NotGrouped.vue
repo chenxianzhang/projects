@@ -21,44 +21,53 @@
       </el-table-column>
     </el-table>
     <div class="btn-group">
-      <el-button type="primary" @click="makeGroup('randomGroup')">随机分组</el-button>
-      <el-button type="primary" @click="makeGroup('freeGroup')">学生自由分组</el-button>
-      <el-button type="primary" @click="makeGroup('appointGroup')">指定分组</el-button>
-      <el-button type="primary" @click="makeGroup('add2AppointGroup')">添加到已有分组</el-button>
+      <el-button type="primary" @click="makeGroup('随机分组')">随机分组</el-button>
+      <el-button type="primary" @click="makeGroup('自由分组')">学生自由分组</el-button>
+      <el-button type="primary" @click="makeGroup('指定分组')">指定分组</el-button>
+      <el-button type="primary" @click="makeGroup('添加到分组')">添加到已有分组</el-button>
     </div>
 
     <el-dialog
       :visible.sync="dialogVisible"
       width="30%"
-      :before-close="handleClose">
+      :closed="handleClose">
       <span slot="title">
         <div>{{groupType}}</div>
       </span>
 
-      <span v-if="groupType === '随机分组'">平均每组人数：<input style="width: 40px;" />人</span>
+      <span v-if="groupType === '随机分组'">平均每组人数：<input style="width: 40px;" v-model="randomGroupPerCnt" />人</span>
       <span v-if="groupType === '自由分组'">若指定自由分组，学生将自行担任组长，并创建分组！</span>
       <div v-if="groupType === '指定分组'">
-        成都市城市
+        <el-transfer
+          filterable
+          :filter-method="filterMethod"
+          :titles="['所有学生', '分组名单']"
+          filter-placeholder="请输入姓名"
+          v-model="zdGroupMembers"
+          :data="groupableStudents">
+        </el-transfer>
       </div>
       <el-select v-if="groupType === '添加到分组'" v-model="appointGroup" placeholder="请选择分组">
         <el-option
           v-for="item in usableGroups"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          :key="item.groupId"
+          :label="item.groupId"
+          :value="item.groupId">
         </el-option>
       </el-select>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleMakeGroup">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-    export default {
+  import { randomGroup, assignGroup, getGroupDetail } from "../../api/group";
+
+  export default {
       name: "NotGrouped",
       data(){
         return{
@@ -68,6 +77,11 @@
           dialogVisible:false,
           usableGroups:[],//可选择的分组
           appointGroup:'',
+          randomGroupPerCnt:'',
+          zdGroupMembers:[],//指定分组学生
+          filterMethod(query, item) {
+            return item.indexOf(query) > -1;
+          }
         }
       },
       methods: {
@@ -85,30 +99,65 @@
         },
         makeGroup(type){
           this.dialogVisible = true;
-          switch (type) {
-            case "randomGroup":
-              this.groupType = '随机分组';
+          this.groupType = type;
+          if(type === '添加到分组'){
+            let self = this;
+            //获取分组
+            getGroupDetail(this.$store.getters.courseId)
+              .then(resp=>{
+                if(resp.status === 0){
+                  self.$message.warning('获取分组信息失败');
+                  return;
+                }
+                self.usableGroups = resp.data;
+              });
+          }
+        },
+        handleClose(){
+
+        },
+        handleMakeGroup(){
+          let self = this;
+          switch (this.groupType) {
+            case "随机分组":
+              randomGroup({courseId: this.$store.getters.courseId, memberCnt: this.randomGroupPerCnt})
+                .then(resp=>{
+                  if(resp.status === 0){
+                    self.$message.warning('随机分组失败：' + resp.msg);
+                    return;
+                  }
+                  self.$message.success('随机分组成功！');
+                });
+              break;
+            case "自由分组":
 
               break;
-            case "freeGroup":
-              this.groupType = '自由分组';
-
+            case "指定分组":
+              //todo 获取指定分组对象
+              // private String groupLeaderNo;
+              // private Integer courseId;
+              // private List<String> studentNoList;
+              let assignGroupObj = {
+                courseId: this.$store.getters.courseId,
+                groupLeaderNo:'',
+                studentNoList:[]
+              };
+              assignGroup(assignGroupObj)
+                .then(resp=>{
+                  if(resp.status === 0){
+                    self.$message.warning('指定分组失败！' + resp.msg);
+                    return;
+                  }
+                  self.$message.success('指定分组成功！');
+                });
               break;
-            case "appointGroup":
-              this.groupType = '指定分组';
-
-              break;
-            case "add2AppointGroup":
-              this.groupType = '添加到分组';
+            case "添加到分组":
               //获取所有可用分组
               this.usableGroups = [{label:'xxx1', value:'xxx1'},{label:'xxx2', value:'xxx2'},{label:'xxx3', value:'xxx3'}];
               break;
             default:
               break;
           }
-        },
-        handleClose(){
-
         },
       }
     }

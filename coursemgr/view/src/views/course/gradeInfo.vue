@@ -1,15 +1,15 @@
 <template>
   <div>
     <h4>课程名:{{courseName}}</h4>
-    <el-table :data="tasks" style="width: 100%">
+    <el-table :data="gradeList" style="width: 100%">
       <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column prop="name" label="姓名  "> </el-table-column>
-      <el-table-column prop="no" label="学号"> </el-table-column>
+      <el-table-column prop="studentName" label="姓名  "> </el-table-column>
+      <el-table-column prop="studentNo " label="学号"> </el-table-column>
       <el-table-column prop="groupName" label="所在小组"> </el-table-column>
 
-      <el-table-column v-for="(task,index) in tttasks" :label="task.name" :key="index">
+      <el-table-column v-for="(task,index) in gradeList.studentTaskInfos" :label="task.taskName" :key="index">
         <template slot-scope="scope">
-          <span style="cursor: pointer; text-decoration: underline; font-weight: bold;" @click="handleClick">{{ task.score }}</span>
+          <span style="cursor: pointer; text-decoration: underline; font-weight: bold;" @click="handleClick(scope.row)">{{ task.score }}</span>
         </template>
       </el-table-column>
 
@@ -28,6 +28,7 @@
 
 <script>
   import UploadAnswer from '../teacherHome/uploadAnswer'
+  import { getAllGradeInfo } from '../../api/grade'
 
     export default {
       name: "gradeInfo",
@@ -37,19 +38,26 @@
           showAnswer: false,
           isStudent:false,
           courseName:'xxx课程',
-          tasks:[{taskId:'1', name:'1', no:'1', groupName:'1', task1:'1', task2:'1', task3:'1', task4:'1', totalScore:'1', xxx任务1:13, xxx任务2:34, xxx任务3:78},
-            {taskId:'2', name:'2', no:'2', groupName:'2', task1:'2', task2:'2', task3:'2', task4:'2', totalScore:'2', xxx任务1:13, xxx任务2:34, xxx任务3:78}],
-          tttasks:[{name:'xxx任务1',score:13}, {name:'xxx任务2',score:15}, {name:'xxx任务3',score:78}],
+          gradeList:[]
         }
       },
-      created(){
-          this.isStudent = this.$store.state.user.roles.in_array('student');
-          let cId = this.$store.getters.courseId;
-          if(this.isStudent){
-            //todo 获取该学生该课程的所有任务的成绩
-            return;
-          }
-          //todo 获取当前课程所有学生的成绩
+      created() {
+        let self = this;
+        this.isStudent = this.$store.state.user.roles.in_array('student');
+        let cId = this.$store.getters.courseId;
+        if (this.isStudent) {
+          //todo 获取该学生该课程的所有任务的成绩
+          return;
+        }
+        //获取当前课程所有学生的成绩
+        getAllGradeInfo({courseId: cId})
+          .then(resp => {
+            if (resp.status === 0) {
+              self.$message.warning('获取成绩信息失败：' + resp.msg);
+              return;
+            }
+            self.gradeList = resp.data;
+          });
       },
       methods: {
         handleClick(row) {

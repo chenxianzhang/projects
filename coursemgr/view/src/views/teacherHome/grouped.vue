@@ -1,19 +1,20 @@
 <template>
     <div>
       <div class="grouped-item" v-for="gItem in groups">
-        <div>组长：{{gItem.leader}}</div>
+        <div>组长：{{gItem.groupLeaderNo}}</div>
         <div>
           <span>组员列表：</span>
-          <span v-for="mItem in gItem.members">
-            {{mItem.name}}（学号：{{mItem.code}}）
+          <span v-for="mItem in gItem.groupMemberList">
+            {{mItem.name}}（学号：{{mItem.serialNo}}）
           </span>
         </div>
-        <span>分组方式：{{gItem.groupType}}</span>
+        <span>分组方式：{{gItem.groupedType}}</span>
       </div>
     </div>
 </template>
 
 <script>
+  import { getGroupDetail } from '../../api/group'
     export default {
       name: "grouped",
       data(){
@@ -22,10 +23,15 @@
           }
       },
       created() {
-        this.groups = [{leader: '王富贵', members: [{name: '张麻子', code: '123143546532342'}], groupType: '自由分组'},
-          {leader: '王富贵', members: [{name: '张麻子', code: '123143546532342'},{name: '张麻子', code: '123143546532342'},{name: '张麻子', code: '123143546532342'}], groupType: '自由分组'},
-          {leader: '王富贵', members: [{name: '张麻子', code: '123143546532342'},{name: '张麻子', code: '123143546532342'},{name: '张麻子', code: '123143546532342'}], groupType: '自由分组'},
-          {leader: '王富贵', members: [{name: '张麻子', code: '123143546532342'},{name: '张麻子', code: '123143546532342'},{name: '张麻子', code: '123143546532342'}], groupType: '自由分组'}];
+        let self = this;
+        getGroupDetail({'courseId': this.$store.getters.courseId})
+          .then(response=>{
+            if(response.status === 0){
+              self.$message.warning('获取分组信息失败：' + response.msg);
+              return;
+            }
+            self.groups = response.data;
+          });
       },
     }
 </script>
