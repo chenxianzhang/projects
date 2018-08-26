@@ -18,18 +18,24 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-dialog :visible.sync="showTaskInfoDialog">
+        <new-task :taskId="selectTaskId"></new-task>
+      </el-dialog>
     </div>
 </template>
 
 <script>
+  import NewTask from '../teacherHome/newTask'
   import {getCourseTasksByCourseId} from '@/api/course'
     export default {
-        name: "taskInfo",
+      name: "taskInfo",
+      components:{NewTask},
       data(){
           return {
+            showTaskInfoDialog:false,
+            selectTaskId:'',
             courseName:'xxx课程',
-            tasks:[{taskId:'1', taskName:'1', publishDate:'1', expiryDate:'1', finishState:'1'},
-              {taskId:'2', taskName:'2', publishDate:'2', expiryDate:'2', finishState:'2'}],
+            tasks:[],
           }
       },
       created() {
@@ -55,6 +61,8 @@
          * 查看详情
          * */
         handleDetailClick(row) {
+          this.selectTaskId = row.id;
+          this.showTaskInfoDialog = true;
           console.log(row);
         },
         /**

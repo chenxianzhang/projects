@@ -75,9 +75,10 @@
 
 <script>
   import SubjectSelectItemSetting from './subjectSelectItemSetting'
-  import {saveTask} from '@/api/task'
+  import {saveTask, getTaskDetailByTaskId} from '@/api/task'
     export default {
       name: "newTask",
+      props:['taskId'],
       components:{'select-setting': SubjectSelectItemSetting},
       data(){
           return {
@@ -96,7 +97,48 @@
             }
           }
       },
+      created(){
+        if(!this.taskId || this.taskId === ''){
+          return;
+        }
+        //获取任务信息
+        getTaskDetailByTaskId({taskId: this.taskId})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warning('获取任务信息失败');
+              return;
+            }
+            //根据结果设置subject值
+            this.setSubjectByTaskDetailInfo(resp.data);
+          });
+      },
       methods:{
+        /**
+         * 根据接口返回的任务信息结果，构造subject对象的值
+         * params taskDetailInfo
+         * */
+        setSubjectByTaskDetailInfo(taskDetailInfo){
+          if(!taskDetailInfo){
+            return;
+          }
+          this.subject.weight = taskDetailInfo.task.weight;
+          this.subject.totalScore = taskDetailInfo.task.totalScore;
+          this.subject.inspireDate = taskDetailInfo.task.deadline;
+          for(let item of taskDetailInfo.questionList){
+            switch (item.questionType) {
+              case "单选题":
+                this.subject.subjectForChoose.push({stem:item.stems, chooseItem:item.options.split(','), answer:item.answers});
+                break;
+              case "判断题":
+                this.subject.subjectForJudge.push({stem:item.stems, chooseItem:["是","否"], answer:item.answers});
+                break;
+              case "主观题":
+                this.subject.subjectForSubjective.push({stem:item.stems, chooseItem:[], answer:item.answers,
+                  answerType:item.markType, score: item.score});
+                break;
+            }
+          }
+        },
         addSubject(type){
           switch (type) {
             case "choose":

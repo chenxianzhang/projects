@@ -4,18 +4,13 @@
       ref="multipleTable"
       :data="groupableStudents"
       tooltip-effect="dark"
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection"
-        width="120">
-      </el-table-column>
+      style="width: 100%">
       <el-table-column
         prop="name"
         label="姓名">
       </el-table-column>
       <el-table-column
-        prop="code"
+        prop="serialNo"
         label="学号"
         show-overflow-tooltip>
       </el-table-column>
@@ -30,7 +25,7 @@
     <el-dialog
       :visible.sync="dialogVisible"
       width="30%"
-      :closed="handleClose">
+      :close="handleClose">
       <span slot="title">
         <div>{{groupType}}</div>
       </span>
@@ -44,17 +39,33 @@
           :titles="['所有学生', '分组名单']"
           filter-placeholder="请输入姓名"
           v-model="zdGroupMembers"
-          :data="groupableStudents">
+          :data="zdGroupData"
+          @change="transferChange">
+          <span slot-scope="{ option }">{{ option.label }}
+            <el-radio v-if="!option.source" v-model="groupLeader" :label="option.key" style="float: right;">设为组长</el-radio>
+          </span>
         </el-transfer>
       </div>
-      <el-select v-if="groupType === '添加到分组'" v-model="appointGroup" placeholder="请选择分组">
-        <el-option
-          v-for="item in usableGroups"
-          :key="item.groupId"
-          :label="item.groupId"
-          :value="item.groupId">
-        </el-option>
-      </el-select>
+      <div v-if="groupType === '添加到分组'">
+        <el-table
+          ref="multipleTable"
+          :data="groupableStudents"
+          tooltip-effect="dark"
+          style="width: 100%; margin-bottom: 20px;"
+          @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="120"> </el-table-column>
+          <el-table-column prop="name" label="姓名"> </el-table-column>
+          <el-table-column prop="serialNo" label="学号" show-overflow-tooltip> </el-table-column>
+        </el-table>
+        <el-select v-if="groupType === '添加到分组'" v-model="appointGroup" placeholder="请选择分组">
+          <el-option
+            v-for="item in usableGroups"
+            :key="item.groupId"
+            :label="item.groupId"
+            :value="item.groupId">
+          </el-option>
+        </el-select>
+      </div>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -65,7 +76,8 @@
 </template>
 
 <script>
-  import { randomGroup, assignGroup, getGroupDetail } from "../../api/group";
+  import { randomGroup, assignGroup, getGroupDetail, appendStudent2Group } from "../../api/group";
+  import {getStudentsByCourseId} from '../../api/course'
 
   export default {
       name: "NotGrouped",
@@ -78,13 +90,51 @@
           usableGroups:[],//可选择的分组
           appointGroup:'',
           randomGroupPerCnt:'',
+
+          groupLeader:'',
+          zdGroupData:[],
           zdGroupMembers:[],//指定分组学生
           filterMethod(query, item) {
-            return item.indexOf(query) > -1;
+            return item.label.indexOf(query) > -1;
           }
         }
       },
+    created(){
+      getStudentsByCourseId({courseId:this.$store.getters.courseId})
+        .then(resp=>{
+          if(resp.status === 0){
+            this.$message.warning('获取学生失败');
+            return;
+          }
+          this.groupableStudents = resp.data;
+        });
+    },
       methods: {
+        //设置穿梭后的数据格式
+        transferChange(lost, direct, transferData){
+          if(direct === 'left'){
+            for(let j = 0; j < transferData.length; ++j){
+              for(let i = 0; i < this.zdGroupData.length; ++i){
+                if(this.zdGroupData[i].key === transferData[j]){
+                  this.zdGroupData[i].source = true;
+                  this.$set(this.zdGroupData, i, this.zdGroupData[i]);
+                  break;
+                }
+              }
+            }
+          }
+          else {
+            for(let j = 0; j < transferData.length; ++j){
+              for(let i = 0; i < this.zdGroupData.length; ++i){
+                if(this.zdGroupData[i].key === transferData[j]){
+                  this.zdGroupData[i].source = false;
+                  this.$set(this.zdGroupData, i, this.zdGroupData[i]);
+                  break;
+                }
+              }
+            }
+          }
+        },
         toggleSelection(rows) {
           if (rows) {
             rows.forEach(row => {
@@ -98,7 +148,6 @@
           this.multipleSelection = val;
         },
         makeGroup(type){
-          this.dialogVisible = true;
           this.groupType = type;
           if(type === '添加到分组'){
             let self = this;
@@ -112,6 +161,17 @@
                 self.usableGroups = resp.data;
               });
           }
+          else if(type === '指定分组'){
+            let self = this;
+            //获取所有待分组学生，拼凑成所需格式
+            this.zdGroupData = [];
+            this.zdGroupMembers = [];
+            for(let item of this.groupableStudents){
+              this.zdGroupData.push({label: item.name, key: item.serialNo, source:true});
+            }
+          }
+
+          this.dialogVisible = true;
         },
         handleClose(){
 
@@ -133,14 +193,18 @@
 
               break;
             case "指定分组":
-              //todo 获取指定分组对象
-              // private String groupLeaderNo;
-              // private Integer courseId;
-              // private List<String> studentNoList;
+              //获取指定分组对象
+              let leaderName = '';
+              for(let item of this.zdGroupData){
+                if(item.key === this.groupLeader){
+                  leaderName = item.label;
+                }
+              }
               let assignGroupObj = {
                 courseId: this.$store.getters.courseId,
-                groupLeaderNo:'',
-                studentNoList:[]
+                leaderName: leaderName,
+                groupLeaderNo: this.groupLeader,
+                studentNoList: this.zdGroupMembers
               };
               assignGroup(assignGroupObj)
                 .then(resp=>{
@@ -152,8 +216,14 @@
                 });
               break;
             case "添加到分组":
-              //获取所有可用分组
-              this.usableGroups = [{label:'xxx1', value:'xxx1'},{label:'xxx2', value:'xxx2'},{label:'xxx3', value:'xxx3'}];
+              appendStudent2Group({groupId: this.appointGroup, studentNo: this.multipleSelection.join(',')})
+                .then(resp=>{
+                  if(resp.status === 0){
+                    self.$message.warning('添加到分组失败！');
+                    return;
+                  }
+                  self.$message.success('添加到分组成功！')
+                });
               break;
             default:
               break;
@@ -173,5 +243,9 @@
   }
   .el-select{
     width: 100%;
+  }
+
+  .el-checkbox__label .el-radio{
+    line-height: 30px;
   }
 </style>

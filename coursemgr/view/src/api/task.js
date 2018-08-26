@@ -8,3 +8,15 @@ export function saveTask(params) {
     data: params
   });
 }
+
+/**
+ * 获取任务信息， 包含任务下试题内容
+ * params {taskId:''}
+ * */
+export function getTaskDetailByTaskId(params) {
+  return request({
+    url: '/taskMgr/getTaskDetailByTaskId',
+    method: 'post',
+    data: params
+  });
+}
