@@ -12,6 +12,8 @@ public class StudentTaskSituation implements Serializable {
 
     private Integer taskId;
 
+    private String taskName;
+
     private String publishTime;
 
     private String deadline;
@@ -48,5 +50,13 @@ public class StudentTaskSituation implements Serializable {
 
     public void setFinishStatus(String finishStatus) {
         this.finishStatus = finishStatus;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 }

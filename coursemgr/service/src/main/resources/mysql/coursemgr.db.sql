@@ -2,14 +2,14 @@
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-	`serialNo` varchar(10) NOT NULL, #学号或者教工号，管理员登录账号
+	`serialNo` varchar(20) NOT NULL, #学号或者教工号，管理员登录账号
 	`password` varchar(20) DEFAULT NULL,
     `name` varchar(20) NOT NULL,  #姓名
 	`college` varchar(50),            #学院
 	`profession` varchar(50),         #专业
 	`cellphone` varchar(11),          #手机号
 	`email` varchar(50),              #邮箱
-	`roles` varchar(50),   #所拥有的角色,存储角色id，每个id之间‘,’分隔
+	`roles` varchar(50),   #所拥有的角色,存储角色，每个之间‘,’分隔
     `sex` ENUM('男', '女') NOT NULL default '男',     #性别  男，女
 	`createDate` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -37,7 +37,7 @@ DROP TABLE IF EXISTS `course_students`;
 CREATE TABLE `course_students` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `courseId` INT NOT NULL,  #课程id
-	`studentNo` varchar(10) NOT NULL
+	`studentNo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `course_tasks`;
@@ -76,7 +76,7 @@ CREATE TABLE `task_questions` (
 DROP TABLE IF EXISTS `student_tasks`;
 CREATE TABLE `student_tasks` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-	`studentNo` varchar(10),    #学号 关联user serialNo
+	`studentNo` varchar(20),    #学号 关联user serialNo
   `taskId` varchar(15),  #任务id
 	`status` ENUM('FINISHED', 'TO_REVIEW', 'UNCOMMITTED') NOT NULL default '未提交',
 	`score` FLOAT,       #分数
@@ -86,7 +86,7 @@ CREATE TABLE `student_tasks` (
 DROP TABLE IF EXISTS `student_paper`;
 CREATE TABLE `student_paper` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-	`studentNo` varchar(10),    #学号 关联user serialNo
+	`studentNo` varchar(20),    #学号 关联user serialNo
   `questionId` BIGINT,  #试题id
 	`answers`  varchar(1000),
 	`score` FLOAT default 0     #得分
@@ -96,7 +96,8 @@ DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `groupNo` INT,                 #当前课程下的第几组
-	`groupLeaderNo` varchar(10),    #组长  关联user serialNo
+	`groupLeaderNo` varchar(20),    #组长  关联user serialNo
+	`leaderName` varchar(50),
   `courseId` INT NOT NULL,  #课程id
 	`createDate` datetime,
 	`groupedType` varchar(50)  #分组方式
@@ -106,6 +107,7 @@ DROP TABLE IF EXISTS `group_member`;
 CREATE TABLE `group_memeber` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`groupId` INT,    #所属分组id
-  `studentNo` varchar(10)    #组内成员  关联user serialNo
+  `studentNo` varchar(20),    #组内成员  关联user serialNo
+  `courseId` int
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

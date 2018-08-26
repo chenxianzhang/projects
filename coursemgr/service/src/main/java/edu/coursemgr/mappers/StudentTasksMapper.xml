@@ -10,12 +10,19 @@
     <result column="submitTime" property="submitTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <resultMap id="StudentTaskDetailMap" type="edu.coursemgr.pojo.StudentTaskDetail" >
-    <id column="groupId" property="groupId" jdbcType="INTEGER" />
+    <result column="groupId" property="groupId" jdbcType="INTEGER" />
     <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
     <result column="studentName" property="studentName" jdbcType="VARCHAR" />
     <result column="taskId" property="taskId" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="CHAR" />
     <result column="score" property="score" jdbcType="REAL" />
+  </resultMap>
+  <resultMap id="SelfTaskSituationMap" type="edu.coursemgr.pojo.StudentTaskSituation" >
+    <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="finishStatus" property="finishStatus" jdbcType="VARCHAR" />
+    <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="taskName" property="taskName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, studentNo, taskId, status, score, submitTime
@@ -35,6 +42,12 @@
     left join group_member gm on gm.studentNo = st.studentNo
     left join user u on u.serialNo = cs.studentNo
     where cs.courseId=#{courseId, jdbcType=INTEGER}
+  </select>
+  <select id="getSelfTaskSituation" resultMap="SelfTaskSituationMap" parameterType="java.util.HashMap" >
+    select st.taskId, st.status as finishStatus, ct.publishTime,
+    ct.deadline, ct.name as taskName from student_tasks st
+    left join course_tasks ct on  ct.courseId=#{courseId, jdbcType=INTEGER}
+    and ct.id=st.taskId where st.studentNo=#{studentNo, jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from student_tasks

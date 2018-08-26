@@ -27,6 +27,42 @@
     values (#{id,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR}, #{questionId,jdbcType=BIGINT},
       #{answers,jdbcType=VARCHAR}, #{score,jdbcType=REAL})
   </insert>
+  <insert id="insertBatch" parameterType="java.util.List" >
+    insert into group_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="studentNo != null" >
+        studentNo,
+      </if>
+      <if test="questionId != null" >
+        questionId,
+      </if>
+      <if test="answers != null" >
+        answers,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+    </trim>
+    values
+    <foreach collection="studentPapers" item="item" index="key"  separator=",">
+      <!--<trim prefix="values (" suffix=")" suffixOverrides="," >-->
+      (
+      <if test="item.studentNo != null" >
+        #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="item.questionId != null" >
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="item.answers != null" >
+        #{answers,jdbcType=VARCHAR},
+      </if>
+      <if test="item.score != null" >
+        #{score,jdbcType=REAL},
+      </if>
+      )
+      <!--</trim>-->
+    </foreach>
+  </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.StudentPaper" >
     insert into student_paper
     <trim prefix="(" suffix=")" suffixOverrides="," >

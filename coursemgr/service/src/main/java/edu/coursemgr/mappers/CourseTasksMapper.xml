@@ -40,7 +40,7 @@
     select 
     <include refid="Base_Column_List" />
     from course_tasks
-    where courseId = #{courseId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectSomeByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select

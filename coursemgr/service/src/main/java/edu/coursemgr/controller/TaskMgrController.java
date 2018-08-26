@@ -2,9 +2,7 @@ package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.model.CourseTasks;
-import edu.coursemgr.pojo.CourseTaskDetail;
-import edu.coursemgr.pojo.CourseTaskSituation;
-import edu.coursemgr.pojo.StudentTaskDetail;
+import edu.coursemgr.pojo.*;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +93,29 @@ public class TaskMgrController extends BaseController {
         return taskMgrService.getCourseTaskSituation(courseId);
     }
 
+    @RequestMapping(value="/getMyTaskSituation", method=RequestMethod.POST)
+    @ResponseBody
+    public List<StudentTaskSituation> getMyTaskSituation(
+            @RequestBody Map<String, Object> requestMap) throws Exception {
 
+        String courseId = getParam(requestMap, "courseId");
+        String studentNo = getParam(requestMap, "studentNo");
+        if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(studentNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return taskMgrService.getMyTaskSituation(courseId, studentNo);
+    }
+
+    @RequestMapping(value="/submitTaskPaper", method=RequestMethod.POST)
+    @ResponseBody
+    public Object submitTaskPaper(@RequestBody StudentPaperAnswer studentPaperAnswer)
+            throws Exception {
+        if (null == studentPaperAnswer) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return taskMgrService.submitTaskPaper(studentPaperAnswer);
+    }
 
 }

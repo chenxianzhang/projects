@@ -3,14 +3,15 @@ package edu.coursemgr.service.impl;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.dao.CourseTasksMapper;
+import edu.coursemgr.dao.StudentPaperMapper;
 import edu.coursemgr.dao.StudentTasksMapper;
 import edu.coursemgr.dao.TaskQuestionsMapper;
 import edu.coursemgr.model.CourseTasks;
+import edu.coursemgr.model.StudentPaper;
 import edu.coursemgr.model.TaskQuestions;
-import edu.coursemgr.pojo.CourseTaskDetail;
-import edu.coursemgr.pojo.CourseTaskSituation;
-import edu.coursemgr.pojo.StudentTaskDetail;
+import edu.coursemgr.pojo.*;
 import edu.coursemgr.service.interfaces.TaskMgrService;
+import edu.coursemgr.utils.CollectionUtils;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Autowired
     private StudentTasksMapper studentTasksMapper;
+
+    @Autowired
+    private StudentPaperMapper studentPaperMapper;
 
     @Override
     public int saveTask(CourseTaskDetail taskDetail) throws Exception {
@@ -107,6 +111,35 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     @Override
     public List<CourseTaskSituation> getCourseTaskSituation(String courseId) {
         return courseTasksMapper.getCourseTaskSituation(Integer.valueOf(courseId));
+    }
+
+    @Override
+    public List<StudentTaskSituation> getMyTaskSituation(String courseId, String studentNo) {
+
+        Map<String ,Object> params = new HashMap<>(2);
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        return studentTasksMapper.getSelfTaskSituation(params);
+    }
+
+    @Override
+    public boolean submitTaskPaper(StudentPaperAnswer stuPaperAnswer) {
+
+        List<StudentPaper> studentPapers = CollectionUtils.arrayListCast(
+                stuPaperAnswer.getQuestionList(), question -> {
+                    StudentPaper paper = new StudentPaper();
+                    paper.setStudentNo(stuPaperAnswer.getStudentNo());
+                    paper.setAnswers(question.getAnswers());
+                    paper.setQuestionId(question.getId());
+                    return paper;
+                });
+        if (studentPapers == null) {
+            return true;
+        }
+        if (studentPaperMapper.insertBatch(studentPapers) == 0 ) {
+            return false;
+        }
+        return true;
     }
 
 
