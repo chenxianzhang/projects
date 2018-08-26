@@ -48,4 +48,12 @@ public interface CourseMgrService {
      */
     int updateCourseGroupType(Course course, CommonEnum.GroupedType type);
 
+    /**
+     * 获取学员课程信息
+     * @param courseId
+     * @param studentNo
+     * @return
+     */
+    GradeDetail getStuGradeInfo(String courseId, String studentNo);
+
 }

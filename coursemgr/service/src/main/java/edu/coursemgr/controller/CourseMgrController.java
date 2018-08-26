@@ -113,4 +113,17 @@ public class CourseMgrController extends BaseController {
         }
         return 1;
     }
+
+    @RequestMapping(value="/getStuGradeInfo", method=RequestMethod.POST)
+    @ResponseBody
+    public GradeDetail getStuGradeInfo(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        String studentNo = getParam(requestMap, "studentNo");
+        if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(studentNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return courseMgrService.getStuGradeInfo(courseId, studentNo);
+    }
 }

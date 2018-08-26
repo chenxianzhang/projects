@@ -1,5 +1,6 @@
 package edu.coursemgr.service.impl;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.common.interfaces.Function;
 import edu.coursemgr.dao.RoleMapper;
@@ -87,5 +88,19 @@ public class LoginServiceImpl implements LoginService {
             throw new Exception("用户信息丢失");
         }
         return user;
+    }
+
+    @Override
+    public int register(User user) throws Exception {
+
+        user.setRoles(CommonEnum.Role.TEACHER.getValue());
+
+        // 检测是否已经注册
+        User hasUser = userMapper.selectBySerialNo(user.getSerialNo());
+        if (hasUser != null) {
+            throw new Exception("已经存在该用户");
+        }
+
+        return userMapper.insert(user);
     }
 }

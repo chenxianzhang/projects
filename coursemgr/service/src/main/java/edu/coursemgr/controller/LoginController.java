@@ -63,4 +63,11 @@ public class LoginController extends BaseController {
         String serialNo = getParam(requestMap, "serialNo");
         return loginService.findUser(serialNo);
     }
+
+    public Object redister(@RequestBody User user) throws Exception {
+        if (null == user) {
+            throw new Exception("信息不能为空");
+        }
+        return loginService.register(user);
+    }
 }

@@ -113,4 +113,34 @@ public class CourseMgrServiceImpl implements CourseMgrService {
 
         return courseMapper.updateByIdSelective(course);
     }
+
+    @Override
+    public GradeDetail getStuGradeInfo(String courseId, String studentNo) {
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        UserGroup userGroup = userMapper.selectOneUserGroup(params);
+
+        if (userGroup != null) {
+            GradeDetail detail = new GradeDetail();
+            detail.setGroupNo(userGroup.getGroupNo());
+            detail.setStudentName(userGroup.getStudentName());
+            detail.setStudentNo(userGroup.getStudentNo());
+
+            List<StudentTaskInfo> taskInfos = courseTasksMapper.selectStuTaskInfo(params);
+            detail.setStudentTaskInfos(taskInfos);
+            // 计算加权总分
+            Float totalScore = 0f;
+            if (taskInfos != null) {
+                for (StudentTaskInfo taskInfo : taskInfos) {
+                    totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+                }
+            }
+            detail.setTotalScore(totalScore);
+
+            return detail;
+        }
+
+        return null;
+    }
 }

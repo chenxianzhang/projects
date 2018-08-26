@@ -5,6 +5,7 @@ import edu.coursemgr.pojo.UserGroup;
 import edu.coursemgr.pojo.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -28,4 +29,6 @@ public interface UserMapper {
     List<UserGroup> selectUserGroup(Integer courseId);
 
     List<User> selectSomeNoGroup(Integer courseId);
+
+    UserGroup selectOneUserGroup(Map params);
 }

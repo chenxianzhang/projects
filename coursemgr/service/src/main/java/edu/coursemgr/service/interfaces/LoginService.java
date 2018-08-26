@@ -52,4 +52,11 @@ public interface LoginService {
      */
     User findUser(String serialNo) throws Exception;
 
+    /**
+     * 注册
+     * @param user
+     * @return
+     */
+    int register(User user) throws Exception ;
+
 }

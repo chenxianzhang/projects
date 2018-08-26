@@ -31,6 +31,15 @@
     where groupId in (select id from `group`
     where courseId=#{courseId, jdbcType=INTEGER})
   </select>
+  <select id="selectOneUserGroup" resultMap="UserGroupMap" parameterType="java.util.HashMap" >
+    select name as studentName, serialNo as studentNo,
+    (select groupNo from `group`
+    where id = (select groupId
+    from group_member
+    where studentNo=#{studentNo, jdbcType=VARCHAR}
+    and courseId=#{courseId, jdbcType=INTEGER})) as groupNo
+    from user where serialNo = #{studentNo, jdbcType=VARCHAR}
+  </select>
   <select id="selectBySerialNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
