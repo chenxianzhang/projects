@@ -15,13 +15,13 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getGroupList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where courseId = #{courseId,jdbcType=INTEGER}
   </select>
   <select id="getLastGroupNo" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
@@ -33,18 +33,18 @@
     limit 1
   </select>
   <delete id="deleteById" parameterType="java.lang.Integer" >
-    delete from group
+    delete from `group`
     where id = #{id,jdbcType=INTEGER};
     delete from group_member where groupId=#{id,jdbcType=INTEGER};
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.Group" useGeneratedKeys="true" keyProperty="id">
-    insert into group (id, groupNo, groupLeaderNo, courseId,
+    insert into `group` (id, groupNo, groupLeaderNo, courseId,
       createDate,groupedType)
     values (#{id,jdbcType=INTEGER}, #{groupNo,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP}, #{groupedType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.Group" >
-    insert into group
+    insert into `group`
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -87,7 +87,7 @@
     </trim>
   </insert>
   <update id="updateByIdSelective" parameterType="edu.coursemgr.model.Group" >
-    update group
+    update `group`
     <set >
       <if test="groupNo != null" >
         groupNo = #{groupNo,jdbcType=INTEGER},
@@ -108,7 +108,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.Group" >
-    update group
+    update `group`
     set groupNo = #{groupNo,jdbcType=INTEGER},
       groupLeaderNo = #{groupLeaderNo,jdbcType=VARCHAR},
       courseId = #{courseId,jdbcType=INTEGER},
@@ -117,7 +117,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateGroupNo" parameterType="edu.coursemgr.model.Group" >
-    update group
+    update `group`
     set groupNo = groupNo - 1
     where groupNo > #{groupNo,jdbcType=INTEGER} and id = #{id, jdbcType=INTEGER}
   </update>
