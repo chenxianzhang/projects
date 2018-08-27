@@ -3,7 +3,7 @@
       <el-upload
         class="upload-demo"
         drag
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="https://localhost:8443/service/userMgr/batchUploadStudents"
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
         :on-success="handleUploadSuccess"

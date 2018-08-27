@@ -64,10 +64,10 @@
   <select id="selectSomeNoGroup" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from user where serialNo in (select cs.studentNo
-    from course_students cs left join group_member gm
-    on gm.studentNo!=cs.studentNo and gm.courseId=cs.courseId
-    where cs.courseId=#{courseId,jdbcType=INTEGER})
+    from user where serialNo in
+    (select studentNo from course_students where studentNo not in (
+    select studentNo from group_member where courseId=3
+    ) and courseId=#{courseId,jdbcType=INTEGER})
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
@@ -81,7 +81,7 @@
     values (#{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, 
       #{cellphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR},
-      #{sex,jdbcType=CHAR}, #{createDate,jdbcType=TIMESTAMP})
+      #{sex,jdbcType=CHAR}, now())
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.User" >
     insert into user
