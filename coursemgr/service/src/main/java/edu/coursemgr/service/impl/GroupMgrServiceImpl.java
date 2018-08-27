@@ -53,7 +53,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         // 先获取当前分组序号
         Integer groupNo = groupMapper.getLastGroupNo(cseId);
         if (null == groupNo) {
-            groupNo = 1;
+            groupNo = 0;
         }
         // 插入一个分组信息,并获取其主键id
         Group group = new Group();
@@ -75,14 +75,16 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             GroupMember member = new GroupMember();
             member.setGroupId(group.getId());
             member.setStudentNo(student.getSerialNo());
+            member.setCourseId(cseId);
             groupMembers.add(member);
-            if (groupMembers.size() == 10) {
-                groupMemberMapper.insertBatch(groupMembers);
+            if (groupMembers.size() == memCnt) {
+                insertBatch(groupMembers);
                 groupMembers.clear();
+                group = new Group();
             }
         }
         if (groupMembers.size() > 0) {
-            groupMemberMapper.insertBatch(groupMembers);
+            insertBatch(groupMembers);
             groupMembers.clear();
         }
 
@@ -128,10 +130,11 @@ public class GroupMgrServiceImpl implements GroupMgrService {
                     GroupMember member = new GroupMember();
                     member.setGroupId(group.getId());
                     member.setStudentNo(studentNo);
+                    member.setCourseId(assignGroupModel.getCourseId());
                     return member;
                 });
         if (groupMembers != null) {
-            groupMemberMapper.insertBatch(groupMembers);
+            insertBatch(groupMembers);
         }
 
         // 更新分组模式
@@ -205,5 +208,13 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             detail.setGroupMemberList(members);
         }
         return null;
+    }
+
+    private void insertBatch(List<GroupMember> groupMembers) {
+        if (groupMembers == null) {
+            return;
+        }
+
+        groupMembers.forEach(groupMember -> groupMemberMapper.insert(groupMember));
     }
 }

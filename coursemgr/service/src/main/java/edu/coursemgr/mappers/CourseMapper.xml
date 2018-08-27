@@ -73,13 +73,13 @@
       <if test="credit != null" >
         credit,
       </if>
-      <if test="creatorno != null" >
+      <if test="creatorNo != null" >
         creatorNo,
       </if>
-      <if test="createdate != null" >
+      <if test="createDate != null" >
         createDate,
       </if>
-      <if test="groupingtype != null" >
+      <if test="groupingType != null" >
         groupingType,
       </if>
       <if test="description != null" >
@@ -96,13 +96,13 @@
       <if test="credit != null" >
         #{credit,jdbcType=INTEGER},
       </if>
-      <if test="creatorno != null" >
+      <if test="creatorNo != null" >
         #{creatorNo,jdbcType=VARCHAR},
       </if>
-      <if test="createdate != null" >
+      <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="groupingtype != null" >
+      <if test="groupingType != null" >
         #{groupingType,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
@@ -119,13 +119,13 @@
       <if test="credit != null" >
         credit = #{credit,jdbcType=INTEGER},
       </if>
-      <if test="creatorno != null" >
+      <if test="creatorNo != null" >
         creatorNo = #{creatorNo,jdbcType=VARCHAR},
       </if>
-      <if test="createdate != null" >
+      <if test="createDate != null" >
         createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="groupingtype != null" >
+      <if test="groupingType != null" >
         groupingType = #{groupingType,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >

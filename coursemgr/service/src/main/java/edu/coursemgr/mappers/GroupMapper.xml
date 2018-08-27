@@ -46,9 +46,9 @@
     delete from group_member where groupId=#{id,jdbcType=INTEGER};
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.Group" useGeneratedKeys="true" keyProperty="id">
-    insert into `group` (id, groupNo, groupLeaderNo,leaderName, courseId,
+    insert into `group` (groupNo, groupLeaderNo,leaderName, courseId,
       createDate,groupedType)
-    values (#{id,jdbcType=INTEGER}, #{groupNo,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR},#{leaderName,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
+    values (#{groupNo,jdbcType=INTEGER}, #{groupLeaderNo,jdbcType=VARCHAR},#{leaderName,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP}, #{groupedType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.Group" >

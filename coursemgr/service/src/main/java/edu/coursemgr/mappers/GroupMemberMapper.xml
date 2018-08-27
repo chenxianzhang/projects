@@ -21,9 +21,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.GroupMember" >
-    insert into group_member (id, groupId, studentNo,courseId
+    insert into group_member ( groupId, studentNo,courseId
       )
-    values (#{id,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER},
+    values ( #{groupId,jdbcType=INTEGER},
     #{studentNo,jdbcType=VARCHAR},#{courseId,jdbcType=INTEGER}
       )
   </insert>
@@ -59,32 +59,31 @@
     </trim>
   </insert>
   <insert id="insertBatch" parameterType="java.util.List" >
-    insert into group_member
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="groupId != null" >
-        groupId,
-      </if>
-      <if test="studentNo != null" >
-        studentNo,
-      </if>
-      <if test="courseId != null" >
-        courseId,
-      </if>
-    </trim>
+    insert into group_member(groupId, studentNo, courseId)
+    <!--<trim prefix="(" suffix=")" suffixOverrides="," >-->
+      <!--<if test="groupId != null" >-->
+        <!--groupId,-->
+      <!--</if>-->
+      <!--<if test="studentNo != null" >-->
+        <!--studentNo,-->
+      <!--</if>-->
+      <!--<if test="courseId != null" >-->
+        <!--courseId,-->
+      <!--</if>-->
+    <!--</trim>-->
     values
-    <foreach collection="groupMembers" item="item" index="key"  separator=",">
+    <foreach collection="list" item="item" index="key"  separator=",">
       <!--<trim prefix="values (" suffix=")" suffixOverrides="," >-->
-      (
-        <if test="item.groupId != null" >
-          #{groupId,jdbcType=INTEGER},
-        </if>
-        <if test="item.studentNo != null" >
-          #{studentNo,jdbcType=VARCHAR},
-        </if>
-        <if test="item.studentNo != null" >
-          #{courseId,jdbcType=INTEGER},
-        </if>
-      )
+      (#{groupId,jdbcType=INTEGER},#{studentNo,jdbcType=VARCHAR},#{courseId,jdbcType=INTEGER})
+        <!--<if test="item.groupId != null" >-->
+          <!--#{groupId,jdbcType=INTEGER},-->
+        <!--</if>-->
+        <!--<if test="item.studentNo != null" >-->
+          <!--#{studentNo,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="item.studentNo != null" >-->
+          <!--#{courseId,jdbcType=INTEGER},-->
+        <!--</if>-->
       <!--</trim>-->
     </foreach>
   </insert>

@@ -2,8 +2,8 @@ package edu.coursemgr.utils;
 
 import edu.coursemgr.common.interfaces.Function;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * Created by chenxianzhang on 2018/8/13 0013 下午 10:08
@@ -57,6 +57,27 @@ public final class CollectionUtils {
             }
         });
         return rList;
+    }
+
+    public static Map<String, Object> objCast2Map(Object obj) {
+        if (null == obj) {
+            return null;
+        }
+        Field[] fields = obj.getClass().getDeclaredFields();
+        if (null == fields) {
+            return null;
+        }
+        Map<String, Object> resultMap = new HashMap<>(fields.length);
+            Arrays.asList(fields).forEach(field -> {
+                field.setAccessible(true);
+                String fieldName = field.getName();
+                try {
+                    resultMap.put(fieldName, field.get(obj));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        return resultMap;
     }
 
 }
