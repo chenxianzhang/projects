@@ -54,7 +54,7 @@ public class UserMgrController extends BaseController {
 
     @RequestMapping("/batchUploadStudents")
     @ResponseBody
-    public Object batchUploadStudents(HttpServletRequest request, HttpSession session)
+    public Object batchUploadStudents(HttpServletRequest request)
             throws Exception {
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
