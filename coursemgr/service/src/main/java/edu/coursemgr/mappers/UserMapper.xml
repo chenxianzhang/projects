@@ -66,7 +66,7 @@
     <include refid="Base_Column_List" />
     from user where serialNo in
     (select studentNo from course_students where studentNo not in (
-    select studentNo from group_member where courseId=3
+    select studentNo from group_member where courseId=#{courseId,jdbcType=INTEGER}
     ) and courseId=#{courseId,jdbcType=INTEGER})
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
