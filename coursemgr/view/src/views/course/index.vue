@@ -36,14 +36,9 @@
             <span slot="title">我的待办</span>
           </el-menu-item>
 
-          <!--<el-menu-item v-if="!isStudent" index="/teacherHome/groupInfo">-->
-            <!--<i class="el-icon-menu"></i>-->
-            <!--<span slot="title">分组情况</span>-->
-          <!--</el-menu-item>-->
-
           <el-submenu v-if="!isStudent" index="2">
             <template slot="title">
-              <i class="el-icon-document"></i>
+              <i class="el-icon-menu"></i>
               <span>分组情况</span>
             </template>
             <el-menu-item-group>

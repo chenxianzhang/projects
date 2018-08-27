@@ -4,7 +4,7 @@
       ref="multipleTable"
       :data="groupableStudents"
       tooltip-effect="dark"
-      style="width: 100%">
+      style="width: 100%; border-bottom: 1px solid gray; padding-bottom: 10px">
       <el-table-column
         prop="name"
         label="姓名">
@@ -104,6 +104,7 @@
     },
       methods: {
         getGroupableStudents(){
+          this.groupableStudents = [];
           getNoGroupStuList({courseId:this.$store.getters.courseId})
             .then(resp=>{
               if(resp.status === 0){
@@ -190,6 +191,7 @@
                     return;
                   }
                   self.$message.success('随机分组成功！');
+                  this.getGroupableStudents();
                 });
               break;
             case "自由分组":
@@ -216,6 +218,7 @@
                     return;
                   }
                   self.$message.success('指定分组成功！');
+                  this.getGroupableStudents();
                 });
               break;
             case "添加到分组":
@@ -226,13 +229,13 @@
                     return;
                   }
                   self.$message.success('添加到分组成功！')
+                  this.getGroupableStudents();
                 });
               break;
             default:
               break;
           }
           this.dialogVisible = false;
-          this.getGroupableStudents();
         },
       }
     }

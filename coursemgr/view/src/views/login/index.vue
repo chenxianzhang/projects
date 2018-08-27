@@ -9,9 +9,9 @@
         <el-select v-model="loginForm.role" placeholder="角色选择" @change="roleChange">
           <el-option
             v-for="item in roleList"
-            :key="item.value"
+            :key="item.id"
             :label="item.name"
-            :value="item.value">
+            :value="item.id">
           </el-option>
         </el-select>
       </div>
@@ -149,6 +149,7 @@ export default {
     getRoleList() {
       getRoleList().then(response => {
         if (response.status == 1) {
+          debugger
           this.roleList = response.data;
         } else {
           self.$message({

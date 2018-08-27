@@ -112,14 +112,14 @@ export default {
     if (!this.$store.state.user.roles) {
       // TODO 弹出提示，并调回登录页面
     }
-    if (this.$store.state.user.roles.in_array('teacher')) {
+    if (this.$store.state.user.roles.in_array('2')) {
       this.canAddCourse = true;
     }
     else {
       this.canAddCourse = false;
     }
 
-    if (this.$store.state.user.roles.in_array('student')) {
+    if (this.$store.state.user.roles.in_array('3')) {
       this.getStuCourseList();
     } else {
       this.getTeacherCourseList();
