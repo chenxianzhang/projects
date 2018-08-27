@@ -1,13 +1,16 @@
 <template>
   <div class="main-container">
-    <div class="title"></div>
-    <div class="step">{{currentStep}}</div>
-    <div class="subjectStatic">选择题 {{subject.subjectForChoose.length}} 道，判断题 {{subject.subjectForJudge.length}} 道，
-      主观题 {{subject.subjectForSubjective.length}} 道，
-      总分值 <input v-model="subject.totalScore" style="width: 30px; height: 30px;" /> 分，
-      权重：<input v-model="subject.weight" style="width: 30px; height: 30px;" /> %。</div>
+      <div class="task-name">
+      任务名称：
+      <el-input style="width: 300px" placeholder="请填写任务名称" v-model="subject.taskName"></el-input>
+      </div>
+      <div class="step">{{currentStep}}</div>
+      <div class="subjectStatic">选择题 {{subject.subjectForChoose.length}} 道，判断题 {{subject.subjectForJudge.length}} 道，
+        主观题 {{subject.subjectForSubjective.length}} 道，
+        总分值 <input v-model="subject.totalScore" style="width: 30px; height: 30px;" /> 分，
+        权重：<input v-model="subject.weight" style="width: 30px; height: 30px;" /> %。</div>
 
-    <div class="subject-for-choose">
+      <div class="subject-for-choose">
         <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">单选题</div>
         <div style="float: left; line-height: 40px;">设置分值：每题<input v-model="subject.subjectForChooseScore" style="width: 30px; height: 30px;" />分</div>
         <div class="el-icon-plus" @click="addSubject('choose')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
@@ -21,9 +24,9 @@
             </el-radio-group>
           </div>
         </div>
-    </div>
+      </div>
 
-    <div class="subject-for-judge">
+      <div class="subject-for-judge">
         <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">判断题</div>
         <div style="float: left; line-height: 40px;">设置分值：每题<input v-model="subject.subjectForJudgeScore" style="width: 30px; height: 30px;" />分</div>
         <div class="el-icon-plus" @click="addSubject('judge')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
@@ -36,38 +39,37 @@
             </el-radio-group>
           </div>
         </div>
-    </div>
-
-    <div class="subject-for-subjective">
-      <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">主观题</div>
-      <div class="el-icon-plus" @click="addSubject('subjective')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
-      <div class="subject-item-subjective" :class="sub.stem === '' ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForSubjective">
-        <el-input style="width: calc(100% - 450px); float: left;" placeholder="请输入题目"  v-model="sub.stem"/>
-        <div style="float: left; line-height: 40px;">设置分值：<input style="width: 30px; height: 30px;" v-model="sub.score" />分</div>
-
-        <div style="margin: 7px 20px; float: left; line-height: 40px;">
-          <el-radio-group v-model="sub.answerType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
-            <el-radio label="自评" style="margin: 5px;">自评</el-radio>
-            <el-radio label="组内互评" style="margin: 5px;">组内互评</el-radio>
-            <el-radio label="组间互评" style="margin: 5px;">组间互评</el-radio>
-          </el-radio-group>
-        </div>
-
-        <div class="el-icon-remove" @click="removeSubjectItem(index, 'subjective')" style="margin-left: 10px; cursor: pointer;
-          line-height: 40px; float: left;"></div>
       </div>
-    </div>
 
-    <div class="inspire-date">
-      <span>截止日期</span>
-      <el-date-picker v-model="subject.inspireDate" type="date" placeholder="选择日期">
-      </el-date-picker>
-    </div>
+      <div class="subject-for-subjective">
+        <div style="float: left; margin-right: 20px; line-height: 40px; background-color: gray; padding: 0 10px;">主观题</div>
+        <div class="el-icon-plus" @click="addSubject('subjective')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
+        <div class="subject-item-subjective" :class="sub.stem === '' ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForSubjective">
+          <el-input style="width: calc(100% - 450px); float: left;" placeholder="请输入题目"  v-model="sub.stem"/>
+          <div style="float: left; line-height: 40px;">设置分值：<input style="width: 30px; height: 30px;" v-model="sub.score" />分</div>
 
-    <div style="display: flex; align-items: center; justify-content: center">
-      <el-button type="primary" @click="nextStep">下一步</el-button>
-    </div>
+          <div style="margin: 7px 20px; float: left; line-height: 40px;">
+            <el-radio-group v-model="sub.answerType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+              <el-radio label="自评" style="margin: 5px;">自评</el-radio>
+              <el-radio label="组内互评" style="margin: 5px;">组内互评</el-radio>
+              <el-radio label="组间互评" style="margin: 5px;">组间互评</el-radio>
+            </el-radio-group>
+          </div>
 
+          <div class="el-icon-remove" @click="removeSubjectItem(index, 'subjective')" style="margin-left: 10px; cursor: pointer;
+          line-height: 40px; float: left;"></div>
+        </div>
+      </div>
+
+      <div class="inspire-date">
+        <span>截止日期</span>
+        <el-date-picker v-model="subject.inspireDate" type="date" placeholder="选择日期">
+        </el-date-picker>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: center; border-top: 1px solid gray; padding-top: 10px">
+        <el-button type="primary" @click="nextStep">下一步</el-button>
+      </div>
     <select-setting :dialogFormVisible="dialogFormVisible" @hide="hideDialog" @selectionsHandle="selectionsHandle">
     </select-setting>
   </div>
@@ -86,6 +88,7 @@
             curSubjectIndex:0,//当前单选题的索引
             currentStep:'第一步：编辑题目',
             subject:{
+              taskName:'',
               subjectForChoose:[],
               subjectForChooseScore:'',
               subjectForJudge:[],
@@ -181,6 +184,10 @@
         },
         nextStep(){
           //题目校验--选项是否存在、题干是否存在、分值是否存在、总分值是否存在
+          if(this.subject.taskName === ''){
+            this.$message.warning('请填写任务名称！');
+            return;
+          }
           if(this.subject.subjectForChoose.length + this.subject.subjectForJudge.length + this.subject.subjectForSubjective.length === 0){
             this.$message.warning('请添加相关题目！');
             return;
@@ -269,6 +276,9 @@
 </script>
 
 <style scoped>
+  .task-name{
+    margin-bottom: 20px;
+  }
   .subject-item{
     margin: 10px 0;
     padding: 5px;

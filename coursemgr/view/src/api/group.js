@@ -73,6 +73,18 @@ export function getGroupDetail(params) {
 }
 
 /**
+ * 获取当前课程下我的分组信息
+ * params {courseId:'', studentNo:''}
+ * */
+export function getGroupDetailByStudent(params) {
+  return request({
+    url: '/groupMgr/getGroupDetailByStudent',
+    method: 'post',
+    data: params
+  });
+}
+
+/**
  * 获取当前课程的所有成绩
  * params courseId
  * */

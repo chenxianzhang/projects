@@ -64,7 +64,7 @@
   <select id="selectSomeNoGroup" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    user where serialNo in (select cs.studentNo
+    from user where serialNo in (select cs.studentNo
     from course_students cs left join group_member gm
     on gm.studentNo!=cs.studentNo and gm.courseId=cs.courseId
     where cs.courseId=#{courseId,jdbcType=INTEGER})

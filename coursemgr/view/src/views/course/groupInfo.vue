@@ -1,34 +1,43 @@
 <template>
     <div class="main-container">
-      <div v-if="basicInfo.hasGroup">
+      <div v-if="hasGroup">
         <div class="group-leader">
-          <span>组长：<span>{{basicInfo.groupLeader.name}}  （学号：{{basicInfo.groupLeader.code}}）</span></span>
+          <span>组长：<span>{{groupInfo.groupLeaderName}}  （学号：{{groupInfo.groupLeaderNo}}）</span></span>
         </div>
         <div class="group-members">
           <span>组员列表：</span>
-          <span v-for="member in basicInfo.groupMembers">
-          <span>{{member.name}}  （学号：{{member.code}}）</span>
+          <span v-for="member in groupInfo.groupMemberList">
+          <span>{{member.name}}  （学号：{{member.serialNo}}）</span>
         </span>
         </div>
         <div class="divide-type">
-          <span>分组方式：<span>{{basicInfo.divideType}}</span></span>
+          <span>分组方式：<span>{{groupInfo.groupedType}}</span></span>
         </div>
       </div>
-      <div v-if="!basicInfo.hasGroup">
+      <div v-if="!hasGroup">
         <div class="no-group">
-          <span>该课程分组方式为“{{basicInfo.divideType}}”，你目前还没有加入任何小组，你可以点击“新建分组”按钮自己创建分组，或者线下通知组长将你加入小组。</span>
+          <span>该课程分组方式为<span style="color: red">自由分组</span>，你目前还没有加入任何小组，你可以点击“新建分组”按钮自己创建分组，或者线下通知组长将你加入小组。</span>
         </div>
-        <div>
+        <div style="margin-top: 20px; float: right">
           <el-button class="el-button--primary" @click="createGroup">新建分组</el-button>
         </div>
       </div>
 
-      <new-group-container v-if="showDialog"></new-group-container>
+      <el-dialog :visible.sync="showDialog" width="536px">
+        <new-group-container ref="newGroupDialog"></new-group-container>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="showDialog = false">取 消</el-button>
+          <el-button type="primary" @click="handleMakeGroup">确 定</el-button>
+        </span>
+      </el-dialog>
+
     </div>
 </template>
 
 <script>
   import newGroup from './newGroup'
+  import { getGroupDetailByStudent } from '../../api/group'
+  import { assignGroup } from "../../api/group";
 
     export default {
       name: "group-info",
@@ -36,17 +45,45 @@
       data(){
           return{
             showDialog: false,
-            basicInfo:{
-              hasGroup:false,
-              groupLeader:{name:'xxx', code:'12345678'},
-              groupMembers:[{name:'xxx', code:'12345678'},{name:'xxx', code:'12345678'},{name:'xxx', code:'12345678'}],
-              divideType:'自由分组',
-            },
+            groupInfo:null,
+            hasGroup:false
           }
       },
+      created(){
+        //获取个人分组
+        getGroupDetailByStudent({courseId: this.$store.getters.courseId, studentNo: this.$store.state.user.token})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warning('获取个人分组失败');
+              return;
+            }
+            if(resp.data !== ''){
+              this.hasGroup = true;
+            }
+            this.groupInfo = resp.data;
+          });
+      },
       methods:{
-        getBasicInfo(){
-          //todo 后台获取基本信息
+        handleMakeGroup(){
+          //获取 新建分组-组员
+          let newGroupMembers = this.$refs.newGroupDialog.zdGroupMembers;
+          newGroupMembers.push(this.$store.state.user.token);
+          //分组
+          let assignGroupObj = {
+            courseId: this.$store.getters.courseId,
+            leaderName: this.$store.state.user.name,
+            groupLeaderNo: this.$store.state.user.token,
+            studentNoList: newGroupMembers
+          };
+          assignGroup(assignGroupObj)
+            .then(resp=>{
+              if(resp.status === 0){
+                this.$message.warning('分组失败！' + resp.msg);
+                return;
+              }
+              this.$message.success('分组成功！');
+              this.showDialog = false;
+            });
         },
         createGroup(){
           this.showDialog = true;
@@ -67,10 +104,14 @@
   }
 
   .no-group{
-    height: 300px;
+    height: 200px;
     width: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid;
+    box-shadow: 0 0 8px 5px gray;
+  }
+  .no-group > span{
+    font-size: 20px;
+    margin: 0 auto;
   }
 </style>

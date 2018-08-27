@@ -28,7 +28,7 @@
 
 <script>
   import UploadAnswer from '../teacherHome/uploadAnswer'
-  import { getAllGradeInfo } from '../../api/grade'
+  import { getAllGradeInfo, getStuGradeInfo } from '../../api/grade'
 
     export default {
       name: "gradeInfo",
@@ -46,7 +46,15 @@
         this.isStudent = this.$store.state.user.roles.in_array('student');
         let cId = this.$store.getters.courseId;
         if (this.isStudent) {
-          //todo 获取该学生该课程的所有任务的成绩
+          //获取该学生该课程的所有任务的成绩
+          getStuGradeInfo({courseId: cId, studentNo: this.$store.state.user.token})
+            .then(resp=>{
+              if (resp.status === 0) {
+                self.$message.warning('获取成绩信息失败：' + resp.msg);
+                return;
+              }
+              self.gradeList = resp.data;
+            });
           return;
         }
         //获取当前课程所有学生的成绩

@@ -41,12 +41,12 @@
             <span slot="title">分组情况</span>
           </el-menu-item>
 
-          <el-submenu index="3">
+          <el-submenu index="3" v-if="!isStudent">
             <template slot="title">
               <i class="el-icon-document"></i>
               <span>课程任务</span>
             </template>
-            <el-menu-item-group v-if="!isStudent">
+            <el-menu-item-group>
               <el-menu-item index="/course/taskInfo">任务列表</el-menu-item>
               <el-menu-item index="/teacherHome/newTask">新建任务</el-menu-item>
             </el-menu-item-group>

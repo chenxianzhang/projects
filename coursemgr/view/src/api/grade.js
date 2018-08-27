@@ -11,3 +11,15 @@ export function getAllGradeInfo(params) {
     data: params
   });
 }
+
+/**
+ * 获取我的成绩信息
+ * params {courseId:'', studentNo:''}
+ * */
+export function getStuGradeInfo(params) {
+  return request({
+    url: '/course/getStuGradeInfo',
+    method: 'post',
+    data: params
+  });
+}

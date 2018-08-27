@@ -1,61 +1,66 @@
 <template>
   <div class="group-add-container">
-    <div class="leader-span">组长：{{leader}}</div>
+    <!--<div class="leader-span">组长：{{leader}}</div>-->
     <div>
       <span>组员选择：</span>
       <el-transfer
         filterable
-        :titles="['所有学生', '组队学生']"
         :filter-method="filterMethod"
+        :titles="['所有学生', '分组名单']"
         filter-placeholder="请输入姓名"
-        v-model="students2Group"
-        :data="allStudentsSelection">
+        v-model="zdGroupMembers"
+        :data="zdGroupData">
+          <span slot-scope="{ option }">{{ option.label }}</span>
       </el-transfer>
     </div>
   </div>
 </template>
 
 <script>
+    import {getStudentsByCourseId} from '../../api/course'
     export default {
-        name: "newGroup",
+      name: "newGroup",
       data() {
-        const generateData2 = _ => {
-          const data = [];
-          const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-          cities.forEach((city, index) => {
-            data.push({
-              label: city,
-              key: index,
-            });
-          });
-          return data;
-        };
-
         return {
-          allStudents:[],//所有可选学生  原始列表
-          allStudentsSelection: generateData2(),
-          students2Group: [],//选中的学生
+          leader:'',
+          zdGroupData:[],
+          zdGroupMembers:[],//指定分组学生
           filterMethod(query, item) {
             return item.label.indexOf(query) > -1;
           }
         }
       },
+      created(){
+        this.leader = this.$store.state.user.name;
+        getStudentsByCourseId({courseId:this.$store.getters.courseId})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warning('获取学生失败');
+              return;
+            }
+            this.groupableStudents = resp.data;
+            this.zdGroupData = [];
+            this.zdGroupMembers = [];
+            for(let item of this.groupableStudents){
+              if(item.serialNo !== this.$store.state.user.token){
+                this.zdGroupData.push({label: item.name, key: item.serialNo, source:true});
+              }
+            }
+          });
+      },
       methods: {
-        getStudents(){
-          //todo 后台获取所有学生列表
-          this.allStudents = [];
-        },
+
       },
     }
 </script>
 
 <style scoped>
   .group-add-container{
-    width: 100%;
-    margin-top: 10px;
-    box-shadow: 0px 0px 5px 5px #3276bd;
-    border-radius: 1px;
-    padding: 10px;
+    /*width: 100%;*/
+    /*margin-top: 10px;*/
+    /*box-shadow: 0px 0px 5px 5px #3276bd;*/
+    /*border-radius: 1px;*/
+    /*padding: 10px;*/
   }
   .leader-span{
     margin: 10px;
