@@ -1,10 +1,10 @@
 <template>
   <el-tabs type="card" @tab-click="changeTab">
     <el-tab-pane label="已分组">
-      <grouped></grouped>
+      <grouped :groups="groups"></grouped>
     </el-tab-pane>
     <el-tab-pane label="未分组">
-      <not-grouped></not-grouped>
+      <not-grouped :groupableStudents="groupableStudents"></not-grouped>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -12,6 +12,8 @@
 <script>
   import Grouped from './grouped'
   import NotGrouped from "./NotGrouped";
+  import { getGroupDetail } from '../../api/group'
+  import {getNoGroupStuList} from '../../api/course'
 
     export default {
       name: "teacherGroupInfo",
@@ -19,13 +21,32 @@
       data() {
         return {
           currentView: 'new-task',
+          groups:[],
+          groupableStudents:[]
         }
       },
       methods:{
-        changeTab(a,b,c){
-          console.log(a)
-          console.log(b)
-          console.log(c)
+        changeTab(comp,evt){
+          if(comp.label === '已分组'){
+            getGroupDetail({'courseId': this.$store.getters.courseId})
+              .then(response=>{
+                if(response.status === 0){
+                  self.$message.warning('获取分组信息失败：' + response.msg);
+                  return;
+                }
+                self.groups = response.data;
+              });
+          }
+          else if(comp.label === '未分组'){
+            getNoGroupStuList({courseId:this.$store.getters.courseId})
+              .then(resp=>{
+                if(resp.status === 0){
+                  this.$message.warning('获取学生失败');
+                  return;
+                }
+                this.groupableStudents = resp.data;
+              });
+          }
         }
       }
     }

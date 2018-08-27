@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div class="grouped-item" v-for="gItem in groups">
+      <div v-if="hasGroup" class="grouped-item" v-for="gItem in groups">
         <div>组长：{{gItem.groupLeaderNo}}</div>
         <div>
           <span>组员列表：</span>
@@ -10,6 +10,7 @@
         </div>
         <span>分组方式：{{gItem.groupedType}}</span>
       </div>
+      <div v-if="!hasGroup" class="grouped-item">暂无分组信息</div>
     </div>
 </template>
 
@@ -19,20 +20,25 @@
       name: "grouped",
       data(){
           return{
-            groups:[],
+            hasGroup:false,
+            groups:[]
           }
       },
-      created() {
-        let self = this;
+      created(){
         getGroupDetail({'courseId': this.$store.getters.courseId})
           .then(response=>{
             if(response.status === 0){
-              self.$message.warning('获取分组信息失败：' + response.msg);
+              this.$message.warning('获取分组信息失败：' + response.msg);
               return;
             }
-            self.groups = response.data;
+            this.groups = response.data;
+            if(!this.groups || this.groups.length === 0){
+              this.hasGroup = false;
+              return;
+            }
+            this.hasGroup = true;
           });
-      },
+      }
     }
 </script>
 

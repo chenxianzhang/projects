@@ -26,7 +26,9 @@ export const childrenRouter = [
   { name:'gradeInfo', path: '/course/gradeInfo', component: () => import('@/views/course/gradeInfo'), hidden: true },
   { name:'gTaskInfo', path: '/course/gTaskInfo', component: () => import('@/views/course/gTaskInfo'), hidden: true },//待办
   { name:'tGroupInfo', path: '/teacherHome/groupInfo', component: () => import('@/views/teacherHome/groupInfo'), hidden: true },
-  { name:'newTask', path: '/teacherHome/newTask', component: () => import('@/views/teacherHome/newTask'), hidden: true },
+  { name:'newTask', path: '/teacherHome/grouped', component: () => import('@/views/teacherHome/grouped'), hidden: true },
+  { name:'grouped', path: '/teacherHome/NotGrouped', component: () => import('@/views/teacherHome/NotGrouped'), hidden: true },
+  { name:'notGrouped', path: '/teacherHome/newTask', component: () => import('@/views/teacherHome/newTask'), hidden: true },
   { name:'uploadAnswer', path: '/teacherHome/uploadAnswer', component: () => import('@/views/teacherHome/uploadAnswer'), hidden: true },
 ];
 

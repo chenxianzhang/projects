@@ -77,7 +77,7 @@
 
 <script>
   import { randomGroup, assignGroup, getGroupDetail, appendStudent2Group } from "../../api/group";
-  import {getStudentsByCourseId} from '../../api/course'
+  import {getNoGroupStuList} from '../../api/course'
 
   export default {
       name: "NotGrouped",
@@ -100,16 +100,19 @@
         }
       },
     created(){
-      getStudentsByCourseId({courseId:this.$store.getters.courseId})
-        .then(resp=>{
-          if(resp.status === 0){
-            this.$message.warning('获取学生失败');
-            return;
-          }
-          this.groupableStudents = resp.data;
-        });
+      this.getGroupableStudents();
     },
       methods: {
+        getGroupableStudents(){
+          getNoGroupStuList({courseId:this.$store.getters.courseId})
+            .then(resp=>{
+              if(resp.status === 0){
+                this.$message.warning('获取学生失败');
+                return;
+              }
+              this.groupableStudents = resp.data;
+            });
+        },
         //设置穿梭后的数据格式
         transferChange(lost, direct, transferData){
           if(direct === 'left'){
@@ -228,6 +231,8 @@
             default:
               break;
           }
+          this.dialogVisible = false;
+          this.getGroupableStudents();
         },
       }
     }
