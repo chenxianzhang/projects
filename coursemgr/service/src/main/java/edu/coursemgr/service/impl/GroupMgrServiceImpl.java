@@ -205,6 +205,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             detail.setGroupLeaderName(group.getLeaderName());
             List<User> members = userMapper.selectSomByGroupId(group.getId());
             detail.setGroupMemberList(members);
+            return detail;
         }
         return null;
     }
