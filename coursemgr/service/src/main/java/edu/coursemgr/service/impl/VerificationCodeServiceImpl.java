@@ -5,6 +5,7 @@ import edu.coursemgr.common.Constant;
 import edu.coursemgr.utils.ResourceUtil;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Random;
  * Created by chenxianzhang on 2018/8/8 0008 下午 9:19
  */
 @Service
+@Transactional
 public class VerificationCodeServiceImpl implements VerificationCodeService {
 
     @Override

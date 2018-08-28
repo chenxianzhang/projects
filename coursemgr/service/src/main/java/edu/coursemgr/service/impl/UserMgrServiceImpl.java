@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
  * Created by chenxianzhang on 2018/8/23 0023 下午 10:58
  */
 @Service
+@Transactional
 public class UserMgrServiceImpl implements UserMgrService {
 
     @Autowired

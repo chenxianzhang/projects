@@ -4,6 +4,7 @@ import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.pojo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenxianzhang on 2018/8/24 0024 上午 12:13
@@ -15,7 +16,7 @@ public interface TaskMgrService {
      * @param taskDetail
      * @return
      */
-    int saveTask(CourseTaskDetail taskDetail) throws Exception;
+    Map<String, Object> saveTask(CourseTaskDetail taskDetail) throws Exception;
 
     /**
      * 根据任务id获取当前任务详细信息

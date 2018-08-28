@@ -47,6 +47,11 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!--注册事务代理-->
+    <!--<bean id="transProxy"-->
+        <!--class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">-->
+        <!--<property name="transactionManager" ref="transactionManager"/>-->
+    <!--</bean>-->
     <!-- 配置基于注解的声明式事务 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

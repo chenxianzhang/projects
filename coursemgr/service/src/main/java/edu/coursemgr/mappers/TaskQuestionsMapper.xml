@@ -114,7 +114,7 @@
     </trim>
     </foreach>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.TaskQuestions" >
+  <update id="updateByIdSelective" parameterType="edu.coursemgr.model.TaskQuestions" >
     update task_questions
     <set >
       <if test="taskId != null" >

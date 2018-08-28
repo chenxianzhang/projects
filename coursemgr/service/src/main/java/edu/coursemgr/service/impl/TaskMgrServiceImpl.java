@@ -16,6 +16,7 @@ import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.Map;
  * Created by chenxianzhang on 2018/8/24 0024 上午 12:14
  */
 @Service
+@Transactional
 public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Autowired
@@ -39,15 +41,19 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     private StudentPaperMapper studentPaperMapper;
 
     @Override
-    public int saveTask(CourseTaskDetail taskDetail) throws Exception {
+    public Map<String, Object>  saveTask(CourseTaskDetail taskDetail) throws Exception {
         boolean illegal = taskDetail.getTask() == null || taskDetail.getQuestionList() == null;
         if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
         }
         // 保存task任务信息，并返回任务id
-        int recordCnt = courseTasksMapper.insert(taskDetail.getTask());
+        Integer taskId = taskDetail.getTask().getId();
+        // 如果不存在则插入一条新的记录
+        if (taskId == null) {
+            courseTasksMapper.insert(taskDetail.getTask());
+        }
 
-        illegal = recordCnt == 0 || taskDetail.getTask().getId() == null;
+        illegal = taskDetail.getTask().getId() == null;
         if (illegal) {
             throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
         }
@@ -55,8 +61,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         taskDetail.getQuestionList().forEach(question -> {
             question.setTaskId(taskDetail.getTask().getId());
         });
-        insertBatch(taskDetail.getQuestionList());
-        return 1;
+        updateBatch(taskDetail.getQuestionList());
+
+        Map<String, Object> resultMap = new HashMap<>(1);
+        resultMap.put("taskId", taskId);
+        return resultMap;
     }
 
     @Override
@@ -142,11 +151,18 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return true;
     }
 
-    private void insertBatch(List<TaskQuestions> taskQuestions) {
+    private void updateBatch(List<TaskQuestions> taskQuestions) {
         if (taskQuestions == null) {
             return;
         }
 
-        taskQuestions.forEach(taskQuestion -> taskQuestionsMapper.insert(taskQuestion));
+        taskQuestions.forEach(taskQuestion ->{
+
+            if (taskQuestion.getId() == null) {
+                taskQuestionsMapper.insert(taskQuestion);
+            } else {
+                taskQuestionsMapper.updateByIdSelective(taskQuestion);
+            }
+        });
     }
 }

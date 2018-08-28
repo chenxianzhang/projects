@@ -13,7 +13,7 @@ public interface TaskQuestionsMapper {
 
     TaskQuestions selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(TaskQuestions record);
+    int updateByIdSelective(TaskQuestions record);
 
     int updateByPrimaryKeyWithBLOBs(TaskQuestions record);
 

@@ -13,6 +13,7 @@ import edu.coursemgr.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
  * Created by chenxianzhang on 2018/8/8 0008 下午 9:16
  */
 @Service
+@Transactional
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
