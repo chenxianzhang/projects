@@ -71,8 +71,8 @@ public class ExcelReader {
                     continue;
                 }
                 totalRows = xssfSheet.getLastRowNum();
-                //读取Row,从第二行开始
-                for(int rowNum = 1;rowNum <= totalRows;rowNum++){
+                //读取Row,从第一行开始
+                for(int rowNum = 0;rowNum <= totalRows;rowNum++){
                     XSSFRow xssfRow = xssfSheet.getRow(rowNum);
                     if(xssfRow!=null){
                         rowList = new ArrayList<String>();
@@ -128,8 +128,8 @@ public class ExcelReader {
                     continue;
                 }
                 totalRows = hssfSheet.getLastRowNum();
-                //读取Row,从第二行开始
-                for(int rowNum = 1;rowNum <= totalRows;rowNum++){
+                //读取Row,从第一行开始
+                for(int rowNum = 0;rowNum <= totalRows;rowNum++){
                     HSSFRow hssfRow = hssfSheet.getRow(rowNum);
                     if(hssfRow!=null){
                         rowList = new ArrayList<String>();

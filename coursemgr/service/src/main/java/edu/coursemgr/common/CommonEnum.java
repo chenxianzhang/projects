@@ -68,4 +68,34 @@ public class CommonEnum {
         }
     }
 
+    public enum StuExcelHeader {
+        NAME("姓名"),
+        STUDENT_ID("学号"),
+        COLLEGE("学院"),
+        PROFESSIONAL("专业"),
+        CELLPHONE("电话"),
+        SEX("性别"),
+        EMAIL("邮箱");
+
+        private int index;
+
+        private String text;
+
+        StuExcelHeader(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+    }
+
 }

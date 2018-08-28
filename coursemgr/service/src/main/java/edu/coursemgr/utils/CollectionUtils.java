@@ -59,6 +59,11 @@ public final class CollectionUtils {
         return rList;
     }
 
+    /**
+     * 通过反射获取对象中的属性与值得键值对
+     * @param obj
+     * @return
+     */
     public static Map<String, Object> objCast2Map(Object obj) {
         if (null == obj) {
             return null;

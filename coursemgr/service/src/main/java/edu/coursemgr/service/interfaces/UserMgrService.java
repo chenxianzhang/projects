@@ -25,7 +25,13 @@ public interface UserMgrService {
      */
     int addStudent(UserEditModel userEditModel) throws Exception;
 
-//    boolean importStudents(MultipartFile file);
+    /**
+     * 导入数据到数据库
+     * @param file
+     * @param courseId
+     * @return
+     */
+    void importStudents(MultipartFile file, String courseId) throws Exception;
 
     /**
      * 获取课程下所有未分组的学生信息

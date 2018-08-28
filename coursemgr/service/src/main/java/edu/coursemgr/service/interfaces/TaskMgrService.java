@@ -63,7 +63,7 @@ public interface TaskMgrService {
 
     /**
      * 提交任务试卷
-     * @param courseTaskDetail
+     * @param stuPaperAnswer
      * @return
      */
     boolean submitTaskPaper(StudentPaperAnswer stuPaperAnswer);

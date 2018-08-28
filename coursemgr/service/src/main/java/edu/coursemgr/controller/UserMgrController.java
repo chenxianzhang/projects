@@ -60,19 +60,15 @@ public class UserMgrController extends BaseController {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         Iterator iterator = multipartRequest.getFileNames();
         String courseId = multipartRequest.getParameter("courseId");
-        //判断文件是否为空
-//        if(file == null){
-//            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
-//        }
-//        String name = file.getOriginalFilename();
-//        long size = file.getSize();
-//        if(name == null || ExcelUtil.EMPTY.equals(name) && size==0){
-//            throw new Exception(Constant.ExceptionMessage.EXCEL_EMPTY);
-//        }
-//        //读取Excel数据到List中
-//        List<ArrayList<String>> list = new ExcelReader().readExcel(file);
-        //list中存的就是excel中的数据，可以根据excel中每一列的值转换成你所需要的值（从0开始）
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
 
+        while (iterator.hasNext()) {
+            String file = iterator.next().toString();
+            userMgrService.importStudents(multipartRequest.getFile(file),
+                    courseId);
+        }
         return true;
     }
 

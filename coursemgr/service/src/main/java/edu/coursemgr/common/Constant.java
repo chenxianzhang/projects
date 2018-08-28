@@ -13,6 +13,8 @@ public interface Constant {
         public static final String SEPARATE_COMMA = ",";
 
         public static final String UNDEFINED = "undefined";
+
+        public static final int PASSWORD_MIN_LENGTH = 6;
     }
 
     /**
