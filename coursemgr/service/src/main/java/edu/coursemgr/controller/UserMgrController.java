@@ -58,8 +58,8 @@ public class UserMgrController extends BaseController {
             throws Exception {
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-
         Iterator iterator = multipartRequest.getFileNames();
+        String courseId = multipartRequest.getParameter("courseId");
         //判断文件是否为空
 //        if(file == null){
 //            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);

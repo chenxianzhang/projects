@@ -55,8 +55,8 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         taskDetail.getQuestionList().forEach(question -> {
             question.setTaskId(taskDetail.getTask().getId());
         });
-
-        return taskQuestionsMapper.insertBatch(taskDetail.getQuestionList());
+        insertBatch(taskDetail.getQuestionList());
+        return 1;
     }
 
     @Override
@@ -142,5 +142,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return true;
     }
 
+    private void insertBatch(List<TaskQuestions> taskQuestions) {
+        if (taskQuestions == null) {
+            return;
+        }
 
+        taskQuestions.forEach(taskQuestion -> taskQuestionsMapper.insert(taskQuestion));
+    }
 }
