@@ -22,7 +22,7 @@ Vue.use(Router);
 export const childrenRouter = [
   { name:'basicInfo', path: '/course/basicInfo', component: () => import('@/views/course/basicInfo'), hidden: true },
   { name:'sGroupInfo', path: '/course/groupInfo', component: () => import('@/views/course/groupInfo'), hidden: true },
-  { name:'taskInfo', path: '/course/taskInfo', component: () => import('@/views/course/taskInfo'), hidden: true },
+  { name:'taskInfoList', path: '/course/taskInfoList', component: () => import('@/views/course/taskInfoList'), hidden: true },
   { name:'gradeInfo', path: '/course/gradeInfo', component: () => import('@/views/course/gradeInfo'), hidden: true },
   { name:'gTaskInfo', path: '/course/gTaskInfo', component: () => import('@/views/course/gTaskInfo'), hidden: true },//待办
   { name:'tGroupInfo', path: '/teacherHome/groupInfo', component: () => import('@/views/teacherHome/groupInfo'), hidden: true },

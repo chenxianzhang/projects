@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
       <div class="step">{{currentStep}}</div>
-      <task-info :taskId="taskId"></task-info>
+      <task-info :taskId="taskId" :operate="'createTask'"></task-info>
   </div>
 </template>
 

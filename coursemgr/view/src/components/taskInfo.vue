@@ -80,7 +80,7 @@
   import {saveTask, getTaskDetailByTaskId} from '@/api/task'
   export default {
     name: "newTask",
-    props:['taskId'],
+    props:['taskId', 'operate'],
     components:{'select-setting': SubjectSelectItemSetting},
     data(){
       return {

@@ -19,17 +19,17 @@
         </el-table-column>
       </el-table>
       <el-dialog :visible.sync="showTaskInfoDialog">
-        <new-task :taskId="selectTaskId"></new-task>
+        <task-info :taskId="selectTaskId" :operate="'viewDetail'"></task-info>
       </el-dialog>
     </div>
 </template>
 
 <script>
-  import NewTask from '../teacherHome/newTask'
+  import TaskInfo from '../../components/taskInfo'
   import {getCourseTasksByCourseId} from '@/api/course'
     export default {
-      name: "taskInfo",
-      components:{NewTask},
+      name: "taskInfoList",
+      components:{TaskInfo},
       data(){
           return {
             showTaskInfoDialog:false,

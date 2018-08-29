@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div>
     <div class="step">{{currentStep}}</div>
-    <task-info :taskId="taskId"></task-info>
+    <task-info :taskId="taskId" :operate="'uploadAnswer'"></task-info>
   </div>
 </template>
 

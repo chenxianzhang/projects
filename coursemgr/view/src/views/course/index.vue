@@ -53,7 +53,7 @@
               <span>课程任务</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/course/taskInfo">任务列表</el-menu-item>
+              <el-menu-item index="/course/taskInfoList">任务列表</el-menu-item>
               <el-menu-item index="/teacherHome/newTask">新建任务</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
