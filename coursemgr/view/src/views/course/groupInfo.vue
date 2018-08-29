@@ -1,13 +1,14 @@
 <template>
     <div class="main-container">
-      <div v-if="hasGroup">
+      <div v-if="hasGroup" class="grouped-item">
         <div class="group-leader">
           <span>组长：<span>{{groupInfo.groupLeaderName}}  （学号：{{groupInfo.groupLeaderNo}}）</span></span>
         </div>
         <div class="group-members">
           <span>组员列表：</span>
-          <span v-for="member in groupInfo.groupMemberList">
-          <span>{{member.name}}  （学号：{{member.serialNo}}）</span>
+          <span v-for="(member,index) in groupInfo.groupMemberList">
+            <span>{{member.name}}（学号：{{member.serialNo}}）</span>
+            <span v-if="index < groupInfo.groupMemberList.length - 1">,</span>
         </span>
         </div>
         <div class="divide-type">
@@ -97,6 +98,18 @@
     height: 100%;
     width: 100%;
     padding: 10px;
+  }
+
+  .grouped-item{
+    padding: 10px;
+    line-height: 30px;
+    width: 90%;
+    margin: 30px auto;
+    display: grid;
+    background-color: #FFD04B;
+  }
+  .grouped-item:hover{
+    box-shadow: 0px 0px 10px 4px #3a8ee6;
   }
 
   .group-leader > span > span,.group-members > span > span, .divide-type > span > span{

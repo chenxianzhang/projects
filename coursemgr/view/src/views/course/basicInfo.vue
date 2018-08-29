@@ -20,14 +20,14 @@
         </div>
       </div>
       <el-table :data="studentsInCourse" style="width: 100%;">
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column v-if="editable" type="selection" width="55"></el-table-column>
         <el-table-column align="center" prop="name" label="姓名" width="180"></el-table-column>
         <el-table-column align="center" prop="serialNo" label="学号"></el-table-column>
         <el-table-column align="center" prop="college" label="学院"></el-table-column>
         <el-table-column align="center" prop="profession" label="专业"></el-table-column>
         <el-table-column align="center" prop="cellphone" label="电话"></el-table-column>
         <el-table-column align="center" prop="email" label="邮箱"></el-table-column>
-        <el-table-column align="center"
+        <el-table-column v-if="editable" align="center"
           label="操作"
           width="140">
           <template slot-scope="scope">

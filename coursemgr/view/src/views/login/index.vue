@@ -149,7 +149,6 @@ export default {
     getRoleList() {
       getRoleList().then(response => {
         if (response.status == 1) {
-          debugger
           this.roleList = response.data;
         } else {
           self.$message({
@@ -163,7 +162,7 @@ export default {
     roleChange(val) {
       let self = this;
       this.roleList && this.roleList.forEach(rItem => {
-        if (rItem.id === val) {
+        if (rItem.name === val) {
           self.selectRoleValue = rItem.value;
         }
       });
