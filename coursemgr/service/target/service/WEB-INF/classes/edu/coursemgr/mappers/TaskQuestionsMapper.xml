@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.TaskQuestionsMapper" >
+  <resultMap id="BaseResultMap" type="edu.coursemgr.model.TaskQuestions" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="questionNo" property="questionNo" jdbcType="INTEGER" />
+    <result column="stems" property="stems" jdbcType="VARCHAR" />
+    <result column="questionType" property="questionType" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="answers" property="answers" jdbcType="VARCHAR" />
+    <result column="answerAttachment" property="answerAttachment" jdbcType="VARCHAR" />
+    <result column="markType" property="markType" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="edu.coursemgr.model.TaskQuestions" extends="BaseResultMap" >
+    <result column="options" property="options" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, taskId, questionNo, stems, questionType, score, answers, answerAttachment, markType
+  </sql>
+  <sql id="Blob_Column_List" >
+    options
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_questions
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectSomeByTaskId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_questions
+    where taskId = #{taskId, jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from task_questions
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="edu.coursemgr.model.TaskQuestions" >
+    insert into task_questions (id, taskId, questionNo, 
+      stems, questionType, score, 
+      answers, answerAttachment, markType, options
+      )
+    values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=INTEGER}, #{questionNo,jdbcType=INTEGER},
+      #{stems,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{score,jdbcType=REAL},
+      #{answers,jdbcType=VARCHAR},#{answerAttachment,jdbcType=VARCHAR}, #{markType,jdbcType=VARCHAR}, #{options,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List" >
+    insert into task_questions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        taskId,
+      </if>
+      <if test="questionNo != null" >
+        questionNo,
+      </if>
+      <if test="stems != null" >
+        stems,
+      </if>
+      <if test="questionType != null" >
+        questionType,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="answers != null" >
+        answers,
+      </if>
+      <if test="answerAttachment != null" >
+        answerAttachment,
+      </if>
+      <if test="markType != null" >
+        markType,
+      </if>
+      <if test="options != null" >
+        options,
+      </if>
+    </trim>
+    <foreach collection="list" item="item">
+      <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="item.taskId != null" >
+        #{item.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="item.questionNo != null" >
+        #{item.questionNo,jdbcType=INTEGER},
+      </if>
+      <if test="item.stems != null" >
+        #{item.stems,jdbcType=VARCHAR},
+      </if>
+      <if test="item.questionType != null" >
+        #{item.questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="item.score != null" >
+        #{ite.score,jdbcType=REAL},
+      </if>
+      <if test="item.answers != null" >
+        #{item.answers,jdbcType=VARCHAR},
+      </if>
+      <if test="item.answerAttachment != null" >
+        #{item.answerAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="item.markType != null" >
+        #{item.markType,jdbcType=VARCHAR},
+      </if>
+      <if test="item.options != null" >
+        #{item.options,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+    </foreach>
+  </insert>
+  <update id="updateByIdSelective" parameterType="edu.coursemgr.model.TaskQuestions" >
+    update task_questions
+    <set >
+      <if test="taskId != null" >
+        taskId = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="questionNo != null" >
+        questionNo = #{questionNo,jdbcType=INTEGER},
+      </if>
+      <if test="stems != null" >
+        stems = #{stems,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null" >
+        questionType = #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=REAL},
+      </if>
+      <if test="answers != null" >
+        answers = #{answers,jdbcType=VARCHAR},
+      </if>
+      <if test="answerAttachment != null" >
+        answerAttachment = #{answerAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="markType != null" >
+        markType = #{markType,jdbcType=VARCHAR},
+      </if>
+      <if test="options != null" >
+        options = #{options,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.coursemgr.model.TaskQuestions" >
+    update task_questions
+    set taskId = #{taskid,jdbcType=INTEGER},
+      questionNo = #{questionNo,jdbcType=INTEGER},
+      stems = #{stems,jdbcType=VARCHAR},
+      questionType = #{questionType,jdbcType=VARCHAR},
+      score = #{score,jdbcType=REAL},
+      answers = #{answers,jdbcType=VARCHAR},
+      answerAttachment = #{answerAttachment,jdbcType=VARCHAR},
+      markType = #{markType,jdbcType=VARCHAR},
+      options = #{options,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.TaskQuestions" >
+    update task_questions
+    set taskId = #{taskId,jdbcType=INTEGER},
+      questionNo = #{questionNo,jdbcType=INTEGER},
+      stems = #{stems,jdbcType=VARCHAR},
+      questionType = #{questionType,jdbcType=VARCHAR},
+      score = #{score,jdbcType=REAL},
+      answers = #{answers,jdbcType=VARCHAR},
+      answerAttachment = #{answerAttachment,jdbcType=VARCHAR},
+      markType = #{markType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

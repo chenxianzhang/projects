@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.CourseStudentsMapper" >
+  <resultMap id="BaseResultMap" type="edu.coursemgr.model.CourseStudents" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="courseId" property="courseId" jdbcType="INTEGER" />
+    <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, courseId, studentNo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from course_students
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getUngroupedStudent" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select studentNo from course_students
+    where courseId=#{courseId,jdbcType=INTEGER} and studentNo not in (select studentNo
+    from group_member
+    where groupId in (select id from `group`
+    where courseId=#{courseId,jdbcType=INTEGER})) order by RAND()
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from course_students
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.coursemgr.model.CourseStudents" >
+    insert into course_students (id, courseId, studentNo)
+    values (#{id,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.coursemgr.model.CourseStudents" >
+    insert into course_students
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="courseId != null" >
+        courseId,
+      </if>
+      <if test="studentNo != null" >
+        studentNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="courseid != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="studentno != null" >
+        #{studentNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.CourseStudents" >
+    update course_students
+    <set >
+      <if test="courseid != null" >
+        courseId = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="studentno != null" >
+        studentNo = #{studentNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.CourseStudents" >
+    update course_students
+    set courseId = #{courseId,jdbcType=INTEGER},
+      studentNo = #{studentNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
