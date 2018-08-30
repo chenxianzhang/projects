@@ -56,7 +56,8 @@
         </div>
 
         <div class="el-icon-remove" @click="removeSubjectItem(index, 'subjective')" style="margin-left: 10px; cursor: pointer;
-          line-height: 40px; float: left;"></div>
+          line-height: 40px; float: left;">
+        </div>
       </div>
     </div>
 
@@ -86,7 +87,6 @@
       return {
         dialogFormVisible:false,
         curSubjectIndex:0,//当前单选题的索引
-        currentStep:'第一步：编辑题目',
         subject:{
           taskName:'',
           subjectForChoose:[],

@@ -4,21 +4,6 @@ import layout from '@/views/layout/layout'
 
 Vue.use(Router);
 
-// export const studentRouter = [
-//   { name:'sBasicInfo', path: '/studentHome/basicInfo', component: () => import('@/views/studentHome/basicInfo'), hidden: true },
-//   { name:'sGroupInfo', path: '/studentHome/groupInfo', component: () => import('@/views/studentHome/groupInfo'), hidden: true },
-//   { name:'taskInfo', path: '/studentHome/taskInfo', component: () => import('@/views/studentHome/taskInfo'), hidden: true },
-//   { name:'gradeInfo', path: '/studentHome/gradeInfo', component: () => import('@/views/studentHome/gradeInfo'), hidden: true },
-//   { name:'gTaskInfo', path: '/studentHome/gTaskInfo', component: () => import('@/views/studentHome/gTaskInfo'), hidden: true },//待办
-// ];
-//
-// export const teacherRouter = [
-//   { name:'tBasicInfo', path: '/teacherHome/basicInfo', component: () => import('@/views/teacherHome/basicInfo'), hidden: true },
-//   { name:'newTask', path: '/teacherHome/newTask', component: () => import('@/views/teacherHome/newTask'), hidden: true },
-//   { name:'uploadAnswer', path: '/teacherHome/uploadAnswer', component: () => import('@/views/teacherHome/uploadAnswer'), hidden: true },
-//   { name:'tGroupInfo', path: '/teacherHome/groupInfo', component: () => import('@/views/teacherHome/groupInfo'), hidden: true },
-// ];
-
 export const childrenRouter = [
   { name:'basicInfo', path: '/course/basicInfo', component: () => import('@/views/course/basicInfo'), hidden: true },
   { name:'sGroupInfo', path: '/course/groupInfo', component: () => import('@/views/course/groupInfo'), hidden: true },
