@@ -49,6 +49,7 @@ CREATE TABLE `course_tasks` (
 	`publishTime` datetime,        #发布时间
 	`startTime` datetime,     #任务开始时间
 	`deadline` datetime,             #截止时间
+	`markType` varchar(15),     #主观题评分类型，自评，组内互评，组间互评
 	`totalScore` INT              #总分
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

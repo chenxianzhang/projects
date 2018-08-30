@@ -21,6 +21,8 @@ public class CourseTasks implements Serializable {
 
     private Date deadline;
 
+    private String markType;
+
     private Integer totalScore;
 
 
@@ -86,5 +88,13 @@ public class CourseTasks implements Serializable {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
+    }
+
+    public String getMarkType() {
+        return markType;
+    }
+
+    public void setMarkType(String markType) {
+        this.markType = markType;
     }
 }

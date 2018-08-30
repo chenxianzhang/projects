@@ -9,6 +9,7 @@
     <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="markType" property="markType" jdbcType="VARCHAR" />
     <result column="totalScore" property="totalScore" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="CourseTaskSituationMap" type="edu.coursemgr.pojo.CourseTaskSituation" >
@@ -27,7 +28,7 @@
     <result column="score" property="score" jdbcType="REAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, courseId, name, weight, publishTime, startTime, deadline, totalScore
+    id, courseId, name, weight, publishTime, startTime, deadline, markType, totalScore
   </sql>
   <select id="selectStuTaskInfo" resultMap="StudentTaskInfoMap" parameterType="java.util.HashMap" >
     select ct.name as taskName, ct.weight as taskWeight, st.score
@@ -60,11 +61,11 @@
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.CourseTasks" useGeneratedKeys="true" keyProperty="id">
     insert into course_tasks (courseId, name,
-      weight, publishTime, startTime, deadline,
+      weight, publishTime, startTime, deadline,markType,
       totalScore)
     values (#{courseId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
       #{weight,jdbcType=REAL}, #{publishTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP},
-      #{totalScore,jdbcType=INTEGER})
+    #{markType,jdbcType=VARCHAR}, #{totalScore,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.CourseTasks" >
     insert into course_tasks
@@ -89,6 +90,9 @@
       </if>
       <if test="deadline != null" >
         deadline,
+      </if>
+      <if test="markType != null" >
+        markType,
       </if>
       <if test="totalScore != null" >
         totalScore,
@@ -116,6 +120,9 @@
       <if test="deadline != null" >
         #{deadline,jdbcType=TIMESTAMP},
       </if>
+      <if test="markType != null" >
+        #{markType,jdbcType=VARCHAR},
+      </if>
       <if test="totalScore != null" >
         #{totalScore,jdbcType=INTEGER},
       </if>
@@ -142,6 +149,9 @@
       <if test="deadline != null" >
         deadline = #{deadline,jdbcType=TIMESTAMP},
       </if>
+      <if test="markType != null" >
+        markType = #{markType,jdbcType=VARCHAR},
+      </if>
       <if test="totalScore != null" >
         totalScore = #{totalScore,jdbcType=INTEGER},
       </if>
@@ -156,6 +166,7 @@
       publishTime = #{publishTime,jdbcType=TIMESTAMP},
       startTime = #{startTime,jdbcType=TIMESTAMP},
       deadline = #{deadline,jdbcType=TIMESTAMP},
+      markType = #{deadline,jdbcType=VARCHAR},
       totalScore = #{totalScore,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
