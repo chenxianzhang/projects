@@ -31,8 +31,7 @@ public class TaskMgrController extends BaseController {
         if (taskDetail == null) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
         }
-        taskMgrService.saveTask(taskDetail);
-        return true;
+        return taskMgrService.saveTask(taskDetail);
     }
 
 
