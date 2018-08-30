@@ -23,7 +23,7 @@
             <i class="el-icon-menu"></i>
             <span slot="title">我的分组</span>
           </el-menu-item>
-          <el-menu-item v-if="isStudent" index="/course/taskInfo">
+          <el-menu-item v-if="isStudent" index="/course/taskInfoList">
             <i class="el-icon-document"></i>
             <span slot="title">我的任务</span>
           </el-menu-item>

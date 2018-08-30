@@ -42,18 +42,19 @@
 
     <div class="subject-for-subjective">
       <div class="subject-for-title">主观题</div>
+      <div style="margin: 7px 20px; line-height: 40px; float: left">
+        <el-radio-group v-model="subject.subjectForSubjectiveMarkType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+          <el-radio label="自评" style="margin: 5px;">自评</el-radio>
+          <el-radio label="组内互评" style="margin: 5px;">组内互评</el-radio>
+          <el-radio label="组间互评" style="margin: 5px;">组间互评</el-radio>
+        </el-radio-group>
+      </div>
       <div class="el-icon-plus" @click="addSubject('subjective')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
-      <div class="subject-item-subjective" :class="sub.stem === '' ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForSubjective">
-        <el-input style="width: calc(100% - 450px); float: left;" placeholder="请输入题目"  v-model="sub.stem"/>
-        <div style="float: left; line-height: 40px;">设置分值：<input style="width: 30px; height: 30px;" v-model="sub.score" />分</div>
 
-        <div style="margin: 7px 20px; float: left; line-height: 40px;">
-          <el-radio-group v-model="sub.answerType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
-            <el-radio label="自评" style="margin: 5px;">自评</el-radio>
-            <el-radio label="组内互评" style="margin: 5px;">组内互评</el-radio>
-            <el-radio label="组间互评" style="margin: 5px;">组间互评</el-radio>
-          </el-radio-group>
-        </div>
+
+      <div class="subject-item-subjective" :class="sub.stem === '' ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForSubjective">
+        <el-input style="width: calc(100% - 250px); float: left;" placeholder="请输入题目"  v-model="sub.stem"/>
+        <div style="float: left; line-height: 40px;">设置分值：<input style="width: 30px; height: 30px;" v-model="sub.score" />分</div>
 
         <div class="el-icon-remove" @click="removeSubjectItem(index, 'subjective')" style="margin-left: 10px; cursor: pointer;
           line-height: 40px; float: left;">
@@ -94,6 +95,7 @@
           subjectForJudge:[],
           subjectForJudgeScore:'',
           subjectForSubjective:[],
+          subjectForSubjectiveMarkType:'',
           totalScore:'',
           weight:'',
           inspireDate:'',
@@ -137,20 +139,23 @@
         if(!taskDetailInfo){
           return;
         }
+        this.subject.taskName = taskDetailInfo.task.name;
         this.subject.weight = taskDetailInfo.task.weight;
         this.subject.totalScore = taskDetailInfo.task.totalScore;
         this.subject.inspireDate = taskDetailInfo.task.deadline;
+        this.subject.subjectForSubjectiveMarkType = taskDetailInfo.task.markType;
         for(let item of taskDetailInfo.questionList){
           switch (item.questionType) {
             case "单选题":
               this.subject.subjectForChoose.push({stem:item.stems, chooseItem:item.options.split(','), answer:item.answers});
+              this.subject.subjectForChooseScore = item.score;
               break;
             case "判断题":
               this.subject.subjectForJudge.push({stem:item.stems, chooseItem:["是","否"], answer:item.answers});
+              this.subject.subjectForJudgeScore = item.score;
               break;
             case "主观题":
-              this.subject.subjectForSubjective.push({stem:item.stems, chooseItem:[], answer:item.answers,
-                answerType:item.markType, score: item.score});
+              this.subject.subjectForSubjective.push({stem:item.stems, chooseItem:[], answer:item.answers, score: item.score});
               break;
           }
         }
@@ -169,7 +174,7 @@
             this.subject.subjectForJudge.push({stem:'', chooseItem:["是","否"], answer:''});
             break;
           case "subjective":
-            this.subject.subjectForSubjective.push({stem:'', chooseItem:[], answer:'', answerType:'', score:''});
+            this.subject.subjectForSubjective.push({stem:'', chooseItem:[], answer:'', score:''});
             break;
           default:
             break;
@@ -274,7 +279,9 @@
             message: "保存成功！"
           });
           //response.data---taskId
-          this.$router.push({name:'uploadAnswer', params:{taskId:response.data}});
+          setTimeout(()=>{
+            this.$router.push({name:'uploadAnswer', params:response.data});
+          },1000);
         });
 
 
@@ -315,7 +322,8 @@
           courseId:this.$store.getters.courseId,
           weight: this.subject.weight,
           deadline:this.subject.inspireDate,
-          totalScore: this.subject.totalScore
+          totalScore: this.subject.totalScore,
+          markType:this.subject.subjectForSubjectiveMarkType
         };
         let questions = [];
         let questionNo = 1;
@@ -344,7 +352,6 @@
             stems:item.stem,
             questionType:'主观题',
             score:item.score,
-            markType: item.answerType,
             questionNo:questionNo
           });
         }
