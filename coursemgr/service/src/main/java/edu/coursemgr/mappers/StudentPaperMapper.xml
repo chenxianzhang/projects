@@ -5,11 +5,12 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
     <result column="questionId" property="questionId" jdbcType="BIGINT" />
+    <result column="questionType" property="questionType" jdbcType="VARCHAR" />
     <result column="answers" property="answers" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="REAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, studentNo, questionId, answers, score
+    id, studentNo, questionId, questionType, answers, score
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,10 +23,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.StudentPaper" >
-    insert into student_paper (id, studentNo, questionId, 
+    insert into student_paper (id, studentNo, questionId, questionType,
       answers, score)
     values (#{id,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR}, #{questionId,jdbcType=BIGINT},
-      #{answers,jdbcType=VARCHAR}, #{score,jdbcType=REAL})
+    #{questionType,jdbcType=VARCHAR},#{answers,jdbcType=VARCHAR}, #{score,jdbcType=REAL})
   </insert>
   <insert id="insertBatch" parameterType="java.util.List" >
     insert into group_member
@@ -35,6 +36,9 @@
       </if>
       <if test="questionId != null" >
         questionId,
+      </if>
+      <if test="questionType != null" >
+        questionType,
       </if>
       <if test="answers != null" >
         answers,
@@ -52,6 +56,9 @@
       </if>
       <if test="item.questionId != null" >
         #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="item.questionType != null" >
+        #{questionType,jdbcType=VARCHAR},
       </if>
       <if test="item.answers != null" >
         #{answers,jdbcType=VARCHAR},
@@ -75,6 +82,9 @@
       <if test="questionId != null" >
         questionId,
       </if>
+      <if test="questionType != null" >
+        questionType,
+      </if>
       <if test="answers != null" >
         answers,
       </if>
@@ -91,6 +101,9 @@
       </if>
       <if test="questionId != null" >
         #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="questionType != null" >
+        #{questionType,jdbcType=VARCHAR},
       </if>
       <if test="answers != null" >
         #{answers,jdbcType=VARCHAR},
@@ -109,6 +122,9 @@
       <if test="questionId != null" >
         questionId = #{questionId,jdbcType=BIGINT},
       </if>
+      <if test="questionType != null" >
+        questionType = #{questionType,jdbcType=VARCHAR},
+      </if>
       <if test="answers != null" >
         answers = #{answers,jdbcType=VARCHAR},
       </if>
@@ -122,6 +138,7 @@
     update student_paper
     set studentNo = #{studentNo,jdbcType=VARCHAR},
       questionId = #{questionId,jdbcType=BIGINT},
+      questionType = #{questionType,jdbcType=VARCHAR},
       answers = #{answers,jdbcType=VARCHAR},
       score = #{score,jdbcType=REAL}
     where id = #{id,jdbcType=INTEGER}

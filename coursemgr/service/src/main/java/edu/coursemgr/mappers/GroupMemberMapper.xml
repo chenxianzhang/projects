@@ -5,10 +5,11 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="groupId" property="groupId" jdbcType="INTEGER" />
     <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+    <result column="gradeObjNo" property="gradeObjNo" jdbcType="VARCHAR" />
     <result column="courseId" property="courseId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, groupId, studentNo,courseId
+    id, groupId, studentNo,gradeObjNo, courseId
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -21,10 +22,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.GroupMember" >
-    insert into group_member ( groupId, studentNo,courseId
+    insert into group_member ( groupId, studentNo,gradeObjNo,courseId
       )
     values ( #{groupId,jdbcType=INTEGER},
-    #{studentNo,jdbcType=VARCHAR},#{courseId,jdbcType=INTEGER}
+    #{studentNo,jdbcType=VARCHAR}, #{gradeObjNo,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.GroupMember" >
@@ -39,6 +40,9 @@
       <if test="studentNo != null" >
         studentNo,
       </if>
+      <if test="gradeObjNo != null" >
+        gradeObjNo,
+      </if>
       <if test="courseId != null" >
         courseId,
       </if>
@@ -52,6 +56,9 @@
       </if>
       <if test="studentNo != null" >
         #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeObjNo != null" >
+        #{gradeObjNo,jdbcType=VARCHAR},
       </if>
       <if test="courseId != null" >
         #{courseId,jdbcType=VARCHAR},
@@ -96,6 +103,9 @@
       <if test="studentNo != null" >
         studentNo = #{studentNo,jdbcType=VARCHAR},
       </if>
+      <if test="gradeObjNo != null" >
+        gradeObjNo = #{gradeObjNo,jdbcType=VARCHAR},
+      </if>
       <if test="courseId != null" >
         courseId = #{courseId,jdbcType=INTEGER},
       </if>
@@ -106,6 +116,7 @@
     update group_member
     set groupId = #{groupId,jdbcType=INTEGER},
       studentNo = #{studentNo,jdbcType=VARCHAR},
+    gradeObjNo = #{gradeObjNo,jdbcType=VARCHAR},
     courseId = #{courseId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

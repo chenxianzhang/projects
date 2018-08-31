@@ -12,6 +12,8 @@ public class StudentPaper implements Serializable {
 
     private Long questionId;
 
+    private String questionType;
+
     private String answers;
 
     private Float score;
@@ -54,5 +56,13 @@ public class StudentPaper implements Serializable {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
     }
 }

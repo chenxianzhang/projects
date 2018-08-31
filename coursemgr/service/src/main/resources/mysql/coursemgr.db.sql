@@ -89,6 +89,7 @@ CREATE TABLE `student_paper` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`studentNo` varchar(20),    #学号 关联user serialNo
   `questionId` BIGINT,  #试题id
+  `questionType`  varchar(15),   # 题目类型  单选题，多选题，判断题，主观题等
 	`answers`  varchar(1000),
 	`score` FLOAT default 0     #得分
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -109,6 +110,7 @@ CREATE TABLE `group_memeber` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`groupId` INT,    #所属分组id
   `studentNo` varchar(20),    #组内成员  关联user serialNo
+  `gradeObjNo` varchar(20),   #评分对象
   `courseId` int
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
