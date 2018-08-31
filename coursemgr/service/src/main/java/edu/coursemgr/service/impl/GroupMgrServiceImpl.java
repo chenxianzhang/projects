@@ -211,12 +211,16 @@ public class GroupMgrServiceImpl implements GroupMgrService {
     }
 
     @Override
-    public boolean checkCourseGrouped(String courseId) {
+    public Integer checkCourseGrouped(String courseId) {
         List<User> userList = userMapper.selectSomeNoGroup(Integer.valueOf(courseId));
         if (userList != null) {
-            return false;
+            return 0;
         }
-        return true;
+        List<Group> groupList = groupMapper.getGroupList(Integer.valueOf(courseId));
+        if (groupList == null) {
+            return 0;
+        }
+        return groupList.size();
     }
 
     @Override

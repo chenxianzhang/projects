@@ -70,7 +70,7 @@ public interface GroupMgrService {
      * @param courseId
      * @return
      */
-    boolean checkCourseGrouped(String courseId);
+    Integer checkCourseGrouped(String courseId);
 
     /**
      * 更新组成员评分对象

@@ -122,7 +122,7 @@ public class GroupMgrController extends BaseController {
 
     @RequestMapping(value="/checkCourseGrouped", method=RequestMethod.POST)
     @ResponseBody
-    public boolean checkCourseGrouped(@RequestBody Map<String, Object> requestMap)
+    public Integer checkCourseGrouped(@RequestBody Map<String, Object> requestMap)
             throws Exception {
         String courseId = getParam(requestMap, "courseId");
         if (CommonUtils.isEmpty(courseId)) {
