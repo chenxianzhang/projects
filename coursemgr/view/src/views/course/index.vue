@@ -2,7 +2,17 @@
     <div class="main">
       <div style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
         <span>课程管理系统</span>
-        <div style="float: right; margin-right: 20px;">当前用户：xxx</div>
+        <div style="float: right; margin-right: 50px;">
+          当前用户：{{userInfo.name}}
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              <i class="el-icon-arrow-down el-icon--right white-color"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+        </div>
       </div>
       <div class="left-nav">
         <el-menu
@@ -71,16 +81,29 @@
 </template>
 
 <script>
-
+  import { findUser } from '@/api/login';
     export default {
       name: "course",
       data(){
         return{
           isStudent:false,
+          userInfo:{},
         }
       },
       created(){
         this.isStudent = this.$store.state.user.roles.in_array('student');
+        //获取用户信息
+        let self = this;
+        findUser(this.$store.state.user.token).then(response => {
+          if (response.status === 0) {
+            self.$message({
+              showClose: true,
+              type: 'error',
+              message: response.msg
+            });
+          }
+          self.userInfo = response.data;
+        })
       },
       methods: {
         handleOpen(key, keyPath) {
@@ -91,6 +114,16 @@
         },
         handleSelect(index, indexPath){
           console.log(index, indexPath);
+        },
+        logout(){
+          this.$router.push('/login');
+        },
+        handleCommand(cmd){
+          switch (cmd) {
+            case "logout":
+              this.$router.push('/login');
+              break;
+          }
         }
       }
     }
@@ -119,5 +152,10 @@
     float: left;
     padding: 20px;
     overflow: auto;
+  }
+
+  .white-color{
+    color: #fff;
+    cursor: pointer;
   }
 </style>
