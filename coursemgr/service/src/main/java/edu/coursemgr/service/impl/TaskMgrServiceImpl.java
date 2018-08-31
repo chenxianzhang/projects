@@ -2,14 +2,13 @@ package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
-import edu.coursemgr.dao.CourseTasksMapper;
-import edu.coursemgr.dao.StudentPaperMapper;
-import edu.coursemgr.dao.StudentTasksMapper;
-import edu.coursemgr.dao.TaskQuestionsMapper;
+import edu.coursemgr.dao.*;
 import edu.coursemgr.model.CourseTasks;
+import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.StudentPaper;
 import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.*;
+import edu.coursemgr.service.interfaces.GroupMgrService;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CollectionUtils;
 import edu.coursemgr.utils.CommonUtils;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +40,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     @Autowired
     private StudentPaperMapper studentPaperMapper;
 
+    @Autowired
+    private GroupMgrService groupMgrService;
+
     @Override
     public Map<String, Object>  saveTask(CourseTaskDetail taskDetail) throws Exception {
         boolean illegal = taskDetail.getTask() == null || taskDetail.getQuestionList() == null;
@@ -53,6 +56,14 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             courseTasksMapper.insert(taskDetail.getTask());
             taskId = taskDetail.getTask().getId();
         }
+
+        // 根据所选择的主题的评分规则，更新各组成员的评分对象
+        illegal = groupMgrService.updateGroupMemberGradeObj(taskDetail.getTask().getCourseId(),
+                taskDetail.getTask().getMarkType());
+        if (!illegal) {
+            throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
+        }
+
 
         illegal = taskDetail.getTask().getId() == null;
         if (illegal) {
@@ -166,4 +177,5 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             }
         });
     }
+
 }

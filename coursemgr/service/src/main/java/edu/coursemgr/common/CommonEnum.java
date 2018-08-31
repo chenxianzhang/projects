@@ -98,4 +98,30 @@ public class CommonEnum {
         }
     }
 
+    /**
+     * 评分类型
+     */
+    public enum GradeType {
+        SELF_EVA("SELF_EVA", "自评"),
+        GROUP_INNER_EVA("GROUP_INNER_EVA", "组内互评"),
+        GROUP_INTERBLOCK_EVA("GROUP_INTERBLOCK_EVA", "组间互评");
+
+        private String value;
+
+        private String text;
+
+        GradeType(String value, String text) {
+            this.value = value;
+            this.text = text;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
+
 }

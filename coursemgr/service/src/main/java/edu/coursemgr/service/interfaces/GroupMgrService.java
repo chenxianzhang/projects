@@ -65,4 +65,19 @@ public interface GroupMgrService {
      */
     GroupDetail getGroupDetailByStudent(String courseId, String studentNo);
 
+    /**
+     * 确定当前课程是否已完成分组
+     * @param courseId
+     * @return
+     */
+    boolean checkCourseGrouped(String courseId);
+
+    /**
+     * 更新组成员评分对象
+     * @param courseId
+     * @param markType
+     * @return
+     */
+    boolean updateGroupMemberGradeObj(Integer courseId, String markType);
+
 }

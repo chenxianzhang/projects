@@ -120,4 +120,15 @@ public class GroupMgrController extends BaseController {
         return groupMgrService.getGroupDetailByStudent(courseId, studentNo);
     }
 
+    @RequestMapping(value="/checkCourseGrouped", method=RequestMethod.POST)
+    @ResponseBody
+    public boolean checkCourseGrouped(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return groupMgrService.checkCourseGrouped(courseId);
+    }
+
 }

@@ -210,11 +210,123 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         return null;
     }
 
+    @Override
+    public boolean checkCourseGrouped(String courseId) {
+        List<User> userList = userMapper.selectSomeNoGroup(Integer.valueOf(courseId));
+        if (userList != null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean updateGroupMemberGradeObj(Integer courseId, String markType) {
+
+        Map<Integer, List<GroupMember>> memberMap = updateMemberGradeObj(
+                courseId, markType);
+        if (memberMap != null) {
+            for (Map.Entry<Integer, List<GroupMember>> entry : memberMap.entrySet()) {
+                updateBatch(entry.getValue());
+            }
+        }
+        return true;
+    }
+
+    private Map<Integer, List<GroupMember>> updateMemberGradeObj(Integer courseId, String markType) {
+        // 根据课程id获取所有组成员信息
+        List<GroupMember> groupMembers = groupMemberMapper.selectByCourseId(courseId);
+        if (groupMembers == null) {
+            return null;
+        }
+        // 根据组分配信息
+        Map<Integer, List<GroupMember>> memberMap = new HashMap<>();
+        for (GroupMember member : groupMembers) {
+            if (!memberMap.containsKey(member.getGroupId())) {
+                memberMap.put(member.getGroupId(), new ArrayList<>());
+            }
+            memberMap.get(member.getGroupId()).add(member);
+        }
+
+        // 判断当前评分类型，根据不同的类型进行数据更新
+        if (markType.equals(CommonEnum.GradeType.GROUP_INNER_EVA.getValue())) {
+            for (Map.Entry<Integer, List<GroupMember>> entry : memberMap.entrySet()) {
+                groupInnerEva(entry.getValue());
+            }
+        } else {
+            List<Integer> keyList = new ArrayList<>();
+            keyList.addAll(memberMap.keySet());
+            for (int i = 0; i < keyList.size(); i++) {
+                if (i == (keyList.size() - 1)) {
+                    groupInterBlockEva(memberMap.get(keyList.get(i)), memberMap.get(keyList.get(0)));
+                    break;
+                }
+                groupInterBlockEva(memberMap.get(keyList.get(i)), memberMap.get(keyList.get(i + 1)));
+            }
+        }
+
+        return memberMap;
+    }
+
+    private void groupInnerEva(List<GroupMember> groupMembers) {
+        for (int i = 0; i < groupMembers.size(); i++) {
+            if (i == (groupMembers.size() - 1)) {
+                groupMembers.get(i).setGradeObjNo(groupMembers.get(0).getStudentNo());
+                break;
+            }
+            groupMembers.get(i).setGradeObjNo(groupMembers.get(i + 1).getStudentNo());
+        }
+    }
+
+    /**
+     *
+     * @param prevList  数量大的组  p1,p2,p3,p4,p5,p6
+     * @param lastList  数量稍小的组 l1,l2         ->p1-l1-p2-l2-p3 l1-p1 l2-p4 l1-p5 l2-p6
+     */
+    private void groupInterBlockEva(List<GroupMember> prevList, List<GroupMember> lastList) {
+        for (int i = 0; i < prevList.size(); i++) {
+            if (i >= lastList.size()) {
+                if ((i + 1) < prevList.size()) {
+                    lastList.get(i % lastList.size()).setGradeObjNo(getGradeObjNo(
+                            lastList.get(i % lastList.size()).getGradeObjNo(),
+                            prevList.get(i + 1).getStudentNo()));
+                } else {
+                    lastList.get(i % lastList.size()).setGradeObjNo(getGradeObjNo(
+                            lastList.get(i % lastList.size()).getGradeObjNo(),
+                            prevList.get(0).getStudentNo()));
+                }
+
+            } else {
+                prevList.get(i).setGradeObjNo(lastList.get(i).getStudentNo());
+                if ((i + 1) < prevList.size()) {
+                    lastList.get(i).setGradeObjNo(prevList.get(i + 1).getStudentNo());
+                } else {
+                    lastList.get(i).setGradeObjNo(prevList.get(0).getStudentNo());
+                }
+            }
+        }
+    }
+
+    private String getGradeObjNo(String origin, String dst) {
+        if (origin.isEmpty()) {
+            return dst;
+        }
+        return String.format("%s,%s", origin, dst);
+    }
+
+
     private void insertBatch(List<GroupMember> groupMembers) {
         if (groupMembers == null) {
             return;
         }
 
         groupMembers.forEach(groupMember -> groupMemberMapper.insert(groupMember));
+    }
+
+    private void updateBatch(List<GroupMember> groupMembers) {
+        if (groupMembers == null) {
+            return;
+        }
+
+        groupMembers.forEach(groupMember -> groupMemberMapper.updateById(groupMember));
     }
 }
