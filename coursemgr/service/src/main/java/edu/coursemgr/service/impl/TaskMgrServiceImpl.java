@@ -51,6 +51,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         // 如果不存在则插入一条新的记录
         if (taskId == null) {
             courseTasksMapper.insert(taskDetail.getTask());
+            taskId = taskDetail.getTask().getId();
         }
 
         illegal = taskDetail.getTask().getId() == null;
