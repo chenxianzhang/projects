@@ -49,6 +49,17 @@
     from course_tasks
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectSomeByMarkType" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from course_tasks
+    where id in (
+    select taskId
+    from student_tasks
+    where studentNo=#{studentNo, jdbcType=VARCHAR} and status='TO_REVIEW')
+    and courseId=#{courseId,jdbcType=INTEGER}
+    and markType=#{markType, jdbcType=VARCHAR}
+  </select>
   <select id="getCourseTaskSituation" resultMap="CourseTaskSituationMap" parameterType="java.lang.Integer" >
     select id, courseId,name,publishTime,startTime,deadline
     (select COUNT(studentNo) from course_students where courseId=#{courseId, jdbcType=INTEGER} GROUP BY studentNo) as totalPersonCnt,

@@ -8,6 +8,7 @@ import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.StudentPaper;
 import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.*;
+import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.service.interfaces.GroupMgrService;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CollectionUtils;
@@ -41,7 +42,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     private StudentPaperMapper studentPaperMapper;
 
     @Autowired
-    private GroupMgrService groupMgrService;
+    private GradeMgrService gradeMgrService;
 
     @Override
     public Map<String, Object>  saveTask(CourseTaskDetail taskDetail) throws Exception {
@@ -58,8 +59,8 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
 
         // 根据所选择的主题的评分规则，更新各组成员的评分对象
-        illegal = groupMgrService.updateGroupMemberGradeObj(taskDetail.getTask().getCourseId(),
-                taskDetail.getTask().getMarkType());
+        illegal = gradeMgrService.updateGroupMemberGradeObj(taskDetail.getTask().getCourseId(),
+                taskDetail.getTask().getMarkType(), taskDetail.getTask());
         if (!illegal) {
             throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
         }
@@ -121,7 +122,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (studentTaskDetails != null) {
             studentTaskDetails.forEach(item -> {
                 if (CommonUtils.isEmpty(item.getStatus())) {
-                    item.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getName());
+                    item.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
                 }
             });
         }

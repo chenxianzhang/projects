@@ -110,7 +110,17 @@ CREATE TABLE `group_memeber` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`groupId` INT,    #所属分组id
   `studentNo` varchar(20),    #组内成员  关联user serialNo
+  `courseId` int
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `grade_relate`;
+CREATE TABLE `grade_relate` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `studentNo` varchar(20),    #评分人  关联user serialNo
+  `gradeObjName` varchar(20), #评分对象名称
   `gradeObjNo` varchar(20),   #评分对象
+  `taskId` INT,   #评分任务id
+  `taskName` varchar(20), #评分任务名称
   `courseId` int
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

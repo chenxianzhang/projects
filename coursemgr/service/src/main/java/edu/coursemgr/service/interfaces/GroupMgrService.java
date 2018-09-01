@@ -1,6 +1,7 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.common.CommonEnum;
+import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.pojo.AssignGroupModel;
 import edu.coursemgr.pojo.GroupDetail;
 
@@ -71,13 +72,4 @@ public interface GroupMgrService {
      * @return
      */
     Integer checkCourseGrouped(String courseId);
-
-    /**
-     * 更新组成员评分对象
-     * @param courseId
-     * @param markType
-     * @return
-     */
-    boolean updateGroupMemberGradeObj(Integer courseId, String markType);
-
 }

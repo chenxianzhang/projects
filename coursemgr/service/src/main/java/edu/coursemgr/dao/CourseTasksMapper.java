@@ -25,4 +25,6 @@ public interface CourseTasksMapper {
     List<CourseTaskSituation> getCourseTaskSituation(Integer courseId);
 
     List<StudentTaskInfo> selectStuTaskInfo(Map<String, Object> params);
+
+    List<CourseTasks> selectSomeByMarkType(Map<String, Object> params);
 }

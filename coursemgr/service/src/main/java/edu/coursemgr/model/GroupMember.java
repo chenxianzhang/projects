@@ -11,8 +11,6 @@ public class GroupMember implements Serializable {
 
     private String studentNo;
 
-    private String gradeObjNo;
-
     private Integer courseId;
 
     private static final long serialVersionUID = 1L;
@@ -49,11 +47,4 @@ public class GroupMember implements Serializable {
         this.courseId = courseId;
     }
 
-    public String getGradeObjNo() {
-        return gradeObjNo;
-    }
-
-    public void setGradeObjNo(String gradeObjNo) {
-        this.gradeObjNo = gradeObjNo;
-    }
 }

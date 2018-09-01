@@ -7,7 +7,7 @@ public class CommonEnum {
 
     public enum StudentTaskStatus {
         FINISHED("FINISHED", "完成"),
-        TO_REVIEW("TO_REVIEW", "待完成"),
+        TO_REVIEW("TO_REVIEW", "待完成"),  // 待评阅
         UNCOMMITTED("UNCOMMITTED", "未提交");
 
         private String value;

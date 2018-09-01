@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.GradeRelateMapper" >
+    <resultMap id="BaseResultMap" type="edu.coursemgr.model.GradeRelate" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+        <result column="gradeObjNo" property="gradeObjNo" jdbcType="VARCHAR" />
+        <result column="gradeObjName" property="gradeObjName" jdbcType="VARCHAR" />
+        <result column="taskId" property="taskId" jdbcType="INTEGER" />
+        <result column="taskName" property="taskName" jdbcType="VARCHAR" />
+        <result column="courseId" property="courseId" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, studentNo, gradeObjNo, gradeObjName, taskId, taskName, courseId
+    </sql>
+    <insert id="insert" parameterType="edu.coursemgr.model.GradeRelate" >
+        insert into grade_relate ( studentNo,gradeObjNo,gradeObjName,
+        taskId,taskName,courseId
+        )
+        values (#{studentNo,jdbcType=VARCHAR}, #{gradeObjNo,jdbcType=VARCHAR},
+        #{gradeObjName,jdbcType=VARCHAR},  #{taskId,jdbcType=INTEGER},
+        #{taskName,jdbcType=VARCHAR},#{courseId,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="edu.coursemgr.model.GroupMember" >
+        insert into grade_relate
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="studentNo != null" >
+                studentNo,
+            </if>
+            <if test="gradeObjNo != null" >
+                gradeObjNo,
+            </if>
+            <if test="gradeObjName != null" >
+                gradeObjName,
+            </if>
+            <if test="taskId != null" >
+                taskId,
+            </if>
+            <if test="taskName != null" >
+                taskName,
+            </if>
+            <if test="courseId != null" >
+                courseId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="groupId != null" >
+                #{groupId,jdbcType=INTEGER},
+            </if>
+            <if test="studentNo != null" >
+                #{studentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="gradeObjNo != null" >
+                #{gradeObjNo,jdbcType=VARCHAR},
+            </if>
+            <if test="gradeObjName != null" >
+                #{gradeObjName,jdbcType=VARCHAR},
+            </if>
+            <if test="taskId != null" >
+                #{taskId,jdbcType=INTEGER},
+            </if>
+            <if test="taskName != null" >
+                #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="courseId != null" >
+                #{courseId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByTaskId" parameterType="java.lang.Integer" >
+        delete from `grade_relate`
+        where taskId = #{taskId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectSomeByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        select
+        <include refid="Base_Column_List" />
+        from grade_relate as gr,
+        (select studentNo,taskId
+        from student_tasks where status='TO_REVIEW') as tmp
+        where gr.studentNo=#{studentNo, jdbcType=VARCHAR}
+        and gr.courseId=#{courseId, jdbcType=INTEGER}
+        and tmp.taskId=gr.taskId
+        and FIND_IN_SET(tmp.studentNo,gr.gradeObjNo)
+    </select>
+</mapper>
