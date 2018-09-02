@@ -15,6 +15,8 @@ public class CourseTasks implements Serializable {
 
     private Float weight;
 
+    private String status;
+
     private Date publishTime;
 
     private Date startTime;
@@ -96,5 +98,13 @@ public class CourseTasks implements Serializable {
 
     public void setMarkType(String markType) {
         this.markType = markType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

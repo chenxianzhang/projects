@@ -1,5 +1,7 @@
 package edu.coursemgr.common;
 
+import javafx.concurrent.Task;
+
 /**
  * Created by chenxianzhang on 2018/8/24 0024 上午 1:38
  */
@@ -32,6 +34,27 @@ public class CommonEnum {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    public enum TaskStatus {
+        PUBLISHED("PUBLISHED", "已发布"),
+        NOT_PUBLISH("NOT_PUBLISH", "未发布");
+
+        private String value;
+        private String text;
+
+        TaskStatus(String value, String text) {
+            this.value = value;
+            this.text = text;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getText() {
+            return text;
         }
     }
 

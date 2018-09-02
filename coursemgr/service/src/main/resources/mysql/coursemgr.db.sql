@@ -46,6 +46,7 @@ CREATE TABLE `course_tasks` (
   `courseId` INT NOT NULL,  #课程id
 	`name` varchar(20) NOT NULL,    #任务名称
 	`weight` float,        #任务权重
+	`status` varchar(20), #任务状态，发布，未发布
 	`publishTime` datetime,        #发布时间
 	`startTime` datetime,     #任务开始时间
 	`deadline` datetime,             #截止时间

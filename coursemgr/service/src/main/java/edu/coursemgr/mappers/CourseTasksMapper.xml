@@ -6,6 +6,7 @@
     <result column="courseId" property="courseId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
@@ -19,6 +20,7 @@
     <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="totalPersonCnt" property="totalPersonCnt" jdbcType="INTEGER" />
     <result column="finishPersonCnt" property="finishPersonCnt" jdbcType="INTEGER" />
   </resultMap>
@@ -28,7 +30,7 @@
     <result column="score" property="score" jdbcType="REAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, courseId, name, weight, publishTime, startTime, deadline, markType, totalScore
+    id, courseId, name, weight, status,publishTime, startTime, deadline, markType, totalScore
   </sql>
   <select id="selectStuTaskInfo" resultMap="StudentTaskInfoMap" parameterType="java.util.HashMap" >
     select ct.name as taskName, ct.weight as taskWeight, st.score
@@ -61,7 +63,7 @@
     and markType=#{markType, jdbcType=VARCHAR}
   </select>
   <select id="getCourseTaskSituation" resultMap="CourseTaskSituationMap" parameterType="java.lang.Integer" >
-    select id, courseId,name,publishTime,startTime,deadline
+    select id, courseId,name,publishTime,startTime,deadline,status,
     (select COUNT(studentNo) from course_students where courseId=#{courseId, jdbcType=INTEGER} GROUP BY studentNo) as totalPersonCnt,
     (select COUNT(studentNo) from student_tasks where taskId=ct.id GROUP BY studentNo) as finishPersonCnt
     from course_tasks ct where courseId=#{courseId, jdbcType=INTEGER}
@@ -72,10 +74,10 @@
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.CourseTasks" useGeneratedKeys="true" keyProperty="id">
     insert into course_tasks (courseId, name,
-      weight, publishTime, startTime, deadline,markType,
+      weight,status, publishTime, startTime, deadline,markType,
       totalScore)
     values (#{courseId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
-      #{weight,jdbcType=REAL}, #{publishTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP},
+      #{weight,jdbcType=REAL},#{status,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP},
     #{markType,jdbcType=VARCHAR}, #{totalScore,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.CourseTasks" >
@@ -92,6 +94,9 @@
       </if>
       <if test="weight != null" >
         weight,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="publishTime != null" >
         publishTime,
@@ -122,6 +127,9 @@
       <if test="weight != null" >
         #{weight,jdbcType=REAL},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
       <if test="publishTime != null" >
         #{publishTime,jdbcType=TIMESTAMP},
       </if>
@@ -151,6 +159,9 @@
       <if test="weight != null" >
         weight = #{weight,jdbcType=REAL},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
       <if test="publishTime != null" >
         publishTime = #{publishTime,jdbcType=TIMESTAMP},
       </if>
@@ -174,10 +185,11 @@
     set courseId = #{courseId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=REAL},
+      status = #{status,jdbcType=VARCHAR},
       publishTime = #{publishTime,jdbcType=TIMESTAMP},
       startTime = #{startTime,jdbcType=TIMESTAMP},
       deadline = #{deadline,jdbcType=TIMESTAMP},
-      markType = #{deadline,jdbcType=VARCHAR},
+      markType = #{markType,jdbcType=VARCHAR},
       totalScore = #{totalScore,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
