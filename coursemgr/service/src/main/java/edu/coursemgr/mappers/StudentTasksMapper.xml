@@ -134,4 +134,10 @@
       submitTime = #{submitTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateStatus" parameterType="java.util.HashMap" >
+    update student_tasks
+    set status = #{status,jdbcType=CHAR}
+    where taskId = #{taskId,jdbcType=INTEGER}
+    and studentNo = #{studentNo,jdbcType=VARCHAR}
+  </update>
 </mapper>

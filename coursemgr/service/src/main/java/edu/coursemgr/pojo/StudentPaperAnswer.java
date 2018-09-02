@@ -14,7 +14,11 @@ public class StudentPaperAnswer implements Serializable {
 
     private String studentNo;
 
-    List<TaskQuestions> questionList;
+    private String courseId;
+
+    private String taskId;
+
+    List<StudentQuestion> questionList;
 
 
     public String getStudentNo() {
@@ -25,11 +29,27 @@ public class StudentPaperAnswer implements Serializable {
         this.studentNo = studentNo;
     }
 
-    public List<TaskQuestions> getQuestionList() {
+    public List<StudentQuestion> getQuestionList() {
         return questionList;
     }
 
-    public void setQuestionList(List<TaskQuestions> questionList) {
+    public void setQuestionList(List<StudentQuestion> questionList) {
         this.questionList = questionList;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 }

@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by chenxianzhang on 2018/8/24 0024 上午 12:14
@@ -152,7 +149,15 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                     StudentPaper paper = new StudentPaper();
                     paper.setStudentNo(stuPaperAnswer.getStudentNo());
                     paper.setAnswers(question.getAnswers());
-                    paper.setQuestionId(question.getId());
+                    paper.setQuestionId(question.getQuestionId());
+                    paper.setQuestionType(question.getQuestionType());
+
+                    // 计算得分
+                    paper.setScore(0f);
+                    if (isRight(question.getStandardAnswers(), question.getAnswers())) {
+                        paper.setScore(question.getScore());
+                    }
+
                     return paper;
                 });
         if (studentPapers == null) {
@@ -161,7 +166,26 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (studentPaperMapper.insertBatch(studentPapers) == 0 ) {
             return false;
         }
+        // 更改学生task的完成状态
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskId", stuPaperAnswer.getTaskId());
+        params.put("studentNo", stuPaperAnswer.getStudentNo());
+        params.put("status", CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
+        studentTasksMapper.updateStatus(params);
+
         return true;
+    }
+
+    private boolean isRight(String standardAnswer, String answer) {
+        List<String> answers = Arrays.asList(answer.split(","));
+        boolean right = true;
+        for (String aws : answers) {
+            if (!standardAnswer.contains(aws)) {
+                right = false;
+                break;
+            }
+        }
+        return right;
     }
 
     private void updateBatch(List<TaskQuestions> taskQuestions) {

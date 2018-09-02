@@ -131,18 +131,19 @@ public class UserMgrServiceImpl implements UserMgrService {
     }
 
     private void readData2DB(List<ArrayList<String>> list, String courseId) throws Exception {
-        for (int i = 1; i< list.size(); i++) {
+        for (int i = 1; i < list.size(); i++) {
             User user = list2Obj(list.get(i));
             if (user == null) {
                 continue;
             }
             User tmpUser = userMapper.selectBySerialNo(user.getSerialNo());
-            if (tmpUser != null) {
-                continue;
+            // 如果用户不存在数据表中，则插入
+            if (tmpUser == null) {
+                if (userMapper.insert(user) == 0) {
+                    throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
+                }
             }
-            if (userMapper.insert(user) == 0) {
-                throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
-            }
+
             // 并将数据关联到课程学生表中
             CourseStudents courseStudents = new CourseStudents();
             courseStudents.setCourseId(Integer.valueOf(courseId));

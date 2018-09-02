@@ -20,6 +20,13 @@ public interface StudentTasksMapper {
 
     int updateByPrimaryKey(StudentTasks record);
 
+    /**
+     * 更新任务状态
+     * @param params
+     * @return
+     */
+    int updateStatus(Map params);
+
     List<StudentTaskDetail> getStudentTaskSituation(Map params);
 
     List<StudentTaskSituation> getSelfTaskSituation(Map params);
