@@ -64,7 +64,9 @@ public class LoginController extends BaseController {
         return loginService.findUser(serialNo);
     }
 
-    public Object redister(@RequestBody User user) throws Exception {
+    @RequestMapping(value="/register", method=RequestMethod.POST)
+    @ResponseBody
+    public Object register(@RequestBody User user) throws Exception {
         if (null == user) {
             throw new Exception("信息不能为空");
         }
