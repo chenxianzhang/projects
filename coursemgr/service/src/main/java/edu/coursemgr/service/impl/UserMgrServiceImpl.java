@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by chenxianzhang on 2018/8/23 0023 下午 10:58
@@ -88,6 +86,14 @@ public class UserMgrServiceImpl implements UserMgrService {
     public List<User> getNoGroupStuList(String courseId) {
 
         return userMapper.selectSomeNoGroup(Integer.valueOf(courseId));
+    }
+
+    @Override
+    public int deleteStudent(String courseId, String studentNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        return courseStudentsMapper.deleteByStudent(params);
     }
 
     private void udpateHeaderIndex(ArrayList<String> headers) {

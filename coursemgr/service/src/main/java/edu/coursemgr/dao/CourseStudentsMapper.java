@@ -3,9 +3,12 @@ package edu.coursemgr.dao;
 import edu.coursemgr.model.CourseStudents;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseStudentsMapper {
     int deleteByPrimaryKey(Integer id);
+
+    int deleteByStudent(Map params);
 
     int insert(CourseStudents record);
 

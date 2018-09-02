@@ -39,4 +39,12 @@ public interface UserMgrService {
      * @return
      */
     List<User> getNoGroupStuList(String courseId);
+
+    /**
+     * 删除指定课程下的学生关联关系
+     * @param courseId
+     * @param studentNo
+     * @return
+     */
+    int deleteStudent(String courseId, String studentNo);
 }

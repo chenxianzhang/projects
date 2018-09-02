@@ -27,4 +27,6 @@ public interface CourseTasksMapper {
     List<StudentTaskInfo> selectStuTaskInfo(Map<String, Object> params);
 
     List<CourseTasks> selectSomeByMarkType(Map<String, Object> params);
+
+    int deleteTask(Integer taskId);
 }

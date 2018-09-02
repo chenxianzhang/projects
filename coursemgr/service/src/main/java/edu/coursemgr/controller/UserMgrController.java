@@ -83,4 +83,17 @@ public class UserMgrController extends BaseController {
         return userMgrService.getNoGroupStuList(courseId);
     }
 
+    @RequestMapping(value="/deleteStudent", method=RequestMethod.POST)
+    @ResponseBody
+    public Object deleteStudent(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String studentNo = getParam(requestMap, "studentNo");
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(studentNo) || CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return userMgrService.deleteStudent(courseId, studentNo);
+    }
+
 }

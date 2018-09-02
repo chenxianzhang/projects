@@ -69,4 +69,12 @@ public interface TaskMgrService {
      */
     boolean submitTaskPaper(StudentPaperAnswer stuPaperAnswer);
 
+    /**
+     * 删除任务
+     * @param courseId
+     * @param taskId
+     * @return
+     */
+    int deleteTask(String courseId, String taskId);
+
 }

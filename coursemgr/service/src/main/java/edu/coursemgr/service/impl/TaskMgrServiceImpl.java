@@ -176,6 +176,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return true;
     }
 
+    @Override
+    public int deleteTask(String courseId, String taskId) {
+        return courseTasksMapper.deleteTask(Integer.valueOf(taskId));
+    }
+
     private boolean isRight(String standardAnswer, String answer) {
         List<String> answers = Arrays.asList(answer.split(","));
         boolean right = true;

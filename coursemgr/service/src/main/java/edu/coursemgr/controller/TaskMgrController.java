@@ -118,4 +118,16 @@ public class TaskMgrController extends BaseController {
         return taskMgrService.submitTaskPaper(studentPaperAnswer);
     }
 
+    @RequestMapping(value="/deleteTask", method=RequestMethod.POST)
+    @ResponseBody
+    public Object deleteTask(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String taskId = getParam(requestMap, "taskId");
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(taskId) || CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return taskMgrService.deleteTask(courseId, taskId);
+    }
+
 }
