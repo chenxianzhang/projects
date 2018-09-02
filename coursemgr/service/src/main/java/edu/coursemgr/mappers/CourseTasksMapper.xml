@@ -47,7 +47,7 @@
     select
     <include refid="Base_Column_List" />
     from course_tasks
-    where id = #{id,jdbcType=INTEGER}
+    where courseId = #{courseId,jdbcType=INTEGER}
   </select>
   <select id="selectSomeByMarkType" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select
