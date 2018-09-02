@@ -109,7 +109,9 @@ DROP TABLE IF EXISTS `group_member`;
 CREATE TABLE `group_memeber` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`groupId` INT,    #所属分组id
+	`groupNo` INT,    #所属分组序号
   `studentNo` varchar(20),    #组内成员  关联user serialNo
+  `studentName` varchar(20),    #组内成员名称
   `courseId` int
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

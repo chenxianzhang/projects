@@ -72,6 +72,8 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             member.setGroupId(group.getId());
             member.setStudentNo(student.getSerialNo());
             member.setCourseId(cseId);
+            member.setGroupNo(group.getGroupNo());
+            member.setStudentName(student.getName());
             groupMembers.add(member);
             if (groupMembers.size() == memCnt) {
                 insertBatch(groupMembers);
@@ -123,10 +125,16 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         // 新增组员
         List<GroupMember> groupMembers = CollectionUtils.arrayListCast(assignGroupModel.getStudentNoList(),
                 studentNo -> {
+                    User user = userMapper.selectBySerialNo(studentNo);
+                    if (user == null) {
+                        return null;
+                    }
                     GroupMember member = new GroupMember();
                     member.setGroupId(group.getId());
                     member.setStudentNo(studentNo);
+                    member.setGroupNo(group.getGroupNo());
                     member.setCourseId(assignGroupModel.getCourseId());
+                    member.setStudentName(user.getName());
                     return member;
                 });
         if (groupMembers != null) {

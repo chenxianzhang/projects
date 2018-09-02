@@ -3,6 +3,7 @@ package edu.coursemgr.dao;
 import edu.coursemgr.model.GroupMember;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GroupMemberMapper {
     int deleteByPrimaryKey(Integer id);
@@ -11,9 +12,9 @@ public interface GroupMemberMapper {
 
     int insertSelective(GroupMember record);
 
-    GroupMember selectByPrimaryKey(Integer id);
+    GroupMember selectById(Integer id);
 
-    int updateByPrimaryKeySelective(GroupMember record);
+    int updateByIdSelective(GroupMember record);
 
     int updateById(GroupMember record);
 
@@ -30,4 +31,11 @@ public interface GroupMemberMapper {
      * @return
      */
     List<GroupMember> selectByCourseId(Integer courseId);
+
+    /**
+     * 根据课程id和学号获取其所在组的信息
+     * @param params
+     * @return
+     */
+    GroupMember selectByMember(Map<String, Object> params);
 }

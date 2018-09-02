@@ -29,6 +29,4 @@ public interface UserMapper {
     List<UserGroup> selectUserGroup(Integer courseId);
 
     List<User> selectSomeNoGroup(Integer courseId);
-
-    UserGroup selectOneUserGroup(Map params);
 }

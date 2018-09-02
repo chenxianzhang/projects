@@ -4,13 +4,15 @@
   <resultMap id="BaseResultMap" type="edu.coursemgr.model.GroupMember" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="groupId" property="groupId" jdbcType="INTEGER" />
+    <result column="groupNo" property="groupNo" jdbcType="INTEGER" />
     <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+    <result column="studentName" property="studentName" jdbcType="VARCHAR" />
     <result column="courseId" property="courseId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, groupId, studentNo,gradeObjNo, courseId
+    id, groupId, groupNo,studentNo,studentName,gradeObjNo, courseId
   </sql>
-  <select id="updateById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from group_member
@@ -22,15 +24,22 @@
     from group_member
     where courseId = #{courseId,jdbcType=INTEGER} order by groupId asc
   </select>
+  <select id="selectByMember" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from group_member
+    where courseId = #{courseId,jdbcType=INTEGER}
+    and studentNo=#{studentNo, jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from group_member
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.GroupMember" >
-    insert into group_member ( groupId, studentNo,courseId
+    insert into group_member ( groupId, groupNo,studentNo,studentName,courseId
       )
-    values ( #{groupId,jdbcType=INTEGER},
-    #{studentNo,jdbcType=VARCHAR},  #{courseId,jdbcType=INTEGER}
+    values ( #{groupId,jdbcType=INTEGER},#{groupNo,jdbcType=INTEGER},
+    #{studentNo,jdbcType=VARCHAR}, #{studentName,jdbcType=VARCHAR}, #{courseId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.coursemgr.model.GroupMember" >
@@ -42,8 +51,14 @@
       <if test="groupId != null" >
         groupId,
       </if>
+      <if test="groupNo != null" >
+        groupNo,
+      </if>
       <if test="studentNo != null" >
         studentNo,
+      </if>
+      <if test="studentName != null" >
+        studentName,
       </if>
       <if test="courseId != null" >
         courseId,
@@ -56,8 +71,14 @@
       <if test="groupId != null" >
         #{groupId,jdbcType=INTEGER},
       </if>
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=INTEGER},
+      </if>
       <if test="studentNo != null" >
         #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
       </if>
       <if test="courseId != null" >
         #{courseId,jdbcType=VARCHAR},
@@ -93,14 +114,20 @@
       <!--</trim>-->
     </foreach>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.GroupMember" >
+  <update id="updateByIdSelective" parameterType="edu.coursemgr.model.GroupMember" >
     update group_member
     <set >
       <if test="groupId != null" >
         groupId = #{groupId,jdbcType=INTEGER},
       </if>
+      <if test="groupNo != null" >
+        groupNo = #{groupNo,jdbcType=INTEGER},
+      </if>
       <if test="studentNo != null" >
         studentNo = #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        studentName = #{studentName,jdbcType=VARCHAR},
       </if>
       <if test="courseId != null" >
         courseId = #{courseId,jdbcType=INTEGER},
@@ -108,10 +135,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="edu.coursemgr.model.GroupMember" >
+  <update id="updateById" parameterType="edu.coursemgr.model.GroupMember" >
     update group_member
     set groupId = #{groupId,jdbcType=INTEGER},
+      groupNo = #{groupNo,jdbcType=INTEGER},
       studentNo = #{studentNo,jdbcType=VARCHAR},
+    studentName = #{studentName,jdbcType=VARCHAR},
     courseId = #{courseId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

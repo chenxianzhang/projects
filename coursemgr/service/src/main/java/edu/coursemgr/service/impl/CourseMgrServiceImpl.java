@@ -3,8 +3,10 @@ package edu.coursemgr.service.impl;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.dao.CourseMapper;
 import edu.coursemgr.dao.CourseTasksMapper;
+import edu.coursemgr.dao.GroupMemberMapper;
 import edu.coursemgr.dao.UserMapper;
 import edu.coursemgr.model.Course;
+import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.pojo.GradeDetail;
 import edu.coursemgr.pojo.StudentTaskInfo;
 import edu.coursemgr.pojo.UserGroup;
@@ -34,6 +36,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
 
     @Autowired
     private CourseTasksMapper courseTasksMapper;
+
+    @Autowired
+    private GroupMemberMapper groupMemberMapper;
 
     @Override
     public List<Course> getTeacherCourseList(String teacherNo) {
@@ -119,13 +124,13 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         Map<String, Object> params = new HashMap<>(2);
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
-        UserGroup userGroup = userMapper.selectOneUserGroup(params);
+        GroupMember groupMember = groupMemberMapper.selectByMember(params);
 
-        if (userGroup != null) {
+        if (groupMember != null) {
             GradeDetail detail = new GradeDetail();
-            detail.setGroupNo(userGroup.getGroupNo());
-            detail.setStudentName(userGroup.getStudentName());
-            detail.setStudentNo(userGroup.getStudentNo());
+            detail.setGroupNo(groupMember.getGroupNo());
+            detail.setStudentName(groupMember.getStudentName());
+            detail.setStudentNo(groupMember.getStudentNo());
 
             List<StudentTaskInfo> taskInfos = courseTasksMapper.selectStuTaskInfo(params);
             detail.setStudentTaskInfos(taskInfos);

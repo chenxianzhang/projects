@@ -9,7 +9,11 @@ public class GroupMember implements Serializable {
 
     private Integer groupId;
 
+    private Integer groupNo;
+
     private String studentNo;
+
+    private String studentName;
 
     private Integer courseId;
 
@@ -47,4 +51,19 @@ public class GroupMember implements Serializable {
         this.courseId = courseId;
     }
 
+    public Integer getGroupNo() {
+        return groupNo;
+    }
+
+    public void setGroupNo(Integer groupNo) {
+        this.groupNo = groupNo;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
 }
