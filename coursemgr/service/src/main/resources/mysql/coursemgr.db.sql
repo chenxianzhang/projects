@@ -28,7 +28,7 @@ CREATE TABLE `course` (
   `name` varchar(20) NOT NULL,  #课程名称
 	`credit` INT,                #学分
 	`description` LONGTEXT,
-	`creatorNo` varchar(10),     #创建者编号-教师职工号
+	`creatorNo` varchar(20),     #创建者编号-教师职工号
 	`createDate` datetime,
 	`groupingType`  varchar(15)   #分组类型  默认一个分组？
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
