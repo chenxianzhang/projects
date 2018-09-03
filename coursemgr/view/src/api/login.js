@@ -47,10 +47,10 @@ export function findUser(serialNo) {
     });
 }
 
-export function register(serialNo) {
+export function register(params) {
   return request({
       url: '/login/register',
       method: 'post',
-      data: { serialNo: serialNo }
+      data: params
     });
 }

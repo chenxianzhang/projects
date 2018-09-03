@@ -176,7 +176,7 @@ export default {
     this.getRoleList();
     if(this.$route.params && this.$route.params.from && this.$route.params.from === 'registery'){
       this.loginForm.role = this.$route.params.role;
-      this.loginForm.username = this.$route.params.name;
+      this.loginForm.username = this.$route.params.serialNo;
       this.loginForm.password = this.$route.params.pwd;
     }
   },

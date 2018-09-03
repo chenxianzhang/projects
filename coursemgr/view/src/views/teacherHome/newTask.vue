@@ -1,17 +1,20 @@
 <template>
   <div class="main-container">
       <div class="step">{{currentStep}}</div>
-      <task-info :taskId="taskId" :operate="'createTask'"></task-info>
+      <task-info :taskId="taskId" :operate="TASK_OPERATOR_TYPE.TEACHER_STATEMENT"></task-info>
   </div>
 </template>
 
 <script>
   import TaskInfo from '../../components/taskInfo'
-    export default {
+  import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
+
+  export default {
       name: "newTask",
       components:{TaskInfo},
       data(){
           return {
+            TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
             currentStep: '第一步：编辑题目',
             taskId:''
           }

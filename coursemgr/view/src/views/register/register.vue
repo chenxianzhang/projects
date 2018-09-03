@@ -84,7 +84,7 @@
               this.$message.success('注册成功');
               this.$router.push({
                 name:"login",
-                params:{from:'registery',role:'teacher', name:this.regInfo.name, pwd:this.regInfo.password}});
+                params:{from:'registery',role:'teacher', serialNo:this.regInfo.serialNo, pwd:this.regInfo.password}});
             });
         },
         handleCancel(){

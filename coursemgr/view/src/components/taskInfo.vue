@@ -2,75 +2,131 @@
   <div class="main-container">
     <div class="task-name">
       任务名称：
-      <el-input class="task-name-input" placeholder="请填写任务名称" v-model="subject.taskName"></el-input>
+      <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+                class="task-name-input"
+                placeholder="请填写任务名称"
+                v-model="subject.taskName">
+      </el-input>
     </div>
     <div class="subjectStatic">选择题 {{subject.subjectForChoose.length}} 道，判断题 {{subject.subjectForJudge.length}} 道，
       主观题 {{subject.subjectForSubjective.length}} 道，
       总分值 <input v-model="totalScore" disabled/> 分，
-      权重：<input v-model="subject.weight" /> %。</div>
+      权重：<input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT" v-model="subject.weight" /> %。</div>
 
     <div class="subject-for-choose">
       <div class="subject-for-title">单选题</div>
-      <div class="subject-score-setting">设置分值：每题<input v-model="subject.subjectForChooseScore" style="width: 30px; height: 30px;" />分</div>
-      <div class="el-icon-plus" @click="addSubject('choose')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
+      <div class="subject-score-setting">
+        设置分值：每题
+        <input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+               v-model="subject.subjectForChooseScore"
+               style="width: 30px; height: 30px;" />
+        分
+      </div>
+      <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+           class="el-icon-plus"
+           @click="addSubject('choose')"
+           style=" margin-left: 30px; line-height: 40px; cursor: pointer;">
+      </div>
       <div class="subject-item" :class="(sub.stem === '' || sub.chooseItem.length === 0) ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForChoose">
-        <el-input style="width: calc(100% - 130px)" placeholder="请输入题目,并设置选项"  v-model="sub.stem"/>
-        <div class="el-icon-remove" @click="removeSubjectItem(index, 'choose')" style="margin-left: 10px; cursor: pointer;"></div>
-        <div class="el-icon-setting" @click="setChooseItems(index)" style="float: right; line-height: 40px; margin-right: 10px; cursor: pointer;">设置选项</div>
-        <div style="margin: 20px;">
-          <el-radio-group v-model="sub.answer" style=" display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap">
+        <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+                  style="width: calc(100% - 130px)"
+                  placeholder="请输入题目,并设置选项"
+                  v-model="sub.stem"></el-input>
+        <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+             class="el-icon-remove"
+             @click="removeSubjectItem(index, 'choose')"
+             style="margin-left: 10px; cursor: pointer;">
+        </div>
+        <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+             class="el-icon-setting"
+             @click="setChooseItems(index)"
+             style="float: right; line-height: 40px; margin-right: 10px; cursor: pointer;">
+          设置选项
+        </div>
+        <div style="margin: 20px 80px;">
+          <el-radio-group :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_UPLOAD_ANSWER && operate !== TASK_OPERATOR_TYPE.STUDENT_ANSWER"
+                          v-model="sub.answer"
+                          style=" display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap">
             <el-radio v-for="(cItem,idx) in sub.chooseItem" :label="cItem" :key="idx" style="margin: 5px;">{{cItem}}</el-radio>
           </el-radio-group>
         </div>
       </div>
     </div>
 
-    <div class="subject-for-judge">
+    <div class="subject-for-judge" v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT || subject.subjectForJudgeScore.length>0">
       <div class="subject-for-title">判断题</div>
-      <div style="float: left; line-height: 40px;">设置分值：每题<input v-model="subject.subjectForJudgeScore" style="width: 30px; height: 30px;" />分</div>
-      <div class="el-icon-plus" @click="addSubject('judge')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
+      <div style="float: left; line-height: 40px;">
+        设置分值：每题
+        <input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+               v-model="subject.subjectForJudgeScore"
+               style="width: 30px; height: 30px;" />分
+      </div>
+      <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+           class="el-icon-plus"
+           @click="addSubject('judge')"
+           style=" margin-left: 30px; line-height: 40px; cursor: pointer;">
+      </div>
       <div class="subject-item" :class="sub.stem === '' ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForJudge">
-        <el-input style="width: calc(100% - 130px)" placeholder="请输入题目" v-model="sub.stem"/>
-        <div class="el-icon-remove" @click="removeSubjectItem(index, 'judge')" style="margin-left: 10px; cursor: pointer;"></div>
+        <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+          style="width: calc(100% - 130px)"
+          placeholder="请输入题目"
+          v-model="sub.stem">
+        </el-input>
+        <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+             class="el-icon-remove"
+             @click="removeSubjectItem(index, 'judge')"
+             style="margin-left: 10px; cursor: pointer;"></div>
         <div style="margin: 20px;">
-          <el-radio-group v-model="sub.answer" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+          <el-radio-group :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_UPLOAD_ANSWER && operate !== TASK_OPERATOR_TYPE.STUDENT_ANSWER"
+                          v-model="sub.answer"
+                          style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
             <el-radio v-for="(cItem,idx) in sub.chooseItem" :label="cItem" :key="idx" style="margin: 5px;">{{cItem}}</el-radio>
           </el-radio-group>
         </div>
       </div>
     </div>
 
-    <div class="subject-for-subjective">
+    <div class="subject-for-subjective" v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT || subject.subjectForSubjective.length>0">
       <div class="subject-for-title">主观题</div>
       <div style="margin: 7px 20px; line-height: 40px; float: left">
-        <el-radio-group v-model="subject.subjectForSubjectiveMarkType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+        <el-radio-group v-model="subject.subjectForSubjectiveMarkType"
+                        :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+                        style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
           <el-radio label="自评" style="margin: 5px;">自评</el-radio>
           <el-radio label="组内互评" style="margin: 5px;">组内互评</el-radio>
           <el-radio label="组间互评" style="margin: 5px;">组间互评</el-radio>
         </el-radio-group>
       </div>
-      <div class="el-icon-plus" @click="addSubject('subjective')" style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
+      <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT" class="el-icon-plus" @click="addSubject('subjective')"
+           style=" margin-left: 30px; line-height: 40px; cursor: pointer;"></div>
 
 
       <div class="subject-item-subjective" :class="sub.stem === '' ? 'invalid' : ''" v-for="(sub,index) in subject.subjectForSubjective">
-        <el-input style="width: calc(100% - 250px); float: left;" placeholder="请输入题目"  v-model="sub.stem"/>
-        <div style="float: left; line-height: 40px;">设置分值：<input style="width: 30px; height: 30px;" v-model="sub.score" />分</div>
+        <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+                  style="width: calc(100% - 250px); float: left;"
+                  placeholder="请输入题目"
+                  v-model="sub.stem">
+        </el-input>
+        <div style="float: left; line-height: 40px;">
+          设置分值：<input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT" style="width: 30px; height: 30px;" v-model="sub.score" />分
+        </div>
 
-        <div class="el-icon-remove" @click="removeSubjectItem(index, 'subjective')" style="margin-left: 10px; cursor: pointer;
-          line-height: 40px; float: left;">
+        <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT" class="el-icon-remove subjective-item-remove"
+             @click="removeSubjectItem(index, 'subjective')">
         </div>
       </div>
     </div>
 
     <div class="inspire-date">
       <span>截止日期</span>
-      <el-date-picker v-model="subject.inspireDate" type="date" placeholder="选择日期">
+      <el-date-picker :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT" v-model="subject.inspireDate" type="date" placeholder="选择日期">
       </el-date-picker>
     </div>
 
     <div class="submit-btn-container">
-      <el-button type="primary" @click="handleNextStep">下一步</el-button>
-      <el-button type="primary" @click="handleUploadAnswer">提交</el-button>
+      <el-button v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT" type="primary" @click="handleNextStep">下一步</el-button>
+      <el-button v-if="operate===TASK_OPERATOR_TYPE.TEACHER_UPLOAD_ANSWER" type="primary" @click="handleUploadAnswer">上传答案</el-button>
+      <el-button v-if="operate===TASK_OPERATOR_TYPE.STUDENT_ANSWER" type="primary" @click="handleSubmitAnswer">提交答案</el-button>
     </div>
     <select-setting :dialogFormVisible="dialogFormVisible" @hide="hideDialog" @selectionsHandle="selectionsHandle">
     </select-setting>
@@ -80,12 +136,16 @@
 <script>
   import SubjectSelectItemSetting from './subjectSelectItemSetting'
   import {saveTask, getTaskDetailByTaskId} from '@/api/task'
+  import {TASK_OPERATOR_TYPE} from "../utils/statusUtil";
+
   export default {
     name: "newTask",
+    //operate --教师->拟题(T_statement)、传答案(T_uploadAnswer)、查看详情(T_viewDetail); 学生->查看详情(S_viewDetail)、答题(S_answer)
     props:['taskId', 'operate'],
     components:{'select-setting': SubjectSelectItemSetting},
     data(){
       return {
+        TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
         dialogFormVisible:false,
         curSubjectIndex:0,//当前单选题的索引
         subject:{
@@ -311,6 +371,14 @@
         });
       },
       /**
+       * handleSubmitAnswer  提交答案--学生
+       * params
+       * return
+       * */
+      handleSubmitAnswer(){
+
+      },
+      /**
        * getSaveData  构造需要保存或者更新的task数据
        * params null
        * return {task:task, questionList:questions} 保存的数据结构
@@ -428,5 +496,11 @@
     justify-content: center;
     border-top: 1px solid gray;
     padding-top: 10px;
+  }
+  .subjective-item-remove{
+    margin-left: 10px;
+    cursor: pointer;
+    line-height: 40px;
+    float: left;
   }
 </style>
