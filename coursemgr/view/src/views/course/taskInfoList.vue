@@ -32,6 +32,7 @@
       components:{TaskInfo},
       data(){
           return {
+            isStudent:false,
             showTaskInfoDialog:false,
             selectTaskId:'',
             courseName:'xxx课程',
@@ -39,6 +40,12 @@
           }
       },
       created() {
+        if(this.$store.state.user.roles.in_array('student')){
+          this.isStudent = true;
+        }
+        else if(this.$store.state.user.roles.in_array('teacher')){
+          this.isStudent = false;
+        }
         let self = this;
         let cId = this.$store.getters.courseId;
         if (!cId || cId === '') {
@@ -53,6 +60,7 @@
             });
             return;
           }
+          debugger
           self.tasks = response.data;
         });
       },

@@ -23,6 +23,7 @@ export const constantRouterMap = [
   { name:'registery', path: '/register', component: () => import('@/views/register/register'), hidden: true },
   { name:'course', path: '/course', component: () => import('@/views/course/index'), hidden: true, children: childrenRouter},
   { name:'', path: '', component: () => import('@/views/home/index'), hidden: true },
+  { name:'uppp', path: 'uppp', component: () => import('@/components/uploadAndPreviewImageComp'), hidden: true },
 
 ];
 

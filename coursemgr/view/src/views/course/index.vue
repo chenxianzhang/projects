@@ -72,6 +72,11 @@
             <i class="el-icon-tickets"></i>
             <span slot="title">所有成绩</span>
           </el-menu-item>
+
+          <el-menu-item v-if="!isStudent" index="/components/uploadAndPreviewImageComp">
+            <i class="el-icon-tickets"></i>
+            <span slot="title">sasas</span>
+          </el-menu-item>
         </el-menu>
       </div>
         <div class="right-container">

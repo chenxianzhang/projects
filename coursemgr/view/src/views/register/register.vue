@@ -45,6 +45,9 @@
               cellphone:'',
               email:'',
               password:'',
+              roles:'teacher',
+              sex:'男',
+              createDate:''
             }
           }
       },
@@ -70,6 +73,7 @@
             this.$message.warning('两次密码不一致！');
             return;
           }
+          this.regInfo.createDate = new Date();
           //保存注册信息
           register(this.regInfo)
             .then(resp=>{
@@ -78,7 +82,9 @@
                 return;
               }
               this.$message.success('注册成功');
-              this.$router.push({name:'login', params:{from:'registery',role:'teacher', name:this.regInfo.name, pwd:this.regInfo.password}});
+              this.$router.push({
+                name:"login",
+                params:{from:'registery',role:'teacher', name:this.regInfo.name, pwd:this.regInfo.password}});
             });
         },
         handleCancel(){
