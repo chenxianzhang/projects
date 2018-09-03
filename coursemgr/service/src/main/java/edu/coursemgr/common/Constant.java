@@ -15,6 +15,10 @@ public interface Constant {
         public static final String UNDEFINED = "undefined";
 
         public static final int PASSWORD_MIN_LENGTH = 6;
+
+        public static final String USER_DIR = System.getProperty("user.dir");
+
+        public static final String UPLOAD_ROOT_DIR = "upload";
     }
 
     /**
