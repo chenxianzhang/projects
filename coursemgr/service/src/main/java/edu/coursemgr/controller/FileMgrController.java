@@ -49,7 +49,8 @@ public class FileMgrController extends BaseController {
         if (iterator.hasNext()) {
             String fileKey = iterator.next().toString();
             MultipartFile file = multipartRequest.getFile(fileKey);
-            String path = fileMgrService.saveFile(file, request.getRealPath("/"), trunkDir, subDir);
+            String path = fileMgrService.saveFile(file, request.getRealPath("/"),
+                    trunkDir, subDir);
             return path;
         }
         return "";

@@ -22,7 +22,7 @@
         #{taskName,jdbcType=VARCHAR},#{courseId,jdbcType=INTEGER}
         )
     </insert>
-    <insert id="insertSelective" parameterType="edu.coursemgr.model.GroupMember" >
+    <insert id="insertSelective" parameterType="edu.coursemgr.model.GradeRelate" >
         insert into grade_relate
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
