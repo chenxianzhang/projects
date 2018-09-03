@@ -51,9 +51,6 @@
             <if test="id != null" >
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="groupId != null" >
-                #{groupId,jdbcType=INTEGER},
-            </if>
             <if test="studentNo != null" >
                 #{studentNo,jdbcType=VARCHAR},
             </if>
