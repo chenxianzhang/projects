@@ -18,7 +18,7 @@
     <result column="score" property="score" jdbcType="REAL" />
   </resultMap>
   <resultMap id="SelfTaskSituationMap" type="edu.coursemgr.pojo.StudentTaskSituation" >
-    <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="taskId" property="taskId" jdbcType="VARCHAR" />
     <result column="finishStatus" property="finishStatus" jdbcType="VARCHAR" />
     <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
@@ -104,6 +104,19 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByStudentTask" parameterType="edu.coursemgr.model.StudentTasks" >
+    update student_tasks
+    <set >
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=REAL},
+      </if>
+    </set>
+    where taskId = #{taskId,jdbcType=VARCHAR}
+    and studentNo = #{studentNo,jdbcType=VARCHAR},
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.StudentTasks" >
     update student_tasks
     <set >
@@ -137,7 +150,7 @@
   <update id="updateStatus" parameterType="java.util.HashMap" >
     update student_tasks
     set status = #{status,jdbcType=CHAR}
-    where taskId = #{taskId,jdbcType=INTEGER}
+    where taskId = #{taskId,jdbcType=VARCHAR}
     and studentNo = #{studentNo,jdbcType=VARCHAR}
   </update>
 </mapper>

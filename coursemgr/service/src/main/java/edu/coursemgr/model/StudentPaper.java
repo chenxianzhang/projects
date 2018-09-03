@@ -8,6 +8,8 @@ public class StudentPaper implements Serializable {
 
     private Integer id;
 
+    private Integer taskId;
+
     private String studentNo;
 
     private Long questionId;
@@ -64,5 +66,13 @@ public class StudentPaper implements Serializable {
 
     public void setQuestionType(String questionType) {
         this.questionType = questionType;
+    }
+
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
     }
 }

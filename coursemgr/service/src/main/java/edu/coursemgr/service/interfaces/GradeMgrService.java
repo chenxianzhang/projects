@@ -2,6 +2,7 @@ package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.GradeRelate;
+import edu.coursemgr.pojo.SubjectGradeModel;
 
 import java.util.List;
 
@@ -30,4 +31,11 @@ public interface GradeMgrService {
      * @return
      */
     List<GradeRelate> getMySchedule(String courseId, String studentNo);
+
+    /**
+     * 更新主题分数
+     * @param subjectGradeModel
+     * @return
+     */
+    int updateSubjectScore(SubjectGradeModel subjectGradeModel);
 }

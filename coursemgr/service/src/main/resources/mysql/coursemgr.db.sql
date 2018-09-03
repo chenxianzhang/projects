@@ -88,6 +88,7 @@ CREATE TABLE `student_tasks` (
 DROP TABLE IF EXISTS `student_paper`;
 CREATE TABLE `student_paper` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `taskId` INT,      #任务id
 	`studentNo` varchar(20),    #学号 关联user serialNo
   `questionId` BIGINT,  #试题id
   `questionType`  varchar(15),   # 题目类型  单选题，多选题，判断题，主观题等

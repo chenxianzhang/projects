@@ -27,6 +27,13 @@ public interface StudentTasksMapper {
      */
     int updateStatus(Map params);
 
+    /**
+     * 更新任务状态和分数
+     * @param record
+     * @return
+     */
+    int updateByStudentTask(StudentTasks record);
+
     List<StudentTaskDetail> getStudentTaskSituation(Map params);
 
     List<StudentTaskSituation> getSelfTaskSituation(Map params);

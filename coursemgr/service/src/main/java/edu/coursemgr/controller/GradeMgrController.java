@@ -1,6 +1,7 @@
 package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
+import edu.coursemgr.pojo.SubjectGradeModel;
 import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,17 @@ public class GradeMgrController extends BaseController {
 
         return gradeMgrService.getMySchedule(courseId, studentNo);
 
+    }
+
+    @RequestMapping(value="/updateSubjectScore", method=RequestMethod.POST)
+    @ResponseBody
+    public Object updateSubjectScore(@RequestBody SubjectGradeModel subjectGradeModel)
+            throws Exception {
+        if (subjectGradeModel == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return gradeMgrService.updateSubjectScore(subjectGradeModel);
     }
 
 }

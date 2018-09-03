@@ -3,10 +3,7 @@ package edu.coursemgr.service.impl;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.dao.*;
-import edu.coursemgr.model.CourseTasks;
-import edu.coursemgr.model.GroupMember;
-import edu.coursemgr.model.StudentPaper;
-import edu.coursemgr.model.TaskQuestions;
+import edu.coursemgr.model.*;
 import edu.coursemgr.pojo.*;
 import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.service.interfaces.GroupMgrService;
@@ -147,6 +144,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         List<StudentPaper> studentPapers = CollectionUtils.arrayListCast(
                 stuPaperAnswer.getQuestionList(), question -> {
                     StudentPaper paper = new StudentPaper();
+                    paper.setTaskId(Integer.valueOf(stuPaperAnswer.getTaskId()));
                     paper.setStudentNo(stuPaperAnswer.getStudentNo());
                     paper.setAnswers(question.getAnswers());
                     paper.setQuestionId(question.getQuestionId());
@@ -167,12 +165,19 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             return false;
         }
         // 更改学生task的完成状态
-        Map<String, Object> params = new HashMap<>();
-        params.put("taskId", stuPaperAnswer.getTaskId());
-        params.put("studentNo", stuPaperAnswer.getStudentNo());
-        params.put("status", CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
-        studentTasksMapper.updateStatus(params);
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("taskId", stuPaperAnswer.getTaskId());
+//        params.put("studentNo", stuPaperAnswer.getStudentNo());
+//        params.put("status", CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
+//        studentTasksMapper.updateStatus(params);
 
+        // 插入学生任务信息
+        StudentTasks studentTasks = new StudentTasks();
+        studentTasks.setStatus(CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
+        studentTasks.setStudentNo(stuPaperAnswer.getStudentNo());
+        studentTasks.setSubmitTime(new Date());
+        studentTasks.setTaskId(stuPaperAnswer.getTaskId());
+        studentTasksMapper.insertSelective(studentTasks);
         return true;
     }
 

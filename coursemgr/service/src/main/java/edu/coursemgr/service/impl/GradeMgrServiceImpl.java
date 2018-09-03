@@ -1,14 +1,9 @@
 package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
-import edu.coursemgr.dao.CourseTasksMapper;
-import edu.coursemgr.dao.GradeRelateMapper;
-import edu.coursemgr.dao.GroupMemberMapper;
-import edu.coursemgr.dao.UserMapper;
-import edu.coursemgr.model.CourseTasks;
-import edu.coursemgr.model.GradeRelate;
-import edu.coursemgr.model.GroupMember;
-import edu.coursemgr.model.User;
+import edu.coursemgr.dao.*;
+import edu.coursemgr.model.*;
+import edu.coursemgr.pojo.SubjectGradeModel;
 import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +33,12 @@ public class GradeMgrServiceImpl implements GradeMgrService {
 
     @Autowired
     private CourseTasksMapper courseTasksMapper;
+
+    @Autowired
+    private StudentPaperMapper studentPaperMapper;
+
+    @Autowired
+    private StudentTasksMapper studentTasksMapper;
 
     @Override
     public boolean updateGroupMemberGradeObj(Integer courseId, String markType, CourseTasks task) {
@@ -101,6 +102,46 @@ public class GradeMgrServiceImpl implements GradeMgrService {
             resultList = tmpList;
         }
         return resultList;
+    }
+
+    @Override
+    public int updateSubjectScore(SubjectGradeModel subjectGradeModel) {
+        if (subjectGradeModel.getSubjectList() == null) {
+            return 0;
+        }
+        // 先更新学员主观题分数
+        subjectGradeModel.getSubjectList().forEach(sub -> {
+            StudentPaper paper = new StudentPaper();
+            paper.setScore(sub.getScore());
+            paper.setQuestionId(sub.getQuestionId());
+            paper.setStudentNo(sub.getStudentNo());
+            studentPaperMapper.updateByStudent(paper);
+        });
+
+        // 更新学生任务总分，及状态
+        Map<String, Object> params = new HashMap<>();
+        params.put("studentNo", subjectGradeModel.getStudentNo());
+        params.put("taskId", subjectGradeModel.getTaskId());
+        List<StudentPaper> papers = studentPaperMapper.getPaperByStudent(params);
+        if (papers == null) {
+            return 0;
+        }
+        Float totalScore = 0f;
+        for (StudentPaper paper : papers) {
+            if (!paper.getScore().isNaN()) {
+                totalScore += paper.getScore();
+            }
+        }
+
+        // 更新学生任务信息
+        StudentTasks studentTasks = new StudentTasks();
+        studentTasks.setTaskId(subjectGradeModel.getTaskId().toString());
+        studentTasks.setStudentNo(subjectGradeModel.getStudentNo());
+        studentTasks.setStatus(CommonEnum.StudentTaskStatus.FINISHED.getValue());
+        studentTasks.setScore(totalScore);
+        studentTasksMapper.updateByStudentTask(studentTasks);
+
+        return 1;
     }
 
 
