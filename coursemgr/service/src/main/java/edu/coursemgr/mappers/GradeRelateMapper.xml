@@ -87,4 +87,11 @@
         and tmp.taskId=gr.taskId
         and FIND_IN_SET(tmp.studentNo,gr.gradeObjNo)
     </select>
+    <select id="selectByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        select
+        <include refid="Base_Column_List" />
+        from grade_relate
+        where taskId=#{taskId, jdbcType=INTEGER}
+        and FIND_IN_SET(#{studentNo, jdbcType=VARCHAR},gradeObjNo)
+    </select>
 </mapper>

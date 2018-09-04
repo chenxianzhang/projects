@@ -49,4 +49,17 @@ public class GradeMgrController extends BaseController {
         return gradeMgrService.updateSubjectScore(subjectGradeModel);
     }
 
+    @RequestMapping(value="/getSubjectGradePerson", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getSubjectGradePerson(@RequestBody Map<String, Object> requestMap)
+            throws  Exception {
+
+        String taskId = getParam(requestMap, "taskId");
+        String studentNo = getParam(requestMap, "studentNo");
+        if (CommonUtils.isEmpty(taskId) || CommonUtils.isEmpty(studentNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return gradeMgrService.getSubjectGradePerson(taskId, studentNo);
+    }
+
 }
