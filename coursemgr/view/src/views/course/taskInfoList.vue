@@ -19,7 +19,7 @@
         </el-table-column>
       </el-table>
       <el-dialog :visible.sync="showTaskInfoDialog">
-        <task-info :taskId="selectTaskId" :operate="'viewDetail'"></task-info>
+        <task-info :taskId="selectTaskId" :operate="operate"></task-info>
       </el-dialog>
     </div>
 </template>
@@ -27,11 +27,14 @@
 <script>
   import TaskInfo from '../../components/taskInfo'
   import {getCourseTasksByCourseId} from '@/api/course'
-    export default {
+  import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
+
+  export default {
       name: "taskInfoList",
       components:{TaskInfo},
       data(){
           return {
+            operate:'',
             isStudent:false,
             showTaskInfoDialog:false,
             selectTaskId:'',
@@ -71,12 +74,16 @@
         handleDetailClick(row) {
           this.selectTaskId = row.id;
           this.showTaskInfoDialog = true;
+          this.operate = TASK_OPERATOR_TYPE.TEACHER_VIEW_DETAIL;
           console.log(row);
         },
         /**
          * 修改任务
          * */
         handleModifyClick(row) {
+          this.selectTaskId = row.id;
+          this.showTaskInfoDialog = true;
+          this.operate = TASK_OPERATOR_TYPE.TEACHER_STATEMENT;
           console.log(row);
         },
         /**
@@ -90,8 +97,8 @@
          * */
         dateFormat:function(row, column) {
           let date = row[column.property];
-          if (date == undefined) {
-            return "";
+          if (date == undefined || date === '') {
+            return "-";
           }
           return new Date(date).toLocaleDateString();
         },

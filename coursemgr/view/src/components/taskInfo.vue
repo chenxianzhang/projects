@@ -92,9 +92,9 @@
         <el-radio-group v-model="subject.subjectForSubjectiveMarkType"
                         :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
                         style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
-          <el-radio label="自评" style="margin: 5px;">自评</el-radio>
-          <el-radio label="组内互评" style="margin: 5px;">组内互评</el-radio>
-          <el-radio label="组间互评" style="margin: 5px;">组间互评</el-radio>
+          <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
+          <el-radio label="GROUP_INNER_EVA" style="margin: 5px;">组内互评</el-radio>
+          <el-radio label="GROUP_INTERBLOCK_EVA" style="margin: 5px;">组间互评</el-radio>
         </el-radio-group>
       </div>
       <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT" class="el-icon-plus" @click="addSubject('subjective')"
@@ -207,15 +207,15 @@
         for(let item of taskDetailInfo.questionList){
           switch (item.questionType) {
             case "单选题":
-              this.subject.subjectForChoose.push({stem:item.stems, chooseItem:item.options.split(','), answer:item.answers});
+              this.subject.subjectForChoose.push({id:item.id, stem:item.stems, chooseItem:item.options.split(','), answer:item.answers});
               this.subject.subjectForChooseScore = item.score;
               break;
             case "判断题":
-              this.subject.subjectForJudge.push({stem:item.stems, chooseItem:["是","否"], answer:item.answers});
+              this.subject.subjectForJudge.push({id:item.id, stem:item.stems, chooseItem:["是","否"], answer:item.answers});
               this.subject.subjectForJudgeScore = item.score;
               break;
             case "主观题":
-              this.subject.subjectForSubjective.push({stem:item.stems, chooseItem:[], answer:item.answers, score: item.score});
+              this.subject.subjectForSubjective.push({id:item.id, stem:item.stems, chooseItem:[], answer:item.answers, score: item.score});
               break;
           }
         }
@@ -324,6 +324,7 @@
           }
         }
         let saveData = this.getSaveData();
+        debugger
         saveTask(saveData).then(response=>{
           if(response.status === 0){
             this.$message({
@@ -356,14 +357,14 @@
         let updateData = this.getSaveData();
         saveTask(updateData).then(response=>{
           if(response.status === 0){
-            self.$message({
+            this.$message({
               showClose: true,
               type: 'warning',
               message: response.msg
             });
             return;
           }
-          self.$message({
+          this.$message({
             showClose: true,
             type: 'success',
             message: "答案上传成功！"
