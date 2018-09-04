@@ -13,7 +13,7 @@
       总分值 <input v-model="totalScore" disabled/> 分，
       权重：<input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT" v-model="subject.weight" /> %。</div>
 
-    <div class="subject-for-choose">
+    <div class="subject-for-choose" v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT || subject.subjectForChoose.length>0">
       <div class="subject-for-title">单选题</div>
       <div class="subject-score-setting">
         设置分值：每题
@@ -31,7 +31,7 @@
         <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
                   style="width: calc(100% - 130px)"
                   placeholder="请输入题目,并设置选项"
-                  v-model="sub.stem"></el-input>
+                  v-model="sub.stem" type="textarea"></el-input>
         <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
              class="el-icon-remove"
              @click="removeSubjectItem(index, 'choose')"
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="subject-for-judge" v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT || subject.subjectForJudgeScore.length>0">
+    <div class="subject-for-judge" v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT || subject.subjectForJudge.length>0">
       <div class="subject-for-title">判断题</div>
       <div style="float: left; line-height: 40px;">
         设置分值：每题
@@ -70,7 +70,7 @@
         <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
           style="width: calc(100% - 130px)"
           placeholder="请输入题目"
-          v-model="sub.stem">
+          v-model="sub.stem" type="textarea">
         </el-input>
         <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
              class="el-icon-remove"
@@ -105,7 +105,8 @@
         <el-input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
                   style="width: calc(100% - 250px); float: left;"
                   placeholder="请输入题目"
-                  v-model="sub.stem">
+                  v-model="sub.stem"
+                  type="textarea">
         </el-input>
         <div style="float: left; line-height: 40px;">
           设置分值：<input :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT" style="width: 30px; height: 30px;" v-model="sub.score" />分
@@ -114,6 +115,11 @@
         <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT" class="el-icon-remove subjective-item-remove"
              @click="removeSubjectItem(index, 'subjective')">
         </div>
+        <el-input v-if="operate!==TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+                  :disabled="operate===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL || operate===TASK_OPERATOR_TYPE.TEACHER_VIEW_DETAIL"
+                  type="textarea"
+        placeholder="请输入主观题答案">
+        </el-input>
       </div>
     </div>
 
@@ -175,9 +181,11 @@
       }
     },
     created(){
+      console.log(this.taskId)
       if(!this.taskId || this.taskId === ''){
         return;
       }
+      console.log('get data')
       //获取任务信息
       getTaskDetailByTaskId({taskId: this.taskId})
         .then(resp=>{
@@ -186,6 +194,7 @@
             return;
           }
           //根据结果设置subject值
+          console.log('resp.data' + resp.data)
           this.setSubjectByTaskDetailInfo(resp.data);
         });
     },
@@ -364,11 +373,8 @@
             });
             return;
           }
-          this.$message({
-            showClose: true,
-            type: 'success',
-            message: "答案上传成功！"
-          });
+          this.$message.success("答案上传成功！");
+          // this.$router.push({name:'taskInfoList', params:{}})
         });
       },
       /**
@@ -398,6 +404,7 @@
         let questionNo = 1;
         for(let item of this.subject.subjectForChoose){
           questions.push({
+            id:item.id ? item.id : '',
             stems:item.stem,
             questionType:'单选题',
             score:this.subject.subjectForChooseScore,
@@ -409,6 +416,7 @@
         for(let item of this.subject.subjectForJudge){
           ++questionNo;
           questions.push({
+            id:item.id ? item.id : '',
             stems:item.stem,
             questionType:'判断题',
             score:this.subject.subjectForJudgeScore,
@@ -418,14 +426,19 @@
         for(let item of this.subject.subjectForSubjective){
           ++questionNo;
           questions.push({
+            id:item.id ? item.id : '',
             stems:item.stem,
             questionType:'主观题',
             score:item.score,
-            questionNo:questionNo
+            questionNo:questionNo,
+            markType:this.subject.subjectForSubjectiveMarkType
           });
         }
         return {task:task, questionList:questions};
       },
+      deactivated(){
+        this.$destroy();
+      }
     },
   }
 </script>
@@ -448,7 +461,7 @@
   .subject-item-subjective{
     margin: 10px 0;
     padding: 5px;
-    height: 55px;
+    height: 66px;
   }
   .subject-for-title{
     float: left;

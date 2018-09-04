@@ -19,7 +19,7 @@
         </el-table-column>
       </el-table>
       <el-dialog :visible.sync="showTaskInfoDialog">
-        <task-info :taskId="selectTaskId" :operate="operate"></task-info>
+        <task-info v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operate="operate"></task-info>
       </el-dialog>
     </div>
 </template>
@@ -63,7 +63,6 @@
             });
             return;
           }
-          debugger
           self.tasks = response.data;
         });
       },
@@ -75,7 +74,6 @@
           this.selectTaskId = row.id;
           this.showTaskInfoDialog = true;
           this.operate = TASK_OPERATOR_TYPE.TEACHER_VIEW_DETAIL;
-          console.log(row);
         },
         /**
          * 修改任务
@@ -84,7 +82,6 @@
           this.selectTaskId = row.id;
           this.showTaskInfoDialog = true;
           this.operate = TASK_OPERATOR_TYPE.TEACHER_STATEMENT;
-          console.log(row);
         },
         /**
          * 删除任务
@@ -101,7 +98,7 @@
             return "-";
           }
           return new Date(date).toLocaleDateString();
-        },
+        }
       },
     }
 </script>
