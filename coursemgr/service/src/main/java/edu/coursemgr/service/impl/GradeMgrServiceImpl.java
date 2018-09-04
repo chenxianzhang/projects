@@ -144,6 +144,21 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         return 1;
     }
 
+    @Override
+    public User getSubjectGradePerson(String taskId, String studentNo) {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskId", taskId);
+        params.put("studentNo", studentNo);
+        GradeRelate gradeRelate = gradeRelateMapper.selectByStudent(params);
+
+        if (gradeRelate == null) {
+            return userMapper.selectBySerialNo(studentNo);
+        }
+
+        return userMapper.selectBySerialNo(gradeRelate.getStudentNo());
+    }
+
 
     private List<GradeRelate> updateMemberGradeObj(Integer courseId, String markType) {
         // 根据课程id获取所有组成员信息

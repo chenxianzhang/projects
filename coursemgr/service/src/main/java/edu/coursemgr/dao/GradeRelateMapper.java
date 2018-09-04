@@ -18,4 +18,6 @@ public interface GradeRelateMapper {
 
     List<GradeRelate> selectSomeByStudent(Map<String ,Object> params);
 
+    GradeRelate selectByStudent(Map params);
+
 }

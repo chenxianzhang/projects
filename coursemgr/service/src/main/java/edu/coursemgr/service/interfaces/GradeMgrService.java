@@ -2,6 +2,7 @@ package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.GradeRelate;
+import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.SubjectGradeModel;
 
 import java.util.List;
@@ -11,8 +12,6 @@ import java.util.List;
  */
 public interface GradeMgrService {
 
-
-//    List<GroupMember> getMySchedule();
 
     /**
      * 更新组成员评分对象
@@ -38,4 +37,12 @@ public interface GradeMgrService {
      * @return
      */
     int updateSubjectScore(SubjectGradeModel subjectGradeModel);
+
+    /**
+     * 根据任务id和学生学号获取该学生的主观题评分人是谁
+     * @param taskId
+     * @param studentNo
+     * @return
+     */
+    User getSubjectGradePerson(String taskId, String studentNo);
 }
