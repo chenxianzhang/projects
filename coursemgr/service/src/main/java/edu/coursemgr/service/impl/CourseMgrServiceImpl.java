@@ -5,6 +5,7 @@ import edu.coursemgr.dao.CourseMapper;
 import edu.coursemgr.dao.CourseTasksMapper;
 import edu.coursemgr.dao.GroupMemberMapper;
 import edu.coursemgr.dao.UserMapper;
+import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.model.Course;
 import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.pojo.GradeDetail;
@@ -15,11 +16,9 @@ import edu.coursemgr.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by chenxianzhang on 2018/8/16 0016 下午 10:43
@@ -147,5 +146,47 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         }
 
         return null;
+    }
+
+    @Override
+    public void exportCourseGrade(String courseId, HttpServletResponse response)
+            throws Exception {
+        List<GradeDetail> gradeDetailList = getAllGradeInfo(courseId);
+
+        if(gradeDetailList == null) {
+            return ;
+        }
+
+        // 获取列
+        List<String> columnList = new ArrayList<>();
+        columnList.add("姓名");
+        columnList.add("学号");
+        columnList.add("所在小组");
+
+        List<ArrayList<String>> dataList = new ArrayList<>();
+        boolean flag = false;
+        for (GradeDetail detail : gradeDetailList) {
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(detail.getStudentName());
+            arrayList.add(detail.getStudentNo());
+            arrayList.add(detail.getGroupNo().toString());
+
+            for (StudentTaskInfo taskInfo : detail.getStudentTaskInfos()) {
+                if (!flag) {
+                    columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
+                            taskInfo.getTaskWeight().toString()));
+                }
+                arrayList.add(taskInfo.getScore().toString());
+            }
+
+            arrayList.add(detail.getTotalScore().toString());
+            dataList.add(arrayList);
+        }
+        columnList.add("加权总分");
+        Course course = courseMapper.selectById(Integer.valueOf(courseId));
+
+        ExcelReader excelReader = new ExcelReader();
+        String name = String.format("%s成绩汇总", course.getName());
+        excelReader.export(name, name, columnList, dataList, name, response);
     }
 }

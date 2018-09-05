@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -125,5 +126,17 @@ public class CourseMgrController extends BaseController {
         }
 
         return courseMgrService.getStuGradeInfo(courseId, studentNo);
+    }
+
+    @RequestMapping(value="/exportCourseGrade", method=RequestMethod.POST)
+    @ResponseBody
+    public void exportCourseGrade(@RequestBody Map<String, Object> requestMap,
+                                  HttpServletResponse response)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        courseMgrService.exportCourseGrade(courseId, response);
     }
 }

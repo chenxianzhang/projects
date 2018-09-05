@@ -4,6 +4,7 @@ import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.model.Course;
 import edu.coursemgr.pojo.GradeDetail;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -55,5 +56,11 @@ public interface CourseMgrService {
      * @return
      */
     GradeDetail getStuGradeInfo(String courseId, String studentNo);
+
+    /**
+     * 导出当前课程所有学生成绩信息
+     * @param courseId
+     */
+    void exportCourseGrade(String courseId, HttpServletResponse response) throws Exception;
 
 }

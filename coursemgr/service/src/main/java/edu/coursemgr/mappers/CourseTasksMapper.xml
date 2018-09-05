@@ -37,7 +37,7 @@
     from course_tasks ct
     left join student_tasks st
     on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
-    where ct.courseId=#{courseId, jdbcType=INTEGER}
+    where ct.courseId=#{courseId, jdbcType=INTEGER} order by ct.id asc
   </select>
   <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
