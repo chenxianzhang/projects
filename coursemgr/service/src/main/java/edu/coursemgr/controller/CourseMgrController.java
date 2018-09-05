@@ -139,4 +139,16 @@ public class CourseMgrController extends BaseController {
         }
         courseMgrService.exportCourseGrade(courseId, response);
     }
+
+    @RequestMapping(value="/exportStuGrade", method=RequestMethod.POST)
+    @ResponseBody
+    public void exportStuGrade(@RequestBody Map<String, Object> requestMap,
+                               HttpServletResponse response) throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        String studentNo = getParam(requestMap, "studentNo");
+        if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(studentNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        courseMgrService.exportStuGrade(courseId, studentNo, response);
+    }
 }

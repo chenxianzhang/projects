@@ -63,4 +63,14 @@ public interface CourseMgrService {
      */
     void exportCourseGrade(String courseId, HttpServletResponse response) throws Exception;
 
+    /**
+     * 导出学生成绩信息
+     * @param courseId
+     * @param studentNo
+     * @param response
+     * @throws Exception
+     */
+    void exportStuGrade(String courseId, String studentNo,
+                        HttpServletResponse response) throws Exception;
+
 }
