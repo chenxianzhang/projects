@@ -6,7 +6,7 @@ import request from '@/utils/request'
  * */
 export function getAllGradeInfo(params) {
   return request({
-    url: '/groupMgr/getAllGradeInfo',
+    url: '/course/getAllGradeInfo',
     method: 'post',
     data: params
   });
@@ -22,4 +22,12 @@ export function getStuGradeInfo(params) {
     method: 'post',
     data: params
   });
+}
+
+export function download(params) {
+   return request({
+    url: '/course/exportCourseGrade',
+    method:'post',
+    data: params
+   })
 }

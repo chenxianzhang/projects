@@ -16,7 +16,7 @@
       <el-table-column prop="totalScore" label="加权总分"> </el-table-column>
     </el-table>
     <div class="buttons">
-      <el-button class="primary">导出为excel</el-button>
+      <el-button class="primary" @click="download()">导出为excel</el-button>
       <el-button class="primary">过程性打包</el-button>
     </div>
     <!--查看当前任务答题情况-->
@@ -28,7 +28,7 @@
 
 <script>
   import UploadAnswer from '../teacherHome/uploadAnswer'
-  import { getAllGradeInfo, getStuGradeInfo } from '../../api/grade'
+  import { getAllGradeInfo, getStuGradeInfo, download } from '../../api/grade'
 
     export default {
       name: "gradeInfo",
@@ -72,6 +72,12 @@
           this.showAnswer = true;
           //todo 通过任务id和学生id，获取任务题目信息
           console.log(row);
+        },
+        download() {
+          window.location.href = "/course/exportCourseGrade?courseId=" + this.$route.params.courseId;
+          //download({courseId: this.$route.params.courseId}).then(response => {
+
+          //});
         }
       },
     }

@@ -35,7 +35,7 @@
   <select id="selectStuTaskInfo" resultMap="StudentTaskInfoMap" parameterType="java.util.HashMap" >
     select ct.name as taskName, ct.weight as taskWeight, st.score
     from course_tasks ct
-    left join student_tasks st
+    right join student_tasks st
     on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
     where ct.courseId=#{courseId, jdbcType=INTEGER} order by ct.id asc
   </select>

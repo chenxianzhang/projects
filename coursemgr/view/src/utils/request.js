@@ -1,5 +1,18 @@
 import axios from 'axios'
 import global from '../../static/global.config'
+import { Message } from 'element-ui'
+
+
+//使用iframe框架下载文件
+const downloadUrl = url => {
+  let iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = url;
+  iframe.onload = function () {
+    document.body.removeChild(iframe);
+  }
+  document.body.appendChild(iframe);
+}
 
 // create an axios instance
 const service = axios.create({
@@ -23,6 +36,13 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response =>{
     // 拦截返回，去掉其它response信息，只提取用户需要的data数据
+//    if (response.headers && (response.headers['content-type'] === 'application/x-msdownload' ||
+//    response.headers['content-type'] === 'application/vnd.ms-excel') ||
+//     response.headers['content-type'] === 'application/x-download') {
+//
+//       return downloadUrl(response);
+//       //return response;
+//    }
     return response.data
   },
   error => {

@@ -257,11 +257,13 @@ public class ExcelReader {
 
         // 第六步，将文件存到浏览器设置的下载位置
         String filename = fileName + ".xls";
-        response.setContentType("application/ms-excel;charset=UTF-8");
+//        response.setContentType("application/ms-excel;charset=UTF-8");
+        response.setContentType("application/x-download");
         response.setHeader("Content-Disposition", "attachment;filename="
                 .concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
         OutputStream out = response.getOutputStream();
         wb.write(out);// 将数据写出去
+        out.flush();
         out.close();
 
     }

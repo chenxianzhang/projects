@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -128,12 +129,12 @@ public class CourseMgrController extends BaseController {
         return courseMgrService.getStuGradeInfo(courseId, studentNo);
     }
 
-    @RequestMapping(value="/exportCourseGrade", method=RequestMethod.POST)
+    @RequestMapping(value="/exportCourseGrade", method=RequestMethod.GET)
     @ResponseBody
-    public void exportCourseGrade(@RequestBody Map<String, Object> requestMap,
+    public void exportCourseGrade(HttpServletRequest request,
                                   HttpServletResponse response)
             throws Exception {
-        String courseId = getParam(requestMap, "courseId");
+        String courseId = request.getParameter("courseId");
         if (CommonUtils.isEmpty(courseId)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
