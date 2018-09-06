@@ -73,9 +73,9 @@
             <span slot="title">所有成绩</span>
           </el-menu-item>
 
-          <el-menu-item v-if="!isStudent" :index="getIndex('/components/uploadAndPreviewImageComp')">
+          <el-menu-item v-if="!isStudent" :index="getIndex('/teacherHome/newTask1')">
             <i class="el-icon-tickets"></i>
-            <span slot="title">sasas</span>
+            <span slot="title">统计分析</span>
           </el-menu-item>
         </el-menu>
       </div>

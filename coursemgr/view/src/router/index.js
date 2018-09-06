@@ -15,6 +15,7 @@ export const childrenRouter = [
   { name:'grouped', path: '/teacherHome/NotGrouped/:courseId', component: () => import('@/views/teacherHome/NotGrouped'), hidden: true },
   { name:'notGrouped', path: '/teacherHome/newTask/:courseId', component: () => import('@/views/teacherHome/newTask'), hidden: true },
   { name:'uploadAnswer', path: '/teacherHome/uploadAnswer/:courseId', component: () => import('@/views/teacherHome/uploadAnswer'), hidden: true },
+  { name:'newTask1', path: '/teacherHome/newTask1/:courseId', component: () => import('@/views/teacherHome/newTask1'), hidden: true },
 ];
 
 export const constantRouterMap = [
@@ -23,7 +24,6 @@ export const constantRouterMap = [
   { name:'registery', path: '/register', component: () => import('@/views/register/register'), hidden: true },
   { name:'course', path: '/course', component: () => import('@/views/course/index'), hidden: true, children: childrenRouter},
   { name:'', path: '', component: () => import('@/views/home/index'), hidden: true },
-  { name:'uppp', path: 'uppp', component: () => import('@/components/uploadAndPreviewImageComp'), hidden: true },
 
 ];
 

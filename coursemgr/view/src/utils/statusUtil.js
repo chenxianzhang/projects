@@ -10,3 +10,9 @@ export const TASK_OPERATOR_TYPE = {
   STUDENT_VIEW_DETAIL:3,
   STUDENT_ANSWER:4
 };
+
+export const SUBJECT_TYPE = {
+  CHOOSE: 0,
+  JUDGE: 1,
+  SUBJECTIVE: 2
+};

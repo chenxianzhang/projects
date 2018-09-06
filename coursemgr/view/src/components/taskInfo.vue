@@ -43,6 +43,12 @@
              style="float: right; line-height: 40px; margin-right: 10px; cursor: pointer;">
           设置选项
         </div>
+        <div v-if="operate===TASK_OPERATOR_TYPE.TEACHER_STATEMENT"
+             class="el-icon-setting"
+             @click="setChooseItems(index)"
+             style="float: right; line-height: 40px; margin-right: 10px; cursor: pointer;">
+          设置选项
+        </div>
         <div style="margin: 20px 80px;">
           <el-radio-group :disabled="operate!==TASK_OPERATOR_TYPE.TEACHER_UPLOAD_ANSWER && operate !== TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                           v-model="sub.answer"
