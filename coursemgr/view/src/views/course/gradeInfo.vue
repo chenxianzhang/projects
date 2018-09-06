@@ -44,7 +44,7 @@
       created() {
         let self = this;
         this.isStudent = this.$store.state.user.roles.in_array('student');
-        let cId = this.$store.getters.courseId;
+        let cId = this.$route.params.courseId;
         if (this.isStudent) {
           //获取该学生该课程的所有任务的成绩
           getStuGradeInfo({courseId: cId, studentNo: this.$store.state.user.token})

@@ -50,7 +50,7 @@
           this.isStudent = false;
         }
         let self = this;
-        let cId = this.$store.getters.courseId;
+        let cId = this.$route.params.courseId;
         if (!cId || cId === '') {
           this.$message.warning('无效的课程id');
         }

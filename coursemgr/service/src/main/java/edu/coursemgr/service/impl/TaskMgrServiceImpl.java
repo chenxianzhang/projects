@@ -50,6 +50,8 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (taskId == null) {
             courseTasksMapper.insert(taskDetail.getTask());
             taskId = taskDetail.getTask().getId();
+        } else {
+            courseTasksMapper.updateByIdSelective(taskDetail.getTask());
         }
 
         // 根据所选择的主题的评分规则，更新各组成员的评分对象

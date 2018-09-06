@@ -105,7 +105,7 @@
       methods: {
         getGroupableStudents(){
           this.groupableStudents = [];
-          getNoGroupStuList({courseId:this.$store.getters.courseId})
+          getNoGroupStuList({courseId:this.$route.params.courseId})
             .then(resp=>{
               if(resp.status === 0){
                 this.$message.warning('获取学生失败');

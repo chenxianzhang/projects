@@ -52,7 +52,7 @@
       },
       created(){
         //获取个人分组
-        getGroupDetailByStudent({courseId: this.$store.getters.courseId, studentNo: this.$store.state.user.token})
+        getGroupDetailByStudent({courseId: this.$route.params.courseId, studentNo: this.$store.state.user.token})
           .then(resp=>{
             if(resp.status === 0){
               this.$message.warning('获取个人分组失败');
@@ -71,7 +71,7 @@
           newGroupMembers.push(this.$store.state.user.token);
           //分组
           let assignGroupObj = {
-            courseId: this.$store.getters.courseId,
+            courseId: this.$route.params.courseId,
             leaderName: this.$store.state.user.name,
             groupLeaderNo: this.$store.state.user.token,
             studentNoList: newGroupMembers

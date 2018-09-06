@@ -32,7 +32,7 @@
       },
       created(){
         this.leader = this.$store.state.user.name;
-        getStudentsByCourseId({courseId:this.$store.getters.courseId})
+        getStudentsByCourseId({courseId:this.$route.params.courseId})
           .then(resp=>{
             if(resp.status === 0){
               this.$message.warning('获取学生失败');

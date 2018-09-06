@@ -18,30 +18,30 @@
         <el-menu
           router
           @select="handleSelect"
-          default-active="/course/basicInfo"
+          :default-active="getIndex('/course/basicInfo')"
           class="el-menu-vertical-demo main"
           @open="handleOpen"
           @close="handleClose"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-menu-item index="/course/basicInfo">
+          <el-menu-item :index="getIndex('/course/basicInfo')">
             <i class="el-icon-info"></i>
             <span slot="title">基本信息</span>
           </el-menu-item>
-          <el-menu-item v-if="isStudent" index="/course/groupInfo">
+          <el-menu-item v-if="isStudent" :index="getIndex('/course/groupInfo')">
             <i class="el-icon-menu"></i>
             <span slot="title">我的分组</span>
           </el-menu-item>
-          <el-menu-item v-if="isStudent" index="/course/taskInfoList">
+          <el-menu-item v-if="isStudent" :index="getIndex('/course/taskInfoList')">
             <i class="el-icon-document"></i>
             <span slot="title">我的任务</span>
           </el-menu-item>
-          <el-menu-item v-if="isStudent" index="/course/gradeInfo">
+          <el-menu-item v-if="isStudent" :index="getIndex('/course/gradeInfo')">
             <i class="el-icon-setting"></i>
             <span slot="title">我的成绩</span>
           </el-menu-item>
-          <el-menu-item v-if="isStudent" index="/course/gTaskInfo">
+          <el-menu-item v-if="isStudent" :index="getIndex('/course/gTaskInfo')">
             <i class="el-icon-setting"></i>
             <span slot="title">我的待办</span>
           </el-menu-item>
@@ -52,8 +52,8 @@
               <span>分组情况</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/teacherHome/grouped">已分组</el-menu-item>
-              <el-menu-item index="/teacherHome/NotGrouped">未分组</el-menu-item>
+              <el-menu-item :index="getIndex('/teacherHome/grouped')">已分组</el-menu-item>
+              <el-menu-item :index="getIndex('/teacherHome/NotGrouped')">未分组</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -63,17 +63,17 @@
               <span>课程任务</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/course/taskInfoList">任务列表</el-menu-item>
-              <el-menu-item index="/teacherHome/newTask">新建任务</el-menu-item>
+              <el-menu-item :index="getIndex('/course/taskInfoList')">任务列表</el-menu-item>
+              <el-menu-item :index="getIndex('/teacherHome/newTask')">新建任务</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
-          <el-menu-item v-if="!isStudent" index="/course/gradeInfo">
+          <el-menu-item v-if="!isStudent" :index="getIndex('/course/gradeInfo')">
             <i class="el-icon-tickets"></i>
             <span slot="title">所有成绩</span>
           </el-menu-item>
 
-          <el-menu-item v-if="!isStudent" index="/components/uploadAndPreviewImageComp">
+          <el-menu-item v-if="!isStudent" :index="getIndex('/components/uploadAndPreviewImageComp')">
             <i class="el-icon-tickets"></i>
             <span slot="title">sasas</span>
           </el-menu-item>
@@ -93,9 +93,11 @@
         return{
           isStudent:false,
           userInfo:{},
+          courseId:''
         }
       },
       created(){
+      this.courseId = this.$route.params.courseId;
         this.isStudent = this.$store.state.user.roles.in_array('student');
         //获取用户信息
         let self = this;
@@ -111,6 +113,9 @@
         })
       },
       methods: {
+        getIndex(index) {
+          return index + "/" + this.courseId;
+        },
         handleOpen(key, keyPath) {
           console.log(key, keyPath);
         },

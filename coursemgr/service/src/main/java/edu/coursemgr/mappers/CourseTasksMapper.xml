@@ -152,7 +152,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.CourseTasks" >
+  <update id="updateByIdSelective" parameterType="edu.coursemgr.model.CourseTasks" >
     update course_tasks
     <set >
       <if test="courseId != null" >

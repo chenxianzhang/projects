@@ -25,7 +25,7 @@
           }
       },
       created(){
-        getGroupDetail({'courseId': this.$store.getters.courseId})
+        getGroupDetail({'courseId': this.$route.params.courseId})
           .then(response=>{
             if(response.status === 0){
               this.$message.warning('获取分组信息失败：' + response.msg);

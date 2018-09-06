@@ -28,7 +28,7 @@
       methods:{
         changeTab(comp,evt){
           if(comp.label === '已分组'){
-            getGroupDetail({'courseId': this.$store.getters.courseId})
+            getGroupDetail({'courseId': this.$route.params.courseId})
               .then(response=>{
                 if(response.status === 0){
                   self.$message.warning('获取分组信息失败：' + response.msg);
@@ -38,7 +38,7 @@
               });
           }
           else if(comp.label === '未分组'){
-            getNoGroupStuList({courseId:this.$store.getters.courseId})
+            getNoGroupStuList({courseId:this.$route.params.courseId})
               .then(resp=>{
                 if(resp.status === 0){
                   this.$message.warning('获取学生失败');

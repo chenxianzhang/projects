@@ -5,16 +5,16 @@ import layout from '@/views/layout/layout'
 Vue.use(Router);
 
 export const childrenRouter = [
-  { name:'basicInfo', path: '/course/basicInfo', component: () => import('@/views/course/basicInfo'), hidden: true },
-  { name:'sGroupInfo', path: '/course/groupInfo', component: () => import('@/views/course/groupInfo'), hidden: true },
-  { name:'taskInfoList', path: '/course/taskInfoList', component: () => import('@/views/course/taskInfoList'), hidden: true },
-  { name:'gradeInfo', path: '/course/gradeInfo', component: () => import('@/views/course/gradeInfo'), hidden: true },
-  { name:'gTaskInfo', path: '/course/gTaskInfo', component: () => import('@/views/course/gTaskInfo'), hidden: true },//待办
+  { name:'basicInfo', path: '/course/basicInfo/:courseId', component: () => import('@/views/course/basicInfo'), hidden: true },
+  { name:'sGroupInfo', path: '/course/groupInfo/:courseId', component: () => import('@/views/course/groupInfo'), hidden: true },
+  { name:'taskInfoList', path: '/course/taskInfoList/:courseId', component: () => import('@/views/course/taskInfoList'), hidden: true },
+  { name:'gradeInfo', path: '/course/gradeInfo/:courseId', component: () => import('@/views/course/gradeInfo'), hidden: true },
+  { name:'gTaskInfo', path: '/course/gTaskInfo/:courseId', component: () => import('@/views/course/gTaskInfo'), hidden: true },//待办
   { name:'tGroupInfo', path: '/teacherHome/groupInfo', component: () => import('@/views/teacherHome/groupInfo'), hidden: true },
-  { name:'newTask', path: '/teacherHome/grouped', component: () => import('@/views/teacherHome/grouped'), hidden: true },
-  { name:'grouped', path: '/teacherHome/NotGrouped', component: () => import('@/views/teacherHome/NotGrouped'), hidden: true },
-  { name:'notGrouped', path: '/teacherHome/newTask', component: () => import('@/views/teacherHome/newTask'), hidden: true },
-  { name:'uploadAnswer', path: '/teacherHome/uploadAnswer', component: () => import('@/views/teacherHome/uploadAnswer'), hidden: true },
+  { name:'newTask', path: '/teacherHome/grouped/:courseId', component: () => import('@/views/teacherHome/grouped'), hidden: true },
+  { name:'grouped', path: '/teacherHome/NotGrouped/:courseId', component: () => import('@/views/teacherHome/NotGrouped'), hidden: true },
+  { name:'notGrouped', path: '/teacherHome/newTask/:courseId', component: () => import('@/views/teacherHome/newTask'), hidden: true },
+  { name:'uploadAnswer', path: '/teacherHome/uploadAnswer/:courseId', component: () => import('@/views/teacherHome/uploadAnswer'), hidden: true },
 ];
 
 export const constantRouterMap = [
