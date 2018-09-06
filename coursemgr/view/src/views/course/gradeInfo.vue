@@ -4,8 +4,8 @@
     <el-table :data="gradeList" style="width: 100%">
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column prop="studentName" label="姓名  "> </el-table-column>
-      <el-table-column prop="studentNo " label="学号"> </el-table-column>
-      <el-table-column prop="groupName" label="所在小组"> </el-table-column>
+      <el-table-column prop="studentNo" label="学号"> </el-table-column>
+      <el-table-column prop="groupNo" label="所在小组"> </el-table-column>
 
       <el-table-column v-for="(task,index) in gradeList.studentTaskInfos" :label="task.taskName" :key="index">
         <template slot-scope="scope">
@@ -53,6 +53,7 @@
                 self.$message.warning('获取成绩信息失败：' + resp.msg);
                 return;
               }
+              debugger
               self.gradeList = resp.data;
             });
           return;

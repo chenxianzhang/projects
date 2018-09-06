@@ -18,7 +18,7 @@
         <el-menu
           router
           @select="handleSelect"
-          :default-active="getIndex('/course/basicInfo')"
+          :default-active="activeIndex"
           class="el-menu-vertical-demo main"
           @open="handleOpen"
           @close="handleClose"
@@ -93,11 +93,13 @@
         return{
           isStudent:false,
           userInfo:{},
-          courseId:''
+          courseId:'',
+          activeIndex: ''
         }
       },
       created(){
       this.courseId = this.$route.params.courseId;
+       this.activeIndex = this.$route.path;
         this.isStudent = this.$store.state.user.roles.in_array('student');
         //获取用户信息
         let self = this;
