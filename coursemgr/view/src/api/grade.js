@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import global from '../../static/global.config'
 
 /**
  * 获取所有成绩--教师
@@ -24,10 +25,6 @@ export function getStuGradeInfo(params) {
   });
 }
 
-export function download(params) {
-   return request({
-    url: '/course/exportCourseGrade',
-    method:'post',
-    data: params
-   })
+export function download(courseId) {
+    window.location.href = global.BASE_API + "/course/exportCourseGrade?courseId=" + courseId;
 }

@@ -75,10 +75,7 @@
           console.log(row);
         },
         download() {
-          window.location.href = "/course/exportCourseGrade?courseId=" + this.$route.params.courseId;
-          //download({courseId: this.$route.params.courseId}).then(response => {
-
-          //});
+          download(this.$route.params.courseId);
         }
       },
     }
