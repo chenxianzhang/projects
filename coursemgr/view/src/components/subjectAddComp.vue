@@ -1,15 +1,11 @@
 <template>
   <div>
-    <script id="editor" type="text/plain"></script>
-    <div></div>
+    <Tinymce :height=400 ref="editor" v-model="postForm.content" />
   </div>
 </template>
 
 <script>
-  import '../../static/UE/ueditor.config.js'
-  import '../../static/UE/ueditor.all.min.js'
-  import '../../static/UE/lang/zh-cn/zh-cn.js'
-  import '../../static/UE/ueditor.parse.min.js'
+  import { Tinymce } from '../components/Tinymce/index'
     export default {
       name: "subjectAddComp",
       props:{

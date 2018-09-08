@@ -1,7 +1,7 @@
 export class Subject {
   no= '';//题目编号
   stem= '';//题干
-  resultSelection= [];//选项
+  selections= [];//选项
   result= '';//答案
   score= 0;//分数
   edit='';//是否在编辑状态
@@ -9,7 +9,7 @@ export class Subject {
   constructor(){
     this.no= '';//题目编号
     this.stem= '';//题干
-    this.resultSelection= [];//选项
+    this.selections= ["选项一","选项二"];//选项
     this.result= '';//答案
     this.score= 0;//分数
     this.edit = true;
