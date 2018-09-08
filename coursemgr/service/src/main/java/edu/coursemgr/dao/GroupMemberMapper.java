@@ -38,4 +38,10 @@ public interface GroupMemberMapper {
      * @return
      */
     GroupMember selectByMember(Map<String, Object> params);
+
+    List<GroupMember> selectOtherMember(Map params);
+
+    int deleteByStudent(Map params);
+
+    int deleteByGroupId(Integer groupId);
 }

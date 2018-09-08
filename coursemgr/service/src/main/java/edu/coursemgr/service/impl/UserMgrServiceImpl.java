@@ -3,10 +3,14 @@ package edu.coursemgr.service.impl;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.dao.CourseStudentsMapper;
+import edu.coursemgr.dao.GroupMapper;
+import edu.coursemgr.dao.GroupMemberMapper;
 import edu.coursemgr.dao.UserMapper;
 import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.excel.ExcelUtil;
 import edu.coursemgr.model.CourseStudents;
+import edu.coursemgr.model.Group;
+import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.UserEditModel;
 import edu.coursemgr.service.interfaces.UserMgrService;
@@ -29,6 +33,12 @@ public class UserMgrServiceImpl implements UserMgrService {
 
     @Autowired
     private CourseStudentsMapper courseStudentsMapper;
+
+    @Autowired
+    private GroupMapper groupMapper;
+
+    @Autowired
+    private GroupMemberMapper groupMemberMapper;
 
     @Override
     public List<User> getStudentsByCourseId(String courseId) {
@@ -93,6 +103,28 @@ public class UserMgrServiceImpl implements UserMgrService {
         Map<String, Object> params = new HashMap<>();
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
+
+        // 确认当前学生是否为组长
+        Group group = groupMapper.selectByLeader(params);
+        if (group != null) {
+            Map tmpParams = new HashMap();
+            params.put("groupId", group.getId());
+            params.put("studentNo", studentNo);
+            List<GroupMember> members = groupMemberMapper.selectOtherMember(tmpParams);
+            if (members != null && members.size() > 0) {
+                group.setGroupLeaderNo(members.get(0).getStudentNo());
+                group.setLeaderName(members.get(0).getStudentName());
+                // 更新group
+                groupMapper.updateByIdSelective(group);
+
+            } else {
+                groupMapper.deleteById(group.getId());
+            }
+        }
+
+        // 删除组成员表中的信息
+        groupMemberMapper.deleteByStudent(params);
+
         return courseStudentsMapper.deleteByStudent(params);
     }
 

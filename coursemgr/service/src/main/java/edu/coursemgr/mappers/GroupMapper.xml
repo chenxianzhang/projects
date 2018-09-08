@@ -26,6 +26,12 @@
     from group_member where studentNo=#{studentNo,jdbcType=VARCHAR}
     and courseId=#{courseId,jdbcType=INTEGER})
   </select>
+  <select id="selectByLeader" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from `group` where courseId=#{courseId,jdbcType=INTEGER}
+    and groupLeaderNo=#{studentNo, jdbcType=VARCHAR}
+  </select>
   <select id="getGroupList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
@@ -42,8 +48,7 @@
   </select>
   <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from `group`
-    where id = #{id,jdbcType=INTEGER};
-    delete from group_member where groupId=#{id,jdbcType=INTEGER};
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.Group" useGeneratedKeys="true" keyProperty="id">
     insert into `group` (groupNo, groupLeaderNo,leaderName, courseId,

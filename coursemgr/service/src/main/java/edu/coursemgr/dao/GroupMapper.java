@@ -25,4 +25,6 @@ public interface GroupMapper {
     List<Group> getGroupList(Integer courseId);
 
     Group selectByStudent(Map params);
+
+    Group selectByLeader(Map params);
 }

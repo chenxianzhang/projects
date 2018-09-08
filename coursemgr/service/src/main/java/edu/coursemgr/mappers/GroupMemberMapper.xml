@@ -31,9 +31,25 @@
     where courseId = #{courseId,jdbcType=INTEGER}
     and studentNo=#{studentNo, jdbcType=VARCHAR}
   </select>
+  <select id="selectOtherMember" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from group_member
+    where groupId = #{groupId,jdbcType=INTEGER}
+    and studentNo != #{studentNo, jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from group_member
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByStudent" parameterType="java.util.HashMap" >
+    delete from group_member
+    where studentNo = #{studentNo,jdbcType=VARCHAR}
+    and courseId = #{courseId, jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByGroupId" parameterType="java.lang.Integer" >
+    delete from group_member
+    where groupId = #{groupId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.GroupMember" >
     insert into group_member ( groupId, groupNo,studentNo,studentName,courseId

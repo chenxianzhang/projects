@@ -164,6 +164,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         if (groupMapper.deleteById(Integer.valueOf(groupId)) == 0) {
             return false;
         }
+        groupMemberMapper.deleteByGroupId(Integer.valueOf(groupId));
         // 更新组号
         Group group = new Group();
         group.setId(Integer.valueOf(groupId));
