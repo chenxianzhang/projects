@@ -15,7 +15,7 @@ public class CourseTaskDetail implements Serializable {
 
     CourseTasks task;
 
-    List<TaskQuestions> questionList;
+    List<TaskPaper> questionList;
 
 
     public CourseTasks getTask() {
@@ -26,11 +26,11 @@ public class CourseTaskDetail implements Serializable {
         this.task = task;
     }
 
-    public List<TaskQuestions> getQuestionList() {
+    public List<TaskPaper> getQuestionList() {
         return questionList;
     }
 
-    public void setQuestionList(List<TaskQuestions> questionList) {
+    public void setQuestionList(List<TaskPaper> questionList) {
         this.questionList = questionList;
     }
 }

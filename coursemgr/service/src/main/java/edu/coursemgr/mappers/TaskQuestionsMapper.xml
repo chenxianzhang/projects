@@ -41,7 +41,7 @@
     delete from task_questions
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="edu.coursemgr.model.TaskQuestions" >
+  <insert id="insert" parameterType="edu.coursemgr.model.TaskQuestions" useGeneratedKeys="true" keyProperty="id">
     insert into task_questions (id, taskId, questionNo, 
       stems, questionType, score, 
       answers, answerAttachment, markType, options

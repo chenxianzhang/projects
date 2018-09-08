@@ -38,6 +38,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     @Autowired
     private GradeMgrService gradeMgrService;
 
+    @Autowired
+    private QuestionOptionsMapper questionOptionsMapper;
+
     @Override
     public Map<String, Object>  saveTask(CourseTaskDetail taskDetail) throws Exception {
         boolean illegal = taskDetail.getTask() == null || taskDetail.getQuestionList() == null;
@@ -68,7 +71,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
 
         taskDetail.getQuestionList().forEach(question -> {
-            question.setTaskId(taskDetail.getTask().getId());
+            if (question.getTaskQuestions() != null) {
+                question.getTaskQuestions().setTaskId(taskDetail.getTask().getId());
+            }
         });
         updateBatch(taskDetail.getQuestionList());
 
@@ -92,9 +97,20 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             throw new Exception(Constant.ExceptionMessage.DATA_QUERY_EXCEPTION);
         }
 
+        List<TaskPaper> taskPaperList = CollectionUtils.arrayListCast(questionsList,
+                question -> {
+            List<QuestionOptions> optionsList = questionOptionsMapper.selectByQuestionId(
+                    question.getId());
+            TaskPaper paper = new TaskPaper();
+            paper.setTaskQuestions(question);
+            paper.setOptionList(optionsList);
+
+            return paper;
+        });
+
         CourseTaskDetail taskDetail = new CourseTaskDetail();
         taskDetail.setTask(task);
-        taskDetail.setQuestionList(questionsList);
+        taskDetail.setQuestionList(taskPaperList);
         return taskDetail;
     }
 
@@ -200,19 +216,40 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return right;
     }
 
-    private void updateBatch(List<TaskQuestions> taskQuestions) {
+    private void updateBatch(List<TaskPaper> taskQuestions) {
         if (taskQuestions == null) {
             return;
         }
 
         taskQuestions.forEach(taskQuestion ->{
+            TaskQuestions question = taskQuestion.getTaskQuestions();
+            if (question != null) {
+                if (question.getId() == null) {
+                    taskQuestionsMapper.insert(question);
+                } else {
+                    taskQuestionsMapper.updateByIdSelective(question);
+                }
 
-            if (taskQuestion.getId() == null) {
-                taskQuestionsMapper.insert(taskQuestion);
+                // 保存或更新题目选项信息
+                updateBatch(taskQuestion.getOptionList(), question.getId());
+            }
+
+        });
+    }
+
+    private void updateBatch(List<QuestionOptions> optionsList, Long questionId) {
+        if (optionsList == null) {
+            return;
+        }
+        optionsList.forEach(option -> {
+            option.setQuestionId(questionId);
+            if (option.getId() == null) {
+                questionOptionsMapper.insertSelective(option);
             } else {
-                taskQuestionsMapper.updateByIdSelective(taskQuestion);
+                questionOptionsMapper.updateSelective(option);
             }
         });
+
     }
 
 }

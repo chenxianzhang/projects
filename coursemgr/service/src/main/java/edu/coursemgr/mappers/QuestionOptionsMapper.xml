@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.coursemgr.dao.QuestionOptionsMapper" >
+    <resultMap id="BaseResultMap" type="edu.coursemgr.model.QuestionOptions" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="questionId" property="questionId" jdbcType="BIGINT" />
+        <result column="optionTag" property="optionTag" jdbcType="VARCHAR" />
+        <result column="optionDes" property="optionDes" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, questionId, optionTag, optionDes
+    </sql>
+    <insert id="insert" parameterType="edu.coursemgr.model.QuestionOptions" >
+        insert into question_options ( questionId,optionTag,optionDes)
+        values (#{questionId,jdbcType=BIGINT}, #{optionTag,jdbcType=VARCHAR},
+        #{optionDes,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.coursemgr.model.QuestionOptions" >
+        insert into question_options
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="questionId != null" >
+                questionId,
+            </if>
+            <if test="optionTag != null" >
+                optionTag,
+            </if>
+            <if test="optionDes != null" >
+                optionDes,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="questionId != null" >
+                #{questionId,jdbcType=BIGINT},
+            </if>
+            <if test="optionTag != null" >
+                #{optionTag,jdbcType=VARCHAR},
+            </if>
+            <if test="optionDes != null" >
+                #{optionDes,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSelective" parameterType="edu.coursemgr.model.QuestionOptions" >
+        update question_options
+        <set >
+            <if test="questionId != null" >
+                questionId = #{taskId,jdbcType=BIGINT},
+            </if>
+            <if test="optionTag != null" >
+                optionTag = #{optionTag,jdbcType=VARCHAR},
+            </if>
+            <if test="optionDes != null" >
+                optionDes = #{optionDes,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByQuestionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from question_options
+        where questionId = #{questionId, jdbcType=BIGINT}
+    </select>
+</mapper>

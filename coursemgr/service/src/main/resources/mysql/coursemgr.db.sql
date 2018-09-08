@@ -66,7 +66,7 @@ CREATE TABLE `task_questions` (
   `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `taskId` INT NOT NULL,  #任务id
 	`questionNo` INT,         #试题题号
-	`stems`  varchar(255),  #题干
+	`stems`  LONGTEXT,  #题干
 	`questionType`  varchar(15),   # 题目类型  单选题，多选题，判断题，主观题等
 	`score` FLOAT,          #分数
 	`options` LONGTEXT,        #选择题的选项(每个选项之间以#号分隔，前端需校验选项的输入，不能输入#)，主观题则为空
@@ -128,3 +128,10 @@ CREATE TABLE `grade_relate` (
   `courseId` int
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `question_options`;
+CREATE TABLE `question_options` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `questionId` INT,    #试题id
+  `optionTag` varchar(5),   #选项标识 A,B,C,D
+  `optionDes` LONGTEXT #问题选项描述
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
