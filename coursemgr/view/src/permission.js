@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch(err => {
           Message.error(err || '权限验证失败，请重新登录！');
-          store.dispatch('PageLogOut').then(() => {
+          store.dispatch('logOut').then(() => {
             next({ path: '/' });
           });
         });

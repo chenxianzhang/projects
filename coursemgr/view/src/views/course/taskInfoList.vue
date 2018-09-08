@@ -13,8 +13,8 @@
                          width="140">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
-            <el-button @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
-            <el-button @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
+            <el-button v-if="!isStudent" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
+            <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

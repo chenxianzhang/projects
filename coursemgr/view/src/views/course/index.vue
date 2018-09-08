@@ -128,12 +128,14 @@
           console.log(index, indexPath);
         },
         logout(){
-          this.$router.push('/login');
+          this.$store.dispatch('logOut').then(() => {
+            this.$router.push('/login');
+          });
         },
         handleCommand(cmd){
           switch (cmd) {
             case "logout":
-              this.$router.push('/login');
+              this.logout();
               break;
           }
         }

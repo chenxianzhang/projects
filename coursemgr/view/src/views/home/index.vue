@@ -112,7 +112,6 @@ export default {
     if (!this.$store.state.user.roles) {
       // TODO 弹出提示，并调回登录页面
     }
-    debugger
     if (this.$store.state.user.roles.in_array('teacher')) {
       this.canAddCourse = true;
     }

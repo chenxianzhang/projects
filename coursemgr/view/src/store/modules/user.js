@@ -56,9 +56,10 @@ const user = {
             });
         },
         // 前端页面登出
-        PageLogOut({ commit }) {
+        logOut({ commit }) {
             return new Promise(resolve => {
                 commit('SET_TOKEN', '');
+                commit('SET_ROLES', []);
                 removeToken();
                 resolve();
             })
