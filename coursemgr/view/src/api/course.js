@@ -54,5 +54,12 @@ export function updateCourse(params) {
   });
 }
 
+export function deleteStudent(params) {
+  return request({
+    url: '/userMgr/deleteStudent',
+    method: 'post',
+    data: params
+  });
+}
 
 

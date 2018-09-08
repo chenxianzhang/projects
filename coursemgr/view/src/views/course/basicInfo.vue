@@ -70,9 +70,8 @@
 </template>
 
 <script>
-  import {getCourseById, getStudentsByCourseId} from '@/api/course';
+  import {getCourseById, getStudentsByCourseId,updateCourse, deleteStudent} from '@/api/course';
   import UploadStudentComp from "../../components/uploadStudentComp";
-  import { updateCourse } from '@/api/course';
   import dragDialog from '@/components/dragDialog';
   import studentAddComp from '@/components/studentAddComp'
 
@@ -205,6 +204,29 @@
        * */
       handleStudentDeleteClick(data){
         //todo remove from course stack
+
+        let self = this;
+        deleteStudent({courseId: this.$route.params.courseId,
+         studentNo: data.serialNo}).then(response => {
+
+            if (response.status === 1) {
+            self.getStudentsOfCourse(self.$route.params.courseId);
+              self.$message({
+                showClose: true,
+                type: 'success',
+                message: "删除成功"
+              });
+            } else {
+              self.$message({
+                showClose: true,
+                type: 'warning',
+                message: "删除失败"
+              });
+            }
+
+         }).catch(err => {
+            console.log(err);
+         })
       },
 
 
