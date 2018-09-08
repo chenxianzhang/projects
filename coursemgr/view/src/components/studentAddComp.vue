@@ -1,9 +1,12 @@
 <template>
-  <el-dialog
-    :visible.sync="showStudentAddDialog"
-    title="编辑学生信息"
-    @close="handleClose"
-    @closed="handleClose">
+  <!--<el-dialog-->
+    <!--:visible.sync="showStudentAddDialog"-->
+    <!--title="编辑学生信息"-->
+    <!--@close="handleClose"-->
+    <!--@closed="handleClose">-->
+  <drag-dialog title="编辑学生信息" width="36%" :dialogVisible="showStudentAddDialog"
+               @close="handleClose" @confirm="handleSubmit"
+               :hiddenOperator="studentOperInfo.operType === 'detail'">
     <el-form ref="regForm" v-model="studentOperInfo.student" label-width="120px">
       <el-form-item label="用户名：" required>
         <el-input v-model="studentOperInfo.student.name" placeholder="请输入姓名"></el-input>
@@ -31,17 +34,19 @@
       </el-form-item>
     </el-form>
 
-    <span slot="footer" class="dialog-footer" v-show="this.studentOperInfo.operType !== 'detail'">
-    <el-button @click="handleClose">取 消</el-button>
-    <el-button type="primary" @click="handleSubmit">确 定</el-button>
-  </span>
-  </el-dialog>
+    <!--<span slot="footer" class="dialog-footer" v-show="this.studentOperInfo.operType !== 'detail'">-->
+    <!--<el-button @click="handleClose">取 消</el-button>-->
+    <!--<el-button type="primary" @click="handleSubmit">确 定</el-button>-->
+  <!--</span>-->
+  </drag-dialog>
 
 </template>
 
 <script>
   import { addStudent } from '@/api/student'
   import { update } from '@/api/login';
+  import dragDialog from '@/components/dragDialog';
+
   export default {
     name: "studentAddComp",
     props:["showStudentAddDialog", 'studentOperInfo'],
@@ -50,6 +55,7 @@
 
       }
     },
+    components:{dragDialog},
     methods:{
       handleSubmit(){
         if(this.studentOperInfo.student.name.trim() === ''){

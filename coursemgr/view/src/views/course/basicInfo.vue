@@ -172,7 +172,7 @@
       },
       handleHideStudentAddDialog(val){
         this.showStudentAddDialog = val;
-        let cId = this.$store.getters.courseId;
+        let cId = this.$route.params.courseId;
         // this.getCourseInfo(cId);
         this.getStudentsOfCourse(cId);
       },

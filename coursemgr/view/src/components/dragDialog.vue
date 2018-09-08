@@ -2,7 +2,7 @@
   <el-dialog v-el-drag-dialog @dragDialog="handleDrag" :title="title"
              @close="handleClose" :visible.sync="dialogTableVisible" :width="width">
     <slot></slot>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer" class="dialog-footer" v-if="!hiddenOperator">
         <el-button @click="dialogTableVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </span>
@@ -20,7 +20,7 @@ import elDragDialog from '@/directive/el-dragDialog'
         dialogTableVisible: false
       };
     },
-    props: ["title", "dialogVisible", "width"],
+    props: ["title", "dialogVisible", "width", "hiddenOperator"],
     created () {
       this.dialogTableVisible = this.dialogVisible;
     },
@@ -57,7 +57,7 @@ import elDragDialog from '@/directive/el-dragDialog'
       }
     }
     .el-dialog__body {
-      padding: 10px 20px 20px 20px;
+      //padding: 10px 20px 20px 20px;
     }
   }
 
