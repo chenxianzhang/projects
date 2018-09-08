@@ -1,10 +1,10 @@
 <template>
-  <div class="tinymce-container editor-container" :class="{fullscreen:fullscreen}">
-    <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
-    <div class="editor-custom-btn-container">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+    <div class="tinymce-container editor-container" :class="{fullscreen:fullscreen}">
+      <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
+      <div class="editor-custom-btn-container">
+        <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -151,7 +151,7 @@ export default {
       arr.forEach(v => {
         window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
-    }
+    },
   },
   destroyed() {
     this.destroyTinymce()
