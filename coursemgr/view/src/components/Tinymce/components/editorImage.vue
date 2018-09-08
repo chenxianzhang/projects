@@ -15,7 +15,6 @@
 </template>
 
 <script>
-// import { getToken } from 'api/qiniu'
 
 export default {
   name: 'editorSlideUpload',
@@ -54,7 +53,7 @@ export default {
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].url = 'http://192.168.1.2:8081/service/' + response.data
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }
