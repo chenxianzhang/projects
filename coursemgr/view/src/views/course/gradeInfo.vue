@@ -53,8 +53,7 @@
                 self.$message.warning('获取成绩信息失败：' + resp.msg);
                 return;
               }
-              debugger
-              self.gradeList = resp.data;
+              self.gradeList.push(resp.data);
             });
           return;
         }
@@ -75,7 +74,7 @@
           console.log(row);
         },
         download() {
-          download(this.$route.params.courseId);
+          download(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
         }
       },
     }

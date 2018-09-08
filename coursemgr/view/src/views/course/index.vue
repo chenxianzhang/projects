@@ -2,13 +2,14 @@
     <div class="main">
       <div style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
         <span>课程管理系统</span>
-        <div style="float: right; margin-right: 50px;">
-          当前用户：{{userInfo.name}}
+        <div style="float: right; margin-right: 50px;font-size:14px">
+          当前用户：
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
-              <i class="el-icon-arrow-down el-icon--right white-color"></i>
+              {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right white-color"></i>
             </span>
             <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
+              <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
               <el-dropdown-item command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
@@ -137,6 +138,9 @@
             case "logout":
               this.logout();
               break;
+            case "backHome":
+              this.$router.push('/home');
+              break;
           }
         }
       }
@@ -169,6 +173,11 @@
   }
 
   .white-color{
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .el-dropdown-link {
     color: #fff;
     cursor: pointer;
   }

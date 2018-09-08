@@ -25,6 +25,12 @@ export function getStuGradeInfo(params) {
   });
 }
 
-export function download(courseId) {
-    window.location.href = global.BASE_API + "/course/exportCourseGrade?courseId=" + courseId;
+export function download(courseId, studentNo, isStudent) {
+    if (!isStudent) {
+      window.location.href = global.BASE_API + "/course/exportCourseGrade?courseId=" + courseId;
+    } else {
+      window.location.href = global.BASE_API + "/course/exportStuGrade?courseId="
+       + courseId + "&studentNo=" + studentNo;
+    }
+
 }
