@@ -203,7 +203,6 @@
        * 删除学生详情信息
        * */
       handleStudentDeleteClick(data){
-        //todo remove from course stack
 
         let self = this;
         deleteStudent({courseId: this.$route.params.courseId,

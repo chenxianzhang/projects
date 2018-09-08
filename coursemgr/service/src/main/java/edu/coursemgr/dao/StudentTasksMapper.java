@@ -3,6 +3,7 @@ package edu.coursemgr.dao;
 import edu.coursemgr.model.StudentTasks;
 import edu.coursemgr.pojo.StudentTaskDetail;
 import edu.coursemgr.pojo.StudentTaskSituation;
+import org.omg.CORBA.INTERNAL;
 
 import java.util.List;
 import java.util.Map;
@@ -37,5 +38,7 @@ public interface StudentTasksMapper {
     List<StudentTaskDetail> getStudentTaskSituation(Map params);
 
     List<StudentTaskSituation> getSelfTaskSituation(Map params);
+
+    int deleteByTaskId(Integer taskId);
 
 }

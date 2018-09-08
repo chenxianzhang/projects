@@ -62,4 +62,12 @@ export function deleteStudent(params) {
   });
 }
 
+export function deleteTask(params) {
+  return request({
+    url: '/taskMgr/deleteTask',
+    method: 'post',
+    data: params
+  });
+}
+
 

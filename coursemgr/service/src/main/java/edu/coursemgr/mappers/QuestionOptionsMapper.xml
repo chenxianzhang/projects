@@ -67,4 +67,10 @@
         from question_options
         where questionId = #{questionId, jdbcType=BIGINT}
     </select>
+    <delete id="deleteByTaskId" parameterType="java.lang.Integer" >
+        delete from question_options
+        where questionId in (select id
+        from task_questions
+        where taskId = #{taskId,jdbcType=INTEGER})
+    </delete>
 </mapper>

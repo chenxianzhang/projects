@@ -38,4 +38,6 @@ public interface StudentPaperMapper {
      * @return
      */
     List<StudentPaper> getPaperByStudent(Map params);
+
+    int deleteByTaskId(Integer taskId);
 }

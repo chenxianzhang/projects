@@ -32,4 +32,6 @@ public interface TaskQuestionsMapper {
      * @return
      */
     List<TaskQuestions> selectSomeByTaskId(Integer taskId);
+
+    int deleteByTaskId(Integer taskId);
 }

@@ -73,9 +73,8 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteTask" parameterType="java.lang.Integer" >
-    delete from task_questions where taskId = #{taskId, jdbcType=INTEGER};
     delete from course_tasks
-    where taskId = #{taskId,jdbcType=INTEGER}
+    where id = #{taskId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.CourseTasks" useGeneratedKeys="true" keyProperty="id">
     insert into course_tasks (courseId, name,

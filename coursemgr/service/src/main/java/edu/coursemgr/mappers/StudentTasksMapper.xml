@@ -53,6 +53,10 @@
     delete from student_tasks
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByTaskId" parameterType="java.lang.Integer" >
+    delete from student_tasks
+    where taskId = #{taskId,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.StudentTasks" >
     insert into student_tasks (id, studentNo, taskId, 
       status, score, submitTime

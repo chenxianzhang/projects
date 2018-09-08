@@ -26,7 +26,7 @@
 
 <script>
   import TaskInfo from '../../components/taskInfo'
-  import {getCourseTasksByCourseId} from '@/api/course'
+  import {getCourseTasksByCourseId, deleteTask} from '@/api/course'
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
 
   export default {
@@ -54,7 +54,13 @@
         if (!cId || cId === '') {
           this.$message.warning('无效的课程id');
         }
-        getCourseTasksByCourseId({courseId: cId}).then(response => {
+        this.getTaskList(cId);
+      },
+      methods: {
+
+      getTaskList(courseId) {
+        let self = this;
+        getCourseTasksByCourseId({courseId: courseId}).then(response => {
           if (response.status === 0) {
             self.$message({
               showClose: true,
@@ -66,7 +72,7 @@
           self.tasks = response.data;
         });
       },
-      methods: {
+
         /**
          * 查看详情
          * */
@@ -87,7 +93,28 @@
          * 删除任务
          * */
         handleDeleteClick(row) {
-          console.log(row);
+          let self = this;
+        deleteTask({courseId: this.$route.params.courseId,
+         taskId: row.id}).then(response => {
+            debugger
+            if (response.status === 1) {
+            self.getTaskList(self.$route.params.courseId);
+              self.$message({
+                showClose: true,
+                type: 'success',
+                message: "删除成功"
+              });
+            } else {
+              self.$message({
+                showClose: true,
+                type: 'warning',
+                message: "删除失败"
+              });
+            }
+
+         }).catch(err => {
+            console.log(err);
+         })
         },
         /**
          * 时间格式转换

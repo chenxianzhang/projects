@@ -16,4 +16,6 @@ public interface QuestionOptionsMapper {
     int updateSelective(QuestionOptions record);
 
     List<QuestionOptions> selectByQuestionId(Long questionId);
+
+    int deleteByTaskId(Integer taskId);
 }

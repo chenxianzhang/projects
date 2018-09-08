@@ -3,8 +3,11 @@ package edu.coursemgr.controller;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.model.Course;
+import edu.coursemgr.model.CourseTasks;
+import edu.coursemgr.pojo.CourseTaskDetail;
 import edu.coursemgr.pojo.GradeDetail;
 import edu.coursemgr.service.interfaces.CourseMgrService;
+import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,9 @@ public class CourseMgrController extends BaseController {
 
     @Autowired
     private CourseMgrService courseMgrService;
+
+    @Autowired
+    private TaskMgrService taskMgrService;
 
     @RequestMapping(value="/selectTeacherCourse", method=RequestMethod.POST)
     @ResponseBody
@@ -141,15 +147,38 @@ public class CourseMgrController extends BaseController {
         courseMgrService.exportCourseGrade(courseId, response);
     }
 
-    @RequestMapping(value="/exportStuGrade", method=RequestMethod.POST)
+    @RequestMapping(value="/exportStuGrade", method=RequestMethod.GET)
     @ResponseBody
-    public void exportStuGrade(@RequestBody Map<String, Object> requestMap,
+    public void exportStuGrade(HttpServletRequest request,
                                HttpServletResponse response) throws Exception {
-        String courseId = getParam(requestMap, "courseId");
-        String studentNo = getParam(requestMap, "studentNo");
+        String courseId = request.getParameter("courseId");
+        String studentNo = request.getParameter("studentNo");
         if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(studentNo)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
         courseMgrService.exportStuGrade(courseId, studentNo, response);
+    }
+
+    @RequestMapping(value="/exportCourseProcess", method=RequestMethod.GET)
+    @ResponseBody
+    public Object exportCourseProcess(HttpServletRequest request,
+                                      HttpServletResponse response)
+        throws Exception {
+        String courseId = request.getParameter("courseId");
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        List<CourseTasks> tasksList = taskMgrService.getCourseTasksByCourseId(courseId);
+
+        if (tasksList == null) {
+            return null;
+        }
+        for (CourseTasks task : tasksList) {
+            CourseTaskDetail taskDetail = taskMgrService.getTaskDetailByTaskId(task.getId());
+
+
+        }
+
+        return null;
     }
 }

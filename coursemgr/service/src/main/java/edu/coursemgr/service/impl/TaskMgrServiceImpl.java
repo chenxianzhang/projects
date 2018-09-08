@@ -201,6 +201,16 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Override
     public int deleteTask(String courseId, String taskId) {
+        // 先删除问题options
+        questionOptionsMapper.deleteByTaskId(Integer.valueOf(taskId));
+        // 在删除试题
+        taskQuestionsMapper.deleteByTaskId(Integer.valueOf(taskId));
+        // 其次学生试题
+        studentPaperMapper.deleteByTaskId(Integer.valueOf(taskId));
+        // 再次学生任务
+        studentTasksMapper.deleteByTaskId(Integer.valueOf(taskId));
+
+        // 最后任务
         return courseTasksMapper.deleteTask(Integer.valueOf(taskId));
     }
 

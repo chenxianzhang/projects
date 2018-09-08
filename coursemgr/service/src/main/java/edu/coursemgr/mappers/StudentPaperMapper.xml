@@ -30,6 +30,10 @@
     delete from student_paper
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByTaskId" parameterType="java.lang.Integer" >
+    delete from student_paper
+    where taskId = #{taskId,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.StudentPaper" >
     insert into student_paper (id, taskId,studentNo, questionId, questionType,
       answers, score)
