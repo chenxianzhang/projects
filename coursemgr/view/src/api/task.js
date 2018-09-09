@@ -36,3 +36,15 @@ export function getMyTaskSituation(params) {
     data: params
   });
 }
+
+/**
+ * submitTaskPaper 学生答题
+ * params StudentPaperAnswer
+ * */
+export function submitTaskPaper(params) {
+  return request({
+    url: '/taskMgr/submitTaskPaper',
+    method: 'post',
+    data: params
+  });
+}

@@ -14,12 +14,21 @@
           分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分
         </div>
         <!--单选题、判断题 选项设置区域-->
-        <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE || item.questionType === SUBJECT_TYPE.JUDGE">
-            <el-radio-group  v-model="item.answer" style="display: grid">
+        <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
+            <el-radio-group  v-model="item.answer" style="display: grid" disabled>
               <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
+        </div>
+        <!--单选题、判断题 选项设置区域-->
+        <div v-if="item.questionType === SUBJECT_TYPE.JUDGE">
+          <el-radio-group  v-model="item.answer" style="display: grid" disabled>
+            <el-radio label="是" style="margin: 5px;">
+            </el-radio>
+            <el-radio label="否" style="margin: 5px;">
+            </el-radio>
+          </el-radio-group>
         </div>
         <!--主观题 答题 设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
@@ -28,8 +37,12 @@
                     v-model="item.answer" style="width: calc(100% - 100px)"></el-input>
 
           <!--主观题 查看-->
-          <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"
+          <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
                     v-html="item.answer" style="width: calc(100% - 100px)"></el-input>
+
+          <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL" style="width: 100px">
+            评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-html="item.score" />
+          </div>
           <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" style="width: 100px">
             评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" />
           </div>
@@ -55,6 +68,7 @@
           SUBJECT_TYPE:SUBJECT_TYPE,
           TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
           task: new Task(),
+          taskStudent: new Task()
         }
       },
       created(){
@@ -62,7 +76,6 @@
         if(!this.taskId || this.taskId === ''){
           return;
         }
-        console.log('get data')
         //获取任务信息
         getTaskDetailByTaskId({taskId: this.taskId})
           .then(resp=>{
@@ -74,6 +87,10 @@
             console.log('resp.data' + resp.data)
             this.setSubjectByTaskDetailInfo(resp.data);
           });
+        //学生查看任务详情
+        if(this.operateType === TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL){
+          //todo 获取学生答题情况
+        }
       },
       methods:{
         /**
@@ -118,7 +135,10 @@
          * 学生答题  提交答案
          * */
         handleSubjectSubmit(){
+          //学生答题
+          if(this.operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER){
 
+          }
         },
       },
     }
