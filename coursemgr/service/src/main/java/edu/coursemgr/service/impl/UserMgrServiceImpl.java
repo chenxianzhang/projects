@@ -12,6 +12,7 @@ import edu.coursemgr.model.CourseStudents;
 import edu.coursemgr.model.Group;
 import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.User;
+import edu.coursemgr.pojo.PageModel;
 import edu.coursemgr.pojo.UserEditModel;
 import edu.coursemgr.service.interfaces.UserMgrService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,22 @@ public class UserMgrServiceImpl implements UserMgrService {
     private GroupMemberMapper groupMemberMapper;
 
     @Override
-    public List<User> getStudentsByCourseId(String courseId) {
-        return userMapper.selectSomeByCourseId(Integer.valueOf(courseId));
+    public PageModel getStudentsByCourseId(String courseId,
+                                           String pageSize, String currPage) {
+        Integer totalCount = userMapper.selectTotalCntByCourseId(Integer.valueOf(courseId));
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("courseId", courseId);
+        params.put("pageSize", pageSize);
+
+        int currSize = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
+        params.put("currSize", currSize);
+
+        List<User> data = userMapper.selectSomeByPage(params);
+        PageModel pageModel = new PageModel();
+        pageModel.setPageData(data);
+        pageModel.setTotalCount(totalCount);
+        return pageModel;
     }
 
     @Override

@@ -37,6 +37,17 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currPage"
+          :page-sizes="[10, 15, 20, 30]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount">
+        </el-pagination>
+      </div>
     </div>
   <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog"></upload-student-comp>
 
@@ -108,6 +119,9 @@
           description: '',
           userNo: this.$store.state.user.token
         },
+        pageSize: 10,
+        currPage: 1,
+        totalCount: 0
       }
     },
     created(){
@@ -124,6 +138,16 @@
       }
     },
     methods:{
+      handleSizeChange(val){
+        this.pageSize = val;
+        let cId = this.$route.params.courseId;
+        this.getStudentsOfCourse(cId);
+      },
+      handleCurrentChange(val){
+        this.currPage = val;
+        let cId = this.$route.params.courseId;
+        this.getStudentsOfCourse(cId);
+      },
       getCourseInfo(cId){
         let self = this;
         getCourseById({courseId: cId}).then(response => {
@@ -141,7 +165,9 @@
       },
       getStudentsOfCourse(cId){
         let self = this;
-        getStudentsByCourseId({courseId: cId}).then(response => {
+        getStudentsByCourseId({courseId: cId,
+         pageSize: this.pageSize,
+         currPage: this.currPage}).then(response => {
           if (response.status === 0) {
             self.$message({
               showClose: true,
@@ -150,8 +176,8 @@
             });
             return;
           }
-          console.log(response.data)
-          self.studentsInCourse = response.data;
+          self.totalCount = response.data.totalCount;
+          self.studentsInCourse = response.data.pageData;
         });
       },
       //添加学生
@@ -345,5 +371,9 @@
         width: calc(100% - 90px);
       }
     }
+  }
+
+  .pagination {
+    margin-top: 10px;
   }
 </style>

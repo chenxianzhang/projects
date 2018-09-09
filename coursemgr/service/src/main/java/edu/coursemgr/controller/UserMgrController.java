@@ -32,13 +32,17 @@ public class UserMgrController extends BaseController {
 
     @RequestMapping(value="/getStudentsByCourseId", method=RequestMethod.POST)
     @ResponseBody
-    public List<User> getStudentsByCourseId(@RequestBody Map<String, Object> requestMap)
+    public Object getStudentsByCourseId(@RequestBody Map<String, Object> requestMap)
             throws Exception {
         String courseId = getParam(requestMap, "courseId");
-        if (CommonUtils.isEmpty(courseId)) {
+        String pageSize = getParam(requestMap, "pageSize");
+        String currPage = getParam(requestMap, "currPage");
+        boolean illegal = CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(pageSize)
+                || CommonUtils.isEmpty(currPage);
+        if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        return userMgrService.getStudentsByCourseId(courseId);
+        return userMgrService.getStudentsByCourseId(courseId, pageSize, currPage);
     }
 
     @RequestMapping(value="/addStudent", method=RequestMethod.POST)

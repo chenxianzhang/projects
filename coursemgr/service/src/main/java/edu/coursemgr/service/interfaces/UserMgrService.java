@@ -1,6 +1,7 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.User;
+import edu.coursemgr.pojo.PageModel;
 import edu.coursemgr.pojo.UserEditModel;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,9 +15,11 @@ public interface UserMgrService {
     /**
      * 通过课程ID获取当前课程下所有学生信息
      * @param courseId
+     * @param currPage
+     * @param pageSize
      * @return
      */
-    List<User> getStudentsByCourseId(String courseId);
+    PageModel getStudentsByCourseId(String courseId, String pageSize, String currPage);
 
     /**
      * 添加学生信息

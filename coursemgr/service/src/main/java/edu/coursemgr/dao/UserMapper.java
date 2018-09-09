@@ -29,4 +29,8 @@ public interface UserMapper {
     List<UserGroup> selectUserGroup(Integer courseId);
 
     List<User> selectSomeNoGroup(Integer courseId);
+
+    int selectTotalCntByCourseId(Integer courseId);
+
+    List<User> selectSomeByPage(Map params);
 }
