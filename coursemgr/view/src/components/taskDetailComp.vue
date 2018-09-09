@@ -41,7 +41,7 @@
                     v-html="item.answer" style="width: calc(100% - 100px)"></el-input>
 
           <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL" style="width: 100px">
-            评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-html="item.score" />
+            评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" disabled />
           </div>
           <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" style="width: 100px">
             评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" />

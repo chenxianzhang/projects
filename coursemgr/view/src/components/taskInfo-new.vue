@@ -95,7 +95,6 @@
         <el-button type="primary" v-if="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
       </div>
       <div class="subject-add el-icon-plus" @click="addSubject"></div>
-      <div class="subject-add" @click="handleSaveTask">保存</div>
     </div>
   </div>
 </template>
@@ -104,7 +103,6 @@
   import {SUBJECT_TYPE} from "../utils/statusUtil";
   import {Subject, Task, Selection} from "../models/task-model";
   import Tinymce from '../components/Tinymce/index'
-  import {saveTask} from '@/api/task'
 
   export default {
     name: "taskInfo-new",
@@ -196,60 +194,67 @@
           }
         },
         /**
-         * handleSaveTask 保存任务
-         * */
-        handleSaveTask(){
-          let saveData = this.getSaveData();
-          debugger
-          saveTask(saveData).then(response=>{
-              if(response.status === 0){
-                this.$message({
-                  showClose: true,
-                  type: 'warning',
-                  message: response.msg
-                });
-                return;
-              }
-              this.$message({
-                showClose: true,
-                type: 'success',
-                message: "保存成功！"
+         * taskVerify 任务有效性校验
+         * params selections 选项
+         * return null
+         **/
+        taskVerify(){
+          //题目校验--选项是否存在、题干是否存在、分值是否存在、总分值是否存在
+          if(this.task.name === ''){
+            this.$message.warning('请填写任务名称！');
+            return false;
+          }
+          if(this.task.inspireDate === ''){
+            this.$message.warning('请设置截止日期！');
+            return false;
+          }
+          if(this.task.weight === ''){
+            this.$message.warning('请设置任务权重！');
+            return false;
+          }
+          if(this.task.subjects.length === 0){
+            this.$message.warning('请添加相关题目！');
+            return false;
+          }
+          for(let subject of this.task.subjects){
+            if(subject.questionType === ''){
+              this.$message.warning('请选择题目类型！');
+              return false;
+            }
+            if(subject.score == 0){
+              this.$message.warning('请设置分数！');
+              return false;
+            }
+            if(subject.questionType === this.SUBJECT_TYPE.CHOOSE){
+
+              let validSelection = true;
+              subject.selections.forEach((v,k)=>{
+                console.log(v + '  ' + k)
+                if(v.optionDes === ''){
+                  validSelection = false;
+                  return;
+                }
               });
-          });
-        },
-        /**
-         * getSaveData  构造需要保存或者更新的task数据
-         * params null
-         * return {task:task, questionList:questions} 保存的数据结构
-         * */
-        getSaveData(){
-          let task = {
-            name:this.task.name,
-            courseId:this.$route.params.courseId,
-            weight: this.task.weight,
-            deadline:this.task.inspireDate,
-            totalScore: this.task.totalScore,
-            markType:this.task.markType
-          };
-          let questionList = [];
-          for(let item of this.task.subjects){
-            let optionList = [];
-            if(item.questionType === SUBJECT_TYPE.CHOOSE){
-              for(let opItem of item.selections){
-                optionList.push(opItem);
+
+              if(subject.answer === '' || subject.stem === '' || validSelection){
+                this.$message.warning('请设置单选题相关内容！');
+                return false;
               }
             }
-            questionList.push({
-              taskQuestions:{
-                stems:item.stem,
-                questionType:item.questionType,
-                score:item.score,
-                answers:item.answer,
-              },
-              optionList:optionList
-            });
+            if(subject.questionType === this.SUBJECT_TYPE.JUDGE){
+              if (subject.answer === '' || subject.stem === ''){
+                this.$message.warning('请设置判断题题干或答案！');
+                return false;
+              }
+            }
+            if(subject.questionType === this.SUBJECT_TYPE.SUBJECTIVE){
+              if (subject.answer === '' || subject.stem === '' || task.markType === ''){
+                this.$message.warning('请设置判断题题干或答案或评分方式！');
+                return false;
+              }
+            }
           }
-          return {task:task, questionList:questionList};
+          return true;
         },
       }
     }
