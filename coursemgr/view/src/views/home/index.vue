@@ -46,8 +46,8 @@
               <el-input v-model="userInfo.email" v-if="editUserInfo"/>
             </div>
             <div class="edit-oper" v-if="editUserInfo">
-              <el-button type="warning" plain @click="cancel" >取消</el-button>
-              <el-button type="info" plain @click="save">修改</el-button>
+              <el-button @click="cancel" >取消</el-button>
+              <el-button type="primary" @click="save">修改</el-button>
             </div>
           </div>
       </div>

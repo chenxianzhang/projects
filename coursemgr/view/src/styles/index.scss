@@ -74,6 +74,10 @@ div:focus{
   }
 }
 
+.el-button--default, .el-button--warning {
+  padding: 8px 15px;
+}
+
 .el-button--primary {
   padding: 8px 15px;
   background-color: rgb(84, 92, 100);
