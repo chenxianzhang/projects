@@ -15,15 +15,34 @@
         </div>
         <!--单选题、判断题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
-            <el-radio-group  v-model="item.answer" style="display: grid" disabled>
+            <el-radio-group  v-model="item.answer"
+                             style="display: grid" disabled
+                             v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
               <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
+          <!--学生答题显示内容  及  绑定内容-->
+          <el-radio-group  v-model="taskStudent.questionList[index].answers"
+                           style="display: grid"
+                           v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER">
+            <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
+              <span v-html="cItem.optionDes"></span>
+            </el-radio>
+          </el-radio-group>
         </div>
         <!--单选题、判断题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.JUDGE">
-          <el-radio-group  v-model="item.answer" style="display: grid" disabled>
+          <el-radio-group  v-model="item.answer" style="display: grid" disabled
+                           v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
+            <el-radio label="是" style="margin: 5px;">
+            </el-radio>
+            <el-radio label="否" style="margin: 5px;">
+            </el-radio>
+          </el-radio-group>
+          <!--判断题  答题-->
+          <el-radio-group  v-model="taskStudent.questionList[index].answers" style="display: grid"
+                           v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER">
             <el-radio label="是" style="margin: 5px;">
             </el-radio>
             <el-radio label="否" style="margin: 5px;">
@@ -34,10 +53,10 @@
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
           <!--主观题 答题-->
           <el-input type="textarea" v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"
-                    v-model="item.answer" style="width: calc(100% - 100px)"></el-input>
+                    v-model="taskStudent.questionList[index].answers" style="width: calc(100% - 100px)" placeholder="请填写答案"></el-input>
 
           <!--主观题 查看-->
-          <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
+          <el-input v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
                     v-html="item.answer" style="width: calc(100% - 100px)"></el-input>
 
           <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL" style="width: 100px">
@@ -47,10 +66,12 @@
             评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" />
           </div>
         </div>
-        <!--编辑和完成编辑按钮-->
-        <el-button type="primary" v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER"
-                   @click="handleSubjectSubmit">提交</el-button>
       </div>
+      <!--编辑和完成编辑按钮-->
+      <el-button class="save-btn"
+                 type="primary"
+                 v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER"
+                 @click="handleSubjectSubmit">提  交</el-button>
     </div>
   </div>
 </template>
@@ -58,7 +79,7 @@
 <script>
   import {SUBJECT_TYPE, TASK_OPERATOR_TYPE} from '../utils/statusUtil'
   import {Subject, Task, Selection} from "../models/task-model";
-  import {getTaskDetailByTaskId} from '@/api/task'
+  import {getTaskDetailByTaskId, submitTaskPaper} from '@/api/task'
 
     export default {
       name: "taskDetailComp",
@@ -68,7 +89,12 @@
           SUBJECT_TYPE:SUBJECT_TYPE,
           TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
           task: new Task(),
-          taskStudent: new Task()
+          taskStudent: {
+            studentNo:'',
+            courseId:'',
+            taskId:'',
+            questionList:[]
+          },
         }
       },
       created(){
@@ -86,13 +112,36 @@
             //根据结果设置subject值
             console.log('resp.data' + resp.data)
             this.setSubjectByTaskDetailInfo(resp.data);
+
+            //学生查看任务详情
+            if(this.operateType === this.TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL
+              || this.operateType === this.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
+              this.setStudentPaperByTask(this.task);
+              //todo 获取学生答题情况  设置答案和分数
+            }
           });
-        //学生查看任务详情
-        if(this.operateType === TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL){
-          //todo 获取学生答题情况
-        }
       },
       methods:{
+        /**
+         * 根据task的信息  设置学生答卷信息
+         * params taskInfo
+         * return null
+         **/
+        setStudentPaperByTask(task){
+          this.taskStudent.courseId = this.$route.params.courseId;
+          this.taskStudent.studentNo = this.$store.state.user.token;
+          this.taskStudent.taskId = this.taskId;
+          for(let q of task.subjects){
+            this.taskStudent.questionList.push({
+              questionId: q.id,
+              questionType: q.questionType,
+              standardAnswers: q.answer,//标准答案
+              answers:'',
+              score:''
+            });
+          }
+          this.taskStudent.questionList = this.taskStudent.questionList.reverse();
+        },
         /**
          * 根据接口返回的任务信息结果，构造subject对象的值
          * params taskDetailInfo
@@ -102,6 +151,7 @@
           if(!taskDetailInfo){
             return;
           }
+          this.task.id = this.taskId;
           this.task.name = taskDetailInfo.task.name;
           this.task.weight = taskDetailInfo.task.weight;
           this.task.totalScore = taskDetailInfo.task.totalScore;
@@ -136,8 +186,18 @@
          * */
         handleSubjectSubmit(){
           //学生答题
-          if(this.operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER){
+          if(this.operateType === this.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
+            //获取学生答题信息
+            this.setStudentPaperByTask(this.task);
 
+            submitTaskPaper(this.taskStudent)
+              .then(resp=>{
+              if(resp.status === 0){
+                this.$message.warning('上传答案失败');
+                return;
+              }
+                this.$message.warning('上传答案成功');
+            });
           }
         },
       },
@@ -154,5 +214,12 @@
 
   .task-name-label{
     line-height: 40px;
+  }
+
+  .save-btn{
+    margin-left: calc(50% - 40px);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80px;
   }
 </style>

@@ -13,13 +13,13 @@
                          width="140">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
+            <el-button v-if="isStudent" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
             <el-button v-if="!isStudent" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
             <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
-        <!--<task-info v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operate="operate"></task-info>-->
         <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operateType="operate"></task-detail-comp>
       </el-dialog>
     </div>
@@ -75,6 +75,14 @@
         });
       },
 
+        /**
+         * 学生答题
+         * */
+        handleAnswerClick(row) {
+          this.selectTaskId = row.id;
+          this.showTaskInfoDialog = true;
+          this.operate = TASK_OPERATOR_TYPE.STUDENT_ANSWER;
+        },
         /**
          * 查看详情
          * */
