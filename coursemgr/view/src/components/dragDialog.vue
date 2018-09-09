@@ -53,7 +53,7 @@ import elDragDialog from '@/directive/el-dragDialog'
       background-color: #ccc;
       padding: 15px 20px 15px;
       .el-dialog__title {
-        color: #677382;
+        color: #fff;
       }
     }
     .el-dialog__body {

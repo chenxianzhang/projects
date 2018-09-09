@@ -61,7 +61,7 @@
           <el-option
             v-for="item in usableGroups"
             :key="item.groupId"
-            :label="item.groupId"
+            :label="item.groupNo"
             :value="item.groupId">
           </el-option>
         </el-select>
@@ -156,7 +156,7 @@
           if(type === '添加到分组'){
             let self = this;
             //获取分组
-            getGroupDetail(this.$store.getters.courseId)
+            getGroupDetail({courseId: this.$route.params.courseId})
               .then(resp=>{
                 if(resp.status === 0){
                   self.$message.warning('获取分组信息失败');

@@ -12,6 +12,8 @@ public class GroupDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Integer groupNo;
+
     private String groupLeaderNo;
 
     private String groupLeaderName;
@@ -61,5 +63,13 @@ public class GroupDetail implements Serializable {
 
     public void setGroupMemberList(List<User> groupMemberList) {
         this.groupMemberList = groupMemberList;
+    }
+
+    public Integer getGroupNo() {
+        return groupNo;
+    }
+
+    public void setGroupNo(Integer groupNo) {
+        this.groupNo = groupNo;
     }
 }

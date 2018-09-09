@@ -188,6 +188,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
                     detail.setGroupId(group.getId());
                     detail.setGroupLeaderNo(group.getGroupLeaderNo());
                     detail.setGroupLeaderName(group.getLeaderName());
+                    detail.setGroupNo(group.getGroupNo());
                     List<User> members = userMapper.selectSomByGroupId(group.getId());
                     detail.setGroupMemberList(members);
 
@@ -209,6 +210,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             detail.setGroupId(group.getId());
             detail.setGroupLeaderNo(group.getGroupLeaderNo());
             detail.setGroupLeaderName(group.getLeaderName());
+            detail.setGroupNo(group.getGroupNo());
             List<User> members = userMapper.selectSomByGroupId(group.getId());
             detail.setGroupMemberList(members);
             return detail;

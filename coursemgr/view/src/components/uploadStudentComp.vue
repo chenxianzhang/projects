@@ -1,9 +1,13 @@
 <template>
-    <el-dialog :visible.sync="showUploadDialog" @close="handleDialogClose()">
+    <!--<el-dialog :visible.sync="showUploadDialog" @close="handleDialogClose()">-->
+  <drag-dialog title="批量导入" width="36%" :dialogVisible="showUploadDialog"
+               @close="handleDialogClose"
+               hiddenOperator="true">
       <el-upload
         class="upload-demo"
+        name="file"
         drag
-        action="https://localhost:8443/service/userMgr/batchUploadStudents"
+        :action="uploadAction"
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
         :on-success="handleUploadSuccess"
@@ -18,10 +22,13 @@
         <span>上传进度：</span>
         <el-progress :percentage="progress" :status="progressStatus"></el-progress>
       </div>
-    </el-dialog>
+    </drag-dialog>
 </template>
 
 <script>
+import global from '../../static/global.config'
+import dragDialog from '@/components/dragDialog';
+
     export default {
       name: "uploadStudentComp",
       props:['showUploadDialog'],
@@ -30,11 +37,13 @@
           showProgress:false,
           progressStatus:'',
           progress:0,
+          uploadAction: global.BASE_API + "/userMgr/batchUploadStudents"
         };
       },
       created(){
         let cId = this.$store.getters.courseId;
       },
+      components:{dragDialog},
       methods: {
         handleDialogClose(){
           this.$emit('hideUploadDialog', false);
@@ -46,6 +55,7 @@
           return this.$confirm(`确定移除 ${ file.name }？`);
         },
         handleUploadSuccess(response, file, fileList){
+          console.log(response)
           this.showProgress = true;
           this.progressStatus = 'success';
           this.progress = 100;
