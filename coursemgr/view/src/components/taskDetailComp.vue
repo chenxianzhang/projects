@@ -11,12 +11,12 @@
         <div style="margin-bottom:10px">
           <span>{{index + 1}}.</span>
           <el-input v-html="item.stem" style="width: calc(100% - 240px)"></el-input>
-          分数：<input type="number" min="0" max="100" v-html="item.score" style="width: 40px; height: 30px;" />分
+          分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分
         </div>
         <!--单选题、判断题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE || item.questionType === SUBJECT_TYPE.JUDGE">
             <el-radio-group  v-model="item.answer" style="display: grid">
-              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="idx" style="margin: 5px;">
+              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
@@ -99,6 +99,7 @@
                 subject_c.selections = item.optionList;
                 subject_c.answer = item.taskQuestions.answers;
                 subject_c.score = item.taskQuestions.score;
+                console.log(item.taskQuestions.score)
                 subject_c.stem = item.taskQuestions.stems;
                 subject_c.questionType = item.taskQuestions.questionType;
                 this.task.subjects.push(subject_c);

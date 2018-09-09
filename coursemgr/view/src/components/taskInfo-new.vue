@@ -1,8 +1,17 @@
 <template>
   <div style="width: 1200px; margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
     <div class="task-name">
-      <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">任务名称：</span>
-      <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px)"></el-input>
+      <el-row>
+        <el-col :span="12">
+          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">任务名称：</span>
+          <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px)"></el-input>
+        </el-col>
+        <el-col :span="12">
+          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">截止日期：</span>
+          <el-date-picker v-model="task.inspireDate" type="date" placeholder="选择日期">
+          </el-date-picker>
+        </el-col>
+      </el-row>
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道，
       总分值 <input v-model="totalScore" disabled/> 分，
@@ -13,11 +22,11 @@
         <div style="margin-bottom:10px">
           <span>{{index + 1}}.</span>
           <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem"
-                    placeholder="请设置题干" style="width: calc(100% - 240px)"></el-input>
+                    placeholder="请设置题干" style="width: calc(100% - 340px)"></el-input>
           <el-input v-if="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem"
-                    style="width: calc(100% - 240px)"></el-input>
+                    style="width: calc(100% - 34px)"></el-input>
 
-          <el-select v-model="item.questionType" placeholder="请选择题型">
+          <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 100px">
             <el-option label="单选题" :value="SUBJECT_TYPE.CHOOSE"></el-option>
             <el-option label="判断题" :value="SUBJECT_TYPE.JUDGE"></el-option>
             <el-option label="主观题" :value="SUBJECT_TYPE.SUBJECTIVE"></el-option>
@@ -28,8 +37,25 @@
           <Tinymce :height=200 v-if="item.edit" v-model="item.stem" style="margin-top: 5px;"/>
           <el-button v-if="item.edit" type="primary" @click="editConfirm(index, item)">确定</el-button>
         </div>
+        <!--判断题 选项设置区域-->
+        <div v-if="item.questionType === SUBJECT_TYPE.JUDGE" style="width: 90%; margin: 0 auto">
+          <div style="margin: 5px">选项设置：</div>
+          <div style="margin-bottom: 5px;">
+            <el-input  value="是" disabled style="width: calc(100% - 100px); margin-right: 10px;"></el-input>
+            <el-tooltip content="设置为答案" placement="top">
+              <el-radio v-model="item.answer" label="是">{{emptyContent}}</el-radio>
+            </el-tooltip>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <el-input value="否" disabled style="width: calc(100% - 100px); margin-right: 10px;">否</el-input>
+            <el-tooltip content="设置为答案" placement="top">
+              <el-radio v-model="item.answer" label="否">{{emptyContent}}</el-radio>
+            </el-tooltip>
+          </div>
+        </div>
         <!--单选题 选项设置区域-->
-        <div v-if="item.type === SUBJECT_TYPE.CHOOSE">
+        <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE" style="width: 90%; margin: 0 auto">
+          <div style="margin: 5px">选项设置：</div>
           <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px;">
             <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes"
                       placeholder="请设置选项" style="width: calc(100% - 100px)"></el-input>
@@ -53,7 +79,7 @@
           </div>
         </div>
         <!--主观题  答题设置-->
-        <div v-if="item.type === SUBJECT_TYPE.SUBJECTIVE">
+        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: 90%; margin: 0 auto">
           <div style="margin: 7px 20px; line-height: 40px; float: left">
             <el-radio-group v-model="item.markType"
                             style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
@@ -62,7 +88,7 @@
               <el-radio label="GROUP_INTERBLOCK_EVA" style="margin: 5px;">组间互评</el-radio>
             </el-radio-group>
           </div>
-          <el-input type="textarea" v-model="item.answer"></el-input>
+          <el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>
         </div>
         <!--编辑和完成编辑按钮-->
         <el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>
