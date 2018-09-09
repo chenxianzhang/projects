@@ -309,7 +309,7 @@
   .main-container .course-info{
     height: 20%;
     width: calc(100% - 60px);
-    box-shadow: 0px 0px 8px 5px #3276bd;
+    box-shadow: 0px 0px 4px 2px rgb(84, 92, 100);
     border-radius: 3px;
     margin: 30px;
     padding: 10px;
