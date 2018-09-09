@@ -15,6 +15,19 @@
 
       <el-table-column prop="totalScore" label="加权总分"> </el-table-column>
     </el-table>
+
+    <div class="pagination" v-if="!isStudent">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currPage"
+        :page-sizes="[10, 15, 20, 30]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount">
+      </el-pagination>
+    </div>
+
     <div class="buttons">
       <el-button class="primary" @click="download()">导出为excel</el-button>
       <el-button class="primary">过程性打包</el-button>
@@ -38,7 +51,10 @@
           showAnswer: false,
           isStudent:false,
           courseName:'xxx课程',
-          gradeList:[]
+          gradeList:[],
+          totalCount: 0,
+          pageSize: 10,
+          currPage: 1
         }
       },
       created() {
@@ -58,16 +74,32 @@
           return;
         }
         //获取当前课程所有学生的成绩
-        getAllGradeInfo({courseId: cId})
+        this.getGradeByCourse(cId);
+      },
+      methods: {
+        handleSizeChange(val) {
+           this.pageSize = val;
+           this.getGradeByCourse(this.$route.params.courseId);
+        },
+        handleCurrentChange(val) {
+          this.currPage = val;
+          this.getGradeByCourse(this.$route.params.courseId);
+        },
+        getGradeByCourse(courseId) {
+          let self = this;
+          getAllGradeInfo({courseId: courseId,
+          pageSize: this.pageSize, currPage: this.currPage})
           .then(resp => {
             if (resp.status === 0) {
               self.$message.warning('获取成绩信息失败：' + resp.msg);
               return;
             }
-            self.gradeList = resp.data;
+
+            self.gradeList = resp.data.pageData;
+            self.totalCount = resp.data.totalCount;
+            console.log(self.gradeList);
           });
-      },
-      methods: {
+        },
         handleClick(row) {
           this.showAnswer = true;
           //todo 通过任务id和学生id，获取任务题目信息
@@ -88,5 +120,9 @@
   .buttons > div{
     display: inline-block;
     margin: 0 5px;
+  }
+
+  .pagination {
+    margin-top: 10px;
   }
 </style>

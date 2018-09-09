@@ -11,6 +11,7 @@ import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.GradeDetail;
+import edu.coursemgr.pojo.PageModel;
 import edu.coursemgr.pojo.StudentTaskInfo;
 import edu.coursemgr.pojo.UserGroup;
 import edu.coursemgr.service.interfaces.CourseMgrService;
@@ -81,10 +82,18 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     }
 
     @Override
-    public List<GradeDetail> getAllGradeInfo(String courseId) {
+    public PageModel getAllGradeInfo(String courseId, String pageSize,
+                                     String currPage) {
 
+        int totalCount = userMapper.selectUserGroupTotalCnt(Integer.valueOf(courseId));
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("courseId", courseId);
+        paramMap.put("pageSize", pageSize);
+        int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
+        paramMap.put("offset", offset);
         // 获取学员与其组信息
-        List<UserGroup> userGroups = userMapper.selectUserGroup(Integer.valueOf(courseId));
+        List<UserGroup> userGroups = userMapper.selectUserGroupPage(paramMap);
 
         // 在根据学员信息获取其所有任务信息
         List<GradeDetail> gradeDetails = CollectionUtils.arrayListCast(userGroups,
@@ -109,7 +118,11 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     return detail;
                 });
 
-        return gradeDetails;
+        PageModel pageModel = new PageModel();
+        pageModel.setTotalCount(totalCount);
+        pageModel.setPageData(gradeDetails);
+
+        return pageModel;
     }
 
     @Override
@@ -153,7 +166,7 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     @Override
     public void exportCourseGrade(String courseId, HttpServletResponse response)
             throws Exception {
-        List<GradeDetail> gradeDetailList = getAllGradeInfo(courseId);
+        List<GradeDetail> gradeDetailList = getGradeDetailList(courseId);
 
         if(gradeDetailList == null) {
             throw new Exception("课程成绩信息为空");
@@ -227,6 +240,35 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         String name = String.format("%s%s成绩信息", user.getName(), course.getName());
         ExcelReader excelReader = new ExcelReader();
         excelReader.export(name, name, columnList, dataList, name, response);
+    }
+
+    private List<GradeDetail> getGradeDetailList(String courseId) {
+        // 获取学员与其组信息
+        List<UserGroup> userGroups = userMapper.selectUserGroup(Integer.valueOf(courseId));
+
+        // 在根据学员信息获取其所有任务信息
+        List<GradeDetail> gradeDetails = CollectionUtils.arrayListCast(userGroups,
+                userGroup -> {
+                    GradeDetail detail = new GradeDetail();
+                    detail.setGroupNo(userGroup.getGroupNo());
+                    detail.setStudentName(userGroup.getStudentName());
+                    detail.setStudentNo(userGroup.getStudentNo());
+                    Map<String, Object> params = new HashMap<>(2);
+                    params.put("studentNo", userGroup.getStudentNo());
+                    params.put("courseId", courseId);
+                    List<StudentTaskInfo> taskInfos = courseTasksMapper.selectStuTaskInfo(params);
+                    detail.setStudentTaskInfos(taskInfos);
+                    // 计算加权总分
+                    Float totalScore = 0f;
+                    if (taskInfos != null) {
+                        for (StudentTaskInfo taskInfo : taskInfos) {
+                            totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+                        }
+                    }
+                    detail.setTotalScore(totalScore);
+                    return detail;
+                });
+        return gradeDetails;
     }
 
 }

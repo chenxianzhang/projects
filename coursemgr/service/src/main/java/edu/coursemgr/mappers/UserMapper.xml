@@ -31,6 +31,23 @@
     where groupId in (select id from `group`
     where courseId=#{courseId, jdbcType=INTEGER})
   </select>
+  <select id="selectUserGroupPage" resultMap="UserGroupMap" parameterType="java.util.HashMap" >
+    select gm.studentNo, g.groupNo, u.name as studentName
+    from group_member gm left join `group` g
+    on g.id=gm.groupId left join user u
+    on gm.studentNo = u.serialNo
+    where groupId in (select id from `group`
+    where courseId=#{courseId, jdbcType=INTEGER})
+    limit ${offset}, ${pageSize}
+  </select>
+  <select id="selectUserGroupTotalCnt" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(gm.studentNo)
+    from group_member gm left join `group` g
+    on g.id=gm.groupId left join user u
+    on gm.studentNo = u.serialNo
+    where groupId in (select id from `group`
+    where courseId=#{courseId, jdbcType=INTEGER})
+  </select>
   <select id="selectBySerialNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

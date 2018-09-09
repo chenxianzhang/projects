@@ -3,6 +3,7 @@ package edu.coursemgr.service.interfaces;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.model.Course;
 import edu.coursemgr.pojo.GradeDetail;
+import edu.coursemgr.pojo.PageModel;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -38,9 +39,11 @@ public interface CourseMgrService {
     /**
      * 获取课程下所有学员的成绩信息
      * @param courseId
+     * @param pageSize
+     * @param currPage
      * @return
      */
-    List<GradeDetail> getAllGradeInfo(String courseId);
+    PageModel getAllGradeInfo(String courseId, String pageSize, String currPage);
 
     /**
      * 根据课程id更新，课程分组方式

@@ -98,14 +98,18 @@ public class CourseMgrController extends BaseController {
 
     @RequestMapping(value="/getAllGradeInfo", method=RequestMethod.POST)
     @ResponseBody
-    public List<GradeDetail> getAllGradeInfo(@RequestBody Map<String, Object> requestMap)
+    public Object getAllGradeInfo(@RequestBody Map<String, Object> requestMap)
             throws Exception {
         String courseId = getParam(requestMap, "courseId");
-        if (CommonUtils.isEmpty(courseId)) {
+        String pageSize = getParam(requestMap, "pageSize");
+        String currPage = getParam(requestMap, "currPage");
+        boolean illegal = CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(pageSize)
+                || CommonUtils.isEmpty(currPage);
+        if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
 
-        return courseMgrService.getAllGradeInfo(courseId);
+        return courseMgrService.getAllGradeInfo(courseId, pageSize, currPage);
     }
 
     @RequestMapping(value="/updateFreedomGroup", method=RequestMethod.POST)

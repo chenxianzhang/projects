@@ -33,4 +33,8 @@ public interface UserMapper {
     int selectTotalCntByCourseId(Integer courseId);
 
     List<User> selectSomeByPage(Map params);
+
+    int selectUserGroupTotalCnt(Integer courseId);
+
+    List<UserGroup> selectUserGroupPage(Map params);
 }

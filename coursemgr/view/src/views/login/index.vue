@@ -263,6 +263,9 @@ $light_gray:#eee;
   height: 100%;
   width: 100%;
   background-color: $bg;
+  .el-button--primary{
+     background-color: #409EFF;
+  }
   .login-form {
     position: absolute;
     left: 0;
