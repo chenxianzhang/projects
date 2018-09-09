@@ -48,3 +48,15 @@ export function submitTaskPaper(params) {
     data: params
   });
 }
+
+/**
+ * getStuTaskDetail 学生答题
+ * params {taskId:''， studentNo:''}
+ * */
+export function getStuTaskDetail(params) {
+  return request({
+    url: '/taskMgr/getStuTaskDetail',
+    method: 'post',
+    data: params
+  });
+}
