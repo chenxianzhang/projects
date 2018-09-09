@@ -41,4 +41,6 @@ public interface StudentTasksMapper {
 
     int deleteByTaskId(Integer taskId);
 
+    StudentTasks selectByStudent(Map params);
+
 }

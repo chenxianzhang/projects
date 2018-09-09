@@ -130,4 +130,18 @@ public class TaskMgrController extends BaseController {
         return taskMgrService.deleteTask(courseId, taskId);
     }
 
+    @RequestMapping(value="/getStuTaskDetail", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getStuTaskDetail(@RequestBody Map<String, Object> requestMap)
+        throws Exception {
+        String taskId = getParam(requestMap, "taskId");
+        String studentNo = getParam(requestMap, "studentNo");
+        if (CommonUtils.isEmpty(taskId) || CommonUtils.isEmpty(studentNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return taskMgrService.getStuTaskDetail(taskId, studentNo);
+    }
+
+
 }

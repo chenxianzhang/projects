@@ -214,6 +214,32 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return courseTasksMapper.deleteTask(Integer.valueOf(taskId));
     }
 
+    @Override
+    public CourseTaskDetail getStuTaskDetail(String taskId, String studentNo) {
+
+        CourseTasks task = courseTasksMapper.selectByTaskId(Integer.valueOf(taskId));
+        Map params = new HashMap();
+        params.put("taskId", taskId);
+        params.put("studentNo", studentNo);
+//        StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
+
+        List<TaskQuestions> taskQuestions = taskQuestionsMapper.selectStuTaskPaper(params);
+        List<TaskPaper> taskPaperList = CollectionUtils.arrayListCast(taskQuestions,
+                question -> {
+                    List<QuestionOptions> optionsList = questionOptionsMapper.selectByQuestionId(
+                            question.getId());
+                    TaskPaper paper = new TaskPaper();
+                    paper.setTaskQuestions(question);
+                    paper.setOptionList(optionsList);
+                    return paper;
+                });
+
+        CourseTaskDetail taskDetail = new CourseTaskDetail();
+        taskDetail.setTask(task);
+        taskDetail.setQuestionList(taskPaperList);
+        return taskDetail;
+    }
+
     private boolean isRight(String standardAnswer, String answer) {
         List<String> answers = Arrays.asList(answer.split(","));
         boolean right = true;

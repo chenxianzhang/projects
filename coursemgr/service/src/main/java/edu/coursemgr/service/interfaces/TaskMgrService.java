@@ -1,6 +1,7 @@
 package edu.coursemgr.service.interfaces;
 
 import edu.coursemgr.model.CourseTasks;
+import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.*;
 
 import java.util.List;
@@ -77,6 +78,12 @@ public interface TaskMgrService {
      */
     int deleteTask(String courseId, String taskId);
 
-
+    /**
+     * 获取学员任务详情
+     * @param taskId
+     * @param studentNo
+     * @return
+     */
+    CourseTaskDetail getStuTaskDetail(String taskId, String studentNo);
 
 }

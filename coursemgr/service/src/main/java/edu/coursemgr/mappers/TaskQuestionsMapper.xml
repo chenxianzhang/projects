@@ -37,6 +37,13 @@
     from task_questions
     where taskId = #{taskId, jdbcType=VARCHAR}
   </select>
+  <select id="selectStuTaskPaper" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
+    select tq.id,tq.taskId,tq.questionNo,tq.stems,tq.questionType,
+    tq.answerAttachment, tq.markType,tq.options, sp.score, sp.answers
+    from task_questions tq left join student_paper sp
+    on sp.questionId=tq.id and sp.studentNo=#{studentNo, jdbcType=VARCHAR}
+    where tq.taskId=#{taskId, jdbcType=INTEGER} order by tq.questionType asc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from task_questions
     where id = #{id,jdbcType=BIGINT}
