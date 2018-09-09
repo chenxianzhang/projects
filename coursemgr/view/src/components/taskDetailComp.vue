@@ -16,7 +16,9 @@
         <!--单选题、判断题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE || item.questionType === SUBJECT_TYPE.JUDGE">
             <el-radio-group  v-model="item.answer" style="display: grid">
-              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="idx" style="margin: 5px;">{{cItem.optionDes}}</el-radio>
+              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="idx" style="margin: 5px;">
+                <span v-html="cItem.optionDes"></span>
+              </el-radio>
             </el-radio-group>
         </div>
         <!--主观题 答题 设置区域-->

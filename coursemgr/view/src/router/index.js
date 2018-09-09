@@ -11,9 +11,9 @@ export const childrenRouter = [
   { name:'gradeInfo', path: '/course/gradeInfo/:courseId', component: () => import('@/views/course/gradeInfo'), hidden: true },
   { name:'gTaskInfo', path: '/course/gTaskInfo/:courseId', component: () => import('@/views/course/gTaskInfo'), hidden: true },//待办
   { name:'tGroupInfo', path: '/teacherHome/groupInfo', component: () => import('@/views/teacherHome/groupInfo'), hidden: true },
-  { name:'newTask', path: '/teacherHome/grouped/:courseId', component: () => import('@/views/teacherHome/grouped'), hidden: true },
-  { name:'grouped', path: '/teacherHome/NotGrouped/:courseId', component: () => import('@/views/teacherHome/NotGrouped'), hidden: true },
-  { name:'notGrouped', path: '/teacherHome/newTask/:courseId', component: () => import('@/views/teacherHome/newTask'), hidden: true },
+  { name:'grouped', path: '/teacherHome/grouped/:courseId', component: () => import('@/views/teacherHome/grouped'), hidden: true },
+  { name:'notGrouped', path: '/teacherHome/NotGrouped/:courseId', component: () => import('@/views/teacherHome/NotGrouped'), hidden: true },
+  { name:'newTask', path: '/teacherHome/newTask/:courseId', component: () => import('@/views/teacherHome/newTask'), hidden: true },
   { name:'uploadAnswer', path: '/teacherHome/uploadAnswer/:courseId', component: () => import('@/views/teacherHome/uploadAnswer'), hidden: true },
   { name:'newTask1', path: '/teacherHome/newTask1/:courseId', component: () => import('@/views/teacherHome/newTask1'), hidden: true },
 ];
