@@ -18,20 +18,22 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog :visible.sync="showTaskInfoDialog">
-        <task-info v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operate="operate"></task-info>
+      <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
+        <!--<task-info v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operate="operate"></task-info>-->
+        <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operateType="operate"></task-detail-comp>
       </el-dialog>
     </div>
 </template>
 
 <script>
   import TaskInfo from '../../components/taskInfo'
+  import TaskDetailComp from '../../components/taskDetailComp'
   import {getCourseTasksByCourseId, deleteTask} from '@/api/course'
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
 
   export default {
       name: "taskInfoList",
-      components:{TaskInfo},
+      components:{TaskDetailComp, TaskInfo, },
       data(){
           return {
             operate:'',

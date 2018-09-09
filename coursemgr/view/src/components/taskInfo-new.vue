@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div style="width: 1200px; margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
     <div class="task-name">
-      <el-input v-model="task.name" placeholder="请输入任务名称"></el-input>
+      <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">任务名称：</span>
+      <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px)"></el-input>
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道，
       总分值 <input v-model="totalScore" disabled/> 分，
@@ -15,6 +16,13 @@
                     placeholder="请设置题干" style="width: calc(100% - 240px)"></el-input>
           <el-input v-if="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem"
                     style="width: calc(100% - 240px)"></el-input>
+
+          <el-select v-model="item.questionType" placeholder="请选择题型">
+            <el-option label="单选题" :value="SUBJECT_TYPE.CHOOSE"></el-option>
+            <el-option label="判断题" :value="SUBJECT_TYPE.JUDGE"></el-option>
+            <el-option label="主观题" :value="SUBJECT_TYPE.SUBJECTIVE"></el-option>
+          </el-select>
+
           分数：<input type="number" min="0" max="100" v-model="item.score" style="width: 40px; height: 30px;" />分
           <el-button type="primary" @click="handleStemHighSetting(index)">高级设置</el-button>
           <Tinymce :height=200 v-if="item.edit" v-model="item.stem" style="margin-top: 5px;"/>
@@ -23,11 +31,9 @@
         <!--单选题 选项设置区域-->
         <div v-if="item.type === SUBJECT_TYPE.CHOOSE">
           <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px;">
-            <!--<el-input v-model="item.selections[cIndex].value" :key="cIndex" style="width: calc(100% - 100px)"/>-->
-
-            <el-input v-show="item.selections[cIndex].value.indexOf('img') === -1 && !item.selections[cIndex].edit" v-model="item.selections[cIndex].value"
+            <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes"
                       placeholder="请设置选项" style="width: calc(100% - 100px)"></el-input>
-            <el-input v-if="item.selections[cIndex].value.indexOf('img') !== -1 || item.selections[cIndex].edit" v-html="item.selections[cIndex].value"
+            <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit" v-html="item.selections[cIndex].optionDes"
                       style="width: calc(100% - 100px)"></el-input>
 
             <el-tooltip content="添加选项" placement="top">
@@ -40,11 +46,23 @@
               <i class="el-icon-picture-outline" @click="handleImageEditSelection(cIndex, item.selections)"/>
             </el-tooltip>
             <el-tooltip content="设置为答案" placement="top">
-              <el-radio v-model="item.answer" :label="item.selections[cIndex].value">{{emptyContent}}</el-radio>
+              <el-radio v-model="item.answer" :label="item.selections[cIndex].optionDes">{{emptyContent}}</el-radio>
             </el-tooltip>
-            <Tinymce :height=200 v-if="item.selections[cIndex].edit" v-model="item.selections[cIndex].value" style="margin: 5px"/>
+            <Tinymce :height=200 v-if="item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" style="margin: 5px"/>
             <el-button v-if="item.selections[cIndex].edit" type="primary" @click="editConfirm(cIndex, item.selections[cIndex])">确定</el-button>
           </div>
+        </div>
+        <!--主观题  答题设置-->
+        <div v-if="item.type === SUBJECT_TYPE.SUBJECTIVE">
+          <div style="margin: 7px 20px; line-height: 40px; float: left">
+            <el-radio-group v-model="item.markType"
+                            style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+              <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
+              <el-radio label="GROUP_INNER_EVA" style="margin: 5px;">组内互评</el-radio>
+              <el-radio label="GROUP_INTERBLOCK_EVA" style="margin: 5px;">组间互评</el-radio>
+            </el-radio-group>
+          </div>
+          <el-input type="textarea" v-model="item.answer"></el-input>
         </div>
         <!--编辑和完成编辑按钮-->
         <el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>
@@ -70,7 +88,6 @@
       data(){
           return{
             emptyContent:'',
-            radio:'选项1',
             editContent:'',
             SUBJECT_TYPE:SUBJECT_TYPE,
             task: new Task(),
@@ -140,10 +157,10 @@
         editConfirm(index, item){
           this.$set(item, 'edit', false);
 
-          if(item.value){
-            if(item.value.indexOf('img') === -1){
-              let stem = item.value.substring(3, item.value.length - 4);
-              this.$set(item, 'value', stem);
+          if(item.optionDes){
+            if(item.optionDes.indexOf('img') === -1){
+              let stem = item.value.substring(3, item.optionDes.length - 4);
+              this.$set(item, 'optionDes', stem);
             }
             return;
           }
@@ -182,7 +199,7 @@
         getSaveData(){
           let task = {
             name:this.task.name,
-            courseId:this.$store.getters.courseId,
+            courseId:this.$route.params.courseId,
             weight: this.task.weight,
             deadline:this.task.inspireDate,
             totalScore: this.task.totalScore,
@@ -191,15 +208,15 @@
           let questionList = [];
           for(let item of this.task.subjects){
             let optionList = [];
-            if(item.type === SUBJECT_TYPE.CHOOSE){
+            if(item.questionType === SUBJECT_TYPE.CHOOSE){
               for(let opItem of item.selections){
-                optionList.push({optionTag:'', optionDes:opItem.value});
+                optionList.push(opItem);
               }
             }
             questionList.push({
               taskQuestions:{
                 stems:item.stem,
-                questionType:item.type,
+                questionType:item.questionType,
                 score:item.score,
                 answers:item.answer,
               },
