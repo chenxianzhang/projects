@@ -18,7 +18,10 @@
   import TaskDetailComp from '../../components/taskDetailComp'
 
     export default {
-        name: "gTaskInfo",
+      name: "gTaskInfo",
+      components:{
+        TaskDetailComp
+      },
       data(){
           return{
             operateType:'',
