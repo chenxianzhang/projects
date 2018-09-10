@@ -32,7 +32,7 @@
   import TaskInfo from '../../components/taskInfo'
   import TaskDetailComp from '../../components/taskDetailComp'
   import {getCourseTasksByCourseId, deleteTask} from '@/api/course'
-  import {getMyTaskSituation} from '@/api/task'
+  import {getMyTaskSituation, getCourseTaskSituation} from '@/api/task'
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import TaskInfoNew from "../../components/taskInfo-new";
 
@@ -86,7 +86,7 @@
         },
         getTaskList(courseId) {
           let self = this;
-          getCourseTasksByCourseId({courseId: courseId}).then(response => {
+          getCourseTaskSituation({courseId: courseId}).then(response => {
             if (response.status === 0) {
               self.$message({
                 showClose: true,
@@ -168,14 +168,19 @@
          * 状态转换Function(row, column, cellValue, index)
          * */
         stateFormat:function(row, column, cellValue, index) {
-          let status = '已完成';
-          if(cellValue === 'UNCOMMITTED'){
-            status = '未答题'
+          if(this.isStudent){
+            let status = '已完成';
+            if(cellValue === 'UNCOMMITTED'){
+              status = '未答题'
+            }
+            else if(cellValue === 'TO_REVIEW'){
+              status = '已提交'
+            }
+            return status;
           }
-          else if(cellValue === 'TO_REVIEW'){
-            status = '已提交'
+          else{
+            return '<span>'+ row.finishPersonCnt + '/' + row.totalPersonCnt +'</span>'
           }
-          return status;
         }
       },
     }

@@ -38,6 +38,18 @@ export function getMyTaskSituation(params) {
 }
 
 /**
+ * getCourseTaskSituation 通过课程id获取课程下所有任务的完成情况
+ * params courseId
+ * */
+export function getCourseTaskSituation(params) {
+  return request({
+    url: '/taskMgr/getCourseTaskSituation',
+    method: 'post',
+    data: params
+  });
+}
+
+/**
  * submitTaskPaper 学生答题
  * params StudentPaperAnswer
  * */
