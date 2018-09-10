@@ -50,7 +50,7 @@ CREATE TABLE `course_tasks` (
 	`publishTime` datetime,        #发布时间
 	`startTime` datetime,     #任务开始时间
 	`deadline` datetime,             #截止时间
-	`markType` varchar(15),     #主观题评分类型，自评，组内互评，组间互评
+	`markType` varchar(50),     #主观题评分类型，自评，组内互评，组间互评
 	`totalScore` INT              #总分
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -72,7 +72,7 @@ CREATE TABLE `task_questions` (
 	`options` LONGTEXT,        #选择题的选项(每个选项之间以#号分隔，前端需校验选项的输入，不能输入#)，主观题则为空
 	`answers` varchar(15),      #标准答案，如果是多选题，每个选项之间以;分隔,；主观题无标准答案;判断题为正确或错误
 	`answerAttachment` varchar(255),   #主观题答案附件地址
-	`markType` varchar(15)     #主观题评分类型，自评，组内互评，组间互评
+	`markType` varchar(50)     #主观题评分类型，自评，组内互评，组间互评
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `student_tasks`;

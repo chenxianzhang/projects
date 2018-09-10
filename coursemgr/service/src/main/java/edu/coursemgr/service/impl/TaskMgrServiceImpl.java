@@ -157,7 +157,45 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         Map<String ,Object> params = new HashMap<>(2);
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
-        return studentTasksMapper.getSelfTaskSituation(params);
+
+        // 根据courseId获取所有taskId
+        List<CourseTasks> tasksList = courseTasksMapper.selectSomeByCourseId(Integer.valueOf(courseId));
+
+        if (tasksList == null) {
+            return null;
+        }
+
+        List<StudentTaskSituation> resultList = CollectionUtils.arrayListCast(tasksList,
+                task -> {
+
+                    StudentTaskSituation situation = new StudentTaskSituation();
+                    if (task.getDeadline() != null) {
+                        situation.setDeadline(task.getDeadline().toString());
+                    }
+                    if (task.getPublishTime() != null) {
+                        situation.setPublishTime(task.getPublishTime().toString());
+                    }
+                    situation.setTaskId(task.getId());
+                    situation.setTaskName(task.getName());
+
+                    // 根据taskId 和 studentNo查询学生的任务状态
+                    Map<String, Object> paramMap = new HashMap<>();
+                    paramMap.put("taskId", task.getId());
+                    paramMap.put("studentNo", studentNo);
+
+                    StudentTasks studentTasks = studentTasksMapper.selectByStudent(paramMap);
+
+                    if (studentTasks == null) {
+                        situation.setFinishStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
+                        return situation;
+                    }
+                    situation.setFinishStatus(studentTasks.getStatus());
+
+                    return situation;
+                });
+
+//        return studentTasksMapper.getSelfTaskSituation(params);
+        return resultList;
     }
 
     @Override
@@ -269,6 +307,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             CourseTaskDetail taskDetail = getStuTaskDetail(taskId.toString(),
                     student.getSerialNo());
             String html = transfer2Html(taskDetail);
+
 
 
         });
