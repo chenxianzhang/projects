@@ -127,8 +127,8 @@
             this.taskStudent.questionList.push({
               questionId: q.id,
               questionType: q.questionType,
-              standardAnswers: q.answer,//标准答案
-              answers:'',
+              standardAnswers: '',//标准答案
+              answers:q.answer,
               score:''
             });
           }

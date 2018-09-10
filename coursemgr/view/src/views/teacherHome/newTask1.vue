@@ -55,6 +55,7 @@
             name:this.task.name,
             courseId:this.$route.params.courseId,
             weight: this.task.weight,
+            publishTime:new Date(),
             deadline:this.task.inspireDate,
             totalScore: this.task.totalScore,
             markType:this.task.markType
