@@ -30,7 +30,6 @@
             operateType:'',
             selectTaskId:'',
             markUid:'',
-            TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
             showTaskInfoDialog:false,
             gTasks:[],
           }
@@ -61,7 +60,7 @@
         approvalTask(tId, markUid){
           //显示task信息，填写得分
           this.selectTaskId = tId;
-          this.operateType = this.TASK_OPERATOR_TYPE.MARK_POINT;
+          this.operateType = TASK_OPERATOR_TYPE.MARK_POINT;
           this.markUid = markUid;
           this.showTaskInfoDialog = true;
         }
