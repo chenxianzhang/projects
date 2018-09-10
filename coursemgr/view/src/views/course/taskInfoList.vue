@@ -179,7 +179,7 @@
             return status;
           }
           else{
-            return '<span>'+ row.finishPersonCnt + '/' + row.totalPersonCnt +'</span>'
+            return row.finishPersonCnt + '/' + row.totalPersonCnt
           }
         }
       },
