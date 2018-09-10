@@ -81,7 +81,7 @@
         <!--主观题  答题设置-->
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: 90%; margin: 0 auto">
           <div style="margin: 7px 20px; line-height: 40px; float: left">
-            <el-radio-group v-model="item.markType"
+            <el-radio-group v-model="task.markType"
                             style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
               <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
               <el-radio label="GROUP_INNER_EVA" style="margin: 5px;">组内互评</el-radio>
@@ -236,7 +236,7 @@
                 }
               });
 
-              if(subject.answer === '' || subject.stem === '' || validSelection){
+              if(subject.answer === '' || subject.stem === '' || !validSelection){
                 this.$message.warning('请设置单选题相关内容！');
                 return false;
               }
@@ -248,7 +248,7 @@
               }
             }
             if(subject.questionType === this.SUBJECT_TYPE.SUBJECTIVE){
-              if (subject.answer === '' || subject.stem === '' || task.markType === ''){
+              if (subject.answer === '' || subject.stem === '' || this.task.markType === ''){
                 this.$message.warning('请设置判断题题干或答案或评分方式！');
                 return false;
               }

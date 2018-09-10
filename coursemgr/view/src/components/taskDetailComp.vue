@@ -1,6 +1,6 @@
 <template>
   <div class="main-frame">
-    <div v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL">
+    <div>
       <div class="task-name-label">
         任务名称：{{task.name}}
       </div>
@@ -14,36 +14,20 @@
             <el-input v-html="item.stem" style="width: calc(100% - 240px)"></el-input>
             分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分
           </div>
-          <!--单选题、判断题 选项设置区域-->
+          <!--单选题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
             <el-radio-group  v-model="item.answer"
-                             style="display: grid" disabled
-                             v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
-              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
-                <span v-html="cItem.optionDes"></span>
-              </el-radio>
-            </el-radio-group>
-            <!--学生答题显示内容  及  绑定内容-->
-            <el-radio-group  v-model="taskStudent.questionList[index].answers"
                              style="display: grid"
-                             v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER">
+                             :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
               <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
           </div>
-          <!--单选题、判断题 选项设置区域-->
+          <!--判断题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.JUDGE">
-            <el-radio-group  v-model="item.answer" style="display: grid" disabled
-                             v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
-              <el-radio label="是" style="margin: 5px;">
-              </el-radio>
-              <el-radio label="否" style="margin: 5px;">
-              </el-radio>
-            </el-radio-group>
-            <!--判断题  答题-->
-            <el-radio-group  v-model="taskStudent.questionList[index].answers" style="display: grid"
-                             v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER">
+            <el-radio-group  v-model="item.answer" style="display: grid"
+                             :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
               <el-radio label="是" style="margin: 5px;">
               </el-radio>
               <el-radio label="否" style="margin: 5px;">
@@ -53,12 +37,12 @@
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
             <!--主观题 答题-->
-            <el-input type="textarea" v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"
-                      v-model="taskStudent.questionList[index].answers" style="width: calc(100% - 100px)" placeholder="请填写答案"></el-input>
-
-            <!--主观题 查看-->
-            <el-input v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
-                      v-html="item.answer" style="width: calc(100% - 100px)"></el-input>
+            <el-input type="textarea"
+                      v-model="item.answer"
+                      style="width: calc(100% - 100px)"
+                      placeholder="请填写答案"
+                      :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
+            </el-input>
 
             <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL" style="width: 100px">
               评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" disabled />
@@ -73,53 +57,6 @@
                    type="primary"
                    v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                    @click="handleSubjectSubmit">提  交</el-button>
-      </div>
-    </div>
-
-
-    <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL">
-      <div class="task-name-label">
-        任务名称：{{studentTaskDetail.task.name}}
-      </div>
-      <div class="subjectStatic">总题数 {{studentTaskDetail.task.subjects.length}} 道，
-        总分值 {{studentTaskDetail.task.totalScore}} 分，权重：{{studentTaskDetail.task.weight}} %。</div>
-      <div class="subject-container">
-        <div class="subject-item" v-for="(item, index) in studentTaskDetail.questionList"
-             style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
-          <!--题干设置区域-->
-          <div style="margin-bottom:10px">
-            <span>{{index + 1}}.</span>
-            <el-input v-html="item.taskQuestions.stem" style="width: calc(100% - 240px)"></el-input>
-            分数：<el-input v-html="item.taskQuestions.score" style="width: 40px; height: 30px;" />分
-          </div>
-          <!--单选题 选项设置区域-->
-          <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.CHOOSE">
-            <el-radio-group  v-model="item.taskQuestions.answers"
-                             style="display: grid" disabled>
-              <el-radio v-for="(cItem, cIndex) in item.taskQuestions.optionList" :label="cItem.optionDes" :key="cIndex" style="margin: 5px;">
-                <span v-html="cItem.optionDes"></span>
-              </el-radio>
-            </el-radio-group>
-          </div>
-          <!--判断题 选项设置区域-->
-          <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.JUDGE">
-            <el-radio-group  v-model="item.taskQuestions.answer" style="display: grid" disabled>
-              <el-radio label="是" style="margin: 5px;">
-              </el-radio>
-              <el-radio label="否" style="margin: 5px;">
-              </el-radio>
-            </el-radio-group>
-          </div>
-          <!--主观题 答题 设置区域-->
-          <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
-            <!--主观题 查看-->
-            <el-input v-html="item.taskQuestions.answer" style="width: calc(100% - 100px)"></el-input>
-
-            <div style="width: 100px">
-              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" disabled />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -144,7 +81,6 @@
             taskId:'',
             questionList:[]
           },
-          studentTaskDetail:{},
         }
       },
       created(){
@@ -162,7 +98,6 @@
               }
               //根据结果设置subject值
               this.setSubjectByTaskDetailInfo(resp.data);
-              this.setStudentPaperByTask(this.task);
           });
         }
         //学生查看任务详情
@@ -174,7 +109,7 @@
                 return;
               }
               //根据结果设置subject值
-              this.studentTaskDetail = resp.data;
+              this.setSubjectByTaskDetailInfo(resp.data);
             });
         }
       },
@@ -237,7 +172,7 @@
                 this.$message.warning('上传答案失败');
                 return;
               }
-                this.$message.warning('上传答案成功');
+                this.$message.success('上传答案成功');
             });
           }
         },
