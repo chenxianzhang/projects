@@ -82,10 +82,11 @@
         from grade_relate as gr,
         (select studentNo,taskId
         from student_tasks where status='TO_REVIEW') as tmp
-        where gr.studentNo=#{studentNo, jdbcType=VARCHAR}
+        where tmp.taskId=gr.taskId
+        and gr.studentNo=#{studentNo, jdbcType=VARCHAR}
         and gr.courseId=#{courseId, jdbcType=INTEGER}
-        and tmp.taskId=gr.taskId
-        and FIND_IN_SET(tmp.studentNo,gr.gradeObjNo)
+
+        <!--and FIND_IN_SET(tmp.studentNo,gr.gradeObjNo)-->
     </select>
     <select id="selectByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
         select

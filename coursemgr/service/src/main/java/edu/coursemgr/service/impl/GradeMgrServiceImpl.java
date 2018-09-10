@@ -3,6 +3,7 @@ package edu.coursemgr.service.impl;
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.dao.*;
 import edu.coursemgr.model.*;
+import edu.coursemgr.pojo.Schedule;
 import edu.coursemgr.pojo.SubjectGradeModel;
 import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.utils.CollectionUtils;
@@ -68,7 +69,7 @@ public class GradeMgrServiceImpl implements GradeMgrService {
     }
 
     @Override
-    public List<GradeRelate> getMySchedule(String courseId, String studentNo) {
+    public List<Schedule> getMySchedule(String courseId, String studentNo) {
         User user = userMapper.selectBySerialNo(studentNo);
         if (user == null) {
             return null;
@@ -77,29 +78,56 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         Map<String, Object> params = new HashMap<>();
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
-        params.put("markType", CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
+        params.put("markType", CommonEnum.GradeType.SELF_EVA.getValue());
         List<CourseTasks> taskList = courseTasksMapper.selectSomeByMarkType(params);
 
-        List<GradeRelate> resultList = null;
+        List<Schedule> resultList = null;
+        final String studentName = user.getName();
         if (taskList != null) {
             resultList = CollectionUtils.arrayListCast(taskList, task -> {
-                GradeRelate relate = new GradeRelate();
-                relate.setStudentNo(studentNo);
-                relate.setGradeObjNo(studentNo);
-                relate.setGradeObjName(user.getName());
-                relate.setCourseId(Integer.valueOf(courseId));
-                relate.setTaskId(task.getId());
-                relate.setTaskName(task.getName());
-                return relate;
+
+                Schedule schedule = new Schedule();
+                schedule.setMarkPersonName(studentName);
+                schedule.setMarkPersonSerialNo(studentNo);
+
+                schedule.setTargetSerialName(studentName);
+                schedule.setTargetSerialNo(studentNo);
+                schedule.setTaskId(task.getId());
+                schedule.setTaskName(task.getName());
+                return schedule;
             });
         }
 
+        params = new HashMap<>();
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
 
         List<GradeRelate> tmpList = gradeRelateMapper.selectSomeByStudent(params);
-        if (resultList != null) {
-            resultList.addAll(tmpList);
-        } else {
-            resultList = tmpList;
+        if (resultList == null) {
+            resultList = new ArrayList<>();
+        }
+
+        for (GradeRelate relate : tmpList) {
+            String[] tmpStuNos = relate.getGradeObjNo().split(",");
+            if (tmpStuNos == null) {
+                continue;
+            }
+            for (String stuNo : tmpStuNos) {
+                user = userMapper.selectBySerialNo(stuNo);
+                if (user == null) {
+                    continue;
+                }
+                Schedule schedule = new Schedule();
+                schedule.setMarkPersonName(studentName);
+                schedule.setMarkPersonSerialNo(studentNo);
+
+                schedule.setTargetSerialName(user.getName());
+                schedule.setTargetSerialNo(user.getSerialNo());
+                schedule.setTaskId(relate.getTaskId());
+                schedule.setTaskName(relate.getTaskName());
+
+                resultList.add(schedule);
+            }
         }
         return resultList;
     }
@@ -218,7 +246,6 @@ public class GradeMgrServiceImpl implements GradeMgrService {
     }
 
     /**
-     *
      * @param prevList
      * @param lastList
      */
