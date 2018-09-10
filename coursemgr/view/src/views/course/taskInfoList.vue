@@ -7,13 +7,13 @@
         <el-table-column prop="publishTime" label="发布日期" :formatter="dateFormat"> </el-table-column>
         <!--<el-table-column prop="startTime" label="开始日期" :formatter="dateFormat"> </el-table-column>-->
         <el-table-column prop="deadline" label="截止日期" :formatter="dateFormat"> </el-table-column>
-        <el-table-column prop="finishState" label="完成状态" :formatter="stateFormat"> </el-table-column>
+        <el-table-column prop="finishStatus" label="完成状态" :formatter="stateFormat"> </el-table-column>
         <el-table-column align="center"
                          label="操作"
                          width="140">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
-            <el-button v-if="isStudent"  @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
+            <el-button v-if="isStudent" :disabled="scope.row.finishStatus!='UNCOMMITTED'" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
             <el-button v-if="!isStudent" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
             <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
@@ -79,7 +79,7 @@
                   name:item.taskName,
                   publishTime:item.publishTime,
                   deadline:item.deadline,
-                  finishState:item.finishState
+                  finishStatus:item.finishStatus
                 });
               }
             });
