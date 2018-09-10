@@ -2,7 +2,7 @@
   <div>
     <div class="grouped-item" v-for="gTask in gTasks">
       <!--1. 审阅XXX关于“xxxxxx”任务主观题-->
-      审阅<span>{{gTask.gradeObjName}}</span>关于“<span>{{gTask.taskName}}</span>”任务主观题
+      审阅<span>{{gTask.targetSerialName}}</span>关于“<span>{{gTask.taskName}}</span>”任务主观题
       <el-button type="primary" @click="approvalTask(gTask.taskId)">审阅</el-button>
     </div>
     <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
@@ -14,6 +14,9 @@
 <script>
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import {getMySchedule} from '@/api/gtasks'
+
+  import TaskDetailComp from '../../components/taskDetailComp'
+
     export default {
         name: "gTaskInfo",
       data(){
@@ -26,6 +29,17 @@
           }
       },
       created(){
+        // private Integer taskId;
+        //
+        // private String taskName;
+        //
+        // private String markPersonSerialNo;
+        //
+        // private String markPersonName;
+        //
+        // private String targetSerialNo;
+        //
+        // private String targetSerialName;
           //获取我的任务待办列表
           getMySchedule({courseId:this.$route.params.courseId, studentNo:this.$store.state.user.token})
             .then(resp=>{
