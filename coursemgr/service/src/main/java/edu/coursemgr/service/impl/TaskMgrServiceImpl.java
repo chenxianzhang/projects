@@ -13,6 +13,7 @@ import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -40,6 +41,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Autowired
     private QuestionOptionsMapper questionOptionsMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Map<String, Object>  saveTask(CourseTaskDetail taskDetail) throws Exception {
@@ -179,9 +183,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (studentPapers == null) {
             return true;
         }
-        if (studentPaperMapper.insertBatch(studentPapers) == 0 ) {
-            return false;
-        }
+
+        insertBatch(studentPapers);
+
         // 更改学生task的完成状态
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("taskId", stuPaperAnswer.getTaskId());
@@ -221,7 +225,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         Map params = new HashMap();
         params.put("taskId", taskId);
         params.put("studentNo", studentNo);
-//        StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
+        StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
 
         List<TaskQuestions> taskQuestions = taskQuestionsMapper.selectStuTaskPaper(params);
         List<TaskPaper> taskPaperList = CollectionUtils.arrayListCast(taskQuestions,
@@ -237,8 +241,54 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         CourseTaskDetail taskDetail = new CourseTaskDetail();
         taskDetail.setTask(task);
         taskDetail.setQuestionList(taskPaperList);
+        taskDetail.setStudentTotalScore(studentTasks.getScore());
+
         return taskDetail;
     }
+
+    @Override
+    public void exportCourseProcess(HttpServletResponse response, String courseId) {
+        List<CourseTasks> tasksList = getCourseTasksByCourseId(courseId);
+        if (tasksList == null) {
+            return;
+        }
+        // 获取所有学员信息
+        List<User> userList = userMapper.selectSomeByCourseId(Integer.valueOf(courseId));
+
+        for (CourseTasks task : tasksList) {
+
+        }
+
+    }
+
+    private void generateWord(Integer taskId, List<User> studentList) {
+        if (studentList == null) {
+            return;
+        }
+        studentList.forEach(student -> {
+            CourseTaskDetail taskDetail = getStuTaskDetail(taskId.toString(),
+                    student.getSerialNo());
+            String html = transfer2Html(taskDetail);
+
+
+        });
+
+
+    }
+
+    private String transfer2Html(CourseTaskDetail taskDetail) {
+        String html = "";
+        for (TaskPaper question : taskDetail.getQuestionList()) {
+            html += String.format("<p>%s</p>", question.getTaskQuestions().getStems());
+            for (QuestionOptions option : question.getOptionList()) {
+                html += String.format("<p>%s、%s</p>", option.getOptionTag(),
+                        option.getOptionDes());
+            }
+            html += String.format("<p>所选答案：%s</p>", question.getTaskQuestions().getAnswers());
+        }
+        return html;
+    }
+
 
     private boolean isRight(String standardAnswer, String answer) {
         List<String> answers = Arrays.asList(answer.split(","));
@@ -250,6 +300,15 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             }
         }
         return right;
+    }
+
+    private void insertBatch(List<StudentPaper> studentPapers) {
+        if (studentPapers == null) {
+            return;
+        }
+        studentPapers.forEach(paper -> {
+            studentPaperMapper.insert(paper);
+        });
     }
 
     private void updateBatch(List<TaskPaper> taskQuestions) {

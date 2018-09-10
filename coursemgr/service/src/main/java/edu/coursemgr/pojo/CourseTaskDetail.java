@@ -13,9 +13,11 @@ public class CourseTaskDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    CourseTasks task;
+    private CourseTasks task;
 
-    List<TaskPaper> questionList;
+    private List<TaskPaper> questionList;
+
+    private Float studentTotalScore;
 
 
     public CourseTasks getTask() {
@@ -32,5 +34,13 @@ public class CourseTaskDetail implements Serializable {
 
     public void setQuestionList(List<TaskPaper> questionList) {
         this.questionList = questionList;
+    }
+
+    public Float getStudentTotalScore() {
+        return studentTotalScore;
+    }
+
+    public void setStudentTotalScore(Float studentTotalScore) {
+        this.studentTotalScore = studentTotalScore;
     }
 }

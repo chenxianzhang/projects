@@ -1,6 +1,5 @@
 package edu.coursemgr.service.impl;
 
-import edu.coursemgr.common.Constant;
 import edu.coursemgr.service.interfaces.FileMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,14 @@ public class FileMgrServiceImpl implements FileMgrService {
 
         String dirAll = CommonUtils.combinePath(root, dir);
         CommonUtils.createDir(dirAll);
-        String filePath = CommonUtils.combinePath(dirAll, file.getOriginalFilename());
+        if (file.getOriginalFilename().isEmpty()) {
+            return "";
+        }
+        String[] fileNames = file.getOriginalFilename().split(".");
+        String extension = fileNames[fileNames.length - 1];
+        String fileName = String.format("%s.%s", CommonUtils.uuid(), extension);
+
+        String filePath = CommonUtils.combinePath(dirAll, fileName);
         File f = new File(filePath);
         file.transferTo(f);
         return CommonUtils.combinePath(dir, file.getOriginalFilename());

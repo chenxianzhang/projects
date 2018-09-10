@@ -5,6 +5,7 @@ import edu.coursemgr.common.Constant;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 /**
  * Created by chenxianzhang on 2018/8/18 0018 上午 12:18
@@ -17,6 +18,12 @@ public final class CommonUtils {
         return isEmpty;
     }
 
+    /**
+     * upload/...
+     * @param trunkDir
+     * @param subDir
+     * @return
+     */
     public static String combineDir(String trunkDir, String subDir) {
         if (subDir.isEmpty()) {
             Path path = Paths.get(Constant.Common.UPLOAD_ROOT_DIR,
@@ -42,5 +49,9 @@ public final class CommonUtils {
                 file.mkdir();
             }
         }
+    }
+
+    public static String uuid() {
+        return UUID.randomUUID().toString().replace("-", "").toLowerCase();
     }
 }

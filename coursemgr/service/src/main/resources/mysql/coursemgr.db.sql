@@ -108,7 +108,7 @@ CREATE TABLE `group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `group_member`;
-CREATE TABLE `group_memeber` (
+CREATE TABLE `group_member` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`groupId` INT,    #所属分组id
 	`groupNo` INT,    #所属分组序号
