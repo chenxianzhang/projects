@@ -164,6 +164,7 @@
          * 学生答题  提交答案
          * */
         handleSubjectSubmit(){
+          this.setStudentPaperByTask(this.task);
           //学生答题
           if(this.operateType === this.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
             submitTaskPaper(this.taskStudent)
