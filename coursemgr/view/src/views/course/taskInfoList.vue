@@ -29,7 +29,7 @@
   import TaskInfo from '../../components/taskInfo'
   import TaskDetailComp from '../../components/taskDetailComp'
   import {getCourseTasksByCourseId, deleteTask} from '@/api/course'
-  import {getMyTaskSituation} from '@/api/course'
+  import {getMyTaskSituation} from '@/api/task'
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
 
   export default {
@@ -68,6 +68,7 @@
                 this.$message.warn('获取我的任务失败！');
                 return;
               }
+              debugger
               for(let item of resp.data){
                 this.tasks.push({
                   id:item.taskId,
