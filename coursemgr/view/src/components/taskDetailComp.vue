@@ -55,7 +55,7 @@
         <!--编辑和完成编辑按钮-->
         <el-button class="save-btn"
                    type="primary"
-                   v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER"
+                   v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER || operateType === TASK_OPERATOR_TYPE.MARK_POINT"
                    @click="handleSubjectSubmit">提  交</el-button>
       </div>
     </div>
@@ -69,7 +69,7 @@
 
     export default {
       name: "taskDetailComp",
-      props:['operateType', 'taskId'],
+      props:['operateType', 'taskId', 'markUid'],
       data(){
         return{
           SUBJECT_TYPE:SUBJECT_TYPE,
@@ -89,7 +89,9 @@
           return;
         }
         //获取任务信息
-        if(this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL && this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
+        if(this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL
+          && this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_ANSWER
+          && this.operateType !== this.TASK_OPERATOR_TYPE.MARK_POINT){
           getTaskDetailByTaskId({taskId: this.taskId})
             .then(resp=>{
               if(resp.status === 0){
@@ -102,7 +104,11 @@
         }
         //学生查看任务详情
         else{
-          getStuTaskDetail({taskId:this.taskId, studentNo: this.$store.state.user.token})
+          let uid = this.$store.state.user.token;
+          if(this.operateType === this.TASK_OPERATOR_TYPE.MARK_POINT){
+            uid = this.markUid;
+          }
+          getStuTaskDetail({taskId:this.taskId, studentNo: uid})
             .then(resp=>{
               if(resp.status === 0){
                 this.$message.warning('获取学生任务信息失败');
