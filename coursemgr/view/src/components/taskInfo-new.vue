@@ -100,12 +100,14 @@
 </template>
 
 <script>
+  import {getTaskDetailByTaskId} from '@/api/task'
   import {SUBJECT_TYPE} from "../utils/statusUtil";
   import {Subject, Task, Selection} from "../models/task-model";
   import Tinymce from '../components/Tinymce/index'
 
   export default {
     name: "taskInfo-new",
+    props:['operateType', 'taskId'],
     components:{
       Tinymce
     },
@@ -117,6 +119,21 @@
             task: new Task(),
           }
       },
+    created(){
+      //获取任务详情
+      if(!this.taskId || this.taskId === ''){
+        return;
+      }
+      getTaskDetailByTaskId({taskId: this.taskId})
+        .then(resp=>{
+          if(resp.status === 0){
+            this.$message.warning('获取任务信息失败');
+            return;
+          }
+          //根据结果设置subject值
+          this.setSubjectByTaskDetailInfo(resp.data);
+        });
+    },
     computed:{
       totalScore: function(){
         let subjectiveScore = 0;
@@ -128,6 +145,33 @@
       }
     },
       methods:{
+        /**
+         * 根据接口返回的任务信息结果，构造subject对象的值
+         * params taskDetailInfo
+         * return null
+         **/
+        setSubjectByTaskDetailInfo(taskDetailInfo){
+          if(!taskDetailInfo){
+            return;
+          }
+          this.task.id = this.taskId;
+          this.task.name = taskDetailInfo.task.name;
+          this.task.weight = taskDetailInfo.task.weight;
+          this.task.totalScore = taskDetailInfo.task.totalScore;
+          this.task.inspireDate = taskDetailInfo.task.deadline;
+          this.task.markType = taskDetailInfo.task.markType;
+          for(let item of taskDetailInfo.questionList){
+            let subject_c = new Subject();
+            subject_c.id = item.taskQuestions.id;
+            subject_c.edit = false;
+            subject_c.selections = item.optionList;
+            subject_c.answer = item.taskQuestions.answers;
+            subject_c.score = item.taskQuestions.score;
+            subject_c.stem = item.taskQuestions.stems;
+            subject_c.questionType = item.taskQuestions.questionType;
+            this.task.subjects.push(subject_c);
+          }
+        },
         addSubject(){
           let subject = new Subject();
           subject.type = SUBJECT_TYPE.CHOOSE;

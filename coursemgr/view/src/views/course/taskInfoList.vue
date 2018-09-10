@@ -22,6 +22,9 @@
       <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
         <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operateType="operate"></task-detail-comp>
       </el-dialog>
+      <el-dialog :visible.sync="showTaskStatement" width="1240px">
+        <task-info-new v-if="showTaskStatement" ref="taskStatement" :taskId="selectTaskId" :operateType="operate"></task-info-new>
+      </el-dialog>
     </div>
 </template>
 
@@ -31,15 +34,17 @@
   import {getCourseTasksByCourseId, deleteTask} from '@/api/course'
   import {getMyTaskSituation} from '@/api/task'
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
+  import TaskInfoNew from "../../components/taskInfo-new";
 
   export default {
       name: "taskInfoList",
-      components:{TaskDetailComp, TaskInfo, },
+      components:{TaskInfoNew, TaskDetailComp, TaskInfo, },
       data(){
           return {
             operate:'',
             isStudent:false,
             showTaskInfoDialog:false,
+            showTaskStatement:false,
             selectTaskId:'',
             courseName:'xxx课程',
             tasks:[],
@@ -68,7 +73,6 @@
                 this.$message.warn('获取我的任务失败！');
                 return;
               }
-              debugger
               for(let item of resp.data){
                 this.tasks.push({
                   id:item.taskId,
@@ -116,7 +120,7 @@
          * */
         handleModifyClick(row) {
           this.selectTaskId = row.id;
-          this.showTaskInfoDialog = true;
+          this.showTaskStatement = true;
           this.operate = TASK_OPERATOR_TYPE.TEACHER_STATEMENT;
         },
         /**
