@@ -5,33 +5,28 @@
       审阅<span>{{gTask.gradeObjName}}</span>关于“<span>{{gTask.taskName}}</span>”任务主观题
       <el-button type="primary" @click="approvalTask(gTask.taskId)">审阅</el-button>
     </div>
+    <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
+      <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operateType="operateType"></task-detail-comp>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import {getMySchedule} from '@/api/gtasks'
     export default {
         name: "gTaskInfo",
       data(){
           return{
+            operateType:'',
+            selectTaskId:'',
+            TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
+            showTaskInfoDialog:false,
             gTasks:[],
           }
       },
       created(){
           //获取我的任务待办列表
-        // private Integer id;
-        //
-        // private String studentNo;
-        //
-        // private String gradeObjNo;
-        //
-        // private String gradeObjName;
-        //
-        // private Integer taskId;
-        //
-        // private String taskName;
-        //
-        // private Integer courseId;
           getMySchedule({courseId:this.$route.params.courseId, studentNo:this.$store.state.user.token})
             .then(resp=>{
               if(resp.status === 0){
@@ -43,7 +38,10 @@
       },
       methods:{
         approvalTask(tId){
-          //todo 显示task信息，填写得分
+          //显示task信息，填写得分
+          this.selectTaskId = tId;
+          this.operateType = this.TASK_OPERATOR_TYPE.MARK_POINT;
+          this.showTaskInfoDialog = true;
         }
       }
     }

@@ -129,7 +129,7 @@
               questionType: q.questionType,
               standardAnswers: '',//标准答案
               answers:q.answer,
-              score:''
+              score:item.score
             });
           }
         },
