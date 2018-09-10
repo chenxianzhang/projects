@@ -212,10 +212,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
                     // 计算得分
                     paper.setScore(0f);
-                    if (isRight(question.getStandardAnswers(), question.getAnswers())) {
-
-                        TaskQuestions taskQuestions = taskQuestionsMapper.selectByPrimaryKey(
-                                question.getQuestionId());
+                    TaskQuestions taskQuestions = taskQuestionsMapper.selectByPrimaryKey(
+                            question.getQuestionId());
+                    if (isRight(taskQuestions.getAnswers(), question.getAnswers())) {
                         paper.setScore(taskQuestions.getScore());
                     }
 

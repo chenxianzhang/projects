@@ -64,8 +64,8 @@
   </select>
   <select id="getCourseTaskSituation" resultMap="CourseTaskSituationMap" parameterType="java.lang.Integer" >
     select id, courseId,name,publishTime,startTime,deadline,status,
-    (select COUNT(studentNo) from course_students where courseId=#{courseId, jdbcType=INTEGER} GROUP BY studentNo) as totalPersonCnt,
-    (select COUNT(studentNo) from student_tasks where taskId=ct.id GROUP BY studentNo) as finishPersonCnt
+    (select COUNT(studentNo) from course_students where courseId=#{courseId, jdbcType=INTEGER}) as totalPersonCnt,
+    (select COUNT(studentNo) from student_tasks where taskId=ct.id) as finishPersonCnt
     from course_tasks ct where courseId=#{courseId, jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

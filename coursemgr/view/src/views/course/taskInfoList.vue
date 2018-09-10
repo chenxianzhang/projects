@@ -13,7 +13,7 @@
                          width="140">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
-            <el-button v-if="isStudent" :disabled="scope.row.finishState!=='UNCOMMITTED'" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
+            <el-button v-if="isStudent"  @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
             <el-button v-if="!isStudent" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
             <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>

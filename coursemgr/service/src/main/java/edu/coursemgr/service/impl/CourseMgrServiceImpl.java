@@ -152,6 +152,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
             Float totalScore = 0f;
             if (taskInfos != null) {
                 for (StudentTaskInfo taskInfo : taskInfos) {
+                    if (taskInfo.getScore() == null) {
+                        continue;
+                    }
                     totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
                 }
             }
