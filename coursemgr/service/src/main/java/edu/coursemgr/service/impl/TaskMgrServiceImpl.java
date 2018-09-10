@@ -213,7 +213,10 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                     // 计算得分
                     paper.setScore(0f);
                     if (isRight(question.getStandardAnswers(), question.getAnswers())) {
-                        paper.setScore(question.getScore());
+
+                        TaskQuestions taskQuestions = taskQuestionsMapper.selectByPrimaryKey(
+                                question.getQuestionId());
+                        paper.setScore(taskQuestions.getScore());
                     }
 
                     return paper;
@@ -279,7 +282,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         CourseTaskDetail taskDetail = new CourseTaskDetail();
         taskDetail.setTask(task);
         taskDetail.setQuestionList(taskPaperList);
-        taskDetail.setStudentTotalScore(studentTasks.getScore());
+        if (studentTasks != null) {
+            taskDetail.setStudentTotalScore(studentTasks.getScore());
+        }
 
         return taskDetail;
     }
@@ -331,12 +336,13 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     private boolean isRight(String standardAnswer, String answer) {
         List<String> answers = Arrays.asList(answer.split(","));
-        boolean right = true;
+        boolean right = false;
         for (String aws : answers) {
             if (!standardAnswer.contains(aws)) {
                 right = false;
                 break;
             }
+            right = true;
         }
         return right;
     }
