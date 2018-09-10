@@ -3,7 +3,7 @@
     <div class="grouped-item" v-for="gTask in gTasks">
       <!--1. 审阅XXX关于“xxxxxx”任务主观题-->
       审阅<span>{{gTask.targetSerialName}}</span>关于“<span>{{gTask.taskName}}</span>”任务主观题
-      <el-button type="primary" @click="approvalTask(gTask.taskId, gTask.markPersonSerialNo)">审阅</el-button>
+      <el-button type="primary" @click="approvalTask(gTask.taskId, gTask.targetSerailNo)">审阅</el-button>
     </div>
     <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
       <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp"
