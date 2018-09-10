@@ -25,6 +25,18 @@ export function getStuGradeInfo(params) {
   });
 }
 
+/**
+ * updateSubjectScore 更新学生主观题分数
+ * params SubjectGradeModel
+ * */
+export function updateSubjectScore(params) {
+  return request({
+    url: '/course/getStuGradeInfo',
+    method: 'post',
+    data: params
+  });
+}
+
 export function download(courseId, studentNo, isStudent) {
     if (!isStudent) {
       window.location.href = global.BASE_API + "/course/exportCourseGrade?courseId=" + courseId;

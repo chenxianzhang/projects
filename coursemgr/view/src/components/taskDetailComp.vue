@@ -66,6 +66,7 @@
   import {SUBJECT_TYPE, TASK_OPERATOR_TYPE} from '../utils/statusUtil'
   import {Subject, Task, Selection} from "../models/task-model";
   import {getTaskDetailByTaskId, submitTaskPaper, getStuTaskDetail} from '@/api/task'
+  import { updateSubjectScore } from '@/api/grade'
 
     export default {
       name: "taskDetailComp",
@@ -135,7 +136,7 @@
               questionType: q.questionType,
               standardAnswers: '',//标准答案
               answers:q.answer,
-              score:item.score
+              score:q.score
             });
           }
         },
@@ -181,6 +182,38 @@
               }
                 this.$message.success('上传答案成功');
             });
+          }
+          else {
+            let updateScoreObj = {
+              taskId:this.taskId,
+              studentNo:this.$store.state.user.token,
+              subjectList:[]
+            };
+            for(let item of this.task.subjects){
+              if(item.questionType === SUBJECT_TYPE.SUBJECTIVE){
+                updateScoreObj.subjectList.push(
+                  {
+                    taskId:this.taskId,
+                    studentNo:this.$store.state.user.token,
+                    questionId:item.id,
+                    questionType:item.questionType,
+                    answers:item.answer,
+                    score:item.score,
+                  }
+                );
+              }
+            }
+            if(updateScoreObj.subjectList.length === 0){
+              return
+            }
+            updateSubjectScore(updateScoreObj)
+              .then(resp=>{
+                if(resp.status === 0){
+                  this.$message.warn('评分失败')
+                  return
+                }
+                this.$message.success('评分成功')
+              });
           }
         },
       },
