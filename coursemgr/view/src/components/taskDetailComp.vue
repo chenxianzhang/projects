@@ -89,7 +89,7 @@
           return;
         }
         //获取任务信息
-        if(this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL && this.operateType !== THIS.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
+        if(this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL && this.operateType !== this.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
           getTaskDetailByTaskId({taskId: this.taskId})
             .then(resp=>{
               if(resp.status === 0){
