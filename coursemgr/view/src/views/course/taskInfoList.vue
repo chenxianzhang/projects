@@ -113,6 +113,10 @@
         handleDetailClick(row) {
           this.selectTaskId = row.id;
           this.showTaskInfoDialog = true;
+          if(this.isStudent){
+            this.operate = TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL;
+            return;
+          }
           this.operate = TASK_OPERATOR_TYPE.TEACHER_VIEW_DETAIL;
         },
         /**

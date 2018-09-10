@@ -12,7 +12,7 @@
           <div style="margin-bottom:10px">
             <span>{{index + 1}}.</span>
             <el-input v-html="item.stem" style="width: calc(100% - 240px)"></el-input>
-            分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分
+            <span v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分</span>
           </div>
           <!--单选题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
