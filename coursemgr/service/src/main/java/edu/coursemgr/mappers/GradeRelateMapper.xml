@@ -78,7 +78,7 @@
 
     <select id="selectSomeByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
         select
-        <include refid="Base_Column_List" />
+        gr.*
         from grade_relate as gr,
         (select studentNo,taskId
         from student_tasks where status='TO_REVIEW') as tmp
