@@ -126,7 +126,7 @@
       </if>
     </set>
     where taskId = #{taskId,jdbcType=VARCHAR}
-    and studentNo = #{studentNo,jdbcType=VARCHAR},
+    and studentNo = #{studentNo,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.StudentTasks" >
     update student_tasks

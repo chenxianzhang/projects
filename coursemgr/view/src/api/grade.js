@@ -31,7 +31,7 @@ export function getStuGradeInfo(params) {
  * */
 export function updateSubjectScore(params) {
   return request({
-    url: '/course/getStuGradeInfo',
+    url: '/gradeMgr/updateSubjectScore',
     method: 'post',
     data: params
   });

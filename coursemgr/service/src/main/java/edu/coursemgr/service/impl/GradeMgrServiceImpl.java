@@ -113,6 +113,15 @@ public class GradeMgrServiceImpl implements GradeMgrService {
                 continue;
             }
             for (String stuNo : tmpStuNos) {
+
+                // 判断当前学生任务是否已提交
+                params = new HashMap<>();
+                params.put("taskId", relate.getTaskId());
+                params.put("studentNo", stuNo);
+                StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
+                if (studentTasks == null || !studentTasks.getStatus().equals(CommonEnum.StudentTaskStatus.TO_REVIEW.getValue())) {
+                    continue;
+                }
                 user = userMapper.selectBySerialNo(stuNo);
                 if (user == null) {
                     continue;
