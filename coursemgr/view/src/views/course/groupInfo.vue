@@ -106,7 +106,7 @@
     width: 90%;
     margin: 30px auto;
     display: grid;
-    background-color: #FFD04B;
+    background-color: rgba(84, 92, 100, 0.8);
   }
   .grouped-item:hover{
     box-shadow: 0px 0px 10px 4px #3a8ee6;

@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="gtask-panel">
     <div class="grouped-item" v-for="gTask in gTasks">
       <!--1. 审阅XXX关于“xxxxxx”任务主观题-->
-      审阅<span>{{gTask.targetSerialName}}</span>关于“<span>{{gTask.taskName}}</span>”任务主观题
-      <el-button type="primary" @click="approvalTask(gTask.taskId, gTask.targetSerailNo)">审阅</el-button>
+      审阅<span> {{gTask.targetSerialName}} </span>关于“<span> {{gTask.taskName}} </span>”任务主观题
+      <el-button type="primary" @click="approvalTask(gTask.taskId, gTask.targetSerialNo)">审阅</el-button>
     </div>
     <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
       <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp"
@@ -69,15 +69,24 @@
 </script>
 
 <style scoped>
-  .grouped-item{
+  .gtask-panel .grouped-item{
     padding: 10px;
     line-height: 30px;
     width: 90%;
     margin: 30px auto;
-    display: grid;
-    background-color: #FFD04B;
+    background-color: rgba(84, 92, 100, 0.8);
+    border-radius: 4px;
+    color: #fafff8;
   }
-  .grouped-item:hover{
+  .gtask-panel .grouped-item > span{
+    font-weight: bold;
+    font-family: cursive;
+    color: #e6a23c;
+  }
+  .gtask-panel .grouped-item:hover{
     box-shadow: 0px 0px 10px 4px #3a8ee6;
+  }
+  .gtask-panel .el-button--primary{
+    float: right;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h4>课程名:{{courseName}}</h4>
+      <h4>当前课程： {{courseName}}</h4>
       <el-table :data="tasks" style="width: 100%">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="name" label="任务名称"> </el-table-column>
@@ -31,7 +31,7 @@
 <script>
   import TaskInfo from '../../components/taskInfo'
   import TaskDetailComp from '../../components/taskDetailComp'
-  import {getCourseTasksByCourseId, deleteTask} from '@/api/course'
+  import {getCourseTasksByCourseId, deleteTask, getCourseById} from '@/api/course'
   import {getMyTaskSituation, getCourseTaskSituation} from '@/api/task'
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import TaskInfoNew from "../../components/taskInfo-new";
@@ -46,7 +46,7 @@
             showTaskInfoDialog:false,
             showTaskStatement:false,
             selectTaskId:'',
-            courseName:'xxx课程',
+            courseName:'',
             tasks:[],
           }
       },
@@ -56,6 +56,16 @@
         if (!cId || cId === '') {
           this.$message.warning('无效的课程id');
         }
+
+        getCourseById({courseId:cId})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warn('获取任务信息失败！');
+              return;
+            }
+            this.courseName = resp.data.name;
+          });
+
         if(this.$store.state.user.roles.in_array('student')){
           this.isStudent = true;
           this.getStuTaskList(cId);
