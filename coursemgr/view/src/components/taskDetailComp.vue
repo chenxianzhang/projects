@@ -188,7 +188,7 @@
           else {
             let updateScoreObj = {
               taskId:this.taskId,
-              studentNo:this.$store.state.user.token,
+              studentNo:this.markUid,
               subjectList:[]
             };
             for(let item of this.task.subjects){
@@ -196,7 +196,7 @@
                 updateScoreObj.subjectList.push(
                   {
                     taskId:this.taskId,
-                    studentNo:this.$store.state.user.token,
+                    studentNo:this.markUid,
                     questionId:item.id,
                     questionType:item.questionType,
                     answers:item.answer,
