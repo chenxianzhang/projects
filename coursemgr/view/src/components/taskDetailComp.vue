@@ -2,7 +2,7 @@
   <div class="main-frame">
     <div>
       <div class="task-name-label">
-        任务名称：{{task.name}}
+        任务名称：<span>{{task.name}}</span>
       </div>
       <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分，权重：{{task.weight}} %。</div>
       <div class="subject-container">
@@ -44,11 +44,13 @@
                       :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
             </el-input>
 
-            <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL" style="width: 100px">
-              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" disabled />
+            <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
+                 style="width: 100px; float: right; line-height: 50px; text-align: right;">
+              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" disabled />分
             </div>
-            <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" style="width: 100px">
-              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" />
+            <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"
+                 style="width: 100px; float: right; line-height: 50px; text-align: right;">
+              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" />分
             </div>
           </div>
         </div>
@@ -230,6 +232,7 @@
 
   .task-name-label{
     line-height: 40px;
+    font-size: 16px;
   }
 
   .save-btn{
@@ -237,5 +240,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 80px;
+  }
+  .task-name-label > span{
+    font-family: cursive;
+    color: #e6a23c;
   }
 </style>
