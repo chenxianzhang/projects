@@ -1,13 +1,28 @@
 <template>
     <div>
       <h4>当前课程： {{courseName}}</h4>
-      <el-table :data="tasks" style="width: 100%">
+      <el-table :data="tasks"
+                style="width: 100%"
+                :headerRowStyle="{backgroundColor:'red'}"
+                :header-cell-class-name="'ddd'">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="任务名称"> </el-table-column>
-        <el-table-column prop="publishTime" label="发布日期" :formatter="dateFormat"> </el-table-column>
+        <el-table-column prop="name" label="任务名称" align="center"> </el-table-column>
+        <el-table-column prop="publishTime" label="发布日期" align="center" :formatter="dateFormat"> </el-table-column>
         <!--<el-table-column prop="startTime" label="开始日期" :formatter="dateFormat"> </el-table-column>-->
-        <el-table-column prop="deadline" label="截止日期" :formatter="dateFormat"> </el-table-column>
-        <el-table-column prop="finishStatus" label="完成状态" :formatter="stateFormat"> </el-table-column>
+        <el-table-column prop="deadline" label="截止日期" align="center" :formatter="dateFormat"> </el-table-column>
+        <el-table-column prop="finishStatus" label="完成状态"
+                         align="center">
+          <template slot-scope="scope">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='FINISHED'" type="success">已完成</el-tag>
+                <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='UNCOMMITTED'" type="danger">待答题</el-tag>
+                <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='TO_REVIEW'" type="warning">待审批</el-tag>
+                <div v-if="!isStudent">
+                  <span style="font-weight: bold;">{{scope.row.finishPersonCnt}}</span>/<span>{{scope.row.totalPersonCnt}}</span>
+                </div>
+              </div>
+          </template>
+        </el-table-column>
         <el-table-column align="center"
                          label="操作"
                          width="140">
@@ -179,12 +194,12 @@
          * */
         stateFormat:function(row, column, cellValue, index) {
           if(this.isStudent){
-            let status = '已完成';
+            let status = '<span style="background: #2d7620; color: #ffffff;">已完成</span>';
             if(cellValue === 'UNCOMMITTED'){
-              status = '未答题'
+              status = '<span style="background: #9b9b9b; color: #ffffff;">未答题</span>'
             }
             else if(cellValue === 'TO_REVIEW'){
-              status = '已提交'
+              status = '<span style="background: #ee9900; color: #ffffff;">已提交</span>'
             }
             return status;
           }
@@ -197,5 +212,7 @@
 </script>
 
 <style scoped>
-
+.ddd{
+  background-color: #ee9900;
+}
 </style>
