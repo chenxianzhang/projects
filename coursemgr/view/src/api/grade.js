@@ -51,8 +51,8 @@ export function exportZip(courseId, studentNo, isStudent) {
     if (!isStudent) {
       window.location.href = global.BASE_API + "/course/exportCourseProcess?courseId=" + courseId;
     } else {
-//      window.location.href = global.BASE_API + "/course/exportStuGrade?courseId="
-//       + courseId + "&studentNo=" + studentNo;
+      window.location.href = global.BASE_API + "/course/exportStuCourseProcess?courseId="
+       + courseId + "&studentNo=" + studentNo;
     }
 
 }

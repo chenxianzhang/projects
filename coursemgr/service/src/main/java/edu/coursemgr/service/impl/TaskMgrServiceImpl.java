@@ -232,13 +232,6 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
         insertBatch(studentPapers);
 
-        // 更改学生task的完成状态
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("taskId", stuPaperAnswer.getTaskId());
-//        params.put("studentNo", stuPaperAnswer.getStudentNo());
-//        params.put("status", CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
-//        studentTasksMapper.updateStatus(params);
-
         // 插入学生任务信息
         StudentTasks studentTasks = new StudentTasks();
         studentTasks.setStatus(CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
@@ -309,6 +302,36 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         String unpackDir = CommonUtils.combinePath(realPath, Constant.Common.DOWNLOAD_TEMP_DIR,
                 course.getName());
         CommonUtils.createDir(unpackDir);
+        for (CourseTasks task : tasksList) {
+            generateWord(task.getId(), userList, unpackDir);
+        }
+
+        // 压缩
+//        String zipName = String.format("%s任务过程.zip", course.getName());
+        String zipName = "course.zip";
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=" + zipName);
+        ZipUtils.toZip(unpackDir, response.getOutputStream(),true);
+
+        // 删除当前目录及文件
+        CommonUtils.deleteDir(unpackDir);
+    }
+
+    @Override
+    public void exportStuCourseProcess(HttpServletResponse response, String courseId,
+                                       String realPath, String studentNo) throws Exception {
+        List<CourseTasks> tasksList = getCourseTasksByCourseId(courseId);
+        if (tasksList == null) {
+            return;
+        }
+        User user = userMapper.selectBySerialNo(studentNo);
+        Course course = courseMapper.selectById(Integer.valueOf(courseId));
+        String unpackDir = CommonUtils.combinePath(realPath, Constant.Common.DOWNLOAD_TEMP_DIR,
+                course.getName());
+        CommonUtils.createDir(unpackDir);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
         for (CourseTasks task : tasksList) {
             generateWord(task.getId(), userList, unpackDir);
         }

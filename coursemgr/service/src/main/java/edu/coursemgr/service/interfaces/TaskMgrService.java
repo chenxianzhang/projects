@@ -95,4 +95,11 @@ public interface TaskMgrService {
     void exportCourseProcess(HttpServletResponse response, String courseId,
                              String realPath) throws Exception ;
 
+    /**
+     * 导出学生过程打包文件
+     * @param response
+     * @param courseId
+     */
+    void exportStuCourseProcess(HttpServletResponse response, String courseId,
+                             String realPath, String studentNo) throws Exception;
 }
