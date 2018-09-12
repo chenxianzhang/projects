@@ -367,16 +367,27 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     }
 
     private String transfer2Html(CourseTaskDetail taskDetail) {
-        String html = "";
+        String html = String.format("<p style=\"text-align:center;font-weight: bolder;font-size:20px;\">%s</p>",
+                taskDetail.getTask().getName());
         for (TaskPaper question : taskDetail.getQuestionList()) {
-            html += String.format("<p>%s</p>", question.getTaskQuestions().getStems());
+            html += "<div>";
+            html += String.format("<p style=\"font-weight: bolder;\">%s</p>",
+                    question.getTaskQuestions().getStems());
             Integer index = 1;
+
+            html += "<div style=\"margin-left: 20px;font-size:14px;\">";
             for (QuestionOptions option : question.getOptionList()) {
-                html += String.format("<p>%s、%s</p>", index.toString(),
+                html += String.format("<span style=\"margin-right:30px\">%s、%s</span>", index.toString(),
                         option.getOptionDes());
                 index++;
             }
-            html += String.format("<p>所选答案：%s</p>", question.getTaskQuestions().getAnswers());
+            html += "</div>";
+
+            html += "<div style=\"margin-top: 10px;font-size:14px;color:red\">";
+            html += String.format("<span>所选答案：%s</span>", question.getTaskQuestions().getAnswers());
+            html += "</div>";
+
+            html += "</div>";
         }
         return html;
     }
