@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h4>课程名:{{courseName}}</h4>
+    <h4 style="font-family: cursive; font-size: larger;">当前课程：{{courseName}}</h4>
     <el-table :data="gradeList" style="width: 100%">
-      <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column prop="studentName" label="姓名  "> </el-table-column>
+      <el-table-column type="selection" width="55" :render-header="renderHeader"> </el-table-column>
+      <el-table-column prop="studentName" label="姓名"> </el-table-column>
       <el-table-column prop="studentNo" label="学号"> </el-table-column>
       <el-table-column prop="groupNo" label="所在小组"> </el-table-column>
 
@@ -42,15 +42,16 @@
 <script>
   import UploadAnswer from '../teacherHome/uploadAnswer'
   import { getAllGradeInfo, getStuGradeInfo, download } from '../../api/grade'
+  import { getCourseById } from "../../api/course";
 
-    export default {
+  export default {
       name: "gradeInfo",
       components:{UploadAnswer},
       data(){
         return {
           showAnswer: false,
           isStudent:false,
-          courseName:'xxx课程',
+          courseName:'',
           gradeList:[],
           totalCount: 0,
           pageSize: 10,
@@ -61,6 +62,15 @@
         let self = this;
         this.isStudent = this.$store.state.user.roles.in_array('student');
         let cId = this.$route.params.courseId;
+        getCourseById({courseId:cId})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warn('获取任务信息失败！');
+              return;
+            }
+            this.courseName = resp.data.name;
+          });
+
         if (this.isStudent) {
           //获取该学生该课程的所有任务的成绩
           getStuGradeInfo({courseId: cId, studentNo: this.$store.state.user.token})
@@ -77,6 +87,9 @@
         this.getGradeByCourse(cId);
       },
       methods: {
+        renderHeader(h,{column, $index}){
+          h()
+        },
         handleSizeChange(val) {
            this.pageSize = val;
            this.getGradeByCourse(this.$route.params.courseId);
@@ -126,3 +139,4 @@
     margin-top: 10px;
   }
 </style>
+
