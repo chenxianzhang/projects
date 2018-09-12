@@ -1,15 +1,34 @@
 <template>
   <div>
     <h4 style="font-family: cursive; font-size: larger;">当前课程：{{courseName}}</h4>
-    <el-table :data="gradeList" style="width: 100%">
+    <el-table :data="gradeList" style="width: 100%" border >
+
+      <!--<template slot-scope="scope">-->
+        <!--<el-table-column type="selection" width="55" :render-header="renderHeader"> </el-table-column>-->
+        <!--<el-table-column prop="studentName" label="姓名"> </el-table-column>-->
+        <!--<el-table-column prop="studentNo" label="学号"> </el-table-column>-->
+        <!--<el-table-column prop="groupNo" label="所在小组"> </el-table-column>-->
+        <!--<el-table-column v-for="(task,index) in scope.row.studentTaskInfos"-->
+                           <!--:label="task.taskName" prop="taskName" :key="index">-->
+        <!--</el-table-column>-->
+
+        <!--<el-table-column prop="totalScore" label="加权总分"> </el-table-column>-->
+      <!--</template>-->
+
       <el-table-column type="selection" width="55" :render-header="renderHeader"> </el-table-column>
       <el-table-column prop="studentName" label="姓名"> </el-table-column>
       <el-table-column prop="studentNo" label="学号"> </el-table-column>
       <el-table-column prop="groupNo" label="所在小组"> </el-table-column>
 
-      <el-table-column v-for="(task,index) in gradeList.studentTaskInfos" :label="task.taskName" :key="index">
+      <el-table-column label="任务信息">
         <template slot-scope="scope">
-          <span style="cursor: pointer; text-decoration: underline; font-weight: bold;" @click="handleClick(scope.row)">{{ task.score }}</span>
+          <el-table-column v-for="(task,index) in scope.row.studentTaskInfos"
+                           :label="task.taskName"
+                           :key="index">
+            <template slot-scope="scope1">
+              <span>{{task.score}}</span>
+            </template>
+          </el-table-column>
         </template>
       </el-table-column>
 
@@ -53,9 +72,13 @@
           isStudent:false,
           courseName:'',
           gradeList:[],
+          taskList:[],
           totalCount: 0,
           pageSize: 10,
-          currPage: 1
+          currPage: 1,
+
+          // studentTaskInfos:[[{taskName:'任务1', score:'10'},{taskName:'任务2', score:'10'},{taskName:'任务3', score:'10'}],
+          //   [{taskName:'任务1', score:'110'},{taskName:'任务2', score:'102'},{taskName:'任务3', score:'101'}]],
         }
       },
       created() {
