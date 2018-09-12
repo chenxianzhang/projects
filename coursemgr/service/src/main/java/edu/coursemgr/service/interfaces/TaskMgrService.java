@@ -92,6 +92,7 @@ public interface TaskMgrService {
      * @param response
      * @param courseId
      */
-    void exportCourseProcess(HttpServletResponse response, String courseId);
+    void exportCourseProcess(HttpServletResponse response, String courseId,
+                             String realPath) throws Exception ;
 
 }

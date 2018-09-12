@@ -19,6 +19,8 @@ public class CourseTaskDetail implements Serializable {
 
     private Float studentTotalScore;
 
+    private String status;
+
 
     public CourseTasks getTask() {
         return task;
@@ -42,5 +44,13 @@ public class CourseTaskDetail implements Serializable {
 
     public void setStudentTotalScore(Float studentTotalScore) {
         this.studentTotalScore = studentTotalScore;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

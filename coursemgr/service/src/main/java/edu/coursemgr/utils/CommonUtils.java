@@ -3,6 +3,7 @@ package edu.coursemgr.utils;
 import edu.coursemgr.common.Constant;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public final class CommonUtils {
         return path.toString();
     }
 
-    public static String combinePath(String prev, String next) {
+    public static String combinePath(String prev, String... next) {
         Path path = Paths.get(prev, next);
         return path.toString();
     }
@@ -49,6 +50,30 @@ public final class CommonUtils {
                 file.mkdir();
             }
         }
+    }
+
+    public static void deleteDir(String dir) throws IOException {
+        File fileDir = new File(dir);
+        if (!fileDir.exists()) {
+            return;
+        }
+        File[] listFiles = fileDir.listFiles();
+        for (File file : listFiles) {
+            if (file.isDirectory()) {
+                deleteDir(file.getPath());
+                continue;
+            }
+            file.delete();
+        }
+        fileDir.delete();
+    }
+
+    public static void deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists() || file.isDirectory()) {
+            return;
+        }
+        file.delete();
     }
 
     public static String uuid() {

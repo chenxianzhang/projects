@@ -30,7 +30,7 @@
 
     <div class="buttons">
       <el-button class="primary" @click="download()">导出为excel</el-button>
-      <el-button class="primary">过程性打包</el-button>
+      <el-button class="primary" @click="exportZip">过程性打包</el-button>
     </div>
     <!--查看当前任务答题情况-->
     <el-dialog :visible.sync="showAnswer">
@@ -41,7 +41,7 @@
 
 <script>
   import UploadAnswer from '../teacherHome/uploadAnswer'
-  import { getAllGradeInfo, getStuGradeInfo, download } from '../../api/grade'
+  import { getAllGradeInfo, getStuGradeInfo, download, exportZip } from '../../api/grade'
   import { getCourseById } from "../../api/course";
 
   export default {
@@ -120,6 +120,9 @@
         },
         download() {
           download(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
+        },
+        exportZip() {
+          exportZip(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
         }
       },
     }

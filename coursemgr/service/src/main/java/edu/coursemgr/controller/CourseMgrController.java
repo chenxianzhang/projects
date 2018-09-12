@@ -172,17 +172,7 @@ public class CourseMgrController extends BaseController {
         if (CommonUtils.isEmpty(courseId)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        List<CourseTasks> tasksList = taskMgrService.getCourseTasksByCourseId(courseId);
-
-        if (tasksList == null) {
-            return null;
-        }
-        for (CourseTasks task : tasksList) {
-            CourseTaskDetail taskDetail = taskMgrService.getTaskDetailByTaskId(task.getId());
-
-
-        }
-
-        return null;
+        taskMgrService.exportCourseProcess(response, courseId, request.getRealPath("/"));
+        return 1;
     }
 }

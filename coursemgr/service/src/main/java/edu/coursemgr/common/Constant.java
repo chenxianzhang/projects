@@ -19,6 +19,8 @@ public interface Constant {
         public static final String USER_DIR = System.getProperty("user.dir");
 
         public static final String UPLOAD_ROOT_DIR = "upload";
+
+        public static final String DOWNLOAD_TEMP_DIR = "download";
     }
 
     /**

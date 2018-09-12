@@ -106,6 +106,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     params.put("studentNo", userGroup.getStudentNo());
                     params.put("courseId", courseId);
                     List<StudentTaskInfo> taskInfos = courseTasksMapper.selectStuTaskInfo(params);
+                    if (taskInfos == null || taskInfos.size() == 0) {
+                        return null;
+                    }
                     detail.setStudentTaskInfos(taskInfos);
                     // 计算加权总分
                     Float totalScore = 0f;
@@ -184,6 +187,10 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         List<ArrayList<String>> dataList = new ArrayList<>();
         boolean flag = false;
         for (GradeDetail detail : gradeDetailList) {
+            if (detail.getStudentTaskInfos() == null ||
+                    detail.getStudentTaskInfos().size() == 0) {
+                continue;
+            }
             ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(detail.getStudentName());
             arrayList.add(detail.getStudentNo());
@@ -196,7 +203,7 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                 }
                 arrayList.add(taskInfo.getScore().toString());
             }
-
+            flag = true;
             arrayList.add(detail.getTotalScore().toString());
             dataList.add(arrayList);
         }

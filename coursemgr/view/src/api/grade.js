@@ -46,3 +46,13 @@ export function download(courseId, studentNo, isStudent) {
     }
 
 }
+
+export function exportZip(courseId, studentNo, isStudent) {
+    if (!isStudent) {
+      window.location.href = global.BASE_API + "/course/exportCourseProcess?courseId=" + courseId;
+    } else {
+//      window.location.href = global.BASE_API + "/course/exportStuGrade?courseId="
+//       + courseId + "&studentNo=" + studentNo;
+    }
+
+}
