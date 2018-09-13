@@ -72,7 +72,7 @@
     select studentNo
     from course_students
     where courseId= #{courseId, jdbcType=INTEGER}
-    ) limit ${currSize},${pageSize}
+    ) order by createDate desc limit ${currSize},${pageSize}
   </select>
   <select id="selectTotalCntByCourseId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select
