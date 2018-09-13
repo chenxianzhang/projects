@@ -97,7 +97,7 @@
         /**
          * 学生信息添加
          * */
-        addStudent({user:this.studentOperInfo.student, courseId:this.$store.getters.courseId}).then(response=>{
+        addStudent({user:this.studentOperInfo.student, courseId:this.$route.params.courseId}).then(response=>{
           if(response.status === 0){
             self.$message.warning(response.msg);
             return;
