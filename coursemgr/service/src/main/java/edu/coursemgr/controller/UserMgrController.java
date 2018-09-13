@@ -49,7 +49,7 @@ public class UserMgrController extends BaseController {
     @ResponseBody
     public int addStudent(@RequestBody UserEditModel user)
             throws Exception {
-        if (user == null) {
+        if (user == null || CommonUtils.isEmpty(user.getCourseId())) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
 
