@@ -16,7 +16,8 @@
         <span>学生信息（总人数：{{studentsInCourse.length}}）</span>
         <div v-if="editable" class="add-student-btn">
           <el-button type="primary" @click="addStudents2Course">添加学生</el-button>
-          <el-button type="primary" @click="uploadStudents2Course">批量导入学生名单</el-button>
+          <el-button type="primary" @click="uploadStudents2Course">导入学生</el-button>
+          <el-button type="primary" @click="dodwnloadStuTemplate">模板下载</el-button>
         </div>
       </div>
       <el-table :data="studentsInCourse" style="width: 100%;">
@@ -81,7 +82,7 @@
 </template>
 
 <script>
-  import {getCourseById, getStudentsByCourseId,updateCourse, deleteStudent} from '@/api/course';
+  import {getCourseById, getStudentsByCourseId,updateCourse, deleteStudent, dodwnloadStuTemp} from '@/api/course';
   import UploadStudentComp from "../../components/uploadStudentComp";
   import dragDialog from '@/components/dragDialog';
   import studentAddComp from '@/components/studentAddComp'
@@ -138,6 +139,9 @@
       }
     },
     methods:{
+    dodwnloadStuTemplate(){
+      dodwnloadStuTemp();
+    },
       handleSizeChange(val){
         this.pageSize = val;
         let cId = this.$route.params.courseId;

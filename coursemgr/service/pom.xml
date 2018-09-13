@@ -296,6 +296,9 @@
           <include>**/*.xml</include>
           <include>**/*.properties</include>
           <include>**/*.doc</include>
+            <include>**/*.docx</include>
+            <include>**/*.xls</include>
+            <include>**/*.xlsx</include>
         </includes>
       </resource>
 

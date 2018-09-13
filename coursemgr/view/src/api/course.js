@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import global from '../../static/global.config'
 
 export function getCourseById(params) {
   return request({
@@ -68,6 +69,10 @@ export function deleteTask(params) {
     method: 'post',
     data: params
   });
+}
+
+export function dodwnloadStuTemp() {
+  window.location.href = global.BASE_API + "/fileMgr/downloadStuTemplate";
 }
 
 

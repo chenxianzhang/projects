@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.OutputStream;
 
 /**
  * Created by chenxianzhang on 2018/9/2 0002 下午 11:40
@@ -34,4 +35,5 @@ public class FileMgrServiceImpl implements FileMgrService {
         file.transferTo(f);
         return CommonUtils.combinePath(dir, file.getOriginalFilename());
     }
+
 }

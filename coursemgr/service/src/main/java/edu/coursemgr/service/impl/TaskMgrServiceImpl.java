@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -307,11 +308,12 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
 
         // 压缩
-//        String zipName = String.format("%s任务过程.zip", course.getName());
-        String zipName = "course.zip";
+        String zipName = String.format("所有学生%s任务过程文件包.zip", course.getName());
+//        String zipName = "course.zip";
         response.setContentType("application/zip");
         response.setHeader("Content-Disposition",
-                "attachment; filename=" + zipName);
+                "attachment; filename=".concat(
+                        String.valueOf(URLEncoder.encode(zipName, "UTF-8"))));
         ZipUtils.toZip(unpackDir, response.getOutputStream(),true);
 
         // 删除当前目录及文件
@@ -337,11 +339,13 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
 
         // 压缩
-//        String zipName = String.format("%s任务过程.zip", course.getName());
-        String zipName = "course.zip";
+        String zipName = String.format("%s(%s)%s任务过程文件包.zip", user.getName(),
+                user.getSerialNo(), course.getName());
+//        String zipName = "course.zip";
         response.setContentType("application/zip");
         response.setHeader("Content-Disposition",
-                "attachment; filename=" + zipName);
+                "attachment; filename=".concat(
+                        String.valueOf(URLEncoder.encode(zipName, "UTF-8"))));
         ZipUtils.toZip(unpackDir, response.getOutputStream(),true);
 
         // 删除当前目录及文件

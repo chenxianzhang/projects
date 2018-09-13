@@ -2,6 +2,8 @@ package edu.coursemgr.service.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.OutputStream;
+
 /**
  * Created by chenxianzhang on 2018/9/2 0002 下午 11:38
  */
@@ -16,4 +18,5 @@ public interface FileMgrService {
      */
     String saveFile(MultipartFile file, String root, String trunkDir,
                     String subDir) throws Exception;
+
 }
