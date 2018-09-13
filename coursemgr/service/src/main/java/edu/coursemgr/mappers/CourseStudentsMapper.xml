@@ -15,6 +15,13 @@
     from course_students
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from course_students
+    where courseId = #{courseId,jdbcType=INTEGER}
+    and studentNo = #{studentNo, jdbcType=VARCHAR}
+  </select>
   <select id="getUngroupedStudent" resultType="java.lang.String" parameterType="java.lang.Integer" >
     select studentNo from course_students
     where courseId=#{courseId,jdbcType=INTEGER} and studentNo not in (select studentNo

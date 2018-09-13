@@ -201,6 +201,13 @@ public class UserMgrServiceImpl implements UserMgrService {
             CourseStudents courseStudents = new CourseStudents();
             courseStudents.setCourseId(Integer.valueOf(courseId));
             courseStudents.setStudentNo(user.getSerialNo());
+            Map<String, Object> params = new HashMap<>();
+            params.put("courseId", courseId);
+            params.put("studentNo", user.getSerialNo());
+            CourseStudents existCS = courseStudentsMapper.selectByStudent(params);
+            if (existCS != null) {
+                return;
+            }
             if (courseStudentsMapper.insert(courseStudents) == 0) {
                 throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
             }

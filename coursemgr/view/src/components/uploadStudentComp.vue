@@ -13,6 +13,7 @@
         :on-success="handleUploadSuccess"
         :on-error="handleUploadError"
         :on-progress="handleUploadProgress"
+        :data="uploadData"
         multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -37,11 +38,12 @@ import dragDialog from '@/components/dragDialog';
           showProgress:false,
           progressStatus:'',
           progress:0,
-          uploadAction: global.BASE_API + "/userMgr/batchUploadStudents"
+          uploadAction: global.BASE_API + "/userMgr/batchUploadStudents",
+          uploadData:{}
         };
       },
       created(){
-        let cId = this.$store.getters.courseId;
+        this.uploadData.courseId = this.$route.params.courseId;
       },
       components:{dragDialog},
       methods: {

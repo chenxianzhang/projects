@@ -21,4 +21,6 @@ public interface CourseStudentsMapper {
     int updateByPrimaryKey(CourseStudents record);
 
     List<String> getUngroupedStudent(Integer courseId);
+
+    CourseStudents selectByStudent(Map params);
 }
