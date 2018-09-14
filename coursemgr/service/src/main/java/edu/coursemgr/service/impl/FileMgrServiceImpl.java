@@ -34,7 +34,7 @@ public class FileMgrServiceImpl implements FileMgrService {
         String filePath = CommonUtils.combinePath(dirAll, fileName);
         File f = new File(filePath);
         file.transferTo(f);
-        return CommonUtils.combinePath(dir, file.getOriginalFilename());
+        return CommonUtils.combinePath(dir, fileName);
     }
 
 }
