@@ -212,6 +212,7 @@
       },
       hideUploadDialog(val){
         this.showUploadDialog = val;
+        this.getStudentsOfCourse(this.$route.params.courseId);
       },
       /**
        * 查看学生详情信息

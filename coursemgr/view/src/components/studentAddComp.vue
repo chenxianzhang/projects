@@ -9,16 +9,24 @@
                :hiddenOperator="studentOperInfo.operType === 'detail'">
     <el-form ref="regForm" v-model="studentOperInfo.student" label-width="120px">
       <el-form-item label="用户名：" required>
-        <el-input v-model="studentOperInfo.student.name" placeholder="请输入姓名"></el-input>
+        <el-tooltip content="姓名不能为空" placement="right">
+          <el-input v-model="studentOperInfo.student.name" placeholder="请输入姓名"></el-input>
+        </el-tooltip>
       </el-form-item>
       <el-form-item label="学院：" required>
-        <el-input v-model="studentOperInfo.student.college" placeholder="请输入学院名称"></el-input>
+        <el-tooltip content="学院不能为空" placement="right">
+          <el-input v-model="studentOperInfo.student.college" placeholder="请输入学院名称"></el-input>
+        </el-tooltip>
       </el-form-item>
       <el-form-item label="学号：" required>
-        <el-input v-model="studentOperInfo.student.serialNo" placeholder="请输入学号"></el-input>
+        <el-tooltip content="学号不能少于7位" placement="right">
+          <el-input v-model="studentOperInfo.student.serialNo" placeholder="请输入学号"></el-input>
+        </el-tooltip>
       </el-form-item>
       <el-form-item label="专业：" required>
-        <el-input v-model="studentOperInfo.student.profession" placeholder="请输入专业名称"></el-input>
+        <el-tooltip content="专业名称不能为空" placement="right">
+          <el-input v-model="studentOperInfo.student.profession" placeholder="请输入专业名称"></el-input>
+        </el-tooltip>
       </el-form-item>
       <el-form-item label="性别：" required>
         <el-radio-group v-model="studentOperInfo.student.sex">
@@ -27,10 +35,14 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="电话：">
-        <el-input v-model="studentOperInfo.student.cellphone" placeholder="请输入电话"></el-input>
+        <el-tooltip content="联系电话为11位手机号或8位座机号" placement="right">
+          <el-input v-model="studentOperInfo.student.cellphone" placeholder="请输入电话"></el-input>
+        </el-tooltip>
       </el-form-item>
       <el-form-item label="邮箱：">
-        <el-input v-model="studentOperInfo.student.email" placeholder="请输入邮箱"></el-input>
+        <el-tooltip content="邮箱格式为‘xxx@xx.com’" placement="right">
+          <el-input v-model="studentOperInfo.student.email" placeholder="请输入邮箱"></el-input>
+        </el-tooltip>
       </el-form-item>
     </el-form>
 
@@ -64,6 +76,10 @@
         }
         if(this.studentOperInfo.student.serialNo.trim() === ''){
           this.$message.warning('学号不能为空！');
+          return;
+        }
+        if(this.studentOperInfo.student.serialNo.trim().length <= 6){
+          this.$message.warning('学号不能少于6位！');
           return;
         }
         if(this.studentOperInfo.student.profession.trim() === ''){

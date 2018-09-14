@@ -52,6 +52,7 @@
          * */
         getSaveData(){
           let task = {
+            id:this.task.id,
             name:this.task.name,
             courseId:this.$route.params.courseId,
             weight: this.task.weight,
@@ -70,6 +71,7 @@
             }
             questionList.push({
               taskQuestions:{
+                id:item.id,
                 stems:item.stem,
                 questionType:item.questionType,
                 score:item.score,

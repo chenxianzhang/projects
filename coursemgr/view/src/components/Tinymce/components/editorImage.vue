@@ -3,7 +3,7 @@
     <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传图片
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
-      <el-upload class="editor-slide-upload" action="http://192.168.1.2:8081/service/fileMgr/uploadOneFile" :data="uploadParam"
+      <el-upload class="editor-slide-upload" action="http://localhost:8081/service/fileMgr/uploadOneFile" :data="uploadParam"
                  :multiple="true" :file-list="fileList" :show-file-list="true"
         list-type="picture-card" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload">
         <el-button size="small" type="primary">点击上传</el-button>
@@ -53,7 +53,7 @@ export default {
       const objKeyArr = Object.keys(this.listObj);
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = 'http://192.168.1.2:8081/service/' + response.data;
+          this.listObj[objKeyArr[i]].url = 'http://localhost:8081/service/' + response.data;
           this.listObj[objKeyArr[i]].hasSuccess = true;
           return
         }

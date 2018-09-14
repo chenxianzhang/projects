@@ -3,9 +3,10 @@
       <h4>当前课程： {{courseName}}</h4>
       <el-table :data="tasks"
                 style="width: 100%"
+                border
                 :headerRowStyle="{backgroundColor:'red'}"
                 :header-cell-class-name="'ddd'">
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="name" label="任务名称" align="center"> </el-table-column>
         <el-table-column prop="publishTime" label="发布日期" align="center" :formatter="dateFormat"> </el-table-column>
         <!--<el-table-column prop="startTime" label="开始日期" :formatter="dateFormat"> </el-table-column>-->
@@ -39,6 +40,11 @@
       </el-dialog>
       <el-dialog :visible.sync="showTaskStatement" width="1240px">
         <task-info-new v-if="showTaskStatement" ref="taskStatement" :taskId="selectTaskId" :operateType="operate"></task-info-new>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="showTaskStatement = false">取 消</el-button>
+          <el-button type="primary" @click="handleSaveTask">确 定</el-button>
+        </div>
       </el-dialog>
     </div>
 </template>
@@ -48,8 +54,9 @@
   import TaskDetailComp from '../../components/taskDetailComp'
   import {getCourseTasksByCourseId, deleteTask, getCourseById} from '@/api/course'
   import {getMyTaskSituation, getCourseTaskSituation} from '@/api/task'
-  import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
+  import {SUBJECT_TYPE, TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import TaskInfoNew from "../../components/taskInfo-new";
+  import {saveTask} from "../../api/task";
 
   export default {
       name: "taskInfoList",
@@ -91,6 +98,68 @@
         }
       },
       methods: {
+        /**
+         * handleSaveTask 保存任务
+         * */
+        handleSaveTask(){
+          if(!this.$refs.taskStatement.taskVerify()){
+            return;
+          }
+          this.task = this.$refs.taskStatement.task;
+          let saveData = this.getSaveData();
+          debugger
+          saveTask(saveData).then(response=>{
+            debugger
+            if(response.status === 0){
+              this.$message({
+                showClose: true,
+                type: 'warning',
+                message: response.msg
+              });
+              return;
+            }
+            this.$message({
+              showClose: true,
+              type: 'success',
+              message: "保存成功！"
+            });
+          });
+        },
+        /**
+         * getSaveData  构造需要保存或者更新的task数据
+         * params null
+         * return {task:task, questionList:questions} 保存的数据结构
+         * */
+        getSaveData(){
+          let task = {
+            name:this.task.name,
+            courseId:this.$route.params.courseId,
+            weight: this.task.weight,
+            publishTime:new Date(),
+            deadline:this.task.inspireDate,
+            totalScore: this.task.totalScore,
+            markType:this.task.markType
+          };
+          let questionList = [];
+          for(let item of this.task.subjects){
+            let optionList = [];
+            if(item.questionType === SUBJECT_TYPE.CHOOSE){
+              for(let opItem of item.selections){
+                optionList.push(opItem);
+              }
+            }
+            questionList.push({
+              taskQuestions:{
+                stems:item.stem,
+                questionType:item.questionType,
+                score:item.score,
+                answers:item.answer,
+              },
+              optionList:optionList
+            });
+          }
+          return {task:task, questionList:questionList};
+        },
         getStuTaskList(cId){
           getMyTaskSituation({courseId:cId, studentNo:this.$store.state.user.token})
             .then(resp=>{

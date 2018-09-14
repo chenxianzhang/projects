@@ -39,11 +39,11 @@
             <span slot="title">我的任务</span>
           </el-menu-item>
           <el-menu-item v-if="isStudent" :index="getIndex('/course/gradeInfo')">
-            <i class="el-icon-setting"></i>
+            <i class="el-icon-tickets"></i>
             <span slot="title">我的成绩</span>
           </el-menu-item>
           <el-menu-item v-if="isStudent" :index="getIndex('/course/gTaskInfo')">
-            <i class="el-icon-setting"></i>
+            <i class="el-icon-bell"></i>
             <span slot="title">我的待办</span>
           </el-menu-item>
 
@@ -53,8 +53,8 @@
               <span>分组情况</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item :index="getIndex('/teacherHome/grouped')">已分组</el-menu-item>
-              <el-menu-item :index="getIndex('/teacherHome/NotGrouped')">未分组</el-menu-item>
+              <el-menu-item class="el-icon-success" :index="getIndex('/teacherHome/grouped')"> 已分组</el-menu-item>
+              <el-menu-item class="el-icon-error" :index="getIndex('/teacherHome/NotGrouped')"> 未分组</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -64,8 +64,8 @@
               <span>课程任务</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item :index="getIndex('/course/taskInfoList')">任务列表</el-menu-item>
-              <el-menu-item :index="getIndex('/teacherHome/newTask')">新建任务</el-menu-item>
+              <el-menu-item class="el-icon-tickets" :index="getIndex('/course/taskInfoList')"> 任务列表</el-menu-item>
+              <el-menu-item v-if="!isStudent" class="el-icon-news" :index="getIndex('/teacherHome/newTask1')"> 新建任务</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -74,8 +74,8 @@
             <span slot="title">所有成绩</span>
           </el-menu-item>
 
-          <el-menu-item v-if="!isStudent" :index="getIndex('/teacherHome/newTask1')">
-            <i class="el-icon-tickets"></i>
+          <el-menu-item v-if="!isStudent" index="">
+            <i class="el-icon-time"></i>
             <span slot="title">统计分析</span>
           </el-menu-item>
         </el-menu>
