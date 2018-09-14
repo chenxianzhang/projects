@@ -50,7 +50,7 @@
         update question_options
         <set >
             <if test="questionId != null" >
-                questionId = #{taskId,jdbcType=BIGINT},
+                questionId = #{questionId,jdbcType=BIGINT},
             </if>
             <if test="optionTag != null" >
                 optionTag = #{optionTag,jdbcType=VARCHAR},
