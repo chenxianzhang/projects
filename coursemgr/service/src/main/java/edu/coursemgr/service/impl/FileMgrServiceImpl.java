@@ -26,7 +26,8 @@ public class FileMgrServiceImpl implements FileMgrService {
         if (file.getOriginalFilename().isEmpty()) {
             return "";
         }
-        String[] fileNames = file.getOriginalFilename().split(".");
+        String originfileName = file.getOriginalFilename();
+        String[] fileNames = originfileName.split("\\.");
         String extension = fileNames[fileNames.length - 1];
         String fileName = String.format("%s.%s", CommonUtils.uuid(), extension);
 
