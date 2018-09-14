@@ -15,6 +15,8 @@ public class StudentTaskInfo implements Serializable {
 
     private Float score;
 
+    private Integer taskId;
+
     public String getTaskName() {
         return taskName;
     }
@@ -37,5 +39,13 @@ public class StudentTaskInfo implements Serializable {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
     }
 }

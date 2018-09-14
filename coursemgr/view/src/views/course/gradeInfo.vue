@@ -1,40 +1,15 @@
 <template>
   <div>
     <h4 style="font-family: cursive; font-size: larger;">当前课程：{{courseName}}</h4>
-    <el-table :data="gradeList" style="width: 100%" border >
-
-      <!--<template slot-scope="scope">-->
-        <!--<el-table-column type="selection" width="55" :render-header="renderHeader"> </el-table-column>-->
-        <!--<el-table-column prop="studentName" label="姓名"> </el-table-column>-->
-        <!--<el-table-column prop="studentNo" label="学号"> </el-table-column>-->
-        <!--<el-table-column prop="groupNo" label="所在小组"> </el-table-column>-->
-        <!--<el-table-column v-for="(task,index) in scope.row.studentTaskInfos"-->
-                           <!--:label="task.taskName" prop="taskName" :key="index">-->
-        <!--</el-table-column>-->
-
-        <!--<el-table-column prop="totalScore" label="加权总分"> </el-table-column>-->
-      <!--</template>-->
-
-      <el-table-column type="selection" width="55" :render-header="renderHeader"> </el-table-column>
-      <el-table-column prop="studentName" label="姓名"> </el-table-column>
-      <el-table-column prop="studentNo" label="学号"> </el-table-column>
-      <el-table-column prop="groupNo" label="所在小组"> </el-table-column>
-
-      <el-table-column label="任务信息">
-        <template slot-scope="scope">
-          <el-table-column v-for="(task,index) in scope.row.studentTaskInfos"
-                           :label="task.taskName"
-                           :key="index">
-            <template slot-scope="scope1">
-              <span>{{task.score}}</span>
-            </template>
-          </el-table-column>
-        </template>
+    <template>
+    <el-table :data="tableData" style="width: 100%" border >
+      <el-table-column v-for="(task,index) in columns"
+                       :label="task.label"
+                       :prop="task.prop"
+                       :key="index">
       </el-table-column>
-
-      <el-table-column prop="totalScore" label="加权总分"> </el-table-column>
     </el-table>
-
+    </template>
     <div class="pagination" v-if="!isStudent">
       <el-pagination
         @size-change="handleSizeChange"
@@ -71,12 +46,12 @@
           showAnswer: false,
           isStudent:false,
           courseName:'',
-          gradeList:[],
           taskList:[],
           totalCount: 0,
           pageSize: 10,
           currPage: 1,
-
+          columns: [],
+          tableData: []
           // studentTaskInfos:[[{taskName:'任务1', score:'10'},{taskName:'任务2', score:'10'},{taskName:'任务3', score:'10'}],
           //   [{taskName:'任务1', score:'110'},{taskName:'任务2', score:'102'},{taskName:'任务3', score:'101'}]],
         }
@@ -102,7 +77,7 @@
                 self.$message.warning('获取成绩信息失败：' + resp.msg);
                 return;
               }
-              self.gradeList.push(resp.data);
+              self.transferData([resp.data]);
             });
           return;
         }
@@ -110,6 +85,33 @@
         this.getGradeByCourse(cId);
       },
       methods: {
+        transferData(data) {
+          if (!data) {
+            return;
+          }
+          this.columns.push({prop:"studentName", label: "姓名"});
+          this.columns.push({prop:"studentNo", label: "学号"});
+          this.columns.push({prop:"groupNo", label: "所在小组"});
+          let hasInitCol = false;
+          for (let item = 0; item < data.length; item++) {
+            let tableItem = {};
+            tableItem.studentName = data[item].studentName;
+            tableItem.studentNo = data[item].studentNo;
+            tableItem.groupNo = data[item].groupNo;
+
+            data[item].studentTaskInfos.forEach(task => {
+              tableItem[task.taskId + "_score"] = task.score;
+              if (!hasInitCol) {
+                this.columns.push({prop:task.taskId + "_score",
+                 label: task.taskName + "(" + task.taskWeight + "%)"});
+              }
+            });
+            hasInitCol = true;
+            tableItem.totalScore = data[item].totalScore;
+            this.tableData.push(tableItem);
+          }
+          this.columns.push({prop:"totalScore", label: "加权总分"});
+        },
         renderHeader(h,{column, $index}){
           h()
         },
@@ -131,9 +133,8 @@
               return;
             }
 
-            self.gradeList = resp.data.pageData;
+            self.transferData(resp.data.pageData);
             self.totalCount = resp.data.totalCount;
-            console.log(self.gradeList);
           });
         },
         handleClick(row) {

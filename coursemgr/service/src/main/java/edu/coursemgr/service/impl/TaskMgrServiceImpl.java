@@ -182,6 +182,12 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                     if (task.getPublishTime() != null) {
                         situation.setPublishTime(task.getPublishTime().toString());
                     }
+                    situation.setCanAnswer(false);
+                    if (task.getStartTime() != null) {
+                        situation.setPublishTime(task.getStartTime().toString());
+                        situation.setCanAnswer(task.getStartTime().compareTo(new Date()) < 0
+                                && task.getDeadline().compareTo(new Date()) >= 0);
+                    }
                     situation.setTaskId(task.getId());
                     situation.setTaskName(task.getName());
 

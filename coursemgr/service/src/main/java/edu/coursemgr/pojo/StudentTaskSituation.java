@@ -16,9 +16,13 @@ public class StudentTaskSituation implements Serializable {
 
     private String publishTime;
 
+    private String startTime;
+
     private String deadline;
 
     private String finishStatus;
+
+    private boolean canAnswer;
 
     public Integer getTaskId() {
         return taskId;
@@ -58,5 +62,21 @@ public class StudentTaskSituation implements Serializable {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public boolean isCanAnswer() {
+        return canAnswer;
+    }
+
+    public void setCanAnswer(boolean canAnswer) {
+        this.canAnswer = canAnswer;
     }
 }
