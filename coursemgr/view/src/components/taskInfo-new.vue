@@ -2,11 +2,16 @@
   <div style="width: 1200px; margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
     <div class="task-name">
       <el-row>
-        <el-col :span="12">
+        <el-col :span="10">
           <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">任务名称：</span>
           <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px)"></el-input>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="7">
+          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">开始日期：</span>
+          <el-date-picker v-model="task.startDate" type="date" placeholder="选择日期">
+          </el-date-picker>
+        </el-col>
+        <el-col :span="7">
           <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">截止日期：</span>
           <el-date-picker v-model="task.inspireDate" type="date" placeholder="选择日期">
           </el-date-picker>
@@ -159,6 +164,7 @@
           this.task.weight = taskDetailInfo.task.weight;
           this.task.totalScore = taskDetailInfo.task.totalScore;
           this.task.inspireDate = taskDetailInfo.task.deadline;
+          this.task.startDate = taskDetailInfo.task.startTime;
           this.task.markType = taskDetailInfo.task.markType;
           for(let item of taskDetailInfo.questionList){
             let subject_c = new Subject();

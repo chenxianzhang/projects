@@ -35,7 +35,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="电话：">
-        <el-tooltip content="联系电话为11位手机号或8位座机号" placement="right">
+        <el-tooltip content="手机号格式1[3,5,7,8]xxxxx" placement="right">
           <el-input v-model="studentOperInfo.student.cellphone" placeholder="请输入电话"></el-input>
         </el-tooltip>
       </el-form-item>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+  import {validateEmail, validatePhone} from "../utils/validate";
   import { addStudent } from '@/api/student'
   import { update } from '@/api/login';
   import dragDialog from '@/components/dragDialog';

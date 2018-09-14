@@ -42,6 +42,7 @@ export class Task {
   weight = '';//权重
   inspireDate = '';//截止日期
   createDate= '';//创建日期
+  startDate= '';//开始日期
   publishDate= '';//发布日期
   totalScore= '';//总分
   subjects= [];//题目列表
@@ -53,6 +54,7 @@ export class Task {
     this.weight = '';//权重
     this.inspireDate = '';//截止日期
     this.createDate= '';//创建日期
+    this.startDate= '';//开始日期
     this.publishDate= '';//发布日期
     this.totalScore= '';//总分
     this.subjects= [];//题目列表
