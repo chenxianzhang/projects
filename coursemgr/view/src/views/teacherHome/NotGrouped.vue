@@ -1,18 +1,15 @@
 <template>
   <div>
     <el-table
+      border
       ref="multipleTable"
+      :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}"
       :data="groupableStudents"
       tooltip-effect="dark"
       style="width: 100%; border-bottom: 1px solid gray; padding-bottom: 10px">
-      <el-table-column
-        prop="name"
-        label="姓名">
+      <el-table-column prop="name" label="姓名" align="center">
       </el-table-column>
-      <el-table-column
-        prop="serialNo"
-        label="学号"
-        show-overflow-tooltip>
+      <el-table-column prop="serialNo" label="学号" show-overflow-tooltip  align="center">
       </el-table-column>
     </el-table>
     <div class="btn-group">

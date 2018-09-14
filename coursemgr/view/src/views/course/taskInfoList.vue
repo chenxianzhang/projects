@@ -4,12 +4,11 @@
       <el-table :data="tasks"
                 style="width: 100%"
                 border
-                :headerRowStyle="{backgroundColor:'red'}"
-                :header-cell-class-name="'ddd'">
+                :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="name" label="任务名称" align="center"> </el-table-column>
         <el-table-column prop="publishTime" label="发布日期" align="center" :formatter="dateFormat"> </el-table-column>
-        <!--<el-table-column prop="startTime" label="开始日期" :formatter="dateFormat"> </el-table-column>-->
+        <el-table-column prop="startTime" label="开始日期" align="center" :formatter="dateFormat"> </el-table-column>
         <el-table-column prop="deadline" label="截止日期" align="center" :formatter="dateFormat"> </el-table-column>
         <el-table-column prop="finishStatus" label="完成状态"
                          align="center">
@@ -30,7 +29,7 @@
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
             <el-button v-if="isStudent" :disabled="scope.row.finishStatus!='UNCOMMITTED'" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
-            <el-button v-if="!isStudent" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
+            <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
             <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>

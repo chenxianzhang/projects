@@ -22,7 +22,8 @@
       总分值 <input v-model="totalScore" disabled/> 分，
       权重：<input type="number" min="0" max="100" v-model="task.weight" /> %。</div>
     <div class="subject-container">
-      <div class="subject-item" v-for="(item, index) in task.subjects" style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
+      <div class="subject-item" v-for="(item, index) in task.subjects"
+           style="margin-bottom: 10px; border-bottom: 1px solid rgba(28, 77, 125, 0.8)">
         <!--题干设置区域-->
         <div style="margin-bottom:10px">
           <span>{{index + 1}}.</span>
@@ -96,7 +97,7 @@
           <el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>
         </div>
         <!--编辑和完成编辑按钮-->
-        <el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>
+        <!--<el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>-->
         <el-button type="primary" v-if="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
       </div>
       <div class="subject-add el-icon-plus" @click="addSubject"></div>
@@ -233,13 +234,19 @@
 
           if(item.optionDes){
             if(item.optionDes.indexOf('img') === -1){
-              let stem = item.value.substring(3, item.optionDes.length - 4);
+              let stem = item.optionDes;
+              if(item.optionDes.indexOf('<p>') !== -1){
+                stem = item.optionDes.substring(3, item.optionDes.length - 4);
+              }
               this.$set(item, 'optionDes', stem);
             }
             return;
           }
           if(item.stem.indexOf('img') === -1){
-            let stem = item.stem.substring(3, item.stem.length - 4);
+            let stem = item.stem;
+            if(item.stem.indexOf('<p>') !== -1){
+              stem = item.stem.substring(3, item.stem.length - 4);
+            }
             this.$set(item, 'stem', stem);
           }
         },
