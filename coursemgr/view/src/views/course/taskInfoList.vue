@@ -28,17 +28,23 @@
                          width="140">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
-            <el-button v-if="isStudent" :disabled="scope.row.finishStatus!='UNCOMMITTED' || !scope.row.canAnswer" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
+            <el-button v-if="isStudent" :disabled="scope.row.finishStatus!=='UNCOMMITTED' || !scope.row.canAnswer" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
             <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
             <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
-        <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp" :taskId="selectTaskId" :operateType="operate"></task-detail-comp>
+        <task-detail-comp v-if="showTaskInfoDialog"
+                          ref="taskInfoComp"
+                          :taskId="selectTaskId"
+                          :operateType="operate" @answerEmit="handleAnswerEmit"></task-detail-comp>
       </el-dialog>
       <el-dialog :visible.sync="showTaskStatement" width="1240px">
-        <task-info-new v-if="showTaskStatement" ref="taskStatement" :taskId="selectTaskId" :operateType="operate"></task-info-new>
+        <task-info-new v-if="showTaskStatement"
+                       ref="taskStatement"
+                       :taskId="selectTaskId"
+                       :operateType="operate" ></task-info-new>
 
         <div slot="footer" class="dialog-footer">
           <el-button @click="showTaskStatement = false">取 消</el-button>
@@ -122,6 +128,7 @@
               type: 'success',
               message: "保存成功！"
             });
+            this.getTaskList(this.$route.params.courseId);
           });
         },
         /**
@@ -203,6 +210,13 @@
           this.selectTaskId = row.id;
           this.showTaskInfoDialog = true;
           this.operate = TASK_OPERATOR_TYPE.STUDENT_ANSWER;
+        },
+        /**
+         * 学生答题 成功提交
+         * */
+        handleAnswerEmit() {
+          this.showTaskInfoDialog = false;
+          this.getStuTaskList(this.$route.params.courseId);
         },
         /**
          * 查看详情

@@ -183,6 +183,7 @@
                 return;
               }
                 this.$message.success('上传答案成功');
+                this.$emit('answerEmit');
             });
           }
           else {

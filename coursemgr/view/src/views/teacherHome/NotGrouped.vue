@@ -225,7 +225,11 @@
                 });
               break;
             case "添加到分组":
-              appendStudent2Group({groupId: this.appointGroup, studentNo: this.multipleSelection.join(',')})
+              let stus = [];
+              for(let item of this.multipleSelection){
+                stus.push(item.serialNo);
+              }
+              appendStudent2Group({groupId: this.appointGroup, studentNo: stus.join(',')})
                 .then(resp=>{
                   if(resp.status === 0){
                     self.$message.warning('添加到分组失败！');
