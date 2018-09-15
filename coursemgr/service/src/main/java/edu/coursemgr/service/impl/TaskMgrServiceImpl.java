@@ -265,6 +265,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     }
 
     @Override
+    public int deleteQuestions(String questionIds) {
+        return taskQuestionsMapper.deleteByIds(questionIds);
+    }
+
+    @Override
     public CourseTaskDetail getStuTaskDetail(String taskId, String studentNo) {
 
         CourseTasks task = courseTasksMapper.selectByTaskId(Integer.valueOf(taskId));

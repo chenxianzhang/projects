@@ -80,6 +80,13 @@ public interface TaskMgrService {
     int deleteTask(String courseId, String taskId);
 
     /**
+     * 删除任务试题
+     * @param questionIds   多个以逗号分隔
+     * @return
+     */
+    int deleteQuestions(String questionIds);
+
+    /**
      * 获取学员任务详情
      * @param taskId
      * @param studentNo

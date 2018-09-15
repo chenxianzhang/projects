@@ -23,10 +23,10 @@ public interface GroupMgrService {
     /**
      * 添加到已有分组
      * @param groupId
-     * @param studentNo
+     * @param studentNos
      * @return
      */
-    int appendStudent2Group(String groupId, String studentNo);
+    int appendStudent2Group(String groupId, String studentNos);
 
     /**
      * 指定分组

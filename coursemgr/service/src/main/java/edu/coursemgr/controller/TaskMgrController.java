@@ -7,10 +7,7 @@ import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -143,5 +140,15 @@ public class TaskMgrController extends BaseController {
         return taskMgrService.getStuTaskDetail(taskId, studentNo);
     }
 
+
+    @RequestMapping(value="/deleteQuestions", method=RequestMethod.GET)
+    @ResponseBody
+    public Object deleteQuestions(@RequestParam String ids)
+            throws Exception {
+        if (CommonUtils.isEmpty(ids)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return taskMgrService.deleteQuestions(ids);
+    }
 
 }

@@ -95,11 +95,18 @@ public class GroupMgrServiceImpl implements GroupMgrService {
     }
 
     @Override
-    public int appendStudent2Group(String groupId, String studentNo) {
-        GroupMember groupMember = new GroupMember();
-        groupMember.setGroupId(Integer.valueOf(groupId));
-        groupMember.setStudentNo(studentNo);
-        return groupMemberMapper.insert(groupMember);
+    public int appendStudent2Group(String groupId, String studentNos) {
+
+        List<GroupMember> memberList = new ArrayList<>();
+        List<String> stuList = Arrays.asList(studentNos.split(","));
+        stuList.forEach(stu -> {
+            GroupMember groupMember = new GroupMember();
+            groupMember.setGroupId(Integer.valueOf(groupId));
+            groupMember.setStudentNo(stu);
+            memberList.add(groupMember);
+        });
+        insertBatch(memberList);
+        return 1;
     }
 
     @Override

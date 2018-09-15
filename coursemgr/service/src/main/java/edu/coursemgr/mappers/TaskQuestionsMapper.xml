@@ -48,6 +48,10 @@
     delete from task_questions
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByIds" parameterType="java.lang.String" >
+    delete from task_questions
+    where id in (#{ids})
+  </delete>
   <delete id="deleteByTaskId" parameterType="java.lang.Integer" >
     delete from task_questions
     where taskId = #{taskId,jdbcType=INTEGER}

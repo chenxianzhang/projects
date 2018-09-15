@@ -37,4 +37,6 @@ public interface TaskQuestionsMapper {
     int deleteByTaskId(Integer taskId);
 
     List<TaskQuestions> selectStuTaskPaper(Map params);
+
+    int deleteByIds(String ids);
 }
