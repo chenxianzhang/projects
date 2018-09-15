@@ -28,11 +28,11 @@
         <div style="margin-bottom:10px">
           <span>{{index + 1}}.</span>
           <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem"
-                    placeholder="请设置题干" style="width: calc(100% - 340px)"></el-input>
+                    placeholder="请设置题干" style="width: calc(100% - 430px)"></el-input>
           <el-input v-if="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem"
-                    style="width: calc(100% - 34px)"></el-input>
+                    style="width: calc(100% - 430px)"></el-input>
 
-          <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 100px">
+          <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 130px">
             <el-option label="单选题" :value="SUBJECT_TYPE.CHOOSE"></el-option>
             <el-option label="判断题" :value="SUBJECT_TYPE.JUDGE"></el-option>
             <el-option label="主观题" :value="SUBJECT_TYPE.SUBJECTIVE"></el-option>
@@ -40,6 +40,7 @@
 
           分数：<input type="number" min="0" max="100" v-model="item.score" style="width: 40px; height: 30px;" />分
           <el-button type="primary" @click="handleStemHighSetting(index)">高级设置</el-button>
+          <el-button type="primary" @click="removeQuestion(index)">删除</el-button>
           <Tinymce :height=200 v-if="item.edit" v-model="item.stem" style="margin-top: 5px;"/>
           <el-button v-if="item.edit" type="primary" @click="editConfirm(index, item)">确定</el-button>
         </div>
@@ -86,7 +87,7 @@
         </div>
         <!--主观题  答题设置-->
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: 90%; margin: 0 auto">
-          <div style="margin: 7px 20px; line-height: 40px; float: left">
+          <div style="margin: 7px 20px; line-height: 40px; float: left;">
             <el-radio-group v-model="task.markType"
                             style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
               <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
@@ -190,6 +191,12 @@
         handleStemHighSetting(index){
           this.$set(this.task.subjects[index], 'edit', true);
           this.editContent = this.task.subjects[index].stem;
+        },
+        /**
+         * removeQuestion 删除题目
+         * */
+        removeQuestion(index){
+          this.task.subjects.splice(index, 1);
         },
         /**
          * handleSubjectEdit 编辑题干
@@ -337,4 +344,10 @@
   width: 40px;
   height: 30px;
 }
+.el-button+.el-button{
+  margin-left: 0;
+}
+  .subject-item{
+    padding: 5px;
+  }
 </style>

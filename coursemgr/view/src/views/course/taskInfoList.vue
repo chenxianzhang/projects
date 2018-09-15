@@ -131,10 +131,12 @@
          * */
         getSaveData(){
           let task = {
+            id:this.task.id,
             name:this.task.name,
             courseId:this.$route.params.courseId,
             weight: this.task.weight,
             publishTime:new Date(),
+            startTime:this.task.startDate,
             deadline:this.task.inspireDate,
             totalScore: this.task.totalScore,
             markType:this.task.markType
@@ -149,6 +151,7 @@
             }
             questionList.push({
               taskQuestions:{
+                id:item.id,
                 stems:item.stem,
                 questionType:item.questionType,
                 score:item.score,
@@ -171,6 +174,7 @@
                   id:item.taskId,
                   name:item.taskName,
                   publishTime:item.publishTime,
+                  startTime:item.startTime,
                   deadline:item.deadline,
                   finishStatus:item.finishStatus
                 });
