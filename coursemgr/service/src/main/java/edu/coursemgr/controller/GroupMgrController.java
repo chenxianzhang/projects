@@ -2,16 +2,15 @@ package edu.coursemgr.controller;
 
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
+import edu.coursemgr.model.Course;
 import edu.coursemgr.pojo.AssignGroupModel;
 import edu.coursemgr.pojo.GroupDetail;
+import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.service.interfaces.GroupMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,9 @@ public class GroupMgrController extends BaseController {
 
     @Autowired
     private GroupMgrService groupMgrService;
+
+    @Autowired
+    private CourseMgrService courseMgrService;
 
     @RequestMapping(value="/randGroup", method=RequestMethod.POST)
     @ResponseBody
@@ -59,10 +61,27 @@ public class GroupMgrController extends BaseController {
         if (null == assignGroupModel) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        if (!groupMgrService.assignGroup(assignGroupModel, CommonEnum.GroupedType.ASSIGN)) {
-            throw new Exception("指定分组异常");
+        CommonEnum.GroupedType type = CommonEnum.GroupedType.ASSIGN;
+        if (assignGroupModel.isStuSelfGroup()) {
+            type = CommonEnum.GroupedType.FREEDOM;
+        }
+        if (!groupMgrService.assignGroup(assignGroupModel, type)) {
+            throw new Exception("分组异常");
         }
         return true;
+    }
+
+    @RequestMapping(value="/freedomGroup", method=RequestMethod.GET)
+    @ResponseBody
+    public Object freedomGroup(@RequestParam String courseId) throws Exception{
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        Course course = new Course();
+        course.setId(Integer.valueOf(courseId));
+        course.setGroupingType(CommonEnum.GroupedType.FREEDOM.getName());
+        return courseMgrService.updateCourse(course, true);
     }
 
     @RequestMapping(value="/changeGroupLeader", method=RequestMethod.POST)

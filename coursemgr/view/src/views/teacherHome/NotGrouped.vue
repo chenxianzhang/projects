@@ -74,7 +74,7 @@
 
 <script>
   import { randomGroup, assignGroup, getGroupDetail, appendStudent2Group } from "../../api/group";
-  import {getNoGroupStuList} from '../../api/course'
+  import {getNoGroupStuList, freedomGroup} from '../../api/course'
 
   export default {
       name: "NotGrouped",
@@ -181,7 +181,7 @@
           let self = this;
           switch (this.groupType) {
             case "随机分组":
-              randomGroup({courseId: this.$store.getters.courseId, memberCnt: this.randomGroupPerCnt})
+              randomGroup({courseId: this.$route.params.courseId, memberCnt: this.randomGroupPerCnt})
                 .then(resp=>{
                   if(resp.status === 0){
                     self.$message.warning('随机分组失败：' + resp.msg);
@@ -192,7 +192,13 @@
                 });
               break;
             case "自由分组":
-
+              freedomGroup({ courseId: this.$route.params.courseId}).then(response => {
+                if (response.status === 0) {
+                    self.$message.warning('设置自由分组失败：' + resp.msg);
+                    return;
+                }
+                self.$message.warning('设置自由分组失成功' );
+              })
               break;
             case "指定分组":
               //获取指定分组对象
@@ -203,7 +209,7 @@
                 }
               }
               let assignGroupObj = {
-                courseId: this.$store.getters.courseId,
+                courseId: this.$route.params.courseId,
                 leaderName: leaderName,
                 groupLeaderNo: this.groupLeader,
                 studentNoList: this.zdGroupMembers

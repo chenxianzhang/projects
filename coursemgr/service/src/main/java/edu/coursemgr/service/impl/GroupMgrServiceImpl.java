@@ -141,11 +141,15 @@ public class GroupMgrServiceImpl implements GroupMgrService {
             insertBatch(groupMembers);
         }
 
-        // 更新分组模式
-        Course course = new Course();
-        course.setId(assignGroupModel.getCourseId());
-        course.setGroupingType(CommonEnum.GroupedType.ASSIGN.getName());
-        return courseMapper.updateByIdSelective(course) > 0 ? true : false;
+        if (type == CommonEnum.GroupedType.ASSIGN) {
+            // 更新分组模式
+            Course course = new Course();
+            course.setId(assignGroupModel.getCourseId());
+            course.setGroupingType(type.getName());
+            courseMapper.updateByIdSelective(course);
+        }
+
+        return true;
     }
 
     @Override

@@ -16,10 +16,13 @@
         </div>
       </div>
       <div v-if="!hasGroup">
-        <div class="no-group">
+        <div class="no-group" v-if="!freedomGroup">
+          <span>你目前还没有加入任何小组，请等待老师为学生分组</span>
+        </div>
+        <div class="no-group" v-if="freedomGroup">
           <span>该课程分组方式为<span style="color: red">自由分组</span>，你目前还没有加入任何小组，你可以点击“新建分组”按钮自己创建分组，或者线下通知组长将你加入小组。</span>
         </div>
-        <div style="margin-top: 20px; float: right">
+        <div style="margin-top: 20px; float: right" v-if="freedomGroup">
           <el-button class="el-button--primary" @click="createGroup">新建分组</el-button>
         </div>
       </div>
@@ -39,6 +42,7 @@
   import newGroup from './newGroup'
   import { getGroupDetailByStudent } from '../../api/group'
   import { assignGroup } from "../../api/group";
+  import { getCourseById } from "@/api/course";
 
     export default {
       name: "group-info",
@@ -47,10 +51,24 @@
           return{
             showDialog: false,
             groupInfo:null,
-            hasGroup:false
+            hasGroup:false,
+            freedomGroup:false
           }
       },
       created(){
+
+        getCourseById({courseId: this.$route.params.courseId}).then(response => {
+          if (response.status === 0) {
+            this.$message.warning('获取课程分组模式失败');
+            return;
+          }
+          if (response.data.groupingType === '自由分组')  {
+            this.freedomGroup = true;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+
         //获取个人分组
         getGroupDetailByStudent({courseId: this.$route.params.courseId, studentNo: this.$store.state.user.token})
           .then(resp=>{
@@ -74,7 +92,8 @@
             courseId: this.$route.params.courseId,
             leaderName: this.$store.state.user.name,
             groupLeaderNo: this.$store.state.user.token,
-            studentNoList: newGroupMembers
+            studentNoList: newGroupMembers,
+            stuSelfGroup: true
           };
           assignGroup(assignGroupObj)
             .then(resp=>{
@@ -121,7 +140,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    box-shadow: 0 0 8px 5px gray;
+    box-shadow: 0 0 4px 2px gray;
   }
   .no-group > span{
     font-size: 20px;

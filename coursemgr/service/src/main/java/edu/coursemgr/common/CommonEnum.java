@@ -60,7 +60,7 @@ public class CommonEnum {
 
 
     public enum GroupedType {
-        ASSIGN("指定"),
+        ASSIGN("指定分组"),
         FREEDOM("自由分组"),
         RAND("随机分组");
 

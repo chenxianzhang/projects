@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import {getStudentsByCourseId} from '../../api/course'
+    import {getNoGroupStuList} from '../../api/course'
     export default {
       name: "newGroup",
       data() {
@@ -32,7 +32,7 @@
       },
       created(){
         this.leader = this.$store.state.user.name;
-        getStudentsByCourseId({courseId:this.$route.params.courseId})
+        getNoGroupStuList({courseId:this.$route.params.courseId})
           .then(resp=>{
             if(resp.status === 0){
               this.$message.warning('获取学生失败');

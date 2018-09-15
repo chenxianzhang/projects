@@ -42,6 +42,12 @@ public class UserMgrServiceImpl implements UserMgrService {
     private GroupMemberMapper groupMemberMapper;
 
     @Override
+    public List<User> getStudentList(String courseId) {
+
+        return userMapper.selectSomeByCourseId(Integer.valueOf(courseId));
+    }
+
+    @Override
     public PageModel getStudentsByCourseId(String courseId,
                                            String pageSize, String currPage) {
         Integer totalCount = userMapper.selectTotalCntByCourseId(Integer.valueOf(courseId));

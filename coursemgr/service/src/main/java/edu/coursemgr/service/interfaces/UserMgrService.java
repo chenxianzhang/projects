@@ -12,6 +12,14 @@ import java.util.List;
  */
 public interface UserMgrService {
 
+
+    /**
+     * 获取课程下所有学生信息
+     * @param courseId
+     * @return
+     */
+    List<User> getStudentList(String courseId);
+
     /**
      * 通过课程ID获取当前课程下所有学生信息
      * @param courseId

@@ -16,6 +16,8 @@ public class AssignGroupModel implements Serializable {
 
     private Integer courseId;
 
+    private boolean stuSelfGroup;
+
     private List<String> studentNoList;
 
     public String getGroupLeaderNo() {
@@ -48,5 +50,13 @@ public class AssignGroupModel implements Serializable {
 
     public void setLeaderName(String leaderName) {
         this.leaderName = leaderName;
+    }
+
+    public boolean isStuSelfGroup() {
+        return stuSelfGroup;
+    }
+
+    public void setStuSelfGroup(boolean stuSelfGroup) {
+        this.stuSelfGroup = stuSelfGroup;
     }
 }

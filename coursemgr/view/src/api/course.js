@@ -75,4 +75,19 @@ export function dodwnloadStuTemp() {
   window.location.href = global.BASE_API + "/fileMgr/downloadStuTemplate";
 }
 
+export function freedomGroup(params) {
+  return request({
+    url: '/groupMgr/freedomGroup',
+    method: 'get',
+    params: params
+  });
+}
+
+export function getAllStudentsByCourseId(params) {
+  return request({
+      url: '/userMgr/getAllStudentsByCourseId',
+      method: 'get',
+      params: params
+    });
+}
 

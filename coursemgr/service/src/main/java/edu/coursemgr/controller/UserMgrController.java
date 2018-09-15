@@ -45,6 +45,16 @@ public class UserMgrController extends BaseController {
         return userMgrService.getStudentsByCourseId(courseId, pageSize, currPage);
     }
 
+    @RequestMapping(value="/getAllStudentsByCourseId", method=RequestMethod.GET)
+    @ResponseBody
+    public Object getAllStudentsByCourseId(@RequestParam String courseId)
+            throws Exception {
+        if (CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return userMgrService.getStudentList(courseId);
+    }
+
     @RequestMapping(value="/addStudent", method=RequestMethod.POST)
     @ResponseBody
     public int addStudent(@RequestBody UserEditModel user)
