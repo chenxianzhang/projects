@@ -17,6 +17,7 @@ import edu.coursemgr.pojo.UserEditModel;
 import edu.coursemgr.service.interfaces.UserMgrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -107,7 +108,7 @@ public class UserMgrServiceImpl implements UserMgrService {
         if (illegal) {
             throw new Exception(Constant.ExceptionMessage.EXCEL_EMPTY);
         }
-        udpateHeaderIndex(list.get(0));
+//        udpateHeaderIndex(list.get(0));
 
         // 读取表格中数据,并插入数据库
         readData2DB(list, courseId);
@@ -171,11 +172,11 @@ public class UserMgrServiceImpl implements UserMgrService {
         User user = new User();
         user.setName(row.get(CommonEnum.StuExcelHeader.NAME.getIndex()));
         user.setSerialNo(row.get(CommonEnum.StuExcelHeader.STUDENT_ID.getIndex()));
-        user.setCollege(row.get(CommonEnum.StuExcelHeader.COLLEGE.getIndex()));
+//        user.setCollege(row.get(CommonEnum.StuExcelHeader.COLLEGE.getIndex()));
         user.setProfession(row.get(CommonEnum.StuExcelHeader.PROFESSIONAL.getIndex()));
-        user.setCellphone(row.get(CommonEnum.StuExcelHeader.CELLPHONE.getIndex()));
-        user.setEmail(row.get(CommonEnum.StuExcelHeader.EMAIL.getIndex()));
-        user.setSex(row.get(CommonEnum.StuExcelHeader.SEX.getIndex()));
+//        user.setCellphone(row.get(CommonEnum.StuExcelHeader.CELLPHONE.getIndex()));
+//        user.setEmail(row.get(CommonEnum.StuExcelHeader.EMAIL.getIndex()));
+//        user.setSex(row.get(CommonEnum.StuExcelHeader.SEX.getIndex()));
         user.setRoles(CommonEnum.Role.STUDENT.getValue());
         user.setCreateDate(new Date());
         boolean illegal = user.getSerialNo().isEmpty() ||
@@ -189,8 +190,32 @@ public class UserMgrServiceImpl implements UserMgrService {
         return user;
     }
 
+    private boolean isHeader(ArrayList<String> row) {
+        if (row == null || row.size() == 0) {
+            return false;
+        }
+        String rowStr = String.join(",", row);
+        if (rowStr.contains(CommonEnum.StuExcelHeader.NAME.getText()) &&
+                rowStr.contains(CommonEnum.StuExcelHeader.STUDENT_ID.getText()) &&
+                rowStr.contains(CommonEnum.StuExcelHeader.PROFESSIONAL.getText())) {
+            return true;
+        }
+        return false;
+    }
+
     private void readData2DB(List<ArrayList<String>> list, String courseId) throws Exception {
-        for (int i = 1; i < list.size(); i++) {
+        boolean header = false;
+        for (int i = 0; i < list.size(); i++) {
+
+            // 判断当前是否是列头所在行
+            if (isHeader(list.get(i))) {
+                header = true;
+                udpateHeaderIndex(list.get(i));
+                continue;
+            }
+            if (!header) {
+                continue;
+            }
             User user = list2Obj(list.get(i));
             if (user == null) {
                 continue;

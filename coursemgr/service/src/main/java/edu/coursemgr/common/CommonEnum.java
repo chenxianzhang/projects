@@ -95,7 +95,7 @@ public class CommonEnum {
         NAME("姓名"),
         STUDENT_ID("学号"),
         COLLEGE("学院"),
-        PROFESSIONAL("专业"),
+        PROFESSIONAL("专业名称"),
         CELLPHONE("电话"),
         SEX("性别"),
         EMAIL("邮箱");
