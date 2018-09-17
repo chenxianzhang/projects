@@ -60,6 +60,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
         // 保存task任务信息，并返回任务id
         Integer taskId = taskDetail.getTask().getId();
+        if (!hasSubject(taskDetail)) {
+            taskDetail.getTask().setMarkType(CommonEnum.GradeType.AUTO_EVA.getValue());
+        }
         // 如果不存在则插入一条新的记录
         if (taskId == null) {
             courseTasksMapper.insert(taskDetail.getTask());
@@ -214,27 +217,28 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     @Override
     public boolean submitTaskPaper(StudentPaperAnswer stuPaperAnswer) {
 
-        List<StudentPaper> studentPapers = CollectionUtils.arrayListCast(
-                stuPaperAnswer.getQuestionList(), question -> {
-                    StudentPaper paper = new StudentPaper();
-                    paper.setTaskId(Integer.valueOf(stuPaperAnswer.getTaskId()));
-                    paper.setStudentNo(stuPaperAnswer.getStudentNo());
-                    paper.setAnswers(question.getAnswers());
-                    paper.setQuestionId(question.getQuestionId());
-                    paper.setQuestionType(question.getQuestionType());
+        CourseTasks task = courseTasksMapper.selectByTaskId(
+                Integer.valueOf(stuPaperAnswer.getTaskId()));
 
-                    // 计算得分
-                    paper.setScore(0f);
-                    TaskQuestions taskQuestions = taskQuestionsMapper.selectByPrimaryKey(
-                            question.getQuestionId());
-                    if (isRight(taskQuestions.getAnswers(), question.getAnswers())) {
-                        paper.setScore(taskQuestions.getScore());
-                    }
+        Float totalScore = 0f;
+        List<StudentPaper> studentPapers = new ArrayList<>();
+        for (StudentQuestion question : stuPaperAnswer.getQuestionList()) {
+            StudentPaper paper = new StudentPaper();
+            paper.setTaskId(Integer.valueOf(stuPaperAnswer.getTaskId()));
+            paper.setStudentNo(stuPaperAnswer.getStudentNo());
+            paper.setAnswers(question.getAnswers());
+            paper.setQuestionId(question.getQuestionId());
+            paper.setQuestionType(question.getQuestionType());
 
-                    return paper;
-                });
-        if (studentPapers == null) {
-            return true;
+            // 计算得分
+            paper.setScore(0f);
+            TaskQuestions taskQuestions = taskQuestionsMapper.selectByPrimaryKey(
+                    question.getQuestionId());
+            if (isRight(taskQuestions.getAnswers(), question.getAnswers())) {
+                paper.setScore(taskQuestions.getScore());
+                totalScore += paper.getScore();
+            }
+            studentPapers.add(paper);
         }
 
         insertBatch(studentPapers);
@@ -242,6 +246,10 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         // 插入学生任务信息
         StudentTasks studentTasks = new StudentTasks();
         studentTasks.setStatus(CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
+        if (task.getMarkType().equals(CommonEnum.GradeType.AUTO_EVA.getValue())) {
+            studentTasks.setStatus(CommonEnum.StudentTaskStatus.FINISHED.getValue());
+            studentTasks.setScore(totalScore);
+        }
         studentTasks.setStudentNo(stuPaperAnswer.getStudentNo());
         studentTasks.setSubmitTime(new Date());
         studentTasks.setTaskId(stuPaperAnswer.getTaskId());
@@ -466,4 +474,18 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     }
 
+    private boolean hasSubject(CourseTaskDetail taskDetail) {
+        if (taskDetail == null || taskDetail.getQuestionList() == null) {
+            return false;
+        }
+        boolean flag = false;
+        for (TaskPaper paper : taskDetail.getQuestionList()) {
+            if (paper.getTaskQuestions().getQuestionType().equals(
+                    CommonEnum.QuestionType.SUBJECTIVE_ITEM.getValue())) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 }

@@ -85,8 +85,7 @@
         where tmp.taskId=gr.taskId
         and gr.studentNo=#{studentNo, jdbcType=VARCHAR}
         and gr.courseId=#{courseId, jdbcType=INTEGER}
-
-        <!--and FIND_IN_SET(tmp.studentNo,gr.gradeObjNo)-->
+        and FIND_IN_SET(tmp.studentNo,gr.gradeObjNo)
     </select>
     <select id="selectByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
         select

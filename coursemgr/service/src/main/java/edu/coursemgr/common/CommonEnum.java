@@ -125,6 +125,7 @@ public class CommonEnum {
      * 评分类型
      */
     public enum GradeType {
+        AUTO_EVA("AUTO_EVA", "自动评分"),   // 没有主观题的情况下自动评分
         SELF_EVA("SELF_EVA", "自评"),
         GROUP_INNER_EVA("GROUP_INNER_EVA", "组内互评"),
         GROUP_INTERBLOCK_EVA("GROUP_INTERBLOCK_EVA", "组间互评");
@@ -134,6 +135,28 @@ public class CommonEnum {
         private String text;
 
         GradeType(String value, String text) {
+            this.value = value;
+            this.text = text;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
+
+    public enum QuestionType{
+        SINGLE_CHOICE("0", "单选题"),
+        JUDGE("1", "判断题"),
+        SUBJECTIVE_ITEM("2", "主观题");
+
+        private String value;
+        private String text;
+
+        QuestionType(String value, String text) {
             this.value = value;
             this.text = text;
         }

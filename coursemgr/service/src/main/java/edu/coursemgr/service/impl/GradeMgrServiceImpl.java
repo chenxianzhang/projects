@@ -43,7 +43,8 @@ public class GradeMgrServiceImpl implements GradeMgrService {
 
     @Override
     public boolean updateGroupMemberGradeObj(Integer courseId, String markType, CourseTasks task) {
-        if (markType.equals(CommonEnum.GradeType.SELF_EVA.getValue())) {
+        if (markType.equals(CommonEnum.GradeType.SELF_EVA.getValue()) ||
+                markType.equals(CommonEnum.GradeType.AUTO_EVA.getValue())) {
             return true;
         }
         List<GradeRelate> resultList = updateMemberGradeObj(
