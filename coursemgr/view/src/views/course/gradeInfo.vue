@@ -2,10 +2,12 @@
   <div>
     <h4 style="font-family: cursive; font-size: larger;">当前课程：{{courseName}}</h4>
     <template>
-    <el-table :data="tableData" style="width: 100%" border >
+    <el-table :data="tableData" style="width: 100%" border
+              :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" >
       <el-table-column v-for="(task,index) in columns"
                        :label="task.label"
                        :prop="task.prop"
+                       align="center"
                        :key="index">
       </el-table-column>
     </el-table>
