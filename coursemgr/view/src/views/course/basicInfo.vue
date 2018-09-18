@@ -13,7 +13,7 @@
     </div>
     <div style="width: calc(100% - 60px); margin-left: 30px;">
       <div class="course-student-title">
-        <span>学生信息（总人数：{{studentsInCourse.length}}）</span>
+        <span>学生信息（总人数：{{totalCount}}）</span>
         <div v-if="editable" class="add-student-btn">
           <el-button type="primary" @click="addStudents2Course">添加学生</el-button>
           <el-button type="primary" @click="uploadStudents2Course">导入学生</el-button>
@@ -79,7 +79,9 @@
       </div>
     </drag-dialog>
 
-    <student-add-comp :studentOperInfo="studentOperInfo" :showStudentAddDialog="showStudentAddDialog" @hideStudentAddDialog="handleHideStudentAddDialog">
+    <student-add-comp :studentOperInfo="studentOperInfo"
+                      :showStudentAddDialog="showStudentAddDialog"
+                      @hideStudentAddDialog="handleHideStudentAddDialog">
     </student-add-comp>
   </div>
 </template>

@@ -50,8 +50,10 @@ import elDragDialog from '@/directive/el-dragDialog'
 
   .el-dialog {
     .el-dialog__header {
-      background-color: #ccc;
+      background-color: rgba(28, 77, 125, 0.8);
       padding: 15px 20px 15px;
+      height: 50px;
+      color: white;
       .el-dialog__title {
         color: #fff;
       }

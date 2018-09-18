@@ -34,13 +34,13 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
+      <el-dialog :visible.sync="showTaskInfoDialog" width="1240px" title="任务信息">
         <task-detail-comp v-if="showTaskInfoDialog"
                           ref="taskInfoComp"
                           :taskId="selectTaskId"
                           :operateType="operate" @answerEmit="handleAnswerEmit"></task-detail-comp>
       </el-dialog>
-      <el-dialog :visible.sync="showTaskStatement" width="1240px">
+      <el-dialog :visible.sync="showTaskStatement" width="1240px" title="修改任务">
         <task-info-new v-if="showTaskStatement"
                        ref="taskStatement"
                        :taskId="selectTaskId"

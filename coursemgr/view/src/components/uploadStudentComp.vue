@@ -1,6 +1,6 @@
 <template>
     <!--<el-dialog :visible.sync="showUploadDialog" @close="handleDialogClose()">-->
-  <drag-dialog title="批量导入" width="36%" :dialogVisible="showUploadDialog"
+  <drag-dialog title="批量导入" width="500px" :dialogVisible="showUploadDialog"
                @close="handleDialogClose"
                hiddenOperator="true">
       <el-upload
@@ -78,4 +78,15 @@ import dragDialog from '@/components/dragDialog';
 .upload-progress{
   margin: 20px 20px 10px 30px;
 }
+</style>
+
+<style>
+
+.el-upload{
+  width: 100% !important;
+}
+.el-upload .el-upload-dragger{
+  margin-left: 50px;
+}
+
 </style>

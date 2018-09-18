@@ -1,8 +1,8 @@
 <template>
   <div class="registery-container">
-    <el-form ref="regForm" v-model="regInfo" label-width="120px">
+    <el-form ref="regForm" v-model="regInfo" label-width="100px" label-color="#fff" style="width: 400px; padding: 5px;">
       <el-form-item label="姓名：" required>
-        <el-input v-model="regInfo.name" placeholder="请输入姓名"></el-input>
+        <el-input v-model="regInfo.name" placeholder="请输入姓名" style="background: transparent"></el-input>
       </el-form-item>
       <el-form-item label="教工号：" required>
         <el-input v-model="regInfo.serialNo" placeholder="请输入教工号"></el-input>
@@ -23,8 +23,8 @@
         <el-input v-model="pwdConfirm" placeholder="请确认密码"></el-input>
       </el-form-item>
 
-      <el-button type="primary" @click="handleSubmit()">提 交</el-button>
-      <el-button type="primary" @click="handleCancel()">取 消</el-button>
+      <el-button type="primary" @click="handleSubmit()" style="float: right; margin-left: 10px;">提 交</el-button>
+      <el-button type="primary" @click="handleCancel()" style="float: right" >取 消</el-button>
     </el-form>
   </div>
 
@@ -106,5 +106,14 @@
   }
   label{
     color: #fff !important;
+  }
+</style>
+<style>
+  .registery-container .el-input__inner{
+    background: transparent;
+    border: 1px solid;
+  }
+  .registery-container .el-form-item__label{
+    color: #fff;
   }
 </style>
