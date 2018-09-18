@@ -322,8 +322,12 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         String unpackDir = CommonUtils.combinePath(realPath, Constant.Common.DOWNLOAD_TEMP_DIR,
                 course.getName());
         CommonUtils.createDir(unpackDir);
-        for (CourseTasks task : tasksList) {
-            generateWord(task.getId(), userList, unpackDir);
+//        for (CourseTasks task : tasksList) {
+//            generateWord(task.getId(), userList, unpackDir);
+//        }
+
+        for (User user : userList) {
+            generateWord(user, tasksList, unpackDir);
         }
 
         // 压缩
@@ -351,11 +355,13 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         String unpackDir = CommonUtils.combinePath(realPath, Constant.Common.DOWNLOAD_TEMP_DIR,
                 course.getName());
         CommonUtils.createDir(unpackDir);
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
-        for (CourseTasks task : tasksList) {
-            generateWord(task.getId(), userList, unpackDir);
-        }
+//        List<User> userList = new ArrayList<>();
+//        userList.add(user);
+//        for (CourseTasks task : tasksList) {
+//            generateWord(task.getId(), userList, unpackDir);
+//        }
+
+        generateWord(user, tasksList, unpackDir);
 
         // 压缩
         String zipName = String.format("%s(%s)%s任务过程文件包.zip", user.getName(),
@@ -369,6 +375,30 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
         // 删除当前目录及文件
         CommonUtils.deleteDir(unpackDir);
+    }
+
+
+    private void generateWord(User student, List<CourseTasks> taskList,
+                              String unpackDir) {
+        String html = null;
+        for (CourseTasks task : taskList) {
+            CourseTaskDetail taskDetail = getStuTaskDetail(task.getId().toString(),
+                    student.getSerialNo());
+            if (!taskDetail.getStatus().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
+                return;
+            }
+            html += transfer2Html(taskDetail);
+            if (html == null) {
+                continue;
+            }
+            html += "<br/>";
+        }
+        if (html == null) {
+            return ;
+        }
+        String fileName = String.format("%s/%s(%s).doc", unpackDir, student.getName(), student.getSerialNo());
+        new JsoupWordOper().html2Word(html, unpackDir, fileName);
+
     }
 
     private void generateWord(Integer taskId, List<User> studentList, String unpackDir) {
