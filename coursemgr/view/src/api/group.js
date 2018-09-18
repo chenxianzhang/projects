@@ -38,7 +38,7 @@ export function assignGroup(params) {
 
 /**
  * 更换组长
- * params { groupId:'', studentNo:''}
+ * params { groupId:'', studentNo:'', studentName:''}
  * */
 export function changeGroupLeader(params) {
   return request({

@@ -162,7 +162,7 @@ export default {
     roleChange(val) {
       let self = this;
       this.roleList && this.roleList.forEach(rItem => {
-        if (rItem.name === val) {
+        if (rItem.value === val) {
           self.selectRoleValue = rItem.value;
         }
       });
