@@ -1,29 +1,30 @@
 <template>
     <!--<el-dialog :visible.sync="showUploadDialog" @close="handleDialogClose()">-->
   <drag-dialog title="批量导入" width="500px" :dialogVisible="showUploadDialog"
-               @close="handleDialogClose"
-               hiddenOperator="true">
-      <el-upload
-        class="upload-demo"
-        name="file"
-        drag
-        :action="uploadAction"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        :on-success="handleUploadSuccess"
-        :on-error="handleUploadError"
-        :on-progress="handleUploadProgress"
-        :data="uploadData"
-        multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
-      <div class="upload-progress" v-if="showProgress">
-        <span>上传进度：</span>
-        <el-progress :percentage="progress" :status="progressStatus"></el-progress>
-      </div>
-    </drag-dialog>
+               @close="handleDialogClose" @confirm="handleImportStudents"
+               :hiddenOperator="false">
+    <el-upload ref="upload"
+      class="upload-demo"
+      name="file"
+      drag
+      accept=".xlsx"
+      :auto-upload="false"
+      :action="uploadAction"
+      :on-remove="handleRemove"
+      :before-remove="beforeRemove"
+      :on-success="handleUploadSuccess"
+      :on-error="handleUploadError"
+      :on-progress="handleUploadProgress"
+      :data="uploadData">
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+    <div class="upload-progress" v-if="showProgress">
+      <span>上传进度：</span>
+      <el-progress :percentage="progress" :status="progressStatus"></el-progress>
+    </div>
+  </drag-dialog>
 </template>
 
 <script>
@@ -61,6 +62,7 @@ import dragDialog from '@/components/dragDialog';
           this.showProgress = true;
           this.progressStatus = 'success';
           this.progress = 100;
+          this.$emit('hideUploadDialog', false);
         },
         handleUploadError(err, file, fileList){
           this.showProgress = true;
@@ -69,6 +71,10 @@ import dragDialog from '@/components/dragDialog';
         handleUploadProgress(event, file, fileList){
           this.showProgress = true;
           this.progressStatus = '';
+        },
+        handleImportStudents(){
+          //todo upload file
+          this.$refs.upload.submit()
         },
       }
     }
