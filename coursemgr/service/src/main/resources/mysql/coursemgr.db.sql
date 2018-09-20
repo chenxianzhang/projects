@@ -122,7 +122,7 @@ CREATE TABLE `grade_relate` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `studentNo` varchar(20),    #评分人  关联user serialNo
   `gradeObjName` varchar(20), #评分对象名称
-  `gradeObjNo` varchar(20),   #评分对象
+  `gradeObjNo` varchar(30),   #评分对象
   `taskId` INT,   #评分任务id
   `taskName` varchar(20), #评分任务名称
   `courseId` int
