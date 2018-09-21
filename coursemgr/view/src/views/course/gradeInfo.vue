@@ -9,6 +9,14 @@
                        :prop="task.prop"
                        align="center"
                        :key="index">
+        <template slot-scope="scope">
+          <div v-if="task.type && task.type==='link'"
+               @click.stop="viewScoreDetail(task.taskId, scope.row.studentNo)"
+               style="cursor: pointer; color: #ee9900;">
+            {{scope.row[task.prop]}}
+          </div>
+          <div v-else>{{scope.row[task.prop]}}</div>
+        </template>
       </el-table-column>
     </el-table>
     </template>
@@ -29,20 +37,20 @@
       <el-button class="primary" @click="exportZip">过程性打包</el-button>
     </div>
     <!--查看当前任务答题情况-->
-    <el-dialog :visible.sync="showAnswer">
-      <upload-answer></upload-answer>
+    <el-dialog v-if="showAnswer" :visible.sync="showAnswer" width="1240px" title="成绩信息">
+      <grade-detail :taskId="taskSelect.taskId" :uId="taskSelect.uId"></grade-detail>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import UploadAnswer from '../teacherHome/uploadAnswer'
+  import gradeDetail from '../../components/gradeDetail'
   import { getAllGradeInfo, getStuGradeInfo, download, exportZip } from '../../api/grade'
   import { getCourseById } from "../../api/course";
 
   export default {
       name: "gradeInfo",
-      components:{UploadAnswer},
+      components:{gradeDetail},
       data(){
         return {
           showAnswer: false,
@@ -53,9 +61,11 @@
           pageSize: 10,
           currPage: 1,
           columns: [],
-          tableData: []
-          // studentTaskInfos:[[{taskName:'任务1', score:'10'},{taskName:'任务2', score:'10'},{taskName:'任务3', score:'10'}],
-          //   [{taskName:'任务1', score:'110'},{taskName:'任务2', score:'102'},{taskName:'任务3', score:'101'}]],
+          tableData: [],
+          taskSelect:{
+            taskId:'',
+            uId:''
+          }
         }
       },
       created() {
@@ -105,7 +115,7 @@
               tableItem[task.taskId + "_score"] = task.score;
               if (!hasInitCol) {
                 this.columns.push({prop:task.taskId + "_score",
-                 label: task.taskName + "(" + task.taskWeight + "%)"});
+                 label: task.taskName + "(" + task.taskWeight + "%)", type:'link', taskId: task.taskId});
               }
             });
             hasInitCol = true;
@@ -113,9 +123,6 @@
             this.tableData.push(tableItem);
           }
           this.columns.push({prop:"totalScore", label: "加权总分"});
-        },
-        renderHeader(h,{column, $index}){
-          h()
         },
         handleSizeChange(val) {
            this.pageSize = val;
@@ -139,16 +146,16 @@
             self.totalCount = resp.data.totalCount;
           });
         },
-        handleClick(row) {
-          this.showAnswer = true;
-          //todo 通过任务id和学生id，获取任务题目信息
-          console.log(row);
-        },
         download() {
           download(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
         },
         exportZip() {
           exportZip(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
+        },
+        viewScoreDetail(taskId, uId){
+          this.taskSelect.taskId = taskId;
+          this.taskSelect.uId = uId;
+          this.showAnswer = true;
         }
       },
     }

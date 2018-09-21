@@ -20,7 +20,7 @@
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道，
       总分值 <input v-model="totalScore" disabled/> 分，
-      权重：<input type="number" min="0" max="100" v-model="task.weight" /> %。</div>
+      权重：<input type="number" v-model="task.weight" /> %。</div>
     <div class="subject-container">
       <div class="subject-item" v-for="(item, index) in task.subjects"
            style="margin-bottom: 10px; border-bottom: 1px solid rgba(28, 77, 125, 0.8)">
@@ -338,7 +338,7 @@
 }
 
 .subjectStatic{
-  margin: 5px 0;
+  margin: 5px 0 10px 5px;
 }
 .subjectStatic > input{
   width: 40px;
