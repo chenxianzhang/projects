@@ -40,6 +40,13 @@
     where taskId = #{taskId,jdbcType=VARCHAR}
     and studentNo = #{studentNo, jdbcType=VARCHAR}
   </select>
+  <select id="selectTaskFinshedCnt" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+    select
+    count(studentNo)
+    from student_tasks
+    where taskId = #{taskId,jdbcType=VARCHAR}
+    and status = 'FINISHED'
+  </select>
   <select id="getStudentTaskSituation" resultMap="StudentTaskDetailMap" parameterType="java.util.HashMap" >
     select
     gm.groupId, cs.studentNo, u.name as studentName, st.taskId, st.status, st.score

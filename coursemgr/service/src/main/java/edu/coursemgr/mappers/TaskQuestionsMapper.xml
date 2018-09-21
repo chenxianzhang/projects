@@ -15,6 +15,20 @@
   <resultMap id="ResultMapWithBLOBs" type="edu.coursemgr.model.TaskQuestions" extends="BaseResultMap" >
     <result column="options" property="options" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <resultMap id="ResultMapSubjectiveMark" type="edu.coursemgr.pojo.SubjectMarkModel" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="questionNo" property="questionNo" jdbcType="INTEGER" />
+    <result column="stems" property="stems" jdbcType="VARCHAR" />
+    <result column="questionType" property="questionType" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="answers" property="answers" jdbcType="VARCHAR" />
+    <result column="answerAttachment" property="answerAttachment" jdbcType="VARCHAR" />
+    <result column="markType" property="markType" jdbcType="VARCHAR" />
+    <result column="options" property="options" jdbcType="LONGVARCHAR" />
+    <result column="questionScore" property="questionScore" jdbcType="REAL" />
+    <result column="standardAnswer" property="standardAnswer" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, taskId, questionNo, stems, questionType, score, answers, answerAttachment, markType
   </sql>
@@ -37,9 +51,10 @@
     from task_questions
     where taskId = #{taskId, jdbcType=VARCHAR}
   </select>
-  <select id="selectStuTaskPaper" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
+  <select id="selectStuTaskPaper" resultMap="ResultMapSubjectiveMark" parameterType="java.util.HashMap">
     select tq.id,tq.taskId,tq.questionNo,tq.stems,tq.questionType,
-    tq.answerAttachment, tq.markType,tq.options, sp.score, sp.answers
+    tq.answerAttachment, tq.markType,tq.options,tq.score as questionScore,
+    tq.answers as standardAnswer, sp.score, sp.answers
     from task_questions tq left join student_paper sp
     on sp.questionId=tq.id and sp.studentNo=#{studentNo, jdbcType=VARCHAR}
     where tq.taskId=#{taskId, jdbcType=INTEGER} order by tq.questionType asc

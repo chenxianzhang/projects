@@ -92,7 +92,7 @@ public interface TaskMgrService {
      * @param studentNo
      * @return
      */
-    CourseTaskDetail getStuTaskDetail(String taskId, String studentNo);
+    Map getStuTaskDetail(String taskId, String studentNo);
 
     /**
      * 导出过程打包文件

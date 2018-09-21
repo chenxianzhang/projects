@@ -48,6 +48,18 @@
     where groupId in (select id from `group`
     where courseId=#{courseId, jdbcType=INTEGER})
   </select>
+  <select id="getFinishedTaskStuTotalCnt" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(studentNo) from course_students where studentNo in
+    (select st.studentNo from student_tasks st, course_tasks c
+    where st.status='FINISHED' and c.courseId=#{courseId, jdbcType=INTEGER} and st.taskId=c.id)
+  </select>
+  <select id="selectFinishedTaskStu" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select u.* from user u, course_students cs where u.serialNo=cs.studentNo
+    and cs.studentNo in
+    (select st.studentNo from student_tasks st, course_tasks c
+    where st.status='FINISHED' and c.courseId=#{courseId, jdbcType=INTEGER} and st.taskId=c.id)
+    limit ${offset}, ${pageSize}
+  </select>
   <select id="selectBySerialNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

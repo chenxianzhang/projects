@@ -1,6 +1,7 @@
 package edu.coursemgr.dao;
 
 import edu.coursemgr.model.TaskQuestions;
+import edu.coursemgr.pojo.SubjectMarkModel;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public interface TaskQuestionsMapper {
 
     int deleteByTaskId(Integer taskId);
 
-    List<TaskQuestions> selectStuTaskPaper(Map params);
+    List<SubjectMarkModel> selectStuTaskPaper(Map params);
 
     int deleteByIds(String ids);
 }

@@ -37,4 +37,8 @@ public interface UserMapper {
     int selectUserGroupTotalCnt(Integer courseId);
 
     List<UserGroup> selectUserGroupPage(Map params);
+
+    int getFinishedTaskStuTotalCnt(Integer courseId);
+
+    List<User> selectFinishedTaskStu(Map params);
 }

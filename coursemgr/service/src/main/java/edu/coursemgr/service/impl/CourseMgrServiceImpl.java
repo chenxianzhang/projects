@@ -1,6 +1,7 @@
 package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
+import edu.coursemgr.common.interfaces.Function;
 import edu.coursemgr.dao.CourseMapper;
 import edu.coursemgr.dao.CourseTasksMapper;
 import edu.coursemgr.dao.GroupMemberMapper;
@@ -85,7 +86,7 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     public PageModel getAllGradeInfo(String courseId, String pageSize,
                                      String currPage) {
 
-        int totalCount = userMapper.selectUserGroupTotalCnt(Integer.valueOf(courseId));
+        int totalCount = userMapper.getFinishedTaskStuTotalCnt(Integer.valueOf(courseId));
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("courseId", courseId);
@@ -93,18 +94,26 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
         paramMap.put("offset", offset);
         // 获取学员与其组信息
-        List<UserGroup> userGroups = userMapper.selectUserGroupPage(paramMap);
+        List<User> userList = userMapper.selectFinishedTaskStu(paramMap);
 
         // 在根据学员信息获取其所有任务信息
-        List<GradeDetail> gradeDetails = CollectionUtils.arrayListCast(userGroups,
-                userGroup -> {
-                    GradeDetail detail = new GradeDetail();
-                    detail.setGroupNo(userGroup.getGroupNo());
-                    detail.setStudentName(userGroup.getStudentName());
-                    detail.setStudentNo(userGroup.getStudentNo());
+        List<GradeDetail> gradeDetails = CollectionUtils.arrayListCast(userList,
+                user -> {
+
+                    //获取组信息
                     Map<String, Object> params = new HashMap<>(2);
-                    params.put("studentNo", userGroup.getStudentNo());
+                    params.put("studentNo", user.getSerialNo());
                     params.put("courseId", courseId);
+                    GroupMember groupMember = groupMemberMapper.selectByMember(params);
+
+                    GradeDetail detail = new GradeDetail();
+                    if (groupMember != null) {
+                        detail.setGroupNo(groupMember.getGroupNo());
+                    }
+
+                    detail.setStudentName(user.getName());
+                    detail.setStudentNo(user.getSerialNo());
+
                     List<StudentTaskInfo> taskInfos = courseTasksMapper.selectStuTaskInfo(params);
                     if (taskInfos == null || taskInfos.size() == 0) {
                         return null;
@@ -114,6 +123,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     Float totalScore = 0f;
                     if (taskInfos != null) {
                         for (StudentTaskInfo taskInfo : taskInfos) {
+                            if (taskInfo.getScore() == null) {
+                                continue;
+                            }
                             totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
                         }
                     }

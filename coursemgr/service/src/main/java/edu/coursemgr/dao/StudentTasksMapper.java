@@ -43,4 +43,6 @@ public interface StudentTasksMapper {
 
     StudentTasks selectByStudent(Map params);
 
+    int selectTaskFinshedCnt(Integer taskId);
+
 }

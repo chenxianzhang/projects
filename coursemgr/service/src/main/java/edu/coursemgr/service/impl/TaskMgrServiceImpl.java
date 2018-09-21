@@ -158,7 +158,13 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     @Override
     public List<CourseTaskSituation> getCourseTaskSituation(String courseId) {
-        return courseTasksMapper.getCourseTaskSituation(Integer.valueOf(courseId));
+        List<CourseTaskSituation> situationList =
+                courseTasksMapper.getCourseTaskSituation(Integer.valueOf(courseId));
+        for (CourseTaskSituation situation : situationList) {
+            int cnt = studentTasksMapper.selectTaskFinshedCnt(situation.getId());
+            situation.setFinishPersonCnt(cnt);
+        }
+        return situationList;
     }
 
     @Override
@@ -278,7 +284,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     }
 
     @Override
-    public CourseTaskDetail getStuTaskDetail(String taskId, String studentNo) {
+    public Map getStuTaskDetail(String taskId, String studentNo) {
 
         CourseTasks task = courseTasksMapper.selectByTaskId(Integer.valueOf(taskId));
         Map params = new HashMap();
@@ -286,27 +292,27 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         params.put("studentNo", studentNo);
         StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
 
-        List<TaskQuestions> taskQuestions = taskQuestionsMapper.selectStuTaskPaper(params);
-        List<TaskPaper> taskPaperList = CollectionUtils.arrayListCast(taskQuestions,
+        List<SubjectMarkModel> taskQuestions = taskQuestionsMapper.selectStuTaskPaper(params);
+        List<TaskMarkPaper> taskPaperList = CollectionUtils.arrayListCast(taskQuestions,
                 question -> {
                     List<QuestionOptions> optionsList = questionOptionsMapper.selectByQuestionId(
                             question.getId());
-                    TaskPaper paper = new TaskPaper();
+                    TaskMarkPaper paper = new TaskMarkPaper();
                     paper.setTaskQuestions(question);
                     paper.setOptionList(optionsList);
                     return paper;
                 });
 
-        CourseTaskDetail taskDetail = new CourseTaskDetail();
-        taskDetail.setTask(task);
-        taskDetail.setQuestionList(taskPaperList);
-        taskDetail.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
+        Map resultMap = new HashMap();
+        resultMap.put("task", task);
+        resultMap.put("questionList", taskPaperList);
+        resultMap.put("status", CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
         if (studentTasks != null) {
-            taskDetail.setStudentTotalScore(studentTasks.getScore());
-            taskDetail.setStatus(studentTasks.getStatus());
+            resultMap.put("studentTotalScore", studentTasks.getScore());
+            resultMap.put("status", studentTasks.getStatus());
         }
 
-        return taskDetail;
+        return resultMap;
     }
 
     @Override
@@ -364,7 +370,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         generateWord(user, tasksList, unpackDir);
 
         // 压缩
-        String zipName = String.format("%s(%s)%s任务过程文件包.zip", user.getName(),
+        String zipName = String.format("%s（%s）%s任务过程文件包.zip", user.getName(),
                 user.getSerialNo(), course.getName());
 //        String zipName = "course.zip";
         response.setContentType("application/zip");
@@ -380,11 +386,12 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     private void generateWord(User student, List<CourseTasks> taskList,
                               String unpackDir) {
-        String html = null;
+        String html = "";
         for (CourseTasks task : taskList) {
-            CourseTaskDetail taskDetail = getStuTaskDetail(task.getId().toString(),
+            Map taskDetail = getStuTaskDetail(task.getId().toString(),
                     student.getSerialNo());
-            if (!taskDetail.getStatus().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
+            String status = taskDetail.get("status").toString();
+            if (!status.equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
                 return;
             }
             html += transfer2Html(taskDetail);
@@ -406,23 +413,25 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             return;
         }
         studentList.forEach(student -> {
-            CourseTaskDetail taskDetail = getStuTaskDetail(taskId.toString(),
+            Map taskDetail = getStuTaskDetail(taskId.toString(),
                     student.getSerialNo());
-            if (!taskDetail.getStatus().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
+            if (!taskDetail.get("status").toString().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
                 return;
             }
             String html = transfer2Html(taskDetail);
-
-            String fileName = String.format("%s/%s(%s%s).doc", unpackDir, taskDetail.getTask().getName(),
+            CourseTasks task = (CourseTasks)taskDetail.get("task");
+            String fileName = String.format("%s/%s(%s%s).doc", unpackDir, task.getName(),
                     student.getName(), student.getSerialNo());
             new JsoupWordOper().html2Word(html, unpackDir, fileName);
         });
     }
 
-    private String transfer2Html(CourseTaskDetail taskDetail) {
+    private String transfer2Html(Map taskDetail) {
+        CourseTasks task = (CourseTasks)taskDetail.get("task");
+        List<TaskMarkPaper> questionList = (List<TaskMarkPaper>)taskDetail.get("questionList");
         String html = String.format("<p style=\"text-align:center;font-weight: bolder;font-size:20px;\">%s</p>",
-                taskDetail.getTask().getName());
-        for (TaskPaper question : taskDetail.getQuestionList()) {
+                task.getName());
+        for (TaskMarkPaper question : questionList) {
             html += "<div>";
             html += String.format("<p style=\"font-weight: bolder;\">%s</p>",
                     question.getTaskQuestions().getStems());
