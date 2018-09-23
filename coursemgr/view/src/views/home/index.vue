@@ -325,7 +325,7 @@ export default {
   height: calc(100% - 55px);
   display: flex;
   justify-content: center;
-  padding: 10px 50px;
+  padding: 10px 0px;
   .flex-center {
     width: 84%;
     height: 100%;
