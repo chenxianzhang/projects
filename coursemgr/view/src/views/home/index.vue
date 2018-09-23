@@ -1,58 +1,75 @@
 <template>
-  <div class="container">
-    <div class="flex-center">
-      <div class="container-left">
-        <div class="module-title">
-          <span>课程列表</span>
-        </div>
-        <div class="course-list">
-          <div class="card-panel" v-for="(item, index) in courseList" :key="index" @click="handleCourseClick(item.id)">
-            <span>{{ item.name }}</span>
-          </div>
-          <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse">
-            <i class="el-icon-plus"></i>
-          </div>
+  <div class="main">
+
+    <div style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
+        <span>课程管理系统</span>
+        <div style="float: right; margin-right: 50px;font-size:14px">
+          当前用户：
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right white-color"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
+              <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
         </div>
       </div>
-      <div class="container-right">
+    <div class="container">
+      <div class="flex-center">
+        <div class="container-left">
           <div class="module-title">
-            <span>用户信息</span>
-            <!--<svg-icon icon-class="edit"></svg-icon>-->
-            <i class="el-icon-edit-outline" @click="handleEdit"></i>
+            <span>课程列表</span>
           </div>
-          <div class="content">
-            <div class="info-row">
-              <span class="label">姓名</span>
-              <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
-              <el-input v-model="userInfo.name" v-if="editUserInfo"/>
+          <div class="course-list">
+            <div class="card-panel" v-for="(item, index) in courseList" :key="index" @click="handleCourseClick(item.id)">
+              <span>{{ item.name }}</span>
             </div>
-            <div class="info-row">
-              <span class="label">{{ getSearialLabel() }} </span>
-              <span class="value">{{ userInfo.serialNo }}</span>
-            </div>
-            <div class="info-row">
-              <span class="label">学院</span>
-              <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
-              <el-input v-model="userInfo.college" v-if="editUserInfo"/>
-            </div>
-            <div class="info-row">
-              <span class="label">电话</span>
-              <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
-              <el-input v-model="userInfo.cellphone" v-if="editUserInfo"/>
-            </div>
-            <div class="info-row">
-              <span class="label">邮箱</span>
-              <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
-              <el-input v-model="userInfo.email" v-if="editUserInfo"/>
-            </div>
-            <div class="edit-oper" v-if="editUserInfo">
-              <el-button @click="cancel" >取消</el-button>
-              <el-button type="primary" @click="save">修改</el-button>
+            <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse">
+              <i class="el-icon-plus"></i>
             </div>
           </div>
+        </div>
+        <div class="container-right">
+            <div class="module-title">
+              <span>用户信息</span>
+              <!--<svg-icon icon-class="edit"></svg-icon>-->
+              <i class="el-icon-edit-outline" @click="handleEdit"></i>
+            </div>
+            <div class="content">
+              <div class="info-row">
+                <span class="label">姓名</span>
+                <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
+                <el-input v-model="userInfo.name" v-if="editUserInfo"/>
+              </div>
+              <div class="info-row">
+                <span class="label">{{ getSearialLabel() }} </span>
+                <span class="value">{{ userInfo.serialNo }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">学院</span>
+                <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
+                <el-input v-model="userInfo.college" v-if="editUserInfo"/>
+              </div>
+              <div class="info-row">
+                <span class="label">电话</span>
+                <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
+                <el-input v-model="userInfo.cellphone" v-if="editUserInfo"/>
+              </div>
+              <div class="info-row">
+                <span class="label">邮箱</span>
+                <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
+                <el-input v-model="userInfo.email" v-if="editUserInfo"/>
+              </div>
+              <div class="edit-oper" v-if="editUserInfo">
+                <el-button @click="cancel" >取消</el-button>
+                <el-button type="primary" @click="save">修改</el-button>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
-
     <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible"
                  @close="handleCourseClose" @confirm="saveCourse">
       <div class="edit-container">
@@ -295,11 +312,17 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-
-.container {
+.main{
   background-color: #567;
   width: 100%;
   height: 100%;
+  .el-dropdown-link{
+    color:#fff;
+  }
+.container {
+  background-color: #567;
+  width: 100%;
+  height: calc(100% - 55px);
   display: flex;
   justify-content: center;
   padding: 10px 50px;
@@ -435,7 +458,7 @@ export default {
     }
   }
 }
-
+}
 
 
 </style>
