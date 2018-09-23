@@ -17,6 +17,8 @@ public class StudentTaskInfo implements Serializable {
 
     private Integer taskId;
 
+    private String status;
+
     public String getTaskName() {
         return taskName;
     }
@@ -47,5 +49,13 @@ public class StudentTaskInfo implements Serializable {
 
     public void setTaskId(Integer taskId) {
         this.taskId = taskId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

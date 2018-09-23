@@ -101,6 +101,8 @@
           if (!data) {
             return;
           }
+          this.columns = [];
+          this.tableData = [];
           this.columns.push({prop:"studentName", label: "姓名"});
           this.columns.push({prop:"studentNo", label: "学号"});
           this.columns.push({prop:"groupNo", label: "所在小组"});
@@ -113,6 +115,9 @@
 
             data[item].studentTaskInfos.forEach(task => {
               tableItem[task.taskId + "_score"] = task.score;
+              if (!task.score) {
+                tableItem[task.taskId + "_score"] = task.status;
+              }
               if (!hasInitCol) {
                 this.columns.push({prop:task.taskId + "_score",
                  label: task.taskName + "(" + task.taskWeight + "%)", type:'link', taskId: task.taskId});

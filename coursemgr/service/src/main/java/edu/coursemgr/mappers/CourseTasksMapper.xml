@@ -29,15 +29,14 @@
     <result column="taskWeight" property="taskWeight" jdbcType="REAL" />
     <result column="score" property="score" jdbcType="REAL" />
     <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, courseId, name, weight, status,publishTime, startTime, deadline, markType, totalScore
   </sql>
   <select id="selectStuTaskInfo" resultMap="StudentTaskInfoMap" parameterType="java.util.HashMap" >
-    select ct.name as taskName, ct.weight as taskWeight, st.score, ct.id as taskId
-    from course_tasks ct
-    right join student_tasks st
-    on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
+    select ct.id as taskId, ct.name as taskName, ct.weight as taskWeight,st.score,st.status
+    from course_tasks ct left join student_tasks st on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
     where ct.courseId=#{courseId, jdbcType=INTEGER} order by ct.id asc
   </select>
   <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

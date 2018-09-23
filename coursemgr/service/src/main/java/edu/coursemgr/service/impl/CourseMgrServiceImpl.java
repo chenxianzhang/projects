@@ -86,15 +86,17 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     public PageModel getAllGradeInfo(String courseId, String pageSize,
                                      String currPage) {
 
-        int totalCount = userMapper.getFinishedTaskStuTotalCnt(Integer.valueOf(courseId));
+        int totalCount = userMapper.selectTotalCntByCourseId(Integer.valueOf(courseId));
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("courseId", courseId);
         paramMap.put("pageSize", pageSize);
         int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
-        paramMap.put("offset", offset);
+        paramMap.put("currSize", offset);
         // 获取学员与其组信息
-        List<User> userList = userMapper.selectFinishedTaskStu(paramMap);
+//        List<User> userList = userMapper.selectFinishedTaskStu(paramMap);
+        // 获取课程下所有学员
+        List<User> userList = userMapper.selectSomeByPage(paramMap);
 
         // 在根据学员信息获取其所有任务信息
         List<GradeDetail> gradeDetails = CollectionUtils.arrayListCast(userList,
@@ -120,9 +122,16 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     }
                     detail.setStudentTaskInfos(taskInfos);
                     // 计算加权总分
+                    CommonEnum.StudentTaskStatus status = null;
                     Float totalScore = 0f;
                     if (taskInfos != null) {
                         for (StudentTaskInfo taskInfo : taskInfos) {
+                            if (taskInfo.getStatus() == null) {
+                                taskInfo.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getName());
+                                continue;
+                            }
+                            status = CommonEnum.StudentTaskStatus.valueOf(taskInfo.getStatus());
+                            taskInfo.setStatus(status.getName());
                             if (taskInfo.getScore() == null) {
                                 continue;
                             }
@@ -165,8 +174,15 @@ public class CourseMgrServiceImpl implements CourseMgrService {
             detail.setStudentTaskInfos(taskInfos);
             // 计算加权总分
             Float totalScore = 0f;
+            CommonEnum.StudentTaskStatus status = null;
             if (taskInfos != null) {
                 for (StudentTaskInfo taskInfo : taskInfos) {
+                    if (taskInfo.getStatus() == null) {
+                        taskInfo.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getName());
+                        continue;
+                    }
+                    status = CommonEnum.StudentTaskStatus.valueOf(taskInfo.getStatus());
+                    taskInfo.setStatus(status.getName());
                     if (taskInfo.getScore() == null) {
                         continue;
                     }
