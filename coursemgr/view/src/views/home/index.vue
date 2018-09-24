@@ -306,6 +306,21 @@ export default {
       this.$store.commit('SET_COURSE_ID', cId);
       this.$router.push({name:'basicInfo', params:{courseId: cId}});
     },
+    logout(){
+          this.$store.dispatch('logOut').then(() => {
+            this.$router.push('/login');
+          });
+        },
+    handleCommand(cmd){
+          switch (cmd) {
+            case "logout":
+              this.logout();
+              break;
+            case "backHome":
+              this.$router.push('/home');
+              break;
+          }
+        }
   }
 }
 
