@@ -208,6 +208,9 @@
          * handleSubjectFinish 完成题干编辑
          * */
         handleSubjectFinish(index, item){
+          if (item.stem && item.stem.indexOf('img') < 0) {
+            item.stem = item.stem.substring(3, item.stem.length - 4);
+          }
           this.$set(this.task.subjects[index], 'edit', false);
         },
         /**
