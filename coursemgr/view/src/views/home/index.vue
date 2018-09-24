@@ -5,7 +5,7 @@
         <span>课程管理系统</span>
         <div style="float: right; margin-right: 50px;font-size:14px">
           当前用户：
-          <el-dropdown @command="handleCommand">
+          <el-dropdown>
             <span class="el-dropdown-link">
               {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right white-color"></i>
             </span>

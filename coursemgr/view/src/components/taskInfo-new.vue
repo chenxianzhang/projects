@@ -42,7 +42,7 @@
           <el-button type="primary" @click="handleStemHighSetting(index)">高级设置</el-button>
           <el-button type="primary" @click="removeQuestion(index)">删除</el-button>
           <Tinymce :height=200 v-if="item.edit" v-model="item.stem" style="margin-top: 5px;"/>
-          <el-button v-if="item.edit" type="primary" @click="editConfirm(index, item)">确定</el-button>
+          <el-button v-if="item.edit" type="primary" @click="editConfirm(index, item, task.subjects)">确定</el-button>
         </div>
         <!--判断题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.JUDGE" style="width: 90%; margin: 0 auto">
@@ -236,7 +236,7 @@
         /**
          * editConfirm 题干编辑确认
          * */
-        editConfirm(index, item){
+        editConfirm(index, item, data){
           this.$set(item, 'edit', false);
 
           if(item.optionDes){
@@ -254,7 +254,7 @@
             if(item.stem.indexOf('<p>') !== -1){
               stem = item.stem.substring(3, item.stem.length - 4);
             }
-            this.$set(item, 'stem', stem);
+            this.$set(data[index], 'stem', stem);
           }
         },
         /**

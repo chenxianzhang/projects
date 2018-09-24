@@ -5,7 +5,7 @@
       审阅<span> {{gTask.targetSerialName}} </span>关于“<span> {{gTask.taskName}} </span>”任务主观题
       <el-button type="primary" @click="approvalTask(gTask.taskId, gTask.targetSerialNo)">审阅</el-button>
     </div>
-    <el-dialog :visible.sync="showTaskInfoDialog" width="1240px">
+    <el-dialog :visible.sync="showTaskInfoDialog" width="1240px" title="任务评审">
       <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp"
                         :taskId="selectTaskId"
                         :operateType="operateType"

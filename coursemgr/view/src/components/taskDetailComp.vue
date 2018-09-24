@@ -12,7 +12,8 @@
           <div style="margin-bottom:10px">
             <span>{{index + 1}}.</span>
             <el-input v-html="item.stem" style="width: calc(100% - 240px)"></el-input>
-            <span v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分</span>
+            <span v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分</span>
+            <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">总分：<el-input v-html="item.qScore" style="width: 40px; height: 30px;" />分</span>
           </div>
           <!--单选题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
@@ -46,12 +47,21 @@
 
             <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
                  style="width: 100px; float: right; line-height: 50px; text-align: right;">
-              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" disabled />分
+              评分：<input style="width: 40px; height: 30px;" v-model="item.score" disabled />分
             </div>
             <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"
                  style="width: 100px; float: right; line-height: 50px; text-align: right;">
-              评分：<input style="width: 40px; height: 30px;" min="0" :max="item.score" v-model="item.score" />分
+              评分：<input style="width: 40px; height: 30px;" type="number" min="0" :max="item.qScore" v-model="item.score" />分
             </div>
+
+
+            <el-row>
+              <el-col :span="2" style="height: 100%;"><div style="height: 100%; display: flex;align-items: center;justify-content: center"><span>标准答案：</span></div></el-col>
+              <el-col :span="22">
+                <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"
+                          style="margin-top: 5px; background: #ee9900; color: white">{{item.sAnswer}}</span>
+              </el-col>
+            </el-row>
           </div>
         </div>
         <!--编辑和完成编辑按钮-->
@@ -163,7 +173,9 @@
             subject_c.edit = false;
             subject_c.selections = item.optionList;
             subject_c.answer = item.taskQuestions.answers;
+            subject_c.sAnswer = item.taskQuestions.standardAnswer;
             subject_c.score = item.taskQuestions.score;
+            subject_c.qScore = item.taskQuestions.questionScore;
             subject_c.stem = item.taskQuestions.stems;
             subject_c.questionType = item.taskQuestions.questionType;
             this.task.subjects.push(subject_c);
