@@ -48,15 +48,6 @@ public class LoginServiceImpl implements LoginService {
         if (illegal) {
             throw new Exception("当前所选角色不匹配");
         }
-
-        // 更新hasLogin
-        if (user.getHasLogin() == null || user.getHasLogin() == 0) {
-            User updateUser = new User();
-            updateUser.setHasLogin(1);
-            updateUser.setSerialNo(user.getSerialNo());
-            userMapper.updateBySerialNo(updateUser);
-        }
-
         return serialNo;
     }
 
@@ -88,6 +79,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public int update(User userInfo) {
+        userInfo.setHasLogin(1);
         return userMapper.updateBySerialNo(userInfo);
     }
 
