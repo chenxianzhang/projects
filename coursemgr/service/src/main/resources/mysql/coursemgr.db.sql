@@ -11,6 +11,7 @@ CREATE TABLE `user` (
 	`email` varchar(50),              #邮箱
 	`roles` varchar(50),   #所拥有的角色,存储角色，每个之间‘,’分隔
     `sex` ENUM('男', '女') DEFAULT NULL,     #性别  男，女
+    `hasLogin` INT,                        #是否首次登陆
 	`createDate` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

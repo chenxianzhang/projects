@@ -31,6 +31,8 @@ public class User implements Serializable {
 
     private String sex;
 
+    private Integer hasLogin;
+
     private Date createDate;
 
     public Integer getId() {
@@ -119,5 +121,13 @@ public class User implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Integer getHasLogin() {
+        return hasLogin;
+    }
+
+    public void setHasLogin(Integer hasLogin) {
+        this.hasLogin = hasLogin;
     }
 }

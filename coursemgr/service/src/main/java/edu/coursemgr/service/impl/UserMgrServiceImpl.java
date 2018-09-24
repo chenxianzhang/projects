@@ -75,6 +75,7 @@ public class UserMgrServiceImpl implements UserMgrService {
             throw new Exception("当前用户已存在，不可重复添加");
         }
         userEditModel.getUser().setRoles(CommonEnum.Role.STUDENT.getValue());
+        userEditModel.getUser().setHasLogin(0);
         if (userMapper.insert(userEditModel.getUser()) > 0) {
             // 保存课程与学员关系
             CourseStudents cs = new CourseStudents();
@@ -178,6 +179,7 @@ public class UserMgrServiceImpl implements UserMgrService {
 //        user.setEmail(row.get(CommonEnum.StuExcelHeader.EMAIL.getIndex()));
 //        user.setSex(row.get(CommonEnum.StuExcelHeader.SEX.getIndex()));
         user.setRoles(CommonEnum.Role.STUDENT.getValue());
+        user.setHasLogin(0);
         user.setCreateDate(new Date());
         boolean illegal = user.getSerialNo().isEmpty() ||
                 user.getSerialNo().length() < Constant.Common.PASSWORD_MIN_LENGTH;
