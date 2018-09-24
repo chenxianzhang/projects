@@ -1,7 +1,23 @@
 <template>
   <div class="main">
-
-    <div style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
+    <div class="change-pass" v-if="firstLogin===true" style="height: 300px; width: 500px; margin: 0 auto; color: white">
+      <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="旧密码" prop="oldPass">
+          <el-input type="password" v-model="ruleForm2.oldPass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPass">
+          <el-input type="password" v-model="ruleForm2.newPass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+          <el-button @click="resetForm('ruleForm2')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div v-if="firstLogin===false" style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
         <span>课程管理系统</span>
         <div style="float: right; margin-right: 50px;font-size:14px">
           当前用户：
@@ -16,7 +32,7 @@
         </el-dropdown>
         </div>
       </div>
-    <div class="container">
+    <div v-if="firstLogin===false" class="container">
       <div class="flex-center">
         <div class="container-left">
           <div class="module-title">
@@ -106,10 +122,41 @@ import dragDialog from '@/components/dragDialog';
 export default {
   name: "home",
   data() {
+    let self = this;
+    var checkOldPass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('密码不能为空'));
+      }
+      if(value.toString() !== self.userInfo.password){
+        return callback(new Error('密码不正确'));
+      }
+      callback()
+    };
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.ruleForm2.checkPass !== '') {
+          this.$refs.ruleForm2.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.ruleForm2.newPass) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
+
     return {
       canAddCourse: false,
       courseList: [],
       userInfo: {},
+      firstLogin:false,
       courseDlgTitle: "增加课程",
       courseDlgVisible: false,
       editCourse: {
@@ -119,8 +166,24 @@ export default {
         userNo: this.$store.state.user.token
       },
       editUserInfo: false,
-      userInfoBak: {}
-    };
+      userInfoBak: {},
+      ruleForm2: {
+        newPass: '',
+        checkPass: '',
+        oldPass: ''
+      },
+      rules2: {
+        newPass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ],
+        oldPass: [
+          { validator: checkOldPass, trigger: 'blur' }
+        ]
+      }
+    }
   },
   components:{
     dragDialog
@@ -147,11 +210,27 @@ export default {
 
   },
   methods: {
+    submitForm(formName) {
+      let self = this;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          debugger
+          self.userInfo.password = self.ruleForm2.newPass;
+          self.save('updatePass');
+        } else {
+          this.$message.warning('请填写正确的信息！');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     cancel() {
       this.editUserInfo = false;
       this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
     },
-    save() {
+    save(mes) {
       if (this.userInfo.college.trim() === "") {
         this.$message({
                 showClose: true,
@@ -160,14 +239,14 @@ export default {
              });
              return;
       }
-      if (!validatePhone(this.userInfo.cellphone)) {
-        this.$message({
-                showClose: true,
-                type: 'warning',
-                message: "请输入有效的手机号码"
-             });
-           return;
-      }
+      // if (!validatePhone(this.userInfo.cellphone)) {
+      //   this.$message({
+      //           showClose: true,
+      //           type: 'warning',
+      //           message: "请输入有效的手机号码"
+      //        });
+      //      return;
+      // }
       /*if (!validateEmail(this.userInfo.email)) {
          this.$message({
               showClose: true,
@@ -193,6 +272,9 @@ export default {
               type: 'success',
               message: "修改成功"
            });
+        if(mes && mes === 'updatePass'){
+          this.firstLogin = false;
+        }
       }).catch(err => {
         console.log(err);
         self.$message({
@@ -252,6 +334,12 @@ export default {
         }
         self.userInfo = response.data;
         self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
+
+        if(response.data.hasLogin === 0){
+          this.firstLogin = true;
+          return;
+        }
+        this.firstLogin = false;
       })
     },
     addCourse() {
@@ -476,6 +564,11 @@ export default {
 }
 
 
+</style>
+<style>
+  .change-pass .el-form-item__label{
+    color: #ffffff !important;
+  }
 </style>
 
 

@@ -62,7 +62,7 @@
     limit ${offset}, ${pageSize}
   </select>
   <select id="selectBySerialNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where serialNo = #{serialNo,jdbcType=VARCHAR}
@@ -116,11 +116,11 @@
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.User" >
     insert into user (serialNo, password,
-      name, college, profession, 
-      cellphone, email, roles, 
+      name, college, profession,
+      cellphone, email, roles,
       sex,hasLogin, createDate)
     values (#{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{name,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR},
       #{cellphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR},
       #{sex,jdbcType=CHAR},#{hasLogin,jdbcType=INTEGER}, now())
   </insert>
@@ -274,6 +274,9 @@
       </if>
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=INTEGER},
       </if>
       <if test="hasLogin != null" >
         hasLogin = #{hasLogin,jdbcType=INTEGER},
