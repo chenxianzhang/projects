@@ -115,7 +115,7 @@
 
             data[item].studentTaskInfos.forEach(task => {
               tableItem[task.taskId + "_score"] = task.score;
-              if (!task.score) {
+              if (!task.score && task.score !== 0) {
                 tableItem[task.taskId + "_score"] = task.status;
               }
               if (!hasInitCol) {
