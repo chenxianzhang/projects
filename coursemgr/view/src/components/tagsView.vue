@@ -1,149 +1,204 @@
 <template>
-  <div class="tags-view">
-    <div class="tags">
-      <el-tag v-for="tag in localTags" :key="tag.index" :closable="tag.closable"
-              :class="tag.index === activeTag ? 'active' : ''">
-        <!--{{ tag.label | ellipsis(72, 12) }}-->
-        {{ tag.label }}
-        <span style="display:none">{{ tag.index }}</span>
-      </el-tag>
-    </div>
-    <div class="bottom-box"></div>
+  <div class="tags-view-container">
+    <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
+      <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)"
+        :to="tag" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
+        {{tag.title}}
+        <span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
+      </router-link>
+    </scroll-pane>
+    <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+      <li @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li @click="closeOthersTags">关闭其它</li>
+      <li @click="closeAllTags">关闭所有</li>
+    </ul>
   </div>
 </template>
-/**
- * tags: {
- *     label: '',
- *     closable: false,
- *     index: ''
- */
+
 <script>
+import ScrollPane from '@/components/ScrollPane'
+
 export default {
-  name: "tags-view",
-  props: ["tags", "activeTag", "router"],
+  components: { ScrollPane },
   data() {
     return {
-      localTags: []
+      visible: false,
+      top: 0,
+      left: 0,
+      selectedTag: {}
     }
   },
-  created() {
-    this.localTags = this.tags;
-  },
-  moutend() {
-    this.initTags();
+  computed: {
+    visitedViews() {
+      return this.$store.state.tagsView.visitedViews
+    }
   },
   watch: {
-    tags(value) {
-      this.localTags = value;
+    $route() {
+      this.addViewTags()
+      this.moveToCurrentTag()
+    },
+    visible(value) {
+      if (value) {
+        document.body.addEventListener('click', this.closeMenu)
+      } else {
+        document.body.removeEventListener('click', this.closeMenu)
+      }
     }
   },
-  updated() {
-    this.initTags();
+  mounted() {
+    this.addViewTags()
   },
   methods: {
-    initTags() {
-      let tags = document.getElementsByClassNome("el-tag");
-      this.updateTagLeft(tags);
-      this.bindEvent(tags);
-    },
-    updateTagLeft(tags) {
-      if (tags.length === 1) {
-        return;
+    generateRoute() {
+      if (this.$route.name) {
+        return this.$route
       }
-      for (let i = 0; i < tags.length; i++) {
-        tags[i].style.left = 35 + 34 * i + this.sumTagsWidth(tags, i - 1) + "px";
-      }
+      return false
     },
-    sumTagsWidth(tags, index) {
-      let sum = 0;
-      for (let i = 0; i <= index; i++) {
-        sum += tags[i].clientWidth;
-      }
-      return sum;
+    isActive(route) {
+      return route.path === this.$route.path
     },
-    bindEvent(tags) {
-      let self = this;
-      for (let i = 0; i < tags.length; i++) {
-        tags[i].onclick = function (e) {
-          self.removeActive(tags);
-          e.target.classList.add("active");
-          if (self.router) {
-            self.$router.push(e.target.getElementsByTagName("span")[0].innerText);
-          } else {
-            self.$emit("tagClk", e.target.getElementsByTagName("span")[0].innerText);
+    addViewTags() {
+      const route = this.generateRoute()
+      if (!route) {
+        return false
+      }
+      this.$store.dispatch('addVisitedViews', route)
+    },
+    moveToCurrentTag() {
+      const tags = this.$refs.tag
+      this.$nextTick(() => {
+        for (const tag of tags) {
+          if (tag.to.path === this.$route.path) {
+            this.$refs.scrollPane.moveToTarget(tag.$el)
+            break
           }
-        };
-      }
-    },
-    removeActive(tags) {
-      [].slice.call(tags).forEach(function (tag) {
-        if (tag.classList.contains("active")) {
-          tag.classList.remove("active");
         }
-      });
+      })
+    },
+    closeSelectedTag(view) {
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view)) {
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView)
+          } else {
+            this.$router.push('/')
+          }
+        }
+      })
+    },
+    closeOthersTags() {
+      this.$router.push(this.selectedTag)
+      this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
+        this.moveToCurrentTag()
+      })
+    },
+    closeAllTags() {
+      this.$store.dispatch('delAllViews')
+      this.$router.push('/')
+    },
+    openMenu(tag, e) {
+      this.visible = true
+      this.selectedTag = tag
+      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      this.left = e.clientX - offsetLeft + 15 // 15: margin right
+      this.top = e.clientY - 30
+    },
+    closeMenu() {
+      this.visible = false
     }
   }
 }
 </script>
-<style>
-  .tags-view {
-    padding-top: 20px;
-    padding-left: 35px;
-    background-color: rgba(203, 212, 219, 0.6);
-    position: relative;
-  }
-  .tags-view .active {
-    z-index: 10 !important;
-  }
-  .tags-view .tags {
-    height: 24px;
-  }
-  .tags-view .el-tag {
-    border: 0;
-    border-radius: 0;
-    padding: 0 15px;
-    position: absolute;
-    color: #333;
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+.tags-view-container {
+  .tags-view-wrapper {
     background: #fff;
-    margin-right: 10px;
-    z-index: 4;
-    -webkit-filter: drop-shadow(1px -2px 0 #ccc);
-    cursor: pointer;
-    max-width: 100px;
+    height: 34px;
+    border-bottom: 1px solid #d8dce5;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+    .tags-view-item {
+      display: inline-block;
+      position: relative;
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #d8dce5;
+      color: #495060;
+      background: #fff;
+      padding: 0 8px;
+      font-size: 12px;
+      margin-left: 5px;
+      margin-top: 4px;
+      &:first-of-type {
+        margin-left: 15px;
+      }
+      &.active {
+        background-color: rgba(84, 92, 100, 1);
+        color: #fff;
+        border-color: rgb(84, 92, 100);
+        &::before {
+          content: '';
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
+        }
+      }
+    }
   }
-  .tags-view .el-tag:hover {
-    color: #ccc;
-  }
-  .tags-view .el-tag:before {
-    width: 0;
-    height: 0;
-    content: "";
-    border: 12px solid;
+  .contextmenu {
+    margin: 0;
+    background: #fff;
+    z-index: 100;
     position: absolute;
-    border-color: transparent #fff #fff transparent;
-    top: 0;
-    left: -24px;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    border: 1px solid #eee;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    li {
+      margin: 0;
+      padding: 7px 16px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
+      }
+    }
   }
-  .tags-view .el-tag:after {
-    width: 0;
-    height: 0;
-    content: "";
-    border: 12px solid;
-    position: absolute;
-    border-color: transparent transparent #fff #fff;
-    top: 0;
-    left: -24px;
+}
+</style>
+
+<style rel="stylesheet/scss" lang="scss">
+//reset element css of el-icon-close
+.tags-view-wrapper {
+  .tags-view-item {
+    .el-icon-close {
+      width: 16px;
+      height: 16px;
+      vertical-align: 2px;
+      border-radius: 50%;
+      text-align: center;
+      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      transform-origin: 100% 50%;
+      &:before {
+        transform: scale(.6);
+        display: inline-block;
+        vertical-align: -3px;
+      }
+      &:hover {
+        background-color: #b4bccc;
+        color: #fff;
+      }
+    }
   }
-  .tags-view .bottom-box {
-    height: 6px;
-    width: 100%;
-    border: 1px solid #ccc;
-    margin-left: -35px;
-    margin-top: -1px;
-    background-color: #fff;
-    z-index: 8;
-    position: absolute;
-    -webkit-filter: drop-shadow(0 -1px 0 #ccc);
-    border-bottom: 0;
-  }
+}
 </style>

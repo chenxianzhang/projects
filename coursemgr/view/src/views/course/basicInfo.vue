@@ -11,7 +11,8 @@
         <span class="course-comments-content">{{course.description}}</span>
       </div>
     </div>
-    <div style="width: calc(100% - 60px); margin-left: 30px;">
+    <!-- <div style="width: calc(100% - 60px); margin-left: 30px;"> -->
+    <div>
       <div class="course-student-title">
         <span>学生信息（总人数：{{totalCount}}）</span>
         <div v-if="editable" class="add-student-btn">
@@ -313,15 +314,15 @@
   .main-container{
     height: 100%;
     width: 100%;
-    padding: 10px;
+    /* padding: 10px; */
   }
 
   .main-container .course-info{
     height: 20%;
-    width: calc(100% - 60px);
+    /* width: calc(100% - 60px); */
     box-shadow: 0px 0px 4px 2px rgb(84, 92, 100);
     border-radius: 3px;
-    margin: 30px;
+    /* margin: 30px; */
     padding: 10px;
   }
 

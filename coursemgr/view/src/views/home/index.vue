@@ -18,20 +18,21 @@
       </el-form>
     </div>
     <div v-if="firstLogin===false" style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
-        <span>课程管理系统</span>
-        <div style="float: right; margin-right: 50px;font-size:14px">
-          当前用户：
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right white-color"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
-              <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
-              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
+      <span>课程管理系统</span>
+      <div style="float: right; margin-right: 50px;font-size:14px">
+        当前用户：
+        <el-dropdown @command="handleCommand">
+          <span class="el-dropdown-link">
+            {{userInfo.name}}
+            <i class="el-icon-arrow-down el-icon--right white-color"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
+            <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
         </el-dropdown>
-        </div>
       </div>
+    </div>
     <div v-if="firstLogin===false" class="container">
       <div class="flex-center">
         <div class="container-left">
@@ -48,46 +49,45 @@
           </div>
         </div>
         <div class="container-right">
-            <div class="module-title">
-              <span>用户信息</span>
-              <!--<svg-icon icon-class="edit"></svg-icon>-->
-              <i class="el-icon-edit-outline" @click="handleEdit"></i>
+          <div class="module-title">
+            <span>用户信息</span>
+            <!--<svg-icon icon-class="edit"></svg-icon>-->
+            <i class="el-icon-edit-outline" @click="handleEdit"></i>
+          </div>
+          <div class="content">
+            <div class="info-row">
+              <span class="label">姓名</span>
+              <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
+              <el-input v-model="userInfo.name" v-if="editUserInfo" />
             </div>
-            <div class="content">
-              <div class="info-row">
-                <span class="label">姓名</span>
-                <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
-                <el-input v-model="userInfo.name" v-if="editUserInfo"/>
-              </div>
-              <div class="info-row">
-                <span class="label">{{ getSearialLabel() }} </span>
-                <span class="value">{{ userInfo.serialNo }}</span>
-              </div>
-              <div class="info-row">
-                <span class="label">学院</span>
-                <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
-                <el-input v-model="userInfo.college" v-if="editUserInfo"/>
-              </div>
-              <div class="info-row">
-                <span class="label">电话</span>
-                <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
-                <el-input v-model="userInfo.cellphone" v-if="editUserInfo"/>
-              </div>
-              <div class="info-row">
-                <span class="label">邮箱</span>
-                <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
-                <el-input v-model="userInfo.email" v-if="editUserInfo"/>
-              </div>
-              <div class="edit-oper" v-if="editUserInfo">
-                <el-button @click="cancel" >取消</el-button>
-                <el-button type="primary" @click="save">修改</el-button>
-              </div>
+            <div class="info-row">
+              <span class="label">{{ getSearialLabel() }} </span>
+              <span class="value">{{ userInfo.serialNo }}</span>
             </div>
+            <div class="info-row">
+              <span class="label">学院</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
+              <el-input v-model="userInfo.college" v-if="editUserInfo" />
+            </div>
+            <div class="info-row">
+              <span class="label">电话</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
+              <el-input v-model="userInfo.cellphone" v-if="editUserInfo" />
+            </div>
+            <div class="info-row">
+              <span class="label">邮箱</span>
+              <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
+              <el-input v-model="userInfo.email" v-if="editUserInfo" />
+            </div>
+            <div class="edit-oper" v-if="editUserInfo">
+              <el-button @click="cancel">取消</el-button>
+              <el-button type="primary" @click="save">修改</el-button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible"
-                 @close="handleCourseClose" @confirm="saveCourse">
+    <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible" @close="handleCourseClose" @confirm="saveCourse">
       <div class="edit-container">
         <div class="edit-row">
           <span class="label">课程名称</span>
@@ -100,11 +100,7 @@
         </div>
         <div class="edit-row">
           <span class="label">课程描述</span>
-          <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 10}"
-            placeholder="请输入课程描述"
-            v-model="editCourse.description">
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="请输入课程描述" v-model="editCourse.description">
           </el-input>
         </div>
       </div>
@@ -113,51 +109,50 @@
   </div>
 </template>
 <script>
-
-import { getTeacherCourseList, saveCourse, getStuCourseList } from '@/api/home';
-import { findUser,update } from '@/api/login';
-import { validateEmail, validatePhone } from '@/utils/validate';
-import dragDialog from '@/components/dragDialog';
+import { getTeacherCourseList, saveCourse, getStuCourseList } from '@/api/home'
+import { findUser, update } from '@/api/login'
+import { validateEmail, validatePhone } from '@/utils/validate'
+import dragDialog from '@/components/dragDialog'
 
 export default {
-  name: "home",
+  name: 'home',
   data() {
-    let self = this;
+    let self = this
     var checkOldPass = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('密码不能为空'));
+        return callback(new Error('密码不能为空'))
       }
-      if(value.toString() !== self.userInfo.password){
-        return callback(new Error('密码不正确'));
+      if (value.toString() !== self.userInfo.password) {
+        return callback(new Error('密码不正确'))
       }
       callback()
-    };
+    }
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
         if (this.ruleForm2.checkPass !== '') {
-          this.$refs.ruleForm2.validateField('checkPass');
+          this.$refs.ruleForm2.validateField('checkPass')
         }
-        callback();
+        callback()
       }
-    };
+    }
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'));
+        callback(new Error('请再次输入密码'))
       } else if (value !== this.ruleForm2.newPass) {
-        callback(new Error('两次输入密码不一致!'));
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     return {
       canAddCourse: false,
       courseList: [],
       userInfo: {},
-      firstLogin:false,
-      courseDlgTitle: "增加课程",
+      firstLogin: false,
+      courseDlgTitle: '增加课程',
       courseDlgVisible: false,
       editCourse: {
         name: '',
@@ -173,71 +168,62 @@ export default {
         oldPass: ''
       },
       rules2: {
-        newPass: [
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
-        ],
-        oldPass: [
-          { validator: checkOldPass, trigger: 'blur' }
-        ]
+        newPass: [{ validator: validatePass, trigger: 'blur' }],
+        checkPass: [{ validator: validatePass2, trigger: 'blur' }],
+        oldPass: [{ validator: checkOldPass, trigger: 'blur' }]
       }
     }
   },
-  components:{
+  components: {
     dragDialog
   },
-  created () {
+  created() {
     if (!this.$store.state.user.roles) {
       // TODO 弹出提示，并调回登录页面
     }
     if (this.$store.state.user.roles.in_array('teacher')) {
-      this.canAddCourse = true;
-    }
-    else {
-      this.canAddCourse = false;
+      this.canAddCourse = true
+    } else {
+      this.canAddCourse = false
     }
 
     if (this.$store.state.user.roles.in_array('student')) {
-      this.getStuCourseList();
+      this.getStuCourseList()
     } else {
-      this.getTeacherCourseList();
+      this.getTeacherCourseList()
     }
-    this.initUserInfo();
+    this.initUserInfo()
   },
-  mounted () {
-
-  },
+  mounted() {},
   methods: {
     submitForm(formName) {
-      let self = this;
-      this.$refs[formName].validate((valid) => {
+      let self = this
+      this.$refs[formName].validate(valid => {
         if (valid) {
           debugger
-          self.userInfo.password = self.ruleForm2.newPass;
-          self.save('updatePass');
+          self.userInfo.password = self.ruleForm2.newPass
+          self.save('updatePass')
         } else {
-          this.$message.warning('请填写正确的信息！');
-          return false;
+          this.$message.warning('请填写正确的信息！')
+          return false
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     cancel() {
-      this.editUserInfo = false;
-      this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
+      this.editUserInfo = false
+      this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak))
     },
     save(mes) {
-      if (this.userInfo.college.trim() === "") {
+      if (this.userInfo.college.trim() === '') {
         this.$message({
-                showClose: true,
-                type: 'warning',
-                message: "学院信息不能为空"
-             });
-             return;
+          showClose: true,
+          type: 'warning',
+          message: '学院信息不能为空'
+        })
+        return
       }
       // if (!validatePhone(this.userInfo.cellphone)) {
       //   this.$message({
@@ -255,320 +241,328 @@ export default {
            });
            return;
       }*/
-      let self = this;
-      update(this.userInfo).then(response => {
-        if (response.status === 0) {
-          self.$message({
+      let self = this
+      update(this.userInfo)
+        .then(response => {
+          if (response.status === 0) {
+            self.$message({
               showClose: true,
               type: 'warning',
               message: response.msg
-           });
-           return;
-        }
-        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
-        this.editUserInfo = false;
-        self.$message({
-              showClose: true,
-              type: 'success',
-              message: "修改成功"
-           });
-        if(mes && mes === 'updatePass'){
-          this.firstLogin = false;
-        }
-      }).catch(err => {
-        console.log(err);
-        self.$message({
-              showClose: true,
-              type: 'error',
-              message: "保存个人信息异常"
-           });
-      });
+            })
+            return
+          }
+          self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo))
+          this.editUserInfo = false
+          self.$message({
+            showClose: true,
+            type: 'success',
+            message: '修改成功'
+          })
+          if (mes && mes === 'updatePass') {
+            this.firstLogin = false
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          self.$message({
+            showClose: true,
+            type: 'error',
+            message: '保存个人信息异常'
+          })
+        })
     },
     handleEdit() {
-      this.editUserInfo = !this.editUserInfo;
+      this.editUserInfo = !this.editUserInfo
       if (!this.editUserInfo) {
-        this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak));
+        this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak))
       }
     },
     getTeacherCourseList() {
-      let self = this;
-      getTeacherCourseList({teacherNo: this.$store.state.user.token}).then(response => {
-        if (response.status === 0) {
-          self.$message({
+      let self = this
+      getTeacherCourseList({ teacherNo: this.$store.state.user.token })
+        .then(response => {
+          if (response.status === 0) {
+            self.$message({
               showClose: true,
               type: 'error',
               message: response.msg
-           });
-          return;
-        }
-        self.courseList = response.data;
-      }).catch (err => {
-        console.log(err);
-      });
+            })
+            return
+          }
+          self.courseList = response.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     getStuCourseList() {
-        let self = this;
-        getStuCourseList({studentNo: this.$store.state.user.token}).then(response => {
+      let self = this
+      getStuCourseList({ studentNo: this.$store.state.user.token })
+        .then(response => {
           if (response.status === 0) {
             self.$message({
-                showClose: true,
-                type: 'error',
-                message: response.msg
-             });
-            return;
+              showClose: true,
+              type: 'error',
+              message: response.msg
+            })
+            return
           }
-          self.courseList = response.data;
-        }).catch (err => {
-          console.log(err);
-        });
+          self.courseList = response.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    initUserInfo () {
-      let self = this;
+    initUserInfo() {
+      let self = this
       findUser(this.$store.state.user.token).then(response => {
         if (response.status === 0) {
           self.$message({
-              showClose: true,
-              type: 'error',
-              message: response.msg
-           });
+            showClose: true,
+            type: 'error',
+            message: response.msg
+          })
         }
-        self.userInfo = response.data;
-        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo));
+        self.userInfo = response.data
+        self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo))
 
-        if(response.data.hasLogin === 0){
-          this.firstLogin = true;
-          return;
+        if (response.data.hasLogin === 0) {
+          this.firstLogin = true
+          return
         }
-        this.firstLogin = false;
+        this.firstLogin = false
       })
     },
     addCourse() {
-      this.editCourse.name = "";
-      this.editCourse.credit = 0;
-      this.editCourse.description = "";
-      this.courseDlgVisible = true;
+      this.editCourse.name = ''
+      this.editCourse.credit = 0
+      this.editCourse.description = ''
+      this.courseDlgVisible = true
     },
-    handleCourseClose () {
-       this.courseDlgVisible = false;
+    handleCourseClose() {
+      this.courseDlgVisible = false
     },
     getSearialLabel() {
       if (!this.$store.state.user.roles) {
-        return "";
+        return ''
       }
-      return this.$store.state.user.roles.in_array('teacher') ? "教工号" : "学号";
+      return this.$store.state.user.roles.in_array('teacher')
+        ? '教工号'
+        : '学号'
     },
     saveCourse() {
-       if (this.editCourse.name.trim() === '' ) {
-          this.$message({
-              showClose: true,
-              type: 'warning',
-              message: "名称不能为空"
-           });
-           return;
-       }
-       if (this.editCourse.credit === 0) {
-          this.$message({
-              showClose: true,
-              type: 'warning',
-              message: "学分不能为0"
-           });
-           return;
-       }
-       let self = this;
-       saveCourse(this.editCourse).then(response => {
+      if (this.editCourse.name.trim() === '') {
+        this.$message({
+          showClose: true,
+          type: 'warning',
+          message: '名称不能为空'
+        })
+        return
+      }
+      if (this.editCourse.credit === 0) {
+        this.$message({
+          showClose: true,
+          type: 'warning',
+          message: '学分不能为0'
+        })
+        return
+      }
+      let self = this
+      saveCourse(this.editCourse)
+        .then(response => {
           if (response.status === 0) {
             self.$message({
               showClose: true,
               type: 'error',
               message: response.msg
-           });
-           return;
+            })
+            return
           }
-          self.courseDlgVisible = false;
-          self.getTeacherCourseList();
-       }).catch(err => {
-          console.log(err);
-       });
+          self.courseDlgVisible = false
+          self.getTeacherCourseList()
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    handleCourseClick(cId){
-      this.$store.commit('SET_COURSE_ID', cId);
-      this.$router.push({name:'basicInfo', params:{courseId: cId}});
+    handleCourseClick(cId) {
+      this.$router.push({ name: 'basicInfo', params: { courseId: cId } })
     },
-    logout(){
-          this.$store.dispatch('logOut').then(() => {
-            this.$router.push('/login');
-          });
-        },
-    handleCommand(cmd){
-          switch (cmd) {
-            case "logout":
-              this.logout();
-              break;
-            case "backHome":
-              this.$router.push('/home');
-              break;
-          }
-        }
+    logout() {
+      this.$store.dispatch('logOut').then(() => {
+          // 清空tagsview
+          this.$store.dispatch('delAllViews')
+        //   this.$router.push('/login')
+        location.reload()
+      })
+    },
+    handleCommand(cmd) {
+      switch (cmd) {
+        case 'logout':
+          this.logout()
+          break
+        case 'backHome':
+          this.$router.push('/home')
+          break
+      }
+    }
   }
 }
-
-
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.main{
+.main {
   background-color: #567;
   width: 100%;
   height: 100%;
-  .el-dropdown-link{
-    color:#fff;
+  .el-dropdown-link {
+    color: #fff;
   }
-.container {
-  background-color: #567;
-  width: 100%;
-  height: calc(100% - 55px);
-  display: flex;
-  justify-content: center;
-  padding: 10px 0px;
-  .flex-center {
-    width: 84%;
-    height: 100%;
+  .container {
+    background-color: #567;
+    width: 100%;
+    height: calc(100% - 55px);
     display: flex;
-     justify-content: center;
-    .container-left {
-      border-radius: 4px;
+    justify-content: center;
+    padding: 10px 0px;
+    .flex-center {
+      width: 84%;
       height: 100%;
-      width: calc(100% - 400px);
-      background-color: white;
-      .course-list {
-        width: 100%;
-        height: calc(100% - 44px);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        //justify-content: space-around;
-        align-content: flex-start;
-        overflow: auto;
-        .card-panel {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          align-items: center;
-          width: 100px;
-          height: 100px;
-          background-color: #87a035;
-          border-radius: 4px;
-          margin-top: 10px;
-          margin-left: 5px;
-          cursor: pointer;
-          span {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 800;
-            color: #ccc;
-          }
-          .el-icon-plus {
-            color: #ccc;
-          }
-        }
-        .card-panel:hover {
-          background-color: rgba(135, 160, 53, 0.8);
-          span {
-            color: #fff;
-          }
-        }
-      }
-    }
-    .container-right {
-      width: 400px;
-      height: 400px;
-      border-radius: 4px;
-      background-color: #fff;
-      margin-left: 10px;
-      .content {
-        width: 100%;
-        height: calc(100% - 44px);
-        .info-row {
-          border-bottom: 1px solid #ccc;
-          padding: 10px;
-          font-size:  13px;
-          display: flex;
-          align-items: center;
-          span {
-            display: inline-block;
-          }
-          .label {
-            width: 70px;
-            text-align: right;
-            color: #555;
-            font-weight: 600;
-          }
-          .value {
-            padding-left: 15px;
-            color: #888;
-          }
-          .el-input {
-            width: calc(80% - 60px);
-            margin-left: 10px;
-          }
-        }
-        .edit-oper {
-          margin-top: 15px;
-          display: flex;
-          justify-content: center;
-        }
-      }
-    }
-    .module-title {
-      color: #303133;
-      font-weight: 800;
-      transition: color .2s cubic-bezier(.645,.045,.355,1);
-      border-bottom: 1px solid #ccc;
-      box-shadow: 0 1px 0 #ccc;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      span {
-        padding: 10px;
-        display: inline-block;
+      justify-content: center;
+      .container-left {
+        border-radius: 4px;
+        height: 100%;
+        width: calc(100% - 400px);
+        background-color: white;
+        .course-list {
+          width: 100%;
+          height: calc(100% - 44px);
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+          //justify-content: space-around;
+          align-content: flex-start;
+          overflow: auto;
+          .card-panel {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+            width: 100px;
+            height: 100px;
+            background-color: #87a035;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-left: 5px;
+            cursor: pointer;
+            span {
+              text-align: center;
+              font-size: 18px;
+              font-weight: 800;
+              color: #ccc;
+            }
+            .el-icon-plus {
+              color: #ccc;
+            }
+          }
+          .card-panel:hover {
+            background-color: rgba(135, 160, 53, 0.8);
+            span {
+              color: #fff;
+            }
+          }
+        }
       }
-      .el-icon-edit-outline {
-        cursor: pointer;
-        margin-right: 10px;
+      .container-right {
+        width: 400px;
+        height: 400px;
+        border-radius: 4px;
+        background-color: #fff;
+        margin-left: 10px;
+        .content {
+          width: 100%;
+          height: calc(100% - 44px);
+          .info-row {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            span {
+              display: inline-block;
+            }
+            .label {
+              width: 70px;
+              text-align: right;
+              color: #555;
+              font-weight: 600;
+            }
+            .value {
+              padding-left: 15px;
+              color: #888;
+            }
+            .el-input {
+              width: calc(80% - 60px);
+              margin-left: 10px;
+            }
+          }
+          .edit-oper {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+          }
+        }
       }
-      .el-icon-edit-outline:hover {
-        opacity: 0.8;
+      .module-title {
+        color: #303133;
+        font-weight: 800;
+        transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        border-bottom: 1px solid #ccc;
+        box-shadow: 0 1px 0 #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        span {
+          padding: 10px;
+          display: inline-block;
+        }
+        .el-icon-edit-outline {
+          cursor: pointer;
+          margin-right: 10px;
+        }
+        .el-icon-edit-outline:hover {
+          opacity: 0.8;
+        }
       }
     }
-  }
-  .edit-container {
-    padding: 0 20px;
-    .edit-row {
-      display:flex;
-      align-items: center;
-      padding: 10px 0;
-      .label {
-        width: 70px;
-        text-align: right;
-        margin-right: 20px;
-      }
-      .el-input{
-         // width: calc(100% - 90px);
-         width: 180px;
-      }
-      .el-textarea {
-        width: calc(100% - 90px);
+    .edit-container {
+      padding: 0 20px;
+      .edit-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        .label {
+          width: 70px;
+          text-align: right;
+          margin-right: 20px;
+        }
+        .el-input {
+          // width: calc(100% - 90px);
+          width: 180px;
+        }
+        .el-textarea {
+          width: calc(100% - 90px);
+        }
       }
     }
   }
 }
-}
-
-
 </style>
 <style>
-  .change-pass .el-form-item__label{
-    color: #ffffff !important;
-  }
+.change-pass .el-form-item__label {
+  color: #ffffff !important;
+}
 </style>
 
 

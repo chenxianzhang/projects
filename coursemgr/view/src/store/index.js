@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
 import permission from './modules/permission'
-import course from './modules/course'
+import tagsView from './modules/tagsView'
 
 import getters from './getters'
 
@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     modules: {
         user,
         permission,
-        course
+        tagsView
     },
     getters
 })

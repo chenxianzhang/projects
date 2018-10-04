@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 1200px; margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
+  <div style="margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
     <div class="task-name">
       <el-row>
         <el-col :span="10">

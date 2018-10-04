@@ -126,7 +126,7 @@ export default {
           self.loading = true
           self.$store.dispatch('loginProcess', self.loginForm).then(() => {
             self.loading = false;
-            self.$router.push({name:'home', params:{}});
+            self.$router.push('/');
           }).catch (err => {
             self.loading = false;
             self.$message({
