@@ -40,4 +40,6 @@ public interface TaskQuestionsMapper {
     List<SubjectMarkModel> selectStuTaskPaper(Map params);
 
     int deleteByIds(String ids);
+
+    int deleteByCourseIds(String courseIds);
 }

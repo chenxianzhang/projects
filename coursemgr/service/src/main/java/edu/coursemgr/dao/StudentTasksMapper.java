@@ -45,4 +45,7 @@ public interface StudentTasksMapper {
 
     int selectTaskFinshedCnt(Integer taskId);
 
+    int deleteByCourseIds(String courseIds);
+
+    int deleteByCourseStudent(Map params);
 }

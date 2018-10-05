@@ -76,4 +76,19 @@ public interface CourseMgrService {
     void exportStuGrade(String courseId, String studentNo,
                         HttpServletResponse response) throws Exception;
 
+    /**
+     * 根据教工号，删除与之关联的课程信息
+     * @param teacherNo
+     * @return
+     */
+    boolean deleteCourseByTeacherNo(String teacherNo);
+
+    /**
+     * 根据用户获取与之关联的课程信息列表
+     * @param role
+     * @param serialNo
+     * @return
+     */
+    List<Course> getCourseByUser(String role, String serialNo);
+
 }

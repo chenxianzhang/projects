@@ -21,6 +21,8 @@ public interface Constant {
         public static final String UPLOAD_ROOT_DIR = "upload";
 
         public static final String DOWNLOAD_TEMP_DIR = "download";
+
+        public static final String SUCCESS = "success";
     }
 
     /**

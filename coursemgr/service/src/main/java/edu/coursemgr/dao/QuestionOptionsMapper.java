@@ -18,4 +18,6 @@ public interface QuestionOptionsMapper {
     List<QuestionOptions> selectByQuestionId(Long questionId);
 
     int deleteByTaskId(Integer taskId);
+
+    int deleteByCourseIds(String courseIds);
 }

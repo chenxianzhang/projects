@@ -44,4 +44,6 @@ public interface GroupMemberMapper {
     int deleteByStudent(Map params);
 
     int deleteByGroupId(Integer groupId);
+
+    int deleteByCourseIds(String courseIds);
 }

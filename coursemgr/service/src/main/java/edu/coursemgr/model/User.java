@@ -13,6 +13,8 @@ public class User implements Serializable {
 
     private String password;
 
+    private String levelPwd;
+
     private String name;
 
     private String college;
@@ -129,5 +131,13 @@ public class User implements Serializable {
 
     public void setHasLogin(Integer hasLogin) {
         this.hasLogin = hasLogin;
+    }
+
+    public String getLevelPwd() {
+        return levelPwd;
+    }
+
+    public void setLevelPwd(String levelPwd) {
+        this.levelPwd = levelPwd;
     }
 }

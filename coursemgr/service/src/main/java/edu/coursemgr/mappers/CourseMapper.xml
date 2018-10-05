@@ -33,6 +33,16 @@
     <include refid="Blob_Column_List" />
     from course
   </select>
+  <select id="checkStudentBacklog" resultType="java.lang.String" parameterType="java.lang.String">
+    select GROUP_CONCAT(name) as courseNames from course
+    where id in (SELECT courseId
+    FROM grade_relate where studentNo = #{studentNo, jdbcType=VARCHAR})
+  </select>
+  <select id="checkStudentGroup" resultType="java.lang.String" parameterType="java.lang.String">
+    select GROUP_CONCAT(name) as courseNames from course
+    where id in (SELECT courseId
+    FROM `group` where groupLeaderNo = #{studentNo, jdbcType=VARCHAR})
+  </select>
   <select id="selectTeacherCourse" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List" />
@@ -52,6 +62,10 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from course
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByCourseIds" parameterType="java.lang.String" >
+    delete from course
+    where id in (#{courseIds,jdbcType=VARCHAR})
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.Course" >
     insert into course (id, name, credit, 

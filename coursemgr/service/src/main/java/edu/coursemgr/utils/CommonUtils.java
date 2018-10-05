@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -78,5 +79,17 @@ public final class CommonUtils {
 
     public static String uuid() {
         return UUID.randomUUID().toString().replace("-", "").toLowerCase();
+    }
+
+    public static String join(Collection collection, String separetor) {
+        String result = "";
+        for (Object obj : collection) {
+            if (result.isEmpty()) {
+                result = obj.toString();
+                continue;
+            }
+            result = String.format(",%s", obj.toString());
+        }
+        return result;
     }
 }

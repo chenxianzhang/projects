@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="serialNo" property="serialNo" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="levelPwd" property="levelPwd" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="college" property="college" jdbcType="VARCHAR" />
     <result column="profession" property="profession" jdbcType="VARCHAR" />
@@ -21,7 +22,7 @@
     <result column="groupNo" property="groupNo" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, serialNo, password, name, college, profession, cellphone, email, roles, sex,
+    id, serialNo, password, levelPwd, name, college, profession, cellphone, email, roles, sex,
     hasLogin, createDate
   </sql>
   <select id="selectUserGroup" resultMap="UserGroupMap" parameterType="java.lang.Integer" >
@@ -97,6 +98,27 @@
     where courseId= #{courseId, jdbcType=INTEGER}
     )
   </select>
+  <select id="selectTotalCntByRole" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+    select
+    count(serialNo)
+    from user
+    where FIND_IN_SET(#{role, jdbcType=VARCHAR},roles)
+    <if test="nameOrNo != null and nameOrNo != ''">
+      and (name like %#{nameOrNo, jdbcType=VARCHAR}%
+      or serialNo like %#{nameOrNo, jdbcType=VARCHAR}%)
+    </if>
+  </select>
+  <select id="selectSomeByRole" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    count(serialNo) as totalCount
+    from user
+    where FIND_IN_SET(#{role, jdbcType=VARCHAR},roles)
+    <if test="nameOrNo != null and nameOrNo != ''">
+      and (name like %#{nameOrNo, jdbcType=VARCHAR}%
+      or serialNo like %#{nameOrNo, jdbcType=VARCHAR}%)
+    </if>
+    order by createDate desc limit ${offset},${pageSize}
+  </select>
   <select id="selectSomByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
@@ -110,16 +132,16 @@
     select studentNo from group_member where courseId=#{courseId,jdbcType=INTEGER}
     ) and courseId=#{courseId,jdbcType=INTEGER})
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.User" >
-    insert into user (serialNo, password,
+    insert into user (serialNo, password,levelPwd,
       name, college, profession,
       cellphone, email, roles,
       sex,hasLogin, createDate)
-    values (#{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    values (#{serialNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{levelPwd,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR},
       #{cellphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR},
       #{sex,jdbcType=CHAR},#{hasLogin,jdbcType=INTEGER}, now())
@@ -135,6 +157,9 @@
       </if>
       <if test="password != null" >
         password,
+      </if>
+      <if test="levelPwd != null" >
+        levelPwd,
       </if>
       <if test="name != null" >
         name,
@@ -174,6 +199,9 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="levelPwd != null" >
+        #{levelPwd,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
@@ -212,6 +240,9 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="levelPwd != null" >
+        levelPwd = #{levelPwd,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -246,6 +277,7 @@
     update user
     set serialNo = #{serialNo,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      levelPwd = #{levelPwd,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       college = #{college,jdbcType=VARCHAR},
       profession = #{profession,jdbcType=VARCHAR},
@@ -277,6 +309,9 @@
       </if>
       <if test="password != null" >
         password = #{password,jdbcType=INTEGER},
+      </if>
+      <if test="levelPwd != null" >
+        levelPwd = #{levelPwd,jdbcType=INTEGER},
       </if>
       <if test="hasLogin != null" >
         hasLogin = #{hasLogin,jdbcType=INTEGER},

@@ -1,14 +1,10 @@
 package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
-import edu.coursemgr.common.interfaces.Function;
-import edu.coursemgr.dao.CourseMapper;
-import edu.coursemgr.dao.CourseTasksMapper;
-import edu.coursemgr.dao.GroupMemberMapper;
-import edu.coursemgr.dao.UserMapper;
+import edu.coursemgr.common.Constant;
+import edu.coursemgr.dao.*;
 import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.model.Course;
-import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.GradeDetail;
@@ -17,6 +13,7 @@ import edu.coursemgr.pojo.StudentTaskInfo;
 import edu.coursemgr.pojo.UserGroup;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.utils.CollectionUtils;
+import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +39,27 @@ public class CourseMgrServiceImpl implements CourseMgrService {
 
     @Autowired
     private GroupMemberMapper groupMemberMapper;
+
+    @Autowired
+    private QuestionOptionsMapper questionOptionsMapper;
+
+    @Autowired
+    private StudentPaperMapper studentPaperMapper;
+
+    @Autowired
+    private StudentTasksMapper studentTasksMapper;
+
+    @Autowired
+    private TaskQuestionsMapper taskQuestionsMapper;
+
+    @Autowired
+    private GroupMapper groupMapper;
+
+    @Autowired
+    private GradeRelateMapper gradeRelateMapper;
+
+    @Autowired
+    private CourseStudentsMapper courseStudentsMapper;
 
     @Override
     public List<Course> getTeacherCourseList(String teacherNo) {
@@ -278,6 +296,65 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         String name = String.format("%s%s成绩信息", user.getName(), course.getName());
         ExcelReader excelReader = new ExcelReader();
         excelReader.export(name, name, columnList, dataList, name, response);
+    }
+
+    @Override
+    public boolean deleteCourseByTeacherNo(String teacherNo) {
+        // 获取所有的课程信息
+        List<Course> courseList = courseMapper.selectTeacherCourse(teacherNo);
+        if (courseList == null || courseList.size() == 0) {
+            return true;
+        }
+        List<Integer> courseIdList = CollectionUtils.arrayListCast(courseList,
+                course -> course.getId());
+
+        return deleteCourseList(courseIdList);
+    }
+
+    @Override
+    public List<Course> getCourseByUser(String role, String serialNo) {
+
+        if (CommonEnum.Role.STUDENT.getValue().equals(role)) {
+            return courseMapper.selectTeacherCourse(serialNo);
+        } else {
+            return courseMapper.selectStuCourse(serialNo);
+        }
+    }
+
+    private boolean deleteCourseList(List<Integer> courseIdList) {
+
+        String courseIds = CommonUtils.join(courseIdList, Constant.Common.SEPARATE_COMMA);
+        // question_options
+        questionOptionsMapper.deleteByCourseIds(courseIds);
+
+        // student_paper
+        studentPaperMapper.deleteByCourseIds(courseIds);
+
+        // student_tasks
+        studentTasksMapper.deleteByCourseIds(courseIds);
+
+        // task_questions
+        taskQuestionsMapper.deleteByCourseIds(courseIds);
+
+        // group_member
+        groupMemberMapper.deleteByCourseIds(courseIds);
+
+        // group
+        groupMapper.deleteByCourseIds(courseIds);
+
+        // grade_relate
+        gradeRelateMapper.deleteByCourseIds(courseIds);
+
+        // course_tasks
+        courseTasksMapper.deleteByCourseIds(courseIds);
+
+        // course_students
+        courseStudentsMapper.deleteByCourseIds(courseIds);
+
+        // course
+        courseMapper.deleteByCourseIds(courseIds);
+
+        return true;
     }
 
     private List<GradeDetail> getGradeDetailList(String courseId) {

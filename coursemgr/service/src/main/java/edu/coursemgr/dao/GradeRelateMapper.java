@@ -20,4 +20,11 @@ public interface GradeRelateMapper {
 
     GradeRelate selectByStudent(Map params);
 
+    List<GradeRelate> selectByCourseStudent(Map params);
+
+    List<GradeRelate> selectByGradeObjNo(Map params);
+
+    int deleteByCourseIds(String courseIds);
+
+    int updateByIdSelective(GradeRelate record);
 }

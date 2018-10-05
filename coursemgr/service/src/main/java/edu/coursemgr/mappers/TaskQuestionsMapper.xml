@@ -71,6 +71,11 @@
     delete from task_questions
     where taskId = #{taskId,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByCourseIds" parameterType="java.lang.String" >
+    delete from task_questions
+    where taskId in (select id from course_tasks
+    where courseId in (#{courseIds, jdbcType=VARCHAR}))
+  </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.TaskQuestions" useGeneratedKeys="true" keyProperty="id">
     insert into task_questions (id, taskId, questionNo, 
       stems, questionType, score, 

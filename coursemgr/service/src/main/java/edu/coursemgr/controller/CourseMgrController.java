@@ -189,4 +189,17 @@ public class CourseMgrController extends BaseController {
         taskMgrService.exportStuCourseProcess(response, courseId, request.getRealPath("/"), studentNo);
         return 1;
     }
+
+    @RequestMapping(value="/getCourseByUser", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getCourseByUser(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String serialNo = getParam(requestMap, "serialNo");
+        String role = getParam(requestMap, "role");
+        if (CommonUtils.isEmpty(role) || CommonUtils.isEmpty(serialNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return courseMgrService.getCourseByUser(role, serialNo);
+    }
 }

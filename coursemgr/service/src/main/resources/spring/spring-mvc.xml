@@ -66,13 +66,13 @@
                     <map>
                         <entry key="/**">
                             <bean class="org.springframework.web.cors.CorsConfiguration">
-                                <property name="allowedOrigins">
-                                    <list>
-                                        <value>http://127.0.0.1:8080</value>
-                                        <value>http://localhost:8080</value>
-                                        <value>http://127.0.0.1:8443</value>
-                                        <value>http://localhost:8443</value>
-                                    </list>
+                                <property name="allowedOrigins" value="*">
+                                    <!--<list>-->
+                                        <!--<value>http://127.0.0.1:8080</value>-->
+                                        <!--<value>http://localhost:8080</value>-->
+                                        <!--<value>http://127.0.0.1:8443</value>-->
+                                        <!--<value>http://localhost:8443</value>-->
+                                    <!--</list>-->
                                 </property>
                                 <property name="allowedMethods" value="*"></property>
                                 <property name="allowedHeaders" value="*"></property>

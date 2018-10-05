@@ -4,6 +4,7 @@ CREATE TABLE `user` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
 	`serialNo` varchar(20) NOT NULL, #学号或者教工号，管理员登录账号
 	`password` varchar(20) DEFAULT NULL,
+	`levelPwd` varchar(20) DEFAULT NULL,   #二级密码
     `name` varchar(20) NOT NULL,  #姓名
 	`college` varchar(50),            #学院
 	`profession` varchar(50),         #专业

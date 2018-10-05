@@ -75,6 +75,10 @@
         delete from `grade_relate`
         where taskId = #{taskId,jdbcType=INTEGER}
     </delete>
+    <delete id="deleteByCourseIds" parameterType="java.lang.String" >
+        delete from `grade_relate`
+        where courseId in (#{courseIds,jdbcType=VARCHAR})
+    </delete>
 
     <select id="selectSomeByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
         select
@@ -94,4 +98,30 @@
         where taskId=#{taskId, jdbcType=INTEGER}
         and FIND_IN_SET(#{studentNo, jdbcType=VARCHAR},gradeObjNo)
     </select>
+    <select id="selectByCourseStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        select
+        <include refid="Base_Column_List" />
+        from grade_relate
+        where courseId=#{courseId, jdbcType=INTEGER}
+        and studentNo = #{studentNo, jdbcType=VARCHAR}
+    </select>
+    <select id="selectByGradeObjNo" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        select
+        <include refid="Base_Column_List" />
+        from grade_relate
+        where courseId=#{courseId, jdbcType=INTEGER}
+        and FIND_IN_SET(#{studentNo, jdbcType=VARCHAR},gradeObjNo)
+    </select>
+    <update id="updateByIdSelective" parameterType="edu.coursemgr.model.GradeRelate" >
+        update grade_relate
+        <set >
+            <if test="gradeObjName != null" >
+                gradeObjName = #{gradeObjName,jdbcType=VARCHAR},
+            </if>
+            <if test="gradeObjNo != null" >
+                gradeObjNo = #{gradeObjNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

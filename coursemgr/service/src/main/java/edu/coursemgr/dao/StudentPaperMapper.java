@@ -40,4 +40,8 @@ public interface StudentPaperMapper {
     List<StudentPaper> getPaperByStudent(Map params);
 
     int deleteByTaskId(Integer taskId);
+
+    int deleteByCourseIds(String courseIds);
+
+    int deleteByCourseStudent(Map params);
 }

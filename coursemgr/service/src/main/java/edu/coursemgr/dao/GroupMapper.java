@@ -27,4 +27,6 @@ public interface GroupMapper {
     Group selectByStudent(Map params);
 
     Group selectByLeader(Map params);
+
+    int deleteByCourseIds(String courseIds);
 }

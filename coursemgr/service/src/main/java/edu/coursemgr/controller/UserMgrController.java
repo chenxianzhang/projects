@@ -1,10 +1,12 @@
 package edu.coursemgr.controller;
 
+import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.excel.ExcelUtil;
 import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.UserEditModel;
+import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.service.interfaces.UserMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class UserMgrController extends BaseController {
     @Autowired
     private UserMgrService userMgrService;
 
+    @Autowired
+    private CourseMgrService courseMgrService;
+
     @RequestMapping(value="/getStudentsByCourseId", method=RequestMethod.POST)
     @ResponseBody
     public Object getStudentsByCourseId(@RequestBody Map<String, Object> requestMap)
@@ -43,6 +48,22 @@ public class UserMgrController extends BaseController {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
         return userMgrService.getStudentsByCourseId(courseId, pageSize, currPage);
+    }
+
+    @RequestMapping(value="/getUserByRole", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getUserByRole(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String role = getParam(requestMap, "role");
+        String nameOrNo = getParam(requestMap, "nameOrNo");
+        String pageSize = getParam(requestMap, "pageSize");
+        String currPage = getParam(requestMap, "currPage");
+        boolean illegal = CommonUtils.isEmpty(role) || CommonUtils.isEmpty(pageSize)
+                || CommonUtils.isEmpty(currPage);
+        if (illegal) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return userMgrService.getUserByRole(role, pageSize, currPage, nameOrNo);
     }
 
     @RequestMapping(value="/getAllStudentsByCourseId", method=RequestMethod.GET)
@@ -64,6 +85,41 @@ public class UserMgrController extends BaseController {
         }
 
         return userMgrService.addStudent(user);
+    }
+
+    @RequestMapping(value="/addUser", method=RequestMethod.POST)
+    @ResponseBody
+    public int addUser(@RequestBody User user)
+            throws Exception {
+        if (user == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return userMgrService.addUser(user);
+    }
+
+    @RequestMapping(value="/updateUser", method=RequestMethod.POST)
+    @ResponseBody
+    public int updateUser(@RequestBody User user)
+            throws Exception {
+        if (user == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return userMgrService.updateUser(user);
+    }
+
+    @RequestMapping(value="/resetPwd", method=RequestMethod.GET)
+    @ResponseBody
+    public int resetPwd(@RequestParam String serialNo)
+            throws Exception {
+        if (CommonUtils.isEmpty(serialNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        User user = new User();
+        user.setSerialNo(serialNo);
+        user.setPassword(serialNo);
+        return userMgrService.updateUser(user);
     }
 
     @RequestMapping("/batchUploadStudents")
@@ -108,6 +164,32 @@ public class UserMgrController extends BaseController {
         }
 
         return userMgrService.deleteStudent(courseId, studentNo);
+    }
+
+    @RequestMapping(value="/deleteUser", method=RequestMethod.POST)
+    @ResponseBody
+    public Object deleteUser(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String serialNo = getParam(requestMap, "serialNo");
+        String role = getParam(requestMap, "role");
+        String levelPwd = getParam(requestMap, "levelPwd");
+        boolean illegal = CommonUtils.isEmpty(serialNo) ||
+                CommonUtils.isEmpty(levelPwd) || CommonUtils.isEmpty(role);
+        if (illegal) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        // 判断而二级密码是否OK
+        User user = userMgrService.checkLevelPwd(serialNo, levelPwd);
+
+        // 删除教师用户
+        if (CommonEnum.Role.TEACHER.getValue().equals(role)) {
+            courseMgrService.deleteCourseByTeacherNo(serialNo);
+        } else {
+            // 学生用户
+            userMgrService.deleteStudent(serialNo);
+        }
+        return userMgrService.deleteUser(user);
     }
 
 }

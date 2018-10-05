@@ -2,22 +2,16 @@ package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
-import edu.coursemgr.dao.CourseStudentsMapper;
-import edu.coursemgr.dao.GroupMapper;
-import edu.coursemgr.dao.GroupMemberMapper;
-import edu.coursemgr.dao.UserMapper;
+import edu.coursemgr.dao.*;
 import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.excel.ExcelUtil;
-import edu.coursemgr.model.CourseStudents;
-import edu.coursemgr.model.Group;
-import edu.coursemgr.model.GroupMember;
-import edu.coursemgr.model.User;
+import edu.coursemgr.model.*;
 import edu.coursemgr.pojo.PageModel;
 import edu.coursemgr.pojo.UserEditModel;
 import edu.coursemgr.service.interfaces.UserMgrService;
+import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -41,6 +35,18 @@ public class UserMgrServiceImpl implements UserMgrService {
 
     @Autowired
     private GroupMemberMapper groupMemberMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
+
+    @Autowired
+    private GradeRelateMapper gradeRelateMapper;
+
+    @Autowired
+    private StudentPaperMapper studentPaperMapper;
+
+    @Autowired
+    private StudentTasksMapper studentTasksMapper;
 
     @Override
     public List<User> getStudentList(String courseId) {
@@ -149,6 +155,147 @@ public class UserMgrServiceImpl implements UserMgrService {
         groupMemberMapper.deleteByStudent(params);
 
         return courseStudentsMapper.deleteByStudent(params);
+    }
+
+    @Override
+    public PageModel getUserByRole(String role, String pageSize,
+                                   String currPage, String nameOrNo) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("role", role);
+        map.put("nameOrNo", nameOrNo);
+
+        Integer totalCount = userMapper.selectTotalCntByRole(map);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("role", role);
+        params.put("pageSize", pageSize);
+        params.put("nameOrNo", nameOrNo);
+
+        int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
+        params.put("offset", offset);
+
+        List<User> data = userMapper.selectSomeByRole(params);
+        PageModel pageModel = new PageModel();
+        pageModel.setPageData(data);
+        pageModel.setTotalCount(totalCount);
+        return pageModel;
+    }
+
+    @Override
+    public int addUser(User user) throws Exception {
+
+        // 检查数据库中是否存在当前用户
+        User userTmp = userMapper.selectBySerialNo(user.getSerialNo());
+        if (null != userTmp) {
+            throw new Exception("当前用户已存在，不可重复添加");
+        }
+        user.setHasLogin(0);
+        return userMapper.insert(user);
+    }
+
+    @Override
+    public int updateUser(User user) throws Exception {
+        if (CommonUtils.isEmpty(user.getSerialNo())) {
+            throw new Exception("用户信息异常，教工号或学号为空");
+        }
+        user.setHasLogin(0);
+        return userMapper.updateBySerialNo(user);
+    }
+
+    @Override
+    public int deleteUser(User user) {
+        return userMapper.deleteById(user.getId());
+    }
+
+    @Override
+    public int deleteStudent(String studentNo) throws Exception {
+
+        // 根据学号获取与之关联的所有课程信息
+        List<Course> courseList = courseMapper.selectStuCourse(studentNo);
+
+        checkWhetherDelete(studentNo, null);
+
+        // 根据课程id和学号，删除学生在该课程下的信息
+        for (Course course : courseList) {
+            clearStudentRelate(course.getId(), studentNo);
+        }
+        return 1;
+    }
+
+    @Override
+    public User checkLevelPwd(String serialNo, String levelPwd) throws Exception {
+        // 判断二级密码是否输入正确
+        User user = userMapper.selectBySerialNo(serialNo);
+        if (user == null) {
+            throw new Exception("不存在当前需要删除的用户信息");
+        }
+        if (!user.getLevelPwd().equals(levelPwd)) {
+            throw new Exception("删除失败，二级密码错误");
+        }
+        return user;
+    }
+
+    private void checkWhetherDelete(String studentNo, String courseId) throws Exception {
+
+        if (!CommonUtils.isEmpty(courseId)) {
+            // 判断当前学生是否存在待办
+            Map<String, Object> params = new HashMap<>();
+            params.put("studentNo", studentNo);
+            params.put("courseId", courseId);
+            List<GradeRelate> gradeRelateList = gradeRelateMapper.selectByCourseStudent(params);
+            if (gradeRelateList != null) {
+                throw new Exception("无法删除该学生，该学生有待办事项，请先进行移交");
+            }
+            // 判断当前学生是否担任组长
+            Group group = groupMapper.selectByLeader(params);
+            if (group != null) {
+                throw new Exception("该学生担任组长，请先更换组长或解散分组");
+            }
+            return;
+        }
+
+        // 判断当前学生是否存在待办
+        String courseNames = courseMapper.checkStudentBacklog(studentNo);
+        if (!CommonUtils.isEmpty(courseNames)) {
+            throw new Exception(String.format("无法删除该学生，该学生在课程%s中存在待办事项，请先进行移交",
+                    courseNames));
+        }
+
+        // 判断当前学生是否担任组长
+        courseNames = courseMapper.checkStudentGroup(studentNo);
+        if (!CommonUtils.isEmpty(courseNames)) {
+            throw new Exception(String.format("无法删除该学生，该学生在课程%s中担任组长，请先更换组长或解散分组",
+                    courseNames));
+        }
+    }
+
+    private void clearStudentRelate(Integer courseId, String studentNo) throws Exception {
+        // 组成员
+        Map<String, Object> params = new HashMap<>();
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        // 删除组成员表中的信息
+        groupMemberMapper.deleteByStudent(params);
+
+        // 评阅表中更新被评信息
+        List<GradeRelate> gradeRelateList = gradeRelateMapper.selectByGradeObjNo(params);
+        if (gradeRelateList != null) {
+            for (GradeRelate relate : gradeRelateList) {
+                List<String> gradeObjNos = Arrays.asList(relate.getGradeObjNo().split(
+                        Constant.Common.SEPARATE_COMMA));
+                gradeObjNos.remove(studentNo);
+                relate.setGradeObjName("");
+                relate.setGradeObjNo(CommonUtils.join(gradeObjNos,
+                        Constant.Common.SEPARATE_COMMA));
+                gradeRelateMapper.updateByIdSelective(relate);
+            }
+        }
+        // 课程学生
+        courseStudentsMapper.deleteByStudent(params);
+        // 学生试卷
+        studentPaperMapper.deleteByCourseStudent(params);
+        // 学生任务
+        studentTasksMapper.deleteByCourseStudent(params);
     }
 
     private void udpateHeaderIndex(ArrayList<String> headers) {

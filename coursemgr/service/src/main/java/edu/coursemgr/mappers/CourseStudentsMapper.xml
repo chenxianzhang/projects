@@ -38,6 +38,10 @@
     where courseId = #{courseId,jdbcType=INTEGER}
     and studentNo = #{studentNo, jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteByCourseIds" parameterType="java.lang.String" >
+    delete from course_students
+    where courseId in (#{courseIds, jdbcType=VARCHAR})
+  </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.CourseStudents" >
     insert into course_students (id, courseId, studentNo)
     values (#{id,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR})

@@ -23,4 +23,6 @@ public interface CourseStudentsMapper {
     List<String> getUngroupedStudent(Integer courseId);
 
     CourseStudents selectByStudent(Map params);
+
+    int deleteByCourseIds(String courseIds);
 }

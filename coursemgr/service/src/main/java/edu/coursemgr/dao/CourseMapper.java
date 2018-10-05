@@ -24,4 +24,10 @@ public interface CourseMapper {
     List<Course> selectTeacherCourse(String teacherNo);
 
     List<Course> selectStuCourse(String stuNo);
+
+    int deleteByCourseIds(String courseIds);
+
+    String checkStudentBacklog(String studentNo);
+
+    String checkStudentGroup(String studentNo);
 }

@@ -73,4 +73,11 @@
         from task_questions
         where taskId = #{taskId,jdbcType=INTEGER})
     </delete>
+    <delete id="deleteByCourseIds" parameterType="java.lang.String" >
+        delete from question_options
+        where questionId in (select id
+        from task_questions
+        where taskId in (select id from course_tasks
+        where courseId in (#{courseIds, jdbcType=VARCHAR})))
+    </delete>
 </mapper>

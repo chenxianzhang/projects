@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteById(Integer id);
 
     int insert(User record);
 
@@ -33,6 +33,10 @@ public interface UserMapper {
     int selectTotalCntByCourseId(Integer courseId);
 
     List<User> selectSomeByPage(Map params);
+
+    List<User> selectSomeByRole(Map params);
+
+    int selectTotalCntByRole(Map params);
 
     int selectUserGroupTotalCnt(Integer courseId);
 
