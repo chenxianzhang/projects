@@ -10,6 +10,8 @@ import java.util.Map;
 public interface UserMapper {
     int deleteById(Integer id);
 
+    int deleteBySerialNo(String serialNo);
+
     int insert(User record);
 
     int insertSelective(User record);

@@ -58,7 +58,6 @@
   import {validateEmail, validatePhone} from "../utils/validate";
   import { addStudent } from '@/api/student'
   import { update } from '@/api/login';
-  import dragDialog from '@/components/dragDialog';
 
   export default {
     name: "studentAddComp",
@@ -68,7 +67,7 @@
 
       }
     },
-    components:{dragDialog},
+    components:{},
     methods:{
       handleSubmit(){
         if(this.studentOperInfo.student.name.trim() === ''){

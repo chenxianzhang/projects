@@ -9,6 +9,7 @@ import './permission' // permission control
 import './icons' // icon
 import store from './store'
 import VueResource from 'vue-resource'
+import UserGlobalComponents from './components'
 
 import '@/styles/index.scss' // global css
 import '@/utils/extension.js'
@@ -19,6 +20,7 @@ Vue.config.productionTip = false
 Vue.use(Element)
 Vue.use(VueResource)
 Vue.use(Msg)
+Vue.use(UserGlobalComponents)
 
 // Vue.prototype.getGlobalConfig = function () {
 //   this.$http.get("./static/global.config.json").then((result) => {

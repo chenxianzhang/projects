@@ -189,6 +189,7 @@ public class UserMgrServiceImpl implements UserMgrService {
         if (null != userTmp) {
             throw new Exception("当前用户已存在，不可重复添加");
         }
+        user.setPassword(user.getSerialNo());
         user.setHasLogin(0);
         return userMapper.insert(user);
     }
@@ -203,8 +204,8 @@ public class UserMgrServiceImpl implements UserMgrService {
     }
 
     @Override
-    public int deleteUser(User user) {
-        return userMapper.deleteById(user.getId());
+    public int deleteUser(String serialNo) {
+        return userMapper.deleteBySerialNo(serialNo);
     }
 
     @Override
@@ -223,7 +224,7 @@ public class UserMgrServiceImpl implements UserMgrService {
     }
 
     @Override
-    public User checkLevelPwd(String serialNo, String levelPwd) throws Exception {
+    public void checkLevelPwd(String serialNo, String levelPwd) throws Exception {
         // 判断二级密码是否输入正确
         User user = userMapper.selectBySerialNo(serialNo);
         if (user == null) {
@@ -232,7 +233,6 @@ public class UserMgrServiceImpl implements UserMgrService {
         if (!user.getLevelPwd().equals(levelPwd)) {
             throw new Exception("删除失败，二级密码错误");
         }
-        return user;
     }
 
     private void checkWhetherDelete(String studentNo, String courseId) throws Exception {

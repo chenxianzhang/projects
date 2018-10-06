@@ -86,10 +86,10 @@ public interface UserMgrService {
 
     /**
      * 根据二级密码删除指定用户
-     * @param user
+     * @param serialNo
      * @return
      */
-    int deleteUser(User user);
+    int deleteUser(String serialNo);
 
     /**
      * 清除该学生与之关联的所有课程信息
@@ -105,5 +105,5 @@ public interface UserMgrService {
      * @param levelPwd
      * @return
      */
-    User checkLevelPwd(String serialNo, String levelPwd) throws Exception;
+    void checkLevelPwd(String serialNo, String levelPwd) throws Exception;
 }

@@ -55,16 +55,17 @@ export default {
       this.getUserData()
     },
     handleCommond(data) {
-      switch (data.commond) {
-        case 'edit':
-          break
-        case 'course':
-          break
-        case 'reset':
-          break
-        case 'delete':
-          break
-      }
+      this.$emit('handleCommond', data)
+      // switch (data.commond) {
+      //   case 'edit':
+      //     break
+      //   case 'course':
+      //     break
+      //   case 'reset':
+      //     break
+      //   case 'delete':
+      //     break
+      // }
     },
     getUserData() {
       let params = {

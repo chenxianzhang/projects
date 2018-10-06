@@ -6,7 +6,7 @@
       <el-table-column align="center" prop="serialNo" :label="getSerialText()"></el-table-column>
       <el-table-column v-if="role==='teacher'" align="center" prop="college" label="学院"></el-table-column>
       <el-table-column v-else align="center" prop="profession" label="专业"></el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button @click="handleClk(scope.row, 'edit')" type="text" size="small">编辑</el-button>
           <el-button @click="handleClk(scope.row, 'course')" type="text" size="small">课程</el-button>

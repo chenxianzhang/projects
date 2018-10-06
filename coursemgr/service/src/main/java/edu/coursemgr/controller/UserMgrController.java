@@ -170,17 +170,19 @@ public class UserMgrController extends BaseController {
     @ResponseBody
     public Object deleteUser(@RequestBody Map<String, Object> requestMap)
             throws Exception {
+        String currUserSerialNo = getParam(requestMap, "currUserSerialNo");
         String serialNo = getParam(requestMap, "serialNo");
         String role = getParam(requestMap, "role");
         String levelPwd = getParam(requestMap, "levelPwd");
         boolean illegal = CommonUtils.isEmpty(serialNo) ||
-                CommonUtils.isEmpty(levelPwd) || CommonUtils.isEmpty(role);
+                CommonUtils.isEmpty(levelPwd) || CommonUtils.isEmpty(role)
+                || CommonUtils.isEmpty(currUserSerialNo);
         if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
 
         // 判断而二级密码是否OK
-        User user = userMgrService.checkLevelPwd(serialNo, levelPwd);
+        userMgrService.checkLevelPwd(currUserSerialNo, levelPwd);
 
         // 删除教师用户
         if (CommonEnum.Role.TEACHER.getValue().equals(role)) {
@@ -189,7 +191,7 @@ public class UserMgrController extends BaseController {
             // 学生用户
             userMgrService.deleteStudent(serialNo);
         }
-        return userMgrService.deleteUser(user);
+        return userMgrService.deleteUser(serialNo);
     }
 
 }
