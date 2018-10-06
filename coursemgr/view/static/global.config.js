@@ -1,6 +1,5 @@
 
-var global = {
-    BASE_API: "http://localhost:8081/service"
+window.global = {
+    // BASE_API: "http://localhost:8443/service"
+    BASE_API: "http://localhost:8443/ser"
 }
-
-export default global

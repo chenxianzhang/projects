@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import global from '../../static/global.config'
 
 /**
  * 获取所有成绩--教师
@@ -39,9 +38,9 @@ export function updateSubjectScore(params) {
 
 export function download(courseId, studentNo, isStudent) {
     if (!isStudent) {
-      window.location.href = global.BASE_API + "/course/exportCourseGrade?courseId=" + courseId;
+      window.location.href = window.global.BASE_API + "/course/exportCourseGrade?courseId=" + courseId;
     } else {
-      window.location.href = global.BASE_API + "/course/exportStuGrade?courseId="
+      window.location.href = window.global.BASE_API + "/course/exportStuGrade?courseId="
        + courseId + "&studentNo=" + studentNo;
     }
 
@@ -49,9 +48,9 @@ export function download(courseId, studentNo, isStudent) {
 
 export function exportZip(courseId, studentNo, isStudent) {
     if (!isStudent) {
-      window.location.href = global.BASE_API + "/course/exportCourseProcess?courseId=" + courseId;
+      window.location.href = window.global.BASE_API + "/course/exportCourseProcess?courseId=" + courseId;
     } else {
-      window.location.href = global.BASE_API + "/course/exportStuCourseProcess?courseId="
+      window.location.href = window.global.BASE_API + "/course/exportStuCourseProcess?courseId="
        + courseId + "&studentNo=" + studentNo;
     }
 

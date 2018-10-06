@@ -1,7 +1,5 @@
 import axios from 'axios'
-import global from '../../static/global.config'
 import { Message } from 'element-ui'
-
 
 //使用iframe框架下载文件
 const downloadUrl = url => {
@@ -16,7 +14,7 @@ const downloadUrl = url => {
 
 // create an axios instance
 const service = axios.create({
-  baseURL: global.BASE_API, // api的base_url
+  baseURL: window.global.BASE_API, // api的base_url
   timeout: 600000, // request timeout
   contentType: 'application/json',
   withCredentials:true,      // 解决跨域问题，使用cors后，需添加此配置
