@@ -104,18 +104,18 @@
     from user
     where FIND_IN_SET(#{role, jdbcType=VARCHAR},roles)
     <if test="nameOrNo != null and nameOrNo != ''">
-      and (name like %#{nameOrNo, jdbcType=VARCHAR}%
-      or serialNo like %#{nameOrNo, jdbcType=VARCHAR}%)
+      and (name like CONCAT('%',#{nameOrNo},'%')
+      or serialNo like CONCAT('%',#{nameOrNo},'%'))
     </if>
   </select>
   <select id="selectSomeByRole" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select
-    count(serialNo) as totalCount
+    <include refid="Base_Column_List" />
     from user
     where FIND_IN_SET(#{role, jdbcType=VARCHAR},roles)
     <if test="nameOrNo != null and nameOrNo != ''">
-      and (name like %#{nameOrNo, jdbcType=VARCHAR}%
-      or serialNo like %#{nameOrNo, jdbcType=VARCHAR}%)
+      and (name like CONCAT('%',#{nameOrNo},'%')
+      or serialNo like CONCAT('%',#{nameOrNo},'%'))
     </if>
     order by createDate desc limit ${offset},${pageSize}
   </select>

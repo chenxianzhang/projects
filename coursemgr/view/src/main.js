@@ -12,11 +12,13 @@ import VueResource from 'vue-resource'
 
 import '@/styles/index.scss' // global css
 import '@/utils/extension.js'
+import Msg from '@/utils/message'
 
 Vue.config.productionTip = false
 
 Vue.use(Element)
 Vue.use(VueResource)
+Vue.use(Msg)
 
 // Vue.prototype.getGlobalConfig = function () {
 //   this.$http.get("./static/global.config.json").then((result) => {

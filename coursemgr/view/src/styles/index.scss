@@ -66,26 +66,40 @@ div:focus{
   }
 }
 
-
-
-.el-table {
-  td,th {
-    padding: 5px 0;
-  }
-}
-
 .el-button--default, .el-button--warning {
   padding: 8px 15px;
 }
 
 .el-button--primary {
   padding: 8px 15px;
-  background-color: rgb(84, 92, 100);
-
+  background-color: rgb(84, 92, 100) !important;
+  border-color: rgb(84, 92, 100) !important;
+  &:visited {
+    background-color: rgb(84, 92, 100);
+  }
+  &:hover {
+    background-color: rgba(84, 92, 100, 0.8) !important;
+  }
 }
 
-.el-button--primary:hover {
-  background-color: rgba(84, 92, 100, 0.8);
+.el-input {
+  .el-input__inner {
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
+.el-table {
+  td,th {
+    padding: 5px 0;
+  }
+  .el-table__header {
+    th {
+      background-color:rgba(28, 77, 125, 0.8);
+      color:white;
+      font-weight:bold ;
+    }
+  }
 }
 
 
