@@ -57,7 +57,7 @@ public interface UserMgrService {
      * @param studentNo
      * @return
      */
-    int deleteStudent(String courseId, String studentNo);
+    int deleteStudent(String courseId, String studentNo) throws Exception;
 
 
     /**

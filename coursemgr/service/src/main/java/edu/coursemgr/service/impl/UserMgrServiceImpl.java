@@ -128,33 +128,14 @@ public class UserMgrServiceImpl implements UserMgrService {
     }
 
     @Override
-    public int deleteStudent(String courseId, String studentNo) {
+    public int deleteStudent(String courseId, String studentNo) throws Exception{
         Map<String, Object> params = new HashMap<>();
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
 
-        // 确认当前学生是否为组长
-        Group group = groupMapper.selectByLeader(params);
-        if (group != null) {
-            Map tmpParams = new HashMap();
-            params.put("groupId", group.getId());
-            params.put("studentNo", studentNo);
-            List<GroupMember> members = groupMemberMapper.selectOtherMember(tmpParams);
-            if (members != null && members.size() > 0) {
-                group.setGroupLeaderNo(members.get(0).getStudentNo());
-                group.setLeaderName(members.get(0).getStudentName());
-                // 更新group
-                groupMapper.updateByIdSelective(group);
-
-            } else {
-                groupMapper.deleteById(group.getId());
-            }
-        }
-
-        // 删除组成员表中的信息
-        groupMemberMapper.deleteByStudent(params);
-
-        return courseStudentsMapper.deleteByStudent(params);
+        checkWhetherDelete(studentNo, courseId);
+        clearStudentRelate(Integer.valueOf(courseId), studentNo);
+        return 1;
     }
 
     @Override

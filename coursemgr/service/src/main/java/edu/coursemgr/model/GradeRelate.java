@@ -78,4 +78,5 @@ public class GradeRelate implements Serializable {
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
+
 }

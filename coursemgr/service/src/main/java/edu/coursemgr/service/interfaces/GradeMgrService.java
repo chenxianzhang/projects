@@ -46,4 +46,18 @@ public interface GradeMgrService {
      * @return
      */
     User getSubjectGradePerson(String taskId, String studentNo);
+
+    /**
+     * 获取指定学生下的所有待办
+     * @param studentNo
+     * @return
+     */
+    List<Schedule> getScheduleByStudent(String studentNo, String courseId);
+
+    /**
+     * 移交待办
+     * @param originStuNo
+     * @param dstStuNo
+     */
+    void handOverSchedule(String courseId, String originStuNo, String dstStuNo);
 }

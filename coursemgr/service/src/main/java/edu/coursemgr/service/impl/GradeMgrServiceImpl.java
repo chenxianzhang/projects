@@ -1,20 +1,19 @@
 package edu.coursemgr.service.impl;
 
 import edu.coursemgr.common.CommonEnum;
+import edu.coursemgr.common.Constant;
 import edu.coursemgr.dao.*;
 import edu.coursemgr.model.*;
 import edu.coursemgr.pojo.Schedule;
 import edu.coursemgr.pojo.SubjectGradeModel;
 import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.utils.CollectionUtils;
+import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by chenxianzhang on 2018/9/1 0001 下午 9:17
@@ -40,6 +39,9 @@ public class GradeMgrServiceImpl implements GradeMgrService {
 
     @Autowired
     private StudentTasksMapper studentTasksMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public boolean updateGroupMemberGradeObj(Integer courseId, String markType, CourseTasks task) {
@@ -98,7 +100,6 @@ public class GradeMgrServiceImpl implements GradeMgrService {
                 return schedule;
             });
         }
-
         params = new HashMap<>();
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
@@ -107,37 +108,9 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         if (resultList == null) {
             resultList = new ArrayList<>();
         }
-
-        for (GradeRelate relate : tmpList) {
-            String[] tmpStuNos = relate.getGradeObjNo().split(",");
-            if (tmpStuNos == null) {
-                continue;
-            }
-            for (String stuNo : tmpStuNos) {
-
-                // 判断当前学生任务是否已提交
-                params = new HashMap<>();
-                params.put("taskId", relate.getTaskId());
-                params.put("studentNo", stuNo);
-                StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
-                if (studentTasks == null || !studentTasks.getStatus().equals(CommonEnum.StudentTaskStatus.TO_REVIEW.getValue())) {
-                    continue;
-                }
-                user = userMapper.selectBySerialNo(stuNo);
-                if (user == null) {
-                    continue;
-                }
-                Schedule schedule = new Schedule();
-                schedule.setMarkPersonName(studentName);
-                schedule.setMarkPersonSerialNo(studentNo);
-
-                schedule.setTargetSerialName(user.getName());
-                schedule.setTargetSerialNo(user.getSerialNo());
-                schedule.setTaskId(relate.getTaskId());
-                schedule.setTaskName(relate.getTaskName());
-
-                resultList.add(schedule);
-            }
+        List<Schedule> tmpResultList = transferSchedule(tmpList, false, user);
+        if (tmpResultList != null) {
+            resultList.addAll(tmpResultList);
         }
         return resultList;
     }
@@ -197,6 +170,97 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         return userMapper.selectBySerialNo(gradeRelate.getStudentNo());
     }
 
+    @Override
+    public List<Schedule> getScheduleByStudent(String courseId, String studentNo) {
+
+        User user = userMapper.selectBySerialNo(studentNo);
+
+        Map params = new HashMap<>();
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        List<GradeRelate> tmpList = gradeRelateMapper.selectByCourseStudent(params);
+
+        return transferSchedule(tmpList, true, user);
+    }
+
+    @Override
+    public void handOverSchedule(String courseId, String originStuNo, String dstStuNo) {
+
+        Map params = new HashMap<>();
+        params.put("courseId", courseId);
+        params.put("studentNo", originStuNo);
+        List<GradeRelate> originStuRelateList = gradeRelateMapper.selectByCourseStudent(params);
+        params.put("studentNo", dstStuNo);
+        List<GradeRelate> dstStuRelateList = gradeRelateMapper.selectByCourseStudent(params);
+        List<GradeRelate> updateList = new ArrayList<>();
+        for (GradeRelate originRelate : originStuRelateList) {
+            boolean contain = false;
+            for (GradeRelate relate : dstStuRelateList) {
+                if (relate.getTaskId() == originRelate.getTaskId()) {
+                    contain = true;
+                    if (CommonUtils.isEmpty(relate.getGradeObjNo())) {
+                        relate.setGradeObjNo(originRelate.getGradeObjNo());
+                    } else {
+                        relate.setGradeObjNo(String.format("%s,%s", relate.getGradeObjNo(),
+                                originRelate.getGradeObjNo()));
+                    }
+                    updateList.add(relate);
+                    break;
+                }
+            }
+            if (!contain) {
+                GradeRelate relate = new GradeRelate();
+                relate.setGradeObjNo(originRelate.getGradeObjNo());
+                relate.setStudentNo(dstStuNo);
+                relate.setTaskId(originRelate.getTaskId());
+                relate.setTaskName(originRelate.getTaskName());
+                relate.setCourseId(originRelate.getCourseId());
+                updateList.add(relate);
+            }
+        }
+
+        updateBatch(updateList);
+    }
+
+    private List<Schedule> transferSchedule(List<GradeRelate> gradeRelateList,
+                                            final boolean unCommit, final User markUser) {
+//        final Course course = courseMapper.selectById(Integer.valueOf(courseId));
+        return CollectionUtils.arrayListCasts(gradeRelateList, gradeRelate -> {
+            String[] tmpStuNos = gradeRelate.getGradeObjNo().split(Constant.Common.SEPARATE_COMMA);
+            if (tmpStuNos == null) {
+                return null;
+            }
+            final GradeRelate relate = gradeRelate;
+            return CollectionUtils.arrayListCast(Arrays.asList(tmpStuNos), stuNo -> {
+                // 判断当前学生任务是否已提交
+                if (!unCommit) {  // 确定是否包含未提交的数据
+                    Map params = new HashMap<>();
+                    params.put("taskId", relate.getTaskId());
+                    params.put("studentNo", stuNo);
+                    StudentTasks studentTasks = studentTasksMapper.selectByStudent(params);
+                    boolean illegal = studentTasks == null ||
+                            !studentTasks.getStatus().equals(CommonEnum.StudentTaskStatus.TO_REVIEW.getValue());
+                    if (illegal) {
+                        return null;
+                    }
+                }
+                User user = userMapper.selectBySerialNo(stuNo);
+                if (user == null) {
+                    return null;
+                }
+                Schedule schedule = new Schedule();
+                schedule.setMarkPersonName(markUser.getName());
+                schedule.setMarkPersonSerialNo(markUser.getSerialNo());
+
+                schedule.setTargetSerialName(user.getName());
+                schedule.setTargetSerialNo(user.getSerialNo());
+                schedule.setTaskId(relate.getTaskId());
+                schedule.setTaskName(relate.getTaskName());
+                return schedule;
+            });
+        });
+
+    }
 
     private List<GradeRelate> updateMemberGradeObj(Integer courseId, String markType) {
         // 根据课程id获取所有组成员信息
@@ -295,6 +359,19 @@ public class GradeMgrServiceImpl implements GradeMgrService {
             return;
         }
         relateList.forEach(relate -> gradeRelateMapper.insertSelective(relate));
+    }
+
+    private void updateBatch(List<GradeRelate> relateList) {
+        if (relateList == null) {
+            return;
+        }
+        relateList.forEach(relate -> {
+            if (relate.getTaskId() != null) {
+                gradeRelateMapper.updateByIdSelective(relate);
+            } else {
+                gradeRelateMapper.insertSelective(relate);
+            }
+        });
     }
 
 }

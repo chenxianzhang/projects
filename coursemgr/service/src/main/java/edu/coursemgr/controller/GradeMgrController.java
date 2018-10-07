@@ -6,10 +6,7 @@ import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -60,6 +57,39 @@ public class GradeMgrController extends BaseController {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
         return gradeMgrService.getSubjectGradePerson(taskId, studentNo);
+    }
+
+    @RequestMapping(value="/getScheduleByStudent", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getScheduleByStudent(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+
+        String studentNo = getParam(requestMap, "studentNo");
+        String courseId = getParam(requestMap, "courseId");
+        if (CommonUtils.isEmpty(studentNo) || CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return gradeMgrService.getScheduleByStudent(studentNo, courseId);
+
+    }
+
+    @RequestMapping(value="/handOverSchedule", method=RequestMethod.POST)
+    @ResponseBody
+    public Object handOverSchedule(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        String originStudentNo = getParam(requestMap, "originStudentNo");
+        String dstStudentNo = getParam(requestMap, "dstStudentNo");
+        if (CommonUtils.isEmpty(originStudentNo) ||
+                CommonUtils.isEmpty(dstStudentNo) || CommonUtils.isEmpty(courseId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        gradeMgrService.handOverSchedule(courseId, originStudentNo, dstStudentNo);
+
+        return Constant.Common.SUCCESS;
+
     }
 
 }
