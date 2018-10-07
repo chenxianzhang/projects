@@ -11,7 +11,7 @@ import java.util.*;
 public final class CollectionUtils {
 
     /**
-     * ArrayList 不同类型之间的转换
+     * ArrayList 不同类型之间的转换 中间转换返回单个对象
      * @param origin
      * @param func
      * @param <R>
@@ -26,7 +26,29 @@ public final class CollectionUtils {
         origin.forEach(item -> {
             R tResult = func.call(item);
             if (tResult != null) {
-                rList.add(func.call(item));
+                rList.add(tResult);
+            }
+        });
+        return rList;
+    }
+
+    /**
+     * ArrayList 不同类型之间的转换 中间转换返回集合
+     * @param origin
+     * @param func
+     * @param <R>
+     * @param <T>
+     * @return
+     */
+    public static <R, T> List<R> arrayListCasts(List<T> origin, Function<List<R>, T> func) {
+        if (origin == null || func == null) {
+            return null;
+        }
+        List<R> rList = new ArrayList<>(origin.size());
+        origin.forEach(item -> {
+            List<R> tResult = func.call(item);
+            if (tResult != null && tResult.size() > 0) {
+                rList.addAll(tResult);
             }
         });
         return rList;
@@ -52,7 +74,7 @@ public final class CollectionUtils {
             if (filter.call(item)) {
                 R tResult = func.call(item);
                 if (tResult != null) {
-                    rList.add(func.call(item));
+                    rList.add(tResult);
                 }
             }
         });
