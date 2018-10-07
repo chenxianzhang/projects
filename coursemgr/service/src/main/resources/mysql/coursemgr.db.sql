@@ -95,7 +95,8 @@ CREATE TABLE `student_paper` (
   `questionId` BIGINT,  #试题id
   `questionType`  varchar(15),   # 题目类型  单选题，多选题，判断题，主观题等
 	`answers`  varchar(1000),
-	`score` FLOAT default 0     #得分
+	`score` FLOAT default 0,     #得分
+	`teacherScore` FLOAT default 0     #教师重新评阅后的分数，仅针对主观题
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `group`;

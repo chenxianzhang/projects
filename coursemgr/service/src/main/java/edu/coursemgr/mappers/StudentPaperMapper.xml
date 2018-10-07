@@ -9,9 +9,10 @@
     <result column="questionType" property="questionType" jdbcType="VARCHAR" />
     <result column="answers" property="answers" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="REAL" />
+    <result column="teacherScore" property="teacherScore" jdbcType="REAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id,taskId, studentNo, questionId, questionType, answers, score
+    id,taskId, studentNo, questionId, questionType, answers, score,teacherScore
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -47,9 +48,9 @@
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.StudentPaper" >
     insert into student_paper (id, taskId,studentNo, questionId, questionType,
-      answers, score)
+      answers, score, teacherScore)
     values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{studentNo,jdbcType=VARCHAR}, #{questionId,jdbcType=BIGINT},
-    #{questionType,jdbcType=VARCHAR},#{answers,jdbcType=VARCHAR}, #{score,jdbcType=REAL})
+    #{questionType,jdbcType=VARCHAR},#{answers,jdbcType=VARCHAR}, #{score,jdbcType=REAL}, #{teacherScore,jdbcType=REAL})
   </insert>
   <insert id="insertBatch" parameterType="java.util.List" >
     insert into group_member
@@ -71,6 +72,9 @@
       </if>
       <if test="score != null" >
         score,
+      </if>
+      <if test="teacherScore != null" >
+        teacherScore,
       </if>
     </trim>
     values
@@ -94,6 +98,9 @@
       </if>
       <if test="item.score != null" >
         #{score,jdbcType=REAL},
+      </if>
+      <if test="item.teacherScore != null" >
+        #{teacherScore,jdbcType=REAL},
       </if>
       )
       <!--</trim>-->
@@ -123,6 +130,9 @@
       <if test="score != null" >
         score,
       </if>
+      <if test="teacherScore != null" >
+        teacherScore,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -145,6 +155,9 @@
       </if>
       <if test="score != null" >
         #{score,jdbcType=REAL},
+      </if>
+      <if test="teacherScore != null" >
+        #{teacherScore,jdbcType=REAL},
       </if>
     </trim>
   </insert>
@@ -169,6 +182,9 @@
       <if test="score != null" >
         score = #{score,jdbcType=REAL},
       </if>
+      <if test="teacherScore != null" >
+        teacherScore = #{teacherScore,jdbcType=REAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -184,6 +200,9 @@
       <if test="score != null" >
         score = #{score,jdbcType=REAL},
       </if>
+      <if test="teacherScore != null" >
+        teacherScore = #{teacherScore,jdbcType=REAL},
+      </if>
     </set>
     where studentNo = #{studentNo,jdbcType=VARCHAR}
     and questionId = #{questionId,jdbcType=BIGINT}
@@ -195,7 +214,8 @@
       questionId = #{questionId,jdbcType=BIGINT},
       questionType = #{questionType,jdbcType=VARCHAR},
       answers = #{answers,jdbcType=VARCHAR},
-      score = #{score,jdbcType=REAL}
+      score = #{score,jdbcType=REAL},
+      teacherScore = #{teacherScore,jdbcType=REAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

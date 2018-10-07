@@ -33,6 +33,8 @@ public class SubjectMarkModel implements Serializable {
 
     private Float questionScore;
 
+    private Float teacherScore;
+
     public Long getId() {
         return id;
     }
@@ -127,5 +129,13 @@ public class SubjectMarkModel implements Serializable {
 
     public void setQuestionScore(Float questionScore) {
         this.questionScore = questionScore;
+    }
+
+    public Float getTeacherScore() {
+        return teacherScore;
+    }
+
+    public void setTeacherScore(Float teacherScore) {
+        this.teacherScore = teacherScore;
     }
 }

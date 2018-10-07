@@ -357,6 +357,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                     TaskMarkPaper paper = new TaskMarkPaper();
                     paper.setTaskQuestions(question);
                     paper.setOptionList(optionsList);
+
                     return paper;
                 });
 
@@ -364,6 +365,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         resultMap.put("task", task);
         resultMap.put("questionList", taskPaperList);
         resultMap.put("status", CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
+        GradeRelate relate = gradeRelateMapper.selectByStudent(params);
+        if (relate != null) {
+            User user = userMapper.selectBySerialNo(relate.getStudentNo());
+            resultMap.put("markUser", user);
+        }
         if (studentTasks != null) {
             resultMap.put("studentTotalScore", studentTasks.getScore());
             resultMap.put("status", studentTasks.getStatus());

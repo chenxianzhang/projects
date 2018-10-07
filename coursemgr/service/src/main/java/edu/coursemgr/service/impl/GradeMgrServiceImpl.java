@@ -120,10 +120,17 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         if (subjectGradeModel.getSubjectList() == null) {
             return 0;
         }
+        final boolean firstScore = CommonUtils.isEmpty(subjectGradeModel.getTeacherNo());
+
         // 先更新学员主观题分数
         subjectGradeModel.getSubjectList().forEach(sub -> {
             StudentPaper paper = new StudentPaper();
-            paper.setScore(sub.getScore());
+            if (firstScore) {
+                paper.setScore(sub.getScore());
+            } else {
+                paper.setTeacherScore(sub.getTeacherScore());
+            }
+
             paper.setQuestionId(sub.getQuestionId());
             paper.setStudentNo(sub.getStudentNo());
             studentPaperMapper.updateByStudent(paper);
@@ -139,8 +146,12 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         }
         Float totalScore = 0f;
         for (StudentPaper paper : papers) {
-            if (!paper.getScore().isNaN()) {
-                totalScore += paper.getScore();
+            if (paper.getTeacherScore() != null && !paper.getTeacherScore().isNaN()) {
+                totalScore += paper.getTeacherScore();
+            } else {
+                if (!paper.getScore().isNaN()) {
+                    totalScore += paper.getScore();
+                }
             }
         }
 

@@ -28,6 +28,7 @@
     <result column="options" property="options" jdbcType="LONGVARCHAR" />
     <result column="questionScore" property="questionScore" jdbcType="REAL" />
     <result column="standardAnswer" property="standardAnswer" jdbcType="VARCHAR" />
+    <result column="teacherScore" property="teacherScore" jdbcType="REAL" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, taskId, questionNo, stems, questionType, score, answers, answerAttachment, markType
@@ -54,7 +55,7 @@
   <select id="selectStuTaskPaper" resultMap="ResultMapSubjectiveMark" parameterType="java.util.HashMap">
     select tq.id,tq.taskId,tq.questionNo,tq.stems,tq.questionType,
     tq.answerAttachment, tq.markType,tq.options,tq.score as questionScore,
-    tq.answers as standardAnswer, sp.score, sp.answers
+    tq.answers as standardAnswer, sp.score, sp.answers, sp.teacherScore
     from task_questions tq left join student_paper sp
     on sp.questionId=tq.id and sp.studentNo=#{studentNo, jdbcType=VARCHAR}
     where tq.taskId=#{taskId, jdbcType=INTEGER} order by tq.questionType asc

@@ -16,6 +16,8 @@ public class SubjectGradeModel implements Serializable {
 
     private String studentNo;
 
+    private String teacherNo;
+
     List<StudentPaper> subjectList;
 
 
@@ -41,5 +43,13 @@ public class SubjectGradeModel implements Serializable {
 
     public void setSubjectList(List<StudentPaper> subjectList) {
         this.subjectList = subjectList;
+    }
+
+    public String getTeacherNo() {
+        return teacherNo;
+    }
+
+    public void setTeacherNo(String teacherNo) {
+        this.teacherNo = teacherNo;
     }
 }

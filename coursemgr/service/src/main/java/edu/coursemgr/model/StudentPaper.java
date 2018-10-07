@@ -20,6 +20,8 @@ public class StudentPaper implements Serializable {
 
     private Float score;
 
+    private Float teacherScore;
+
     public Integer getId() {
         return id;
     }
@@ -74,5 +76,13 @@ public class StudentPaper implements Serializable {
 
     public void setTaskId(Integer taskId) {
         this.taskId = taskId;
+    }
+
+    public Float getTeacherScore() {
+        return teacherScore;
+    }
+
+    public void setTeacherScore(Float teacherScore) {
+        this.teacherScore = teacherScore;
     }
 }
