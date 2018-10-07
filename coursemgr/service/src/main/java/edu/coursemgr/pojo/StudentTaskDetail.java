@@ -19,6 +19,10 @@ public class StudentTaskDetail implements Serializable {
 
     private String status;
 
+    private String statusText;
+
+    private String reviewer;
+
     private Float score;
 
     public Integer getGroupId() {
@@ -67,5 +71,21 @@ public class StudentTaskDetail implements Serializable {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
 }

@@ -52,8 +52,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private GradeRelateMapper gradeRelateMapper;
+
     @Override
-    public Map<String, Object>  saveTask(CourseTaskDetail taskDetail) throws Exception {
+    public Map<String, Object> saveTask(CourseTaskDetail taskDetail) throws Exception {
         boolean illegal = taskDetail.getTask() == null || taskDetail.getQuestionList() == null;
         if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
@@ -113,14 +116,14 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
         List<TaskPaper> taskPaperList = CollectionUtils.arrayListCast(questionsList,
                 question -> {
-            List<QuestionOptions> optionsList = questionOptionsMapper.selectByQuestionId(
-                    question.getId());
-            TaskPaper paper = new TaskPaper();
-            paper.setTaskQuestions(question);
-            paper.setOptionList(optionsList);
+                    List<QuestionOptions> optionsList = questionOptionsMapper.selectByQuestionId(
+                            question.getId());
+                    TaskPaper paper = new TaskPaper();
+                    paper.setTaskQuestions(question);
+                    paper.setOptionList(optionsList);
 
-            return paper;
-        });
+                    return paper;
+                });
 
         CourseTaskDetail taskDetail = new CourseTaskDetail();
         taskDetail.setTask(task);
@@ -157,6 +160,60 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     }
 
     @Override
+    public PageModel getTaskSituationList(String taskId, String courseId, String pageSize,
+                                          String currPage) {
+
+        int totalCount = userMapper.selectTotalCntByCourseId(Integer.valueOf(courseId));
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("courseId", courseId);
+        paramMap.put("pageSize", pageSize);
+        int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
+        paramMap.put("currSize", offset);
+        // 获取课程下所有学员
+        List<User> userList = userMapper.selectSomeByPage(paramMap);
+        final String tmpTaskId = taskId;
+        List<StudentTaskDetail> dataList = CollectionUtils.arrayListCast(userList,
+                user -> {
+                    StudentTaskDetail detail = new StudentTaskDetail();
+                    detail.setStudentNo(user.getSerialNo());
+                    detail.setStudentName(user.getName());
+
+                    // 获取该任务的状态，及该任务是否包含主观题和评分类型
+                    Map params = new HashMap<>();
+                    params.put("taskId", tmpTaskId);
+                    params.put("studentNo", user.getSerialNo());
+                    TaskStatusMarkModel model = courseTasksMapper.selectTaskStatusMark(params);
+                    if (CommonUtils.isEmpty(model.getStatus())) {
+                        detail.setStatus(CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
+                        detail.setStatusText(CommonEnum.StudentTaskStatus.UNCOMMITTED.getName());
+                    } else {
+                        CommonEnum.StudentTaskStatus taskStatus = CommonEnum.StudentTaskStatus.valueOf(model.getStatus());
+                        detail.setStatus(taskStatus.getValue());
+                        detail.setStatusText(taskStatus.getName());
+                    }
+                    if (model.getSubjectCnt() == 0) {
+                        detail.setReviewer("系统");
+                    } else {
+                        if (model.getMarkType().equals(CommonEnum.GradeType.AUTO_EVA.getValue())) {
+                            detail.setReviewer(user.getName());
+                        } else {
+                            // TODO 重新评阅后的评分人获取
+                            GradeRelate relate = gradeRelateMapper.selectByStudent(params);
+                            User userTmp = userMapper.selectBySerialNo(relate.getStudentNo());
+                            detail.setReviewer(userTmp.getName());
+                        }
+                    }
+                    return detail;
+                });
+
+        PageModel pageModel = new PageModel();
+        pageModel.setTotalCount(totalCount);
+        pageModel.setPageData(dataList);
+        return pageModel;
+    }
+
+    @Override
     public List<CourseTaskSituation> getCourseTaskSituation(String courseId) {
         List<CourseTaskSituation> situationList =
                 courseTasksMapper.getCourseTaskSituation(Integer.valueOf(courseId));
@@ -170,7 +227,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     @Override
     public List<StudentTaskSituation> getMyTaskSituation(String courseId, String studentNo) {
 
-        Map<String ,Object> params = new HashMap<>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
 
@@ -343,7 +400,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         response.setHeader("Content-Disposition",
                 "attachment; filename=".concat(
                         String.valueOf(URLEncoder.encode(zipName, "UTF-8"))));
-        ZipUtils.toZip(unpackDir, response.getOutputStream(),true);
+        ZipUtils.toZip(unpackDir, response.getOutputStream(), true);
 
         // 删除当前目录及文件
         CommonUtils.deleteDir(unpackDir);
@@ -377,7 +434,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         response.setHeader("Content-Disposition",
                 "attachment; filename=".concat(
                         String.valueOf(URLEncoder.encode(zipName, "UTF-8"))));
-        ZipUtils.toZip(unpackDir, response.getOutputStream(),true);
+        ZipUtils.toZip(unpackDir, response.getOutputStream(), true);
 
         // 删除当前目录及文件
         CommonUtils.deleteDir(unpackDir);
@@ -401,7 +458,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             html += "<br/>";
         }
         if (html == null) {
-            return ;
+            return;
         }
         String fileName = String.format("%s/%s(%s).doc", unpackDir, student.getName(), student.getSerialNo());
         new JsoupWordOper().html2Word(html, unpackDir, fileName);
@@ -419,7 +476,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                 return;
             }
             String html = transfer2Html(taskDetail);
-            CourseTasks task = (CourseTasks)taskDetail.get("task");
+            CourseTasks task = (CourseTasks) taskDetail.get("task");
             String fileName = String.format("%s/%s(%s%s).doc", unpackDir, task.getName(),
                     student.getName(), student.getSerialNo());
             new JsoupWordOper().html2Word(html, unpackDir, fileName);
@@ -427,8 +484,8 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     }
 
     private String transfer2Html(Map taskDetail) {
-        CourseTasks task = (CourseTasks)taskDetail.get("task");
-        List<TaskMarkPaper> questionList = (List<TaskMarkPaper>)taskDetail.get("questionList");
+        CourseTasks task = (CourseTasks) taskDetail.get("task");
+        List<TaskMarkPaper> questionList = (List<TaskMarkPaper>) taskDetail.get("questionList");
         String html = String.format("<p style=\"text-align:center;font-weight: bolder;font-size:20px;\">%s</p>",
                 task.getName());
         for (TaskMarkPaper question : questionList) {
@@ -482,7 +539,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             return;
         }
 
-        taskQuestions.forEach(taskQuestion ->{
+        taskQuestions.forEach(taskQuestion -> {
             TaskQuestions question = taskQuestion.getTaskQuestions();
             if (question != null) {
                 if (question.getId() == null) {

@@ -48,6 +48,12 @@ public interface TaskMgrService {
      */
     List<StudentTaskDetail> getStudentTaskSituation(String taskId, String courseId);
 
+    /**
+     * 根据courseId, taskId获取指定课程下的任务学生完成情况
+     * @param taskId
+     * @return
+     */
+    PageModel getTaskSituationList(String taskId, String courseId, String pageSize, String currPage);
 
     /**
      * 根据课程id获取课程任务详情

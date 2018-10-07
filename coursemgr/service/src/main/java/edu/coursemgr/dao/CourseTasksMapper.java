@@ -3,6 +3,7 @@ package edu.coursemgr.dao;
 import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.pojo.CourseTaskSituation;
 import edu.coursemgr.pojo.StudentTaskInfo;
+import edu.coursemgr.pojo.TaskStatusMarkModel;
 
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,6 @@ public interface CourseTasksMapper {
     int deleteTask(Integer taskId);
 
     int deleteByCourseIds(String courseIds);
+
+    TaskStatusMarkModel selectTaskStatusMark(Map params);
 }

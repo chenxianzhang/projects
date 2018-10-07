@@ -79,6 +79,23 @@ public class TaskMgrController extends BaseController {
         return taskMgrService.getStudentTaskSituation(taskId, courseId);
     }
 
+    @RequestMapping(value="/getTaskSituationList", method=RequestMethod.POST)
+    @ResponseBody
+    public PageModel getTaskSituationList(
+            @RequestBody Map<String, Object> requestMap) throws Exception {
+        String taskId = getParam(requestMap, "taskId");
+        String courseId = getParam(requestMap, "courseId");
+        String pageSize = getParam(requestMap, "pageSize");
+        String currPage = getParam(requestMap, "currPage");
+        boolean illegal = CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(pageSize)
+                || CommonUtils.isEmpty(currPage) || CommonUtils.isEmpty(taskId);
+        if (illegal) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        return taskMgrService.getTaskSituationList(taskId, courseId, pageSize, currPage);
+    }
+
     @RequestMapping(value="/getCourseTaskSituation", method=RequestMethod.POST)
     @ResponseBody
     public List<CourseTaskSituation> getCourseTaskSituation(

@@ -31,9 +31,22 @@
     <result column="taskId" property="taskId" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="TaskStatusMarkMap" type="edu.coursemgr.pojo.TaskStatusMarkModel" >
+    <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="markType" property="markType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="subjectCnt" property="taskId" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, courseId, name, weight, status,publishTime, startTime, deadline, markType, totalScore
   </sql>
+  <select id="selectTaskStatusMark" resultMap="TaskStatusMarkMap" parameterType="java.util.HashMap" >
+    select ct.id as taskId, ct.markType,st.status,
+    (select count(id) from task_questions where taskId=#{taskId, jdbcType=INTEGER} and questionType='2') as sujectCnt
+    from course_tasks ct left join student_tasks st
+    on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
+    where ct.id=#{taskId, jdbcType=INTEGER}
+  </select>
   <select id="selectStuTaskInfo" resultMap="StudentTaskInfoMap" parameterType="java.util.HashMap" >
     select ct.id as taskId, ct.name as taskName, ct.weight as taskWeight,st.score,st.status
     from course_tasks ct left join student_tasks st on st.taskId=ct.id and st.studentNo=#{studentNo, jdbcType=VARCHAR}
