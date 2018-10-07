@@ -48,4 +48,6 @@ public interface StudentTasksMapper {
     int deleteByCourseIds(String courseIds);
 
     int deleteByCourseStudent(Map params);
+
+    List<StudentTasks> selectStuTaskList(Map params);
 }

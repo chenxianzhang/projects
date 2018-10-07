@@ -198,7 +198,6 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                         if (model.getMarkType().equals(CommonEnum.GradeType.AUTO_EVA.getValue())) {
                             detail.setReviewer(user.getName());
                         } else {
-                            // TODO 重新评阅后的评分人获取
                             GradeRelate relate = gradeRelateMapper.selectByStudent(params);
                             User userTmp = userMapper.selectBySerialNo(relate.getStudentNo());
                             detail.setReviewer(userTmp.getName());

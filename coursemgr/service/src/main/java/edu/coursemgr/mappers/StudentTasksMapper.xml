@@ -33,6 +33,13 @@
     from student_tasks
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectStuTaskList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from student_tasks
+    where taskId in (select id from course_tasks where courseId = #{courseId,jdbcType=INTEGER})
+    and studentNo = #{studentNo, jdbcType=VARCHAR}
+  </select>
   <select id="selectByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select
     <include refid="Base_Column_List" />

@@ -77,19 +77,18 @@ public class UserMgrServiceImpl implements UserMgrService {
     public int addStudent(UserEditModel userEditModel) throws Exception {
         // 检查数据库中是否存在当前用户
         User user = userMapper.selectBySerialNo(userEditModel.getUser().getSerialNo());
-        if (null != user) {
-            throw new Exception("当前用户已存在，不可重复添加");
+        if (null == user) {
+            userEditModel.getUser().setRoles(CommonEnum.Role.STUDENT.getValue());
+            userEditModel.getUser().setHasLogin(0);
+            userMapper.insert(userEditModel.getUser());
         }
-        userEditModel.getUser().setRoles(CommonEnum.Role.STUDENT.getValue());
-        userEditModel.getUser().setHasLogin(0);
-        if (userMapper.insert(userEditModel.getUser()) > 0) {
-            // 保存课程与学员关系
-            CourseStudents cs = new CourseStudents();
-            cs.setCourseId(Integer.valueOf(userEditModel.getCourseId()));
-            cs.setStudentNo(userEditModel.getUser().getSerialNo());
-            if (this.courseStudentsMapper.insert(cs) == 0) {
-                throw new Exception("将学员加入到当前课程中发生异常");
-            }
+
+        // 保存课程与学员关系
+        CourseStudents cs = new CourseStudents();
+        cs.setCourseId(Integer.valueOf(userEditModel.getCourseId()));
+        cs.setStudentNo(userEditModel.getUser().getSerialNo());
+        if (this.courseStudentsMapper.insert(cs) == 0) {
+            throw new Exception("将学员加入到当前课程中发生异常");
         }
         return 1;
     }
@@ -98,13 +97,13 @@ public class UserMgrServiceImpl implements UserMgrService {
     public void importStudents(MultipartFile file, String courseId)
             throws Exception {
         //判断文件是否为空
-        if(file == null){
+        if (file == null) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
         String name = file.getOriginalFilename();
         long size = file.getSize();
         boolean illegal = name == null || ExcelUtil.EMPTY.equals(name) && size == 0;
-        if(illegal){
+        if (illegal) {
             throw new Exception(Constant.ExceptionMessage.EXCEL_EMPTY);
         }
         //读取Excel数据到List中
@@ -128,7 +127,7 @@ public class UserMgrServiceImpl implements UserMgrService {
     }
 
     @Override
-    public int deleteStudent(String courseId, String studentNo) throws Exception{
+    public int deleteStudent(String courseId, String studentNo) throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("courseId", courseId);
         params.put("studentNo", studentNo);
