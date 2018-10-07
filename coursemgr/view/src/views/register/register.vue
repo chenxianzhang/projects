@@ -7,7 +7,7 @@
       <el-form-item label="教工号：" required>
         <el-input v-model="regInfo.serialNo" placeholder="请输入教工号"></el-input>
       </el-form-item>
-      <el-form-item label="学院：" required>
+      <el-form-item label="学院：">
         <el-input v-model="regInfo.college" placeholder="请输入学院名称"></el-input>
       </el-form-item>
       <el-form-item label="电话：">
@@ -61,10 +61,10 @@
             this.$message.warning('教工号不能为空！');
             return;
           }
-          if(this.regInfo.college === ''){
-            this.$message.warning('学院名称不能为空！');
-            return;
-          }
+          // if(this.regInfo.college === ''){
+          //   this.$message.warning('学院名称不能为空！');
+          //   return;
+          // }
           if(this.regInfo.password === ''){
             this.$message.warning('密码不能为空！');
             return;
@@ -88,7 +88,7 @@
             });
         },
         handleCancel(){
-          this.$refs.regForm.resetField();
+          this.$refs.regForm.resetFields();
         },
       },
     }

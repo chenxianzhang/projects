@@ -61,7 +61,7 @@ export default {
     }
   },
   components: {
-    
+
   },
   mounted() {
     this.serialText = this.role === 'teacher' ? '教工号' : '学号'
@@ -76,9 +76,9 @@ export default {
     initRoles() {
       this.rules = {
         name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        college: [
-          { required: true, message: '请输入学院名称', trigger: 'blur' }
-        ],
+        // college: [
+        //   { required: true, message: '请输入学院名称', trigger: 'blur' }
+        // ],
         serialNo: [
           {
             required: true,

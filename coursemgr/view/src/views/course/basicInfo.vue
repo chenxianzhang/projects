@@ -34,11 +34,12 @@
         <el-table-column align="center" prop="email" label="邮箱"></el-table-column>
         <el-table-column v-if="editable" align="center"
           label="操作"
-          width="140">
+          width="180">
           <template slot-scope="scope">
             <el-button @click="handleStudentDetailClick(scope.row)" type="text" size="small">查看</el-button>
             <el-button @click="handleStudentEditClick(scope.row)" type="text" size="small">编辑</el-button>
             <el-button @click="handleStudentDeleteClick(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="handleStudentTodoClick(scope.row)" type="text" size="small">待办</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -240,13 +241,17 @@
        * 删除学生详情信息
        * */
       handleStudentDeleteClick(data){
-
         let self = this;
-        deleteStudent({courseId: this.$route.params.courseId,
-         studentNo: data.serialNo}).then(response => {
 
+        this.$confirm('此操作将删除该学生, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteStudent({courseId: this.$route.params.courseId,
+            studentNo: data.serialNo}).then(response => {
             if (response.status === 1) {
-            self.getStudentsOfCourse(self.$route.params.courseId);
+              self.getStudentsOfCourse(self.$route.params.courseId);
               self.$message({
                 showClose: true,
                 type: 'success',
@@ -256,16 +261,27 @@
               self.$message({
                 showClose: true,
                 type: 'warning',
-                message: "删除失败"
+                message: response.msg
               });
             }
 
-         }).catch(err => {
+          }).catch(err => {
             console.log(err);
-         })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
 
+    /**
+     * handleStudentTodoClick  学生待办查看
+     * */
+    handleStudentTodoClick(){
 
+    },
       handleEditCourse: function () {
         this.courseDlgVisible = true;
       },
