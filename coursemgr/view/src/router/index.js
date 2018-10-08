@@ -142,7 +142,7 @@ export const asyncRouterMap = [
       }
     }, {
       path: 'statAnalysis/:courseId',
-      component: () => import('@/views/course/groupInfo'),
+      component: () => import('@/views/teacherHome/courseStatistic'),
       name: 'statAnalysis',
       meta: {
         title: '统计分析',

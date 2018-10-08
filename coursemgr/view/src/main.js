@@ -14,6 +14,10 @@ import UserGlobalComponents from './components'
 import '@/styles/index.scss' // global css
 import '@/utils/extension.js'
 import Msg from '@/utils/message'
+// 引入echarts
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
