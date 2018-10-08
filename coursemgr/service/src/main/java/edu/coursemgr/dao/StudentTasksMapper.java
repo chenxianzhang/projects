@@ -43,11 +43,13 @@ public interface StudentTasksMapper {
 
     StudentTasks selectByStudent(Map params);
 
-    int selectTaskFinshedCnt(Integer taskId);
+    int selectTaskFinshedCnt(String taskId);
 
     int deleteByCourseIds(String courseIds);
 
     int deleteByCourseStudent(Map params);
 
     List<StudentTasks> selectStuTaskList(Map params);
+
+    int statTastSubmitCnt(String taskId);
 }

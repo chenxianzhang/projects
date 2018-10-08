@@ -52,6 +52,13 @@
     from task_questions
     where taskId = #{taskId, jdbcType=VARCHAR}
   </select>
+  <select id="statQuestionType" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select
+    count(id)
+    from task_questions
+    where taskId in (select id from course_tasks where courseId=#{courseId, jdbcType=INTEGER})
+    and questionType=#{questionType, jdbcType=VARCHAR}
+  </select>
   <select id="selectStuTaskPaper" resultMap="ResultMapSubjectiveMark" parameterType="java.util.HashMap">
     select tq.id,tq.taskId,tq.questionNo,tq.stems,tq.questionType,
     tq.answerAttachment, tq.markType,tq.options,tq.score as questionScore,
