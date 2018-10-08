@@ -42,4 +42,6 @@ public interface TaskQuestionsMapper {
     int deleteByIds(String ids);
 
     int deleteByCourseIds(String courseIds);
+
+    int statQuestionType(Map params);
 }

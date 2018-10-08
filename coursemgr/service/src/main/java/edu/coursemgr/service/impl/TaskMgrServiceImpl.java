@@ -217,7 +217,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         List<CourseTaskSituation> situationList =
                 courseTasksMapper.getCourseTaskSituation(Integer.valueOf(courseId));
         for (CourseTaskSituation situation : situationList) {
-            int cnt = studentTasksMapper.selectTaskFinshedCnt(situation.getId());
+            int cnt = studentTasksMapper.selectTaskFinshedCnt(situation.getId().toString());
             situation.setFinishPersonCnt(cnt);
         }
         return situationList;
