@@ -44,4 +44,6 @@ public interface StudentPaperMapper {
     int deleteByCourseIds(String courseIds);
 
     int deleteByCourseStudent(Map params);
+
+    List<StudentPaper> selectSomeByCourseStu(Map params);
 }

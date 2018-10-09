@@ -44,4 +44,9 @@ public interface TaskQuestionsMapper {
     int deleteByCourseIds(String courseIds);
 
     int statQuestionType(Map params);
+
+    float statSubjectiveScore(Integer courseId);
+
+    float statObjectiveScore(Integer courseId);
+
 }

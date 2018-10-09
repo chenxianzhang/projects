@@ -24,6 +24,12 @@
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
     <result column="taskName" property="taskName" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="StudentTaskScoreMap" type="edu.coursemgr.pojo.StudentTaskScore" >
+    <result column="taskId" property="taskId" jdbcType="INTEGER" />
+    <result column="taskWeight" property="taskWeight" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="studentNo" property="studentNo" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, studentNo, taskId, status, score, submitTime
   </sql>
@@ -46,6 +52,12 @@
     from student_tasks
     where taskId = #{taskId,jdbcType=VARCHAR}
     and studentNo = #{studentNo, jdbcType=VARCHAR}
+  </select>
+  <select id="selectSomeByCourse" resultMap="StudentTaskScoreMap" parameterType="java.lang.Integer" >
+    select  st.taskId, st.score, st.studentNo, ct.weight as taskWeight
+    from student_tasks st left join course_tasks ct
+    on ct.id=st.taskId
+    where taskId in (select id from course_tasks where courseId = #{courseId,jdbcType=INTEGER})
   </select>
   <select id="selectTaskFinshedCnt" resultType="java.lang.Integer" parameterType="java.lang.String" >
     select

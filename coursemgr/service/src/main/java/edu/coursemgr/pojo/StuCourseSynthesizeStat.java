@@ -13,6 +13,8 @@ public class StuCourseSynthesizeStat implements Serializable {
 
     private Integer rank;
 
+    private Integer totalStudentCnt;
+
     private Float objectiveItemScoreRate;
 
     private Float subjectScoreRate;
@@ -47,5 +49,13 @@ public class StuCourseSynthesizeStat implements Serializable {
 
     public void setSubjectScoreRate(Float subjectScoreRate) {
         this.subjectScoreRate = subjectScoreRate;
+    }
+
+    public Integer getTotalStudentCnt() {
+        return totalStudentCnt;
+    }
+
+    public void setTotalStudentCnt(Integer totalStudentCnt) {
+        this.totalStudentCnt = totalStudentCnt;
     }
 }

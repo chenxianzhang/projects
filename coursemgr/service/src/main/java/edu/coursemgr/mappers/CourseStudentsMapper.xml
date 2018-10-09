@@ -63,10 +63,10 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="courseid != null" >
+      <if test="courseId != null" >
         #{courseId,jdbcType=INTEGER},
       </if>
-      <if test="studentno != null" >
+      <if test="studentNo != null" >
         #{studentNo,jdbcType=VARCHAR},
       </if>
     </trim>
@@ -74,10 +74,10 @@
   <update id="updateByPrimaryKeySelective" parameterType="edu.coursemgr.model.CourseStudents" >
     update course_students
     <set >
-      <if test="courseid != null" >
+      <if test="courseId != null" >
         courseId = #{courseId,jdbcType=INTEGER},
       </if>
-      <if test="studentno != null" >
+      <if test="studentNo != null" >
         studentNo = #{studentNo,jdbcType=VARCHAR},
       </if>
     </set>

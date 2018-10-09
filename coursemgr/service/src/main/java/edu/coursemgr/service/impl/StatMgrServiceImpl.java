@@ -2,11 +2,9 @@ package edu.coursemgr.service.impl;
 
 import com.sun.org.apache.xml.internal.utils.Hashtree2Node;
 import edu.coursemgr.common.CommonEnum;
-import edu.coursemgr.dao.CourseTasksMapper;
-import edu.coursemgr.dao.StudentTasksMapper;
-import edu.coursemgr.dao.TaskQuestionsMapper;
-import edu.coursemgr.dao.UserMapper;
+import edu.coursemgr.dao.*;
 import edu.coursemgr.model.CourseTasks;
+import edu.coursemgr.model.StudentPaper;
 import edu.coursemgr.model.StudentTasks;
 import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.*;
@@ -38,6 +36,9 @@ public class StatMgrServiceImpl implements StatMgrService {
 
     @Autowired
     private TaskQuestionsMapper taskQuestionsMapper;
+
+    @Autowired
+    private StudentPaperMapper studentPaperMapper;
 
     @Override
     public StatAllGradeModel statAllGrade(String courseId, String sort) {
@@ -155,14 +156,122 @@ public class StatMgrServiceImpl implements StatMgrService {
 
     @Override
     public List<StudentTaskScoreStat> statStudentTaskScore(String courseId, String studentNo) {
-        return null;
+
+        List<CourseTasks> taskList = courseTasksMapper.selectSomeByCourseId(Integer.valueOf(courseId));
+        if (taskList == null) {
+            return null;
+        }
+        final String stuNo = studentNo;
+        return CollectionUtils.arrayListCast(taskList, task -> {
+            StudentTaskScoreStat stat = new StudentTaskScoreStat();
+            stat.setTaskId(task.getId());
+            stat.setTaskName(task.getName());
+            stat.setTotalScore(task.getTotalScore());
+
+            Map params = new HashMap();
+            params.put("taskId", task.getId());
+            params.put("studentNo", stuNo);
+            StudentTasks tasks = studentTasksMapper.selectByStudent(params);
+            if (tasks != null) {
+                stat.setScore(tasks.getScore());
+            }
+            return stat;
+        });
     }
 
     @Override
     public StuCourseSynthesizeStat statStuSynthesizeInfo(String courseId, String studentNo) {
-        return null;
+
+        List<StudentTaskScore> taskScoreList = studentTasksMapper.selectSomeByCourse(
+                Integer.valueOf(courseId));
+
+        StuCourseSynthesizeStat result = new StuCourseSynthesizeStat();
+
+        Map params = new HashMap();
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+        List<StudentPaper> paperList = studentPaperMapper.selectSomeByCourseStu(params);
+
+        Float subjective = taskQuestionsMapper.statSubjectiveScore(Integer.valueOf(courseId));
+        Float objective = taskQuestionsMapper.statObjectiveScore(Integer.valueOf(courseId));
+        // 名次及总分
+        Map<String, Float> stuScoreMap = new HashMap<>();
+        if (taskScoreList != null) {
+            for (StudentTaskScore studentTaskScore : taskScoreList) {
+                if (!stuScoreMap.containsKey(studentTaskScore.getStudentNo())) {
+                    stuScoreMap.put(studentTaskScore.getStudentNo(),
+                            studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
+                    continue;
+                }
+                stuScoreMap.put(studentTaskScore.getStudentNo(),
+                        stuScoreMap.get(studentTaskScore.getStudentNo()) +
+                                studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
+            }
+            Integer rank = getRank(stuScoreMap, studentNo);
+            if (stuScoreMap.containsKey(studentNo)) {
+                result.setTotalScore(stuScoreMap.get(studentNo));
+                result.setRank(rank);
+            }
+        }
+
+        // 主观题和客观题得分率
+        if (paperList != null) {
+            Float subjectiveScore = 0f;
+            Float objectiveScore = 0f;
+            for (StudentPaper paper : paperList) {
+
+                if (paper.getQuestionType().equals(CommonEnum.QuestionType.SUBJECTIVE_ITEM.getValue())) {
+                    Float score = paper.getScore();
+                    if (paper.getTeacherScore() != null && !paper.getTeacherScore().isNaN()) {
+                        score = paper.getTeacherScore();
+                    }
+                    subjectiveScore += score;
+                } else {
+                    objectiveScore += paper.getScore();
+                }
+            }
+
+            result.setSubjectScoreRate(subjectiveScore / subjective * 100);
+            result.setObjectiveItemScoreRate(objectiveScore / objective * 100);
+        }
+
+        int totalCount = userMapper.selectTotalCntByCourseId(Integer.valueOf(courseId));
+        result.setTotalStudentCnt(totalCount);
+
+        return result;
     }
 
+    private Integer getRank(Map<String, Float> stuScoreMap, String studentNo) {
+
+        List<Map.Entry<String, Float>> entryList = new ArrayList<Map.Entry<String, Float>>(
+                stuScoreMap.entrySet());
+
+        Collections.sort(entryList, new Comparator<Map.Entry<String, Float>>() {
+            @Override
+            public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+
+        Integer rank = 0;
+        Float preScore = -1f;
+        Iterator<Map.Entry<String, Float>> iter = entryList.iterator();
+        Map.Entry<String, Float> tmpEntry = null;
+        while (iter.hasNext()) {
+            tmpEntry = iter.next();
+            if (preScore != tmpEntry.getValue()) {
+                rank++;
+            }
+
+            if (tmpEntry.getKey().equals(studentNo)) {
+                break;
+            }
+        }
+
+        return rank;
+
+    }
 
     private void sortStudentScore(List<StudentScore> studentScoreList, final String sort) {
 

@@ -134,6 +134,7 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     detail.setStudentName(user.getName());
                     detail.setStudentNo(user.getSerialNo());
 
+
                     List<StudentTaskInfo> taskInfos = courseTasksMapper.selectStuTaskInfo(params);
                     if (taskInfos == null || taskInfos.size() == 0) {
                         return null;

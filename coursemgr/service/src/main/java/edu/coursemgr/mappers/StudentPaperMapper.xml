@@ -20,6 +20,13 @@
     from student_paper
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectSomeByCourseStu" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from student_paper
+    where studentNo = #{studentNo,jdbcType=VARCHAR}
+    and taskId in (select id from course_tasks where courseId = #{courseId,jdbcType=INTEGER})
+  </select>
   <select id="getPaperByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select
     <include refid="Base_Column_List" />

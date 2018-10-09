@@ -2,6 +2,7 @@ package edu.coursemgr.dao;
 
 import edu.coursemgr.model.StudentTasks;
 import edu.coursemgr.pojo.StudentTaskDetail;
+import edu.coursemgr.pojo.StudentTaskScore;
 import edu.coursemgr.pojo.StudentTaskSituation;
 import org.omg.CORBA.INTERNAL;
 
@@ -52,4 +53,6 @@ public interface StudentTasksMapper {
     List<StudentTasks> selectStuTaskList(Map params);
 
     int statTastSubmitCnt(String taskId);
+
+    List<StudentTaskScore> selectSomeByCourse(Integer courseId);
 }
