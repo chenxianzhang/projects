@@ -17,9 +17,11 @@
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='FINISHED'" type="success">已完成</el-tag>
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='UNCOMMITTED'" type="danger">待答题</el-tag>
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='TO_REVIEW'" type="warning">待审批</el-tag>
-                <div v-if="!isStudent" style="cursor: pointer;" @click="handleViewFinishState">
-                  <span style="font-weight: bold;">{{scope.row.finishPersonCnt}}</span>/<span>{{scope.row.totalPersonCnt}}</span>
-                </div>
+                <el-tag v-if="!isStudent" size="medium" type="success">
+                  <div style="cursor: pointer;" @click="handleViewFinishState(scope.row)">
+                    <span style="font-weight: bold;">{{scope.row.finishPersonCnt}}</span>/<span>{{scope.row.totalPersonCnt}}</span>
+                  </div>
+                </el-tag>
               </div>
           </template>
         </el-table-column>
@@ -51,6 +53,21 @@
           <el-button type="primary" @click="handleSaveTask">确 定</el-button>
         </div>
       </el-dialog>
+      <el-dialog v-if="showTaskFinishStateDlg" :visible.sync="showTaskFinishStateDlg" width="1240px" title="任务完成情况">
+        <el-row>
+          <span style="margin-right: 20px">课程名：{{curTaskRowData.name}}</span><span>截止日期：{{new Date(curTaskRowData.deadline).toLocaleDateString()}}</span>
+        </el-row>
+        <el-row style="margin-top: 10px">
+          <el-table :data="taskFinishStateList" style="width: 100%" border
+                    :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
+            <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
+            <el-table-column prop="studentName" label="姓名" align="center"> </el-table-column>
+            <el-table-column prop="studentNo" label="学号" align="center" :formatter="dateFormat"> </el-table-column>
+            <el-table-column prop="statusText" label="状态" align="center" :formatter="dateFormat"></el-table-column>
+            <el-table-column prop="reviewer" label="评阅人" align="center" :formatter="dateFormat"> </el-table-column>
+          </el-table>
+        </el-row>
+      </el-dialog>
     </div>
 </template>
 
@@ -61,7 +78,7 @@
   import {getMyTaskSituation, getCourseTaskSituation} from '@/api/task'
   import {SUBJECT_TYPE, TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import TaskInfoNew from "../../components/taskInfo-new";
-  import {saveTask} from "../../api/task";
+  import { saveTask, getTaskSituationList } from "../../api/task";
 
   export default {
       name: "taskInfoList",
@@ -72,9 +89,12 @@
             isStudent:false,
             showTaskInfoDialog:false,
             showTaskStatement:false,
+            showTaskFinishStateDlg:false,//是否显示【任务完成情况】弹窗
             selectTaskId:'',
             courseName:'',
             tasks:[],
+            curTaskRowData:null,//当前选择的任务 行数据
+            taskFinishStateList:[],//当前任务完成情况列表
           }
       },
       created() {
@@ -103,7 +123,19 @@
         }
       },
       methods: {
-        handleViewFinishState(){
+        handleViewFinishState(rowData){
+          this.curTaskRowData = rowData;
+          let params = {taskId:rowData.id, courseId:rowData.courseId, pageSize: 200, currPage: 1};
+          getTaskSituationList(params).then(resp=>{
+            if(resp.status === 0){
+              this.$message.warning('获取任务完成情况失败！');
+              console.log(resp.msg);
+              return;
+            }
+            this.taskFinishStateList = resp.data.pageData;
+          });
+          this.showTaskFinishStateDlg = true;
+          console.log(rowData)
           console.log('查看完成情况')
         },
         /**
@@ -115,9 +147,7 @@
           }
           this.task = this.$refs.taskStatement.task;
           let saveData = this.getSaveData();
-          debugger
           saveTask(saveData).then(response=>{
-            debugger
             if(response.status === 0){
               this.$message({
                 showClose: true,
@@ -247,11 +277,13 @@
          * */
         handleDeleteClick(row) {
           let self = this;
-        deleteTask({courseId: this.$route.params.courseId,
-         taskId: row.id}).then(response => {
+          deleteTask({
+            courseId: this.$route.params.courseId,
+            taskId: row.id
+          }).then(response => {
             debugger
             if (response.status === 1) {
-            self.getTaskList(self.$route.params.courseId);
+              self.getTaskList(self.$route.params.courseId);
               self.$message({
                 showClose: true,
                 type: 'success',
@@ -265,9 +297,9 @@
               });
             }
 
-         }).catch(err => {
+          }).catch(err => {
             console.log(err);
-         })
+          })
         },
         /**
          * 时间格式转换

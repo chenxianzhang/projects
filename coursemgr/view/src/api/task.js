@@ -72,3 +72,15 @@ export function getStuTaskDetail(params) {
     data: params
   });
 }
+
+/**
+ * getTaskSituationList 获取指定任务下所有学生的状态及评分人信息
+ * params {taskId:''， courseId:'', pageSize:, currPage:}
+ * */
+export function getTaskSituationList(params) {
+  return request({
+    url: '/taskMgr/getTaskSituationList',
+    method: 'post',
+    data: params
+  });
+}
