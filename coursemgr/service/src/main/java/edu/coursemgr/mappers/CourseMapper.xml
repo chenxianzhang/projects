@@ -33,6 +33,26 @@
     <include refid="Blob_Column_List" />
     from course
   </select>
+  <select id="selectTotalCnt" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select
+    count(id)
+    from course
+    <if test="courseName != null and courseName != ''">
+      where name like CONCAT('%',#{courseName},'%')
+    </if>
+  </select>
+  <select id="selectSomeByPage" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from course
+    where
+    <if test="courseName != null and courseName != ''">
+      where name like CONCAT('%',#{courseName},'%')
+    </if>
+    order by createDate desc limit ${offset},${pageSize}
+  </select>
   <select id="checkStudentBacklog" resultType="java.lang.String" parameterType="java.lang.String">
     select GROUP_CONCAT(name) as courseNames from course
     where id in (SELECT courseId

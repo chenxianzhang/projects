@@ -59,9 +59,9 @@
     where taskId in (select id from course_tasks where courseId=#{courseId, jdbcType=INTEGER})
     and questionType=#{questionType, jdbcType=VARCHAR}
   </select>
-  <select id="statSubjectiveScore" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  <select id="statSubjectiveScore" resultType="java.lang.Float" parameterType="java.lang.Integer">
     select
-    sum(score)
+    sum(score) as totalScore
     from task_questions
     where taskId in (select id from course_tasks where courseId=#{courseId, jdbcType=INTEGER})
     and questionType=2

@@ -3,6 +3,7 @@ package edu.coursemgr.dao;
 import edu.coursemgr.model.Course;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseMapper {
     int deleteByPrimaryKey(Integer id);
@@ -30,4 +31,8 @@ public interface CourseMapper {
     String checkStudentBacklog(String studentNo);
 
     String checkStudentGroup(String studentNo);
+
+    List<Course> selectSomeByPage(Map params);
+
+    Integer selectTotalCnt(Map params);
 }
