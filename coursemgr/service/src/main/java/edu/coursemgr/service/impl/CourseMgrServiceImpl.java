@@ -62,6 +62,26 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     private CourseStudentsMapper courseStudentsMapper;
 
     @Override
+    public PageModel getAllCourse(String pageSize, String currPage, String courseName) {
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("courseName", courseName);
+        paramMap.put("pageSize", pageSize);
+        int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
+        paramMap.put("offset", offset);
+
+        Integer totalCount = courseMapper.selectTotalCnt(paramMap);
+
+        List<Course> courseList = courseMapper.selectSomeByPage(paramMap);
+
+        PageModel model = new PageModel();
+        model.setPageData(courseList);
+        model.setTotalCount(totalCount);
+
+        return model;
+    }
+
+    @Override
     public List<Course> getTeacherCourseList(String teacherNo) {
         return courseMapper.selectTeacherCourse(teacherNo);
     }
@@ -320,6 +340,15 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         } else {
             return courseMapper.selectStuCourse(serialNo);
         }
+    }
+
+    @Override
+    public boolean deleteCourse(String courseId) {
+
+        List<Integer> courseIdList = new ArrayList<>();
+        courseIdList.add(Integer.valueOf(courseId));
+
+        return deleteCourseList(courseIdList);
     }
 
     private boolean deleteCourseList(List<Integer> courseIdList) {

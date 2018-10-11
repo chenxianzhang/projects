@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface CourseMgrService {
 
+    PageModel getAllCourse(String pageSize, String currPage, String courseName);
+
     List<Course> getTeacherCourseList(String tearcherNo);
 
     int saveCourse(String name, String credit, String description,
@@ -90,5 +92,12 @@ public interface CourseMgrService {
      * @return
      */
     List<Course> getCourseByUser(String role, String serialNo);
+
+    /**
+     * 删除课程
+     * @param courseId
+     * @return
+     */
+    boolean deleteCourse(String courseId);
 
 }

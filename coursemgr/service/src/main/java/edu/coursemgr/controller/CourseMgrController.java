@@ -8,6 +8,7 @@ import edu.coursemgr.pojo.CourseTaskDetail;
 import edu.coursemgr.pojo.GradeDetail;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.service.interfaces.TaskMgrService;
+import edu.coursemgr.service.interfaces.UserMgrService;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,22 @@ public class CourseMgrController extends BaseController {
 
     @Autowired
     private TaskMgrService taskMgrService;
+
+    @Autowired
+    private UserMgrService userMgrService;
+
+    @RequestMapping(value="/getAllCourse", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getAllCourse(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String pageSize = getParam(requestMap, "pageSize");
+        String currPage = getParam(requestMap, "currPage");
+        String courseName = getParam(requestMap, "courseName");
+        if (CommonUtils.isEmpty(pageSize) || CommonUtils.isEmpty(currPage)) {
+            throw new Exception("用户登录超时，请重新登录");
+        }
+        return courseMgrService.getAllCourse(pageSize, currPage, courseName);
+    }
 
     @RequestMapping(value="/selectTeacherCourse", method=RequestMethod.POST)
     @ResponseBody
@@ -201,5 +218,27 @@ public class CourseMgrController extends BaseController {
         }
 
         return courseMgrService.getCourseByUser(role, serialNo);
+    }
+
+    @RequestMapping(value="/deleteCourse", method=RequestMethod.POST)
+    @ResponseBody
+    public Object deleteCourse(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        String levelPwd = getParam(requestMap, "levelPwd");
+        String currUserSerialNo = getParam(requestMap, "currUserSerialNo");
+        if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(levelPwd)
+                || CommonUtils.isEmpty(currUserSerialNo)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+
+        // 判断而二级密码是否OK
+        userMgrService.checkLevelPwd(currUserSerialNo, levelPwd);
+
+        if (!courseMgrService.deleteCourse(courseId)) {
+            throw new Exception("删除课程信息失败");
+        }
+
+        return Constant.Common.SUCCESS;
     }
 }
