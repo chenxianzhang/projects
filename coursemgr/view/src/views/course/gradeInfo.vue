@@ -50,9 +50,9 @@
 
 <script>
   import gradeDetail from '../../components/gradeDetail'
-  import { getAllGradeInfo, getStuGradeInfo, download, exportZip } from '../../api/grade'
+  import { getAllGradeInfo, getStuGradeInfo, download, exportZip } from '@/api/grade'
   import { getCourseById } from "../../api/course";
-  import {statAllGrade, statTaskSubmitReview, statQuestionTypeCnt} from '@/api/statistics'
+  import {statStudentTaskScore, statStuSynthesizeInfo} from '@/api/statistics'
 
   export default {
       name: "gradeInfo",
@@ -116,7 +116,6 @@
               this.calcTableHeight();
               this.taskStaticChart.resize();
               this.sortChart.resize();
-              // this.stemStaticChart.resize();
             }, 100);
           }
         }
@@ -200,8 +199,9 @@
           this.showAnswer = true;
         },
         statisticTaskScore(){
-          let xData = [], finishData=[], submitData=[];
-          statTaskSubmitReview({courseId: this.$route.params.courseId}).then(resp => {
+          let xData = [], score=[], totalScore=[];
+          statStudentTaskScore({courseId: this.$route.params.courseId, studentNo:this.$store.state.user.token})
+            .then(resp => {
             if (resp.status === 0) {
               console.log(resp.msg);
               this.$message.warning('获取任务完成情况失败！');
@@ -210,24 +210,13 @@
             if(resp.data && resp.data.length !== 0){
               resp.data.forEach((item)=>{
                 xData.push(item.taskName);
-                finishData.push(item.finishedCnt);
-                submitData.push(item.submitCnt);
+                score.push(item.score);
+                totalScore.push(item.totalScore);
               });
             }
-            let labelOption = {
-              normal: {
-                show: true,
-                formatter: '{c}  {name|{a}}',
-                fontSize: 12,
-                rich: {
-                  name: {
-                    textBorderColor: '#fff'
-                  }
-                }
-              }
-            };
             let option = {
-              color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+              color: [ '#4cabce', '#006699', '#003366', '#e5323e'],
+              barMaxWidth:60,
               tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -235,7 +224,7 @@
                 }
               },
               legend: {
-                data: ['提交次数', '审批次数']
+                data: ['得分', '总分']
               },
               calculable: true,
               xAxis: [
@@ -249,22 +238,22 @@
               yAxis: [
                 {
                   type: 'value',
-                  name:'次数'
+                  name:'分数'
                 }
               ],
               series: [
                 {
-                  name: '提交次数',
+                  name: '得分',
                   type: 'bar',
+                  stack:'score',
                   barGap: 0,
-                  label: labelOption,
-                  data: submitData
+                  data: score
                 },
                 {
-                  name: '审批次数',
+                  name: '总分',
                   type: 'bar',
-                  label: labelOption,
-                  data: finishData
+                  stack:'score',
+                  data: totalScore
                 }
               ]
             };
@@ -273,220 +262,229 @@
           });
         },
         statisticSort(){
-          let option = {
-            tooltip : {
-              formatter: "{a} <br/>{c} {b}"
-            },
-            series : [
-              {
-                name: '名次',
-                type: 'gauge',
-                z: 3,
-                min: 0,
-                max: 220,
-                splitNumber: 11,
-                radius: '85%',
-                axisLine: {            // 坐标轴线
-                  lineStyle: {       // 属性lineStyle控制线条样式
-                    width: 10
-                  }
-                },
-                axisTick: {            // 坐标轴小标记
-                  length: 15,        // 属性length控制线长
-                  lineStyle: {       // 属性lineStyle控制线条样式
-                    color: 'auto'
-                  }
-                },
-                splitLine: {           // 分隔线
-                  length: 20,         // 属性length控制线长
-                  lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                    color: 'auto'
-                  }
-                },
-                axisLabel: {
-                  backgroundColor: 'auto',
-                  borderRadius: 2,
-                  color: '#eee',
-                  padding: 3,
-                  textShadowBlur: 2,
-                  textShadowOffsetX: 1,
-                  textShadowOffsetY: 1,
-                  textShadowColor: '#222'
-                },
-                title : {
-                  // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                  fontWeight: 'bolder',
-                  fontSize: 14,
-                  fontStyle: 'italic'
-                },
-                detail : {
-                  // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                  formatter: function (value) {
-                    value = (value + '').split('.');
-                    value.length < 2 && (value.push('00'));
-                    return ('00' + value[0]).slice(-2)
-                      + '.' + (value[1] + '00').slice(0, 2);
-                  },
-                  fontWeight: 'bolder',
-                  borderRadius: 3,
-                  backgroundColor: '#444',
-                  borderColor: '#aaa',
-                  shadowBlur: 5,
-                  shadowColor: '#333',
-                  shadowOffsetX: 0,
-                  shadowOffsetY: 3,
-                  borderWidth: 2,
-                  textBorderColor: '#000',
-                  textBorderWidth: 2,
-                  textShadowBlur: 2,
-                  textShadowColor: '#fff',
-                  textShadowOffsetX: 0,
-                  textShadowOffsetY: 0,
-                  fontFamily: 'Arial',
-                  width: 40,
-                  color: '#eee',
-                  rich: {}
-                },
-                data:[{value: 1, name: '名次'}]
-              },
-              {
-                name: '得分',
-                type: 'gauge',
-                center: ['28%', '55%'],    // 默认全局居中
-                radius: '50%',
-                min:0,
-                max:100,
-                splitNumber: 5,
-                endAngle:45,
-                axisLine: {            // 坐标轴线
-                  lineStyle: {       // 属性lineStyle控制线条样式
-                    width: 8
-                  }
-                },
-                axisTick: {            // 坐标轴小标记
-                  length:6,        // 属性length控制线长
-                  lineStyle: {      // 属性lineStyle控制线条样式
-                    color: 'auto'
-                  }
-                },
-                splitLine: {           // 分隔线
-                  length:20,         // 属性length控制线长
-                  lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                    color: 'auto'
-                  }
-                },
-                pointer: {
-                  width:5
-                },
-                title: {
-                  offsetCenter: [0, '-30%'],       // x, y，单位px
-                },
-                detail: {
-                  // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                  fontWeight: 'bolder',
-                  fontSize: '16'
-                },
-                data:[{value: 10, name: '得分'}]
-              },
-              {
-                name: '客观题得分率',
-                type: 'gauge',
-                center: ['72%', '50%'],    // 默认全局居中
-                radius: '50%',
-                min: 0,
-                max: 1,
-                startAngle: 135,
-                endAngle: 45,
-                axisLine: {            // 坐标轴线
-                  lineStyle: {       // 属性lineStyle控制线条样式
-                    width: 8
-                  }
-                },
-                axisTick: {            // 坐标轴小标记
-                  splitNumber: 5,
-                  length: 10,        // 属性length控制线长
-                  lineStyle: {        // 属性lineStyle控制线条样式
-                    color: 'auto'
-                  }
-                },
-                axisLabel: {
-                  formatter:function(v){
-                    switch (v + '') {
-                      case '0' : return '100%';
-                      case '1' : return '客观题得分率';
-                      case '2' : return '0%';
-                    }
-                  }
-                },
-                splitLine: {           // 分隔线
-                  length: 15,         // 属性length控制线长
-                  lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                    color: 'auto'
-                  }
-                },
-                pointer: {
-                  width:2
-                },
-                title : {
-                  show: false
-                },
-                detail : {
-                  show: false
-                },
-                data:[{value: 0.5, name: '客观题得分率'}]
-              },
-              {
-                name: '主观题得分率',
-                type: 'gauge',
-                center : ['72%', '50%'],    // 默认全局居中
-                radius : '50%',
-                min: 0,
-                max: 1,
-                startAngle: 315,
-                endAngle: 225,
-                axisLine: {            // 坐标轴线
-                  lineStyle: {       // 属性lineStyle控制线条样式
-                    width: 8
-                  }
-                },
-                axisTick: {            // 坐标轴小标记
-                  show: false
-                },
-                axisLabel: {
-                  formatter:function(v){
-                    switch (v + '') {
-                      case '0' : return '100%';
-                      case '1' : return '主观题得分率';
-                      case '2' : return '0%';
-                    }
-                  }
-                },
-                splitLine: {           // 分隔线
-                  length: 15,         // 属性length控制线长
-                  lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                    color: 'auto'
-                  }
-                },
-                pointer: {
-                  width:2
-                },
-                title: {
-                  show: false
-                },
-                detail: {
-                  show: false
-                },
-                data:[{value: 0.5, name: '主观题得分率'}]
+          statStuSynthesizeInfo({courseId: this.$route.params.courseId, studentNo:this.$store.state.user.token})
+            .then(resp => {
+              if (resp.status === 0) {
+                console.log(resp.msg);
+                this.$message.warning('获取综合统计情况失败！');
+                return;
               }
-            ]
-          };
+              debugger
+              let option = {
+                tooltip : {
+                  formatter: "{a} <br/>{c} {b}"
+                },
+                series : [
+                  {
+                    name: '名次',
+                    type: 'gauge',
+                    z: 3,
+                    min: 0,
+                    max: 220,
+                    splitNumber: 11,
+                    radius: '85%',
+                    axisLine: {            // 坐标轴线
+                      lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 10
+                      }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                      length: 15,        // 属性length控制线长
+                      lineStyle: {       // 属性lineStyle控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    splitLine: {           // 分隔线
+                      length: 20,         // 属性length控制线长
+                      lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    axisLabel: {
+                      backgroundColor: 'auto',
+                      borderRadius: 2,
+                      color: '#eee',
+                      padding: 3,
+                      textShadowBlur: 2,
+                      textShadowOffsetX: 1,
+                      textShadowOffsetY: 1,
+                      textShadowColor: '#222'
+                    },
+                    title : {
+                      // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                      fontWeight: 'bolder',
+                      fontSize: 14,
+                      fontStyle: 'italic'
+                    },
+                    detail : {
+                      // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                      formatter: function (value) {
+                        value = (value + '').split('.');
+                        value.length < 2 && (value.push('00'));
+                        return ('00' + value[0]).slice(-2)
+                          + '.' + (value[1] + '00').slice(0, 2);
+                      },
+                      fontWeight: 'bolder',
+                      borderRadius: 3,
+                      backgroundColor: '#444',
+                      borderColor: '#aaa',
+                      shadowBlur: 5,
+                      shadowColor: '#333',
+                      shadowOffsetX: 0,
+                      shadowOffsetY: 3,
+                      borderWidth: 2,
+                      textBorderColor: '#000',
+                      textBorderWidth: 2,
+                      textShadowBlur: 2,
+                      textShadowColor: '#fff',
+                      textShadowOffsetX: 0,
+                      textShadowOffsetY: 0,
+                      fontFamily: 'Arial',
+                      width: 40,
+                      color: '#eee',
+                      rich: {}
+                    },
+                    data:[{value: 1, name: '名次'}]
+                  },
+                  {
+                    name: '得分',
+                    type: 'gauge',
+                    center: ['28%', '55%'],    // 默认全局居中
+                    radius: '50%',
+                    min:0,
+                    max:100,
+                    splitNumber: 5,
+                    endAngle:45,
+                    axisLine: {            // 坐标轴线
+                      lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 8
+                      }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                      length:6,        // 属性length控制线长
+                      lineStyle: {      // 属性lineStyle控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    splitLine: {           // 分隔线
+                      length:20,         // 属性length控制线长
+                      lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    pointer: {
+                      width:5
+                    },
+                    title: {
+                      offsetCenter: [0, '-30%'],       // x, y，单位px
+                    },
+                    detail: {
+                      // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                      fontWeight: 'bolder',
+                      fontSize: '16'
+                    },
+                    data:[{value: 10, name: '得分'}]
+                  },
+                  {
+                    name: '客观题得分率',
+                    type: 'gauge',
+                    center: ['72%', '50%'],    // 默认全局居中
+                    radius: '50%',
+                    min: 0,
+                    max: 1,
+                    startAngle: 135,
+                    endAngle: 45,
+                    axisLine: {            // 坐标轴线
+                      lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 8
+                      }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                      splitNumber: 5,
+                      length: 10,        // 属性length控制线长
+                      lineStyle: {        // 属性lineStyle控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    axisLabel: {
+                      formatter:function(v){
+                        switch (v + '') {
+                          case '0' : return '100%';
+                          case '1' : return '客观题得分率';
+                          case '2' : return '0%';
+                        }
+                      }
+                    },
+                    splitLine: {           // 分隔线
+                      length: 15,         // 属性length控制线长
+                      lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    pointer: {
+                      width:2
+                    },
+                    title : {
+                      show: false
+                    },
+                    detail : {
+                      show: false
+                    },
+                    data:[{value: 0.5, name: '客观题得分率'}]
+                  },
+                  {
+                    name: '主观题得分率',
+                    type: 'gauge',
+                    center : ['72%', '50%'],    // 默认全局居中
+                    radius : '50%',
+                    min: 0,
+                    max: 1,
+                    startAngle: 315,
+                    endAngle: 225,
+                    axisLine: {            // 坐标轴线
+                      lineStyle: {       // 属性lineStyle控制线条样式
+                        width: 8
+                      }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                      show: false
+                    },
+                    axisLabel: {
+                      formatter:function(v){
+                        switch (v + '') {
+                          case '0' : return '100%';
+                          case '1' : return '主观题得分率';
+                          case '2' : return '0%';
+                        }
+                      }
+                    },
+                    splitLine: {           // 分隔线
+                      length: 15,         // 属性length控制线长
+                      lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                        color: 'auto'
+                      }
+                    },
+                    pointer: {
+                      width:2
+                    },
+                    title: {
+                      show: false
+                    },
+                    detail: {
+                      show: false
+                    },
+                    data:[{value: 0.5, name: '主观题得分率'}]
+                  }
+                ]
+              };
 
-          option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
-          option.series[1].data[0].value = (Math.random()*7).toFixed(2) - 0;
-          option.series[2].data[0].value = (Math.random()*2).toFixed(2) - 0;
-          option.series[3].data[0].value = (Math.random()*2).toFixed(2) - 0;
-          this.sortChart = this.$echarts.init(this.$refs.statisticSortEl);
-          this.sortChart.setOption(option,true);
+              option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
+              option.series[1].data[0].value = (Math.random()*7).toFixed(2) - 0;
+              option.series[2].data[0].value = (Math.random()*2).toFixed(2) - 0;
+              option.series[3].data[0].value = (Math.random()*2).toFixed(2) - 0;
+              this.sortChart = this.$echarts.init(this.$refs.statisticSortEl);
+              this.sortChart.setOption(option,true);
+            });
         },
       },
     }

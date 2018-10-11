@@ -18,7 +18,7 @@
         <div v-if="editable" class="add-student-btn">
           <el-button type="primary" @click="addStudents2Course">添加学生</el-button>
           <el-button type="primary" @click="uploadStudents2Course">导入学生</el-button>
-          <el-button type="primary" @click="dodwnloadStuTemplate">模板下载</el-button>
+          <el-button type="primary" @click="downloadStuTemplate">模板下载</el-button>
         </div>
       </div>
       <el-table :data="studentsInCourse"
@@ -55,7 +55,7 @@
         </el-pagination>
       </div>
     </div>
-  <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog"></upload-student-comp>
+    <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog"></upload-student-comp>
 
     <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible"
                  @close="handleCourseClose" @confirm="updateCourse">
@@ -85,11 +85,34 @@
                       :showStudentAddDialog="showStudentAddDialog"
                       @hideStudentAddDialog="handleHideStudentAddDialog">
     </student-add-comp>
+
+    <drag-dialog title="学生待办移交" width="36%" :dialogVisible="showgTaskHandleOutDlg"
+                 @close="handlegTaskClose" @confirm="handleOutgTask">
+      <div>
+        <span style="color: #4481ff;">{{curHandleUser.name}}</span><span> 的待办事项</span>
+        <div style="max-height: 300px; overflow: auto;">
+          <div v-if="curHandleUsergTasks.length === 0" style="margin: 10px 0; text-align: center; color: #ffb02c;">暂无待办事项</div>
+          <el-checkbox-group v-model="gTaskCheckList">
+            <el-checkbox v-for="(gTask, index) in curHandleUsergTasks" :label="gTask.taskName" :key="index"></el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <el-row :scutter="10" v-if="curHandleUsergTasks.length !== 0">
+          <el-col :span="6" style="text-align: center"><span style="line-height: 30px">移交给：</span></el-col>
+          <el-col :span="18">
+            <el-select v-model="handleOver2UserId" filterable placeholder="请选择..." style="width: 90%">
+              <el-option v-for="item in canHandleOverUsers" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </div>
+    </drag-dialog>
   </div>
 </template>
 
 <script>
   import {getCourseById, getStudentsByCourseId,updateCourse, deleteStudent, dodwnloadStuTemp} from '@/api/course';
+  import {getScheduleByStudent, handOverSchedule} from '@/api/gTasks'
   import UploadStudentComp from "../../components/uploadStudentComp";
   import dragDialog from '@/components/dragDialog';
   import studentAddComp from '@/components/studentAddComp'
@@ -99,6 +122,13 @@
     components: {UploadStudentComp, dragDialog, studentAddComp},
     data(){
       return{
+        showgTaskHandleOutDlg:false,//待办移交弹窗
+        curHandleUser:'',
+        curHandleUsergTasks:[],//当前用户的待办事项
+        gTaskCheckList:[],//已选待办事项列表
+        handleOver2UserId:'',//移交给
+        canHandleOverUsers:[],//可选择移交用户列表
+
         courseDlgTitle:'课程编辑',
         courseDlgVisible: false,
 
@@ -146,9 +176,9 @@
       }
     },
     methods:{
-    dodwnloadStuTemplate(){
-      dodwnloadStuTemp();
-    },
+      downloadStuTemplate() {
+        dodwnloadStuTemp();
+      },
       handleSizeChange(val){
         this.pageSize = val;
         let cId = this.$route.params.courseId;
@@ -276,12 +306,46 @@
         });
       },
 
-    /**
-     * handleStudentTodoClick  学生待办查看
-     * */
-    handleStudentTodoClick(){
-
-    },
+      /**
+       * handleStudentTodoClick  学生待办查看
+       * */
+      handleStudentTodoClick(data){
+        this.curHandleUser = data;
+        this.showgTaskHandleOutDlg = true;
+        //todo 当前用户的获取待办事项
+        getScheduleByStudent({studentNo:data.serialNo, courseId:this.$route.params.courseId})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warning('获取待办事项失败');
+              console.log(resp.msg);
+              return;
+            }
+            debugger
+            this.curHandleUsergTasks = resp.data;
+          });
+      },
+      /**
+       * 确认移交待办事项
+       * */
+      handleOutgTask(){
+        handOverSchedule({courseId: this.$route.params.courseId,
+          originStudentNo: this.curHandleUser.serialNo,
+          dstStudentNo:this.handleOver2UserId})
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warning('移交待办事项失败！')
+              console.log(resp.msg)
+              return
+            }
+            this.$message.success('移交待办事项成功！')
+          });
+      },
+      /**
+       * 关闭移交待办事项弹窗
+       * */
+      handlegTaskClose(){
+        this.showgTaskHandleOutDlg = false;
+      },
       handleEditCourse: function () {
         this.courseDlgVisible = true;
       },

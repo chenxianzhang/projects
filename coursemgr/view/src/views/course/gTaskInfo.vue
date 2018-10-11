@@ -19,7 +19,7 @@
 
 <script>
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
-  import {getMySchedule} from '@/api/gtasks'
+  import {getMySchedule} from '@/api/gTasks'
 
   import TaskDetailComp from '../../components/taskDetailComp'
 

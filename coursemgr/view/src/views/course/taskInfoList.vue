@@ -17,7 +17,7 @@
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='FINISHED'" type="success">已完成</el-tag>
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='UNCOMMITTED'" type="danger">待答题</el-tag>
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='TO_REVIEW'" type="warning">待审批</el-tag>
-                <div v-if="!isStudent">
+                <div v-if="!isStudent" style="cursor: pointer;" @click="handleViewFinishState">
                   <span style="font-weight: bold;">{{scope.row.finishPersonCnt}}</span>/<span>{{scope.row.totalPersonCnt}}</span>
                 </div>
               </div>
@@ -103,6 +103,9 @@
         }
       },
       methods: {
+        handleViewFinishState(){
+          console.log('查看完成情况')
+        },
         /**
          * handleSaveTask 保存任务
          * */
