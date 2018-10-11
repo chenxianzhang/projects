@@ -317,6 +317,9 @@
       <if test="levelPwd != null" >
         levelPwd = #{levelPwd,jdbcType=INTEGER},
       </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
       <if test="hasLogin != null" >
         hasLogin = #{hasLogin,jdbcType=INTEGER},
       </if>

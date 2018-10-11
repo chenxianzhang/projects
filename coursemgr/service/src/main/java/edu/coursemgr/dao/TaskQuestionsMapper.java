@@ -45,8 +45,8 @@ public interface TaskQuestionsMapper {
 
     int statQuestionType(Map params);
 
-    float statSubjectiveScore(Integer courseId);
+    Float statSubjectiveScore(Integer courseId);
 
-    float statObjectiveScore(Integer courseId);
+    Float statObjectiveScore(Integer courseId);
 
 }
