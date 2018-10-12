@@ -387,7 +387,8 @@ export default {
         })
     },
     handleCourseClick(cId) {
-      this.$router.push({ name: 'basicInfo', params: { courseId: cId } })
+      this.variables.courseId = cId;
+      this.$router.push({ name: 'basicInfo' })
     },
     logout() {
       this.$store.dispatch('logOut').then(() => {

@@ -45,6 +45,7 @@ Vue.use(UserGlobalComponents)
 
 // 将全局变量挂载到vue上
 Vue.prototype.global = window.global
+Vue.prototype.variables = { courseId: '' }
 
 
 /* eslint-disable no-new */

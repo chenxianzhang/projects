@@ -99,7 +99,7 @@
       },
       created() {
         let self = this;
-        let cId = this.$route.params.courseId;
+        let cId = this.variables.courseId;
         if (!cId || cId === '') {
           this.$message.warning('无效的课程id');
         }
@@ -161,7 +161,7 @@
               type: 'success',
               message: "保存成功！"
             });
-            this.getTaskList(this.$route.params.courseId);
+            this.getTaskList(this.variables.courseId);
           });
         },
         /**
@@ -173,7 +173,7 @@
           let task = {
             id:this.task.id,
             name:this.task.name,
-            courseId:this.$route.params.courseId,
+            courseId:this.variables.courseId,
             weight: this.task.weight,
             publishTime:new Date(),
             startTime:this.task.startDate,
@@ -250,7 +250,7 @@
          * */
         handleAnswerEmit() {
           this.showTaskInfoDialog = false;
-          this.getStuTaskList(this.$route.params.courseId);
+          this.getStuTaskList(this.variables.courseId);
         },
         /**
          * 查看详情
@@ -278,12 +278,12 @@
         handleDeleteClick(row) {
           let self = this;
           deleteTask({
-            courseId: this.$route.params.courseId,
+            courseId: this.variables.courseId,
             taskId: row.id
           }).then(response => {
             debugger
             if (response.status === 1) {
-              self.getTaskList(self.$route.params.courseId);
+              self.getTaskList(self.variables.courseId);
               self.$message({
                 showClose: true,
                 type: 'success',

@@ -50,7 +50,7 @@
         //
         // private String targetSerialName;
           //获取我的任务待办列表
-          getMySchedule({courseId:this.$route.params.courseId, studentNo:this.$store.state.user.token})
+          getMySchedule({courseId:this.variables.courseId, studentNo:this.$store.state.user.token})
             .then(resp=>{
               if(resp.status === 0){
                 this.$message.warn('获取我的待办任务失败！');

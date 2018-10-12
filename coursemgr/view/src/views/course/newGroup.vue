@@ -32,7 +32,7 @@
       },
       created(){
         this.leader = this.$store.state.user.name;
-        getNoGroupStuList({courseId:this.$route.params.courseId})
+        getNoGroupStuList({courseId:this.variables.courseId})
           .then(resp=>{
             if(resp.status === 0){
               this.$message.warning('获取学生失败');

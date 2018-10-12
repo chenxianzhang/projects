@@ -99,7 +99,7 @@
         }
       },
       created(){
-      this.courseId = this.$route.params.courseId;
+      this.courseId = this.variables.courseId;
        this.activeIndex = this.$route.path;
         this.isStudent = this.$store.state.user.roles.in_array('student');
         //获取用户信息

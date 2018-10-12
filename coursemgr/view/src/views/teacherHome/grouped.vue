@@ -65,7 +65,7 @@
          * getData 获取数据
          * */
         getData(){
-          getGroupDetail({'courseId': this.$route.params.courseId})
+          getGroupDetail({'courseId': this.variables.courseId})
             .then(response=>{
               if(response.status === 0){
                 this.$message.warning('获取分组信息失败：' + response.msg);

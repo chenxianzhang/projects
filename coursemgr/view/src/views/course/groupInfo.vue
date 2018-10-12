@@ -57,7 +57,7 @@
     },
     created() {
 
-      getCourseById({courseId: this.$route.params.courseId}).then(response => {
+      getCourseById({courseId: this.variables.courseId}).then(response => {
         if (response.status === 0) {
           this.$message.warning('获取课程分组模式失败');
           return;
@@ -70,7 +70,7 @@
       })
 
       //获取个人分组
-      getGroupDetailByStudent({courseId: this.$route.params.courseId, studentNo: this.$store.state.user.token})
+      getGroupDetailByStudent({courseId: this.variables.courseId, studentNo: this.$store.state.user.token})
         .then(resp => {
           if (resp.status === 0) {
             this.$message.warning('获取个人分组失败');
@@ -89,7 +89,7 @@
         newGroupMembers.push(this.$store.state.user.token);
         //分组
         let assignGroupObj = {
-          courseId: this.$route.params.courseId,
+          courseId: this.variables.courseId,
           leaderName: this.$store.state.user.name,
           groupLeaderNo: this.$store.state.user.token,
           studentNoList: newGroupMembers,

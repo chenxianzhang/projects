@@ -24,7 +24,7 @@ export default {
     ) {
       this.menus = this.$store.getters.addRouters[0].children
       this.basePath = this.$store.getters.addRouters[0].path
-      this.resetPath(this.menus, this.$route.params.courseId)
+      this.resetPath(this.menus, this.variables.courseId)
     }
   },
   methods: {

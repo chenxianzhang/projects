@@ -63,7 +63,7 @@
          * */
         lineGroup() {
           let params = {
-            courseId: this.$route.params.courseId,
+            courseId: this.variables.courseId,
             sort: 'desc'
           };
 
@@ -140,7 +140,7 @@
          * */
         taskFinishStatus(){
           let xData = [], finishData=[], submitData=[];
-          statTaskSubmitReview({courseId: this.$route.params.courseId}).then(resp => {
+          statTaskSubmitReview({courseId: this.variables.courseId}).then(resp => {
               if (resp.status === 0) {
                 console.log(resp.msg);
                 this.$message.warning('获取任务完成情况失败！');
@@ -232,7 +232,7 @@
          * */
         stemStatistic(){
           let data = [];
-          statQuestionTypeCnt({courseId: this.$route.params.courseId}).then(resp => {
+          statQuestionTypeCnt({courseId: this.variables.courseId}).then(resp => {
             if (resp.status === 0) {
               console.log(resp.msg);
               this.$message.warning('获取题型统计情况失败！');

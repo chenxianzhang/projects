@@ -26,7 +26,7 @@ export const asyncRouterMap = [
       roles: ['admin', 'teacher', 'student'] // you can set roles in root nav
     },
     children: [{
-      path: 'basicInfo/:courseId',
+      path: 'basicInfo',
       component: () => import('@/views/course/basicInfo'),
       name: 'basicInfo',
       meta: {
@@ -35,7 +35,7 @@ export const asyncRouterMap = [
         roles: ['teacher', 'student']
       }
     }, {
-      path: 'groupInfo/:courseId',
+      path: 'groupInfo',
       component: () => import('@/views/course/groupInfo'),
       name: 'groupInfo',
       meta: {
@@ -44,7 +44,7 @@ export const asyncRouterMap = [
         roles: ['student']
       }
     }, {
-      path: 'myTask/:courseId',
+      path: 'myTask',
       component: () => import('@/views/course/taskInfoList'),
       name: 'myTask',
       meta: {
@@ -53,7 +53,7 @@ export const asyncRouterMap = [
         roles: ['student']
       }
     }, {
-      path: 'myGrade/:courseId',
+      path: 'myGrade',
       component: () => import('@/views/course/gradeInfo'),
       name: 'myGrade',
       meta: {
@@ -62,7 +62,7 @@ export const asyncRouterMap = [
         roles: ['student']
       }
     }, {
-      path: 'backlog/:courseId',
+      path: 'backlog',
       component: () => import('@/views/course/gTaskInfo'),
       name: 'backlog',
       meta: {
@@ -82,7 +82,7 @@ export const asyncRouterMap = [
       },
       children: [
         {
-          path: 'grouped/:courseId',
+          path: 'grouped',
           component: () => import('@/views/teacherHome/grouped'),
           name: 'grouped',
           meta: {
@@ -92,7 +92,7 @@ export const asyncRouterMap = [
           }
         },
         {
-          path: 'nogroup/:courseId',
+          path: 'nogroup',
           component: () => import('@/views/teacherHome/NotGrouped'),
           name: 'nogroup',
           meta: {
@@ -113,7 +113,7 @@ export const asyncRouterMap = [
         roles: ['teacher']
       },
       children: [{
-        path: 'list/:courseId',
+        path: 'list',
         component: () => import('@/views/course/taskInfoList'),
         name: 'list',
         meta: {
@@ -122,7 +122,7 @@ export const asyncRouterMap = [
           roles: ['teacher']
         }
       }, {
-        path: 'new/:courseId',
+        path: 'new',
         component: () => import('@/views/teacherHome/newTask1'),
         name: 'new',
         meta: {
@@ -132,7 +132,7 @@ export const asyncRouterMap = [
         }
       }]
     }, {
-      path: 'allGrade/:courseId',
+      path: 'allGrade',
       component: () => import('@/views/course/gradeInfo'),
       name: 'allGrade',
       meta: {
@@ -141,7 +141,7 @@ export const asyncRouterMap = [
         roles: ['teacher']
       }
     }, {
-      path: 'statAnalysis/:courseId',
+      path: 'statAnalysis',
       component: () => import('@/views/teacherHome/courseStatistic'),
       name: 'statAnalysis',
       meta: {

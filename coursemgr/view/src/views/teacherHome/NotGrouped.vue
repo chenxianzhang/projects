@@ -102,7 +102,7 @@
       methods: {
         getGroupableStudents(){
           this.groupableStudents = [];
-          getNoGroupStuList({courseId:this.$route.params.courseId})
+          getNoGroupStuList({courseId:this.variables.courseId})
             .then(resp=>{
               if(resp.status === 0){
                 this.$message.warning('获取学生失败');
@@ -153,7 +153,7 @@
           if(type === '添加到分组'){
             let self = this;
             //获取分组
-            getGroupDetail({courseId: this.$route.params.courseId})
+            getGroupDetail({courseId: this.variables.courseId})
               .then(resp=>{
                 if(resp.status === 0){
                   self.$message.warning('获取分组信息失败');
@@ -181,7 +181,7 @@
           let self = this;
           switch (this.groupType) {
             case "随机分组":
-              randomGroup({courseId: this.$route.params.courseId, memberCnt: this.randomGroupPerCnt})
+              randomGroup({courseId: this.variables.courseId, memberCnt: this.randomGroupPerCnt})
                 .then(resp=>{
                   if(resp.status === 0){
                     self.$message.warning('随机分组失败：' + resp.msg);
@@ -192,7 +192,7 @@
                 });
               break;
             case "自由分组":
-              freedomGroup({ courseId: this.$route.params.courseId}).then(response => {
+              freedomGroup({ courseId: this.variables.courseId}).then(response => {
                 if (response.status === 0) {
                     self.$message.warning('设置自由分组失败：' + resp.msg);
                     return;
@@ -209,7 +209,7 @@
                 }
               }
               let assignGroupObj = {
-                courseId: this.$route.params.courseId,
+                courseId: this.variables.courseId,
                 leaderName: leaderName,
                 groupLeaderNo: this.groupLeader,
                 studentNoList: this.zdGroupMembers

@@ -164,7 +164,7 @@
     },
     created(){
       //let cId = this.$store.getters.courseId;
-      let cId = this.$route.params.courseId;
+      let cId = this.variables.courseId;
       this.getCourseInfo(cId);
       this.getStudentsOfCourse(cId);
 
@@ -181,12 +181,12 @@
       },
       handleSizeChange(val){
         this.pageSize = val;
-        let cId = this.$route.params.courseId;
+        let cId = this.variables.courseId;
         this.getStudentsOfCourse(cId);
       },
       handleCurrentChange(val){
         this.currPage = val;
-        let cId = this.$route.params.courseId;
+        let cId = this.variables.courseId;
         this.getStudentsOfCourse(cId);
       },
       getCourseInfo(cId){
@@ -239,7 +239,7 @@
       },
       handleHideStudentAddDialog(val){
         this.showStudentAddDialog = val;
-        let cId = this.$route.params.courseId;
+        let cId = this.variables.courseId;
         // this.getCourseInfo(cId);
         this.getStudentsOfCourse(cId);
       },
@@ -249,7 +249,7 @@
       },
       hideUploadDialog(val){
         this.showUploadDialog = val;
-        this.getStudentsOfCourse(this.$route.params.courseId);
+        this.getStudentsOfCourse(this.variables.courseId);
       },
       /**
        * 查看学生详情信息
@@ -278,10 +278,10 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteStudent({courseId: this.$route.params.courseId,
+          deleteStudent({courseId: this.variables.courseId,
             studentNo: data.serialNo}).then(response => {
             if (response.status === 1) {
-              self.getStudentsOfCourse(self.$route.params.courseId);
+              self.getStudentsOfCourse(self.variables.courseId);
               self.$message({
                 showClose: true,
                 type: 'success',
@@ -313,7 +313,7 @@
         this.curHandleUser = data;
         this.showgTaskHandleOutDlg = true;
         //todo 当前用户的获取待办事项
-        getScheduleByStudent({studentNo:data.serialNo, courseId:this.$route.params.courseId})
+        getScheduleByStudent({studentNo:data.serialNo, courseId:this.variables.courseId})
           .then(resp=>{
             if(resp.status === 0){
               this.$message.warning('获取待办事项失败');
@@ -328,7 +328,7 @@
        * 确认移交待办事项
        * */
       handleOutgTask(){
-        handOverSchedule({courseId: this.$route.params.courseId,
+        handOverSchedule({courseId: this.variables.courseId,
           originStudentNo: this.curHandleUser.serialNo,
           dstStudentNo:this.handleOver2UserId})
           .then(resp=>{

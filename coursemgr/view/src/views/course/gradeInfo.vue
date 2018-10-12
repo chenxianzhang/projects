@@ -80,7 +80,7 @@
       created() {
         let self = this;
         this.isStudent = this.$store.state.user.roles.in_array('student');
-        let cId = this.$route.params.courseId;
+        let cId = this.variables.courseId;
         getCourseById({courseId:cId})
           .then(resp=>{
             if(resp.status === 0){
@@ -167,11 +167,11 @@
         },
         handleSizeChange(val) {
            this.pageSize = val;
-           this.getGradeByCourse(this.$route.params.courseId);
+           this.getGradeByCourse(this.variables.courseId);
         },
         handleCurrentChange(val) {
           this.currPage = val;
-          this.getGradeByCourse(this.$route.params.courseId);
+          this.getGradeByCourse(this.variables.courseId);
         },
         getGradeByCourse(courseId) {
           let self = this;
@@ -188,10 +188,10 @@
           });
         },
         download() {
-          download(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
+          download(this.variables.courseId, this.$store.state.user.token, this.isStudent);
         },
         exportZip() {
-          exportZip(this.$route.params.courseId, this.$store.state.user.token, this.isStudent);
+          exportZip(this.variables.courseId, this.$store.state.user.token, this.isStudent);
         },
         viewScoreDetail(taskId, uId){
           this.taskSelect.taskId = taskId;
@@ -200,7 +200,7 @@
         },
         statisticTaskScore(){
           let xData = [], score=[], totalScore=[];
-          statStudentTaskScore({courseId: this.$route.params.courseId, studentNo:this.$store.state.user.token})
+          statStudentTaskScore({courseId: this.variables.courseId, studentNo:this.$store.state.user.token})
             .then(resp => {
             if (resp.status === 0) {
               console.log(resp.msg);
@@ -262,7 +262,7 @@
           });
         },
         statisticSort(){
-          statStuSynthesizeInfo({courseId: this.$route.params.courseId, studentNo:this.$store.state.user.token})
+          statStuSynthesizeInfo({courseId: this.variables.courseId, studentNo:this.$store.state.user.token})
             .then(resp => {
               if (resp.status === 0) {
                 console.log(resp.msg);

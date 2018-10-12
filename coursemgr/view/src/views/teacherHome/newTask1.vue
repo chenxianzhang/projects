@@ -54,7 +54,7 @@
           let task = {
             id:this.task.id,
             name:this.task.name,
-            courseId:this.$route.params.courseId,
+            courseId:this.variables.courseId,
             weight: this.task.weight,
             publishTime:new Date(),
             startTime:this.task.startDate,
