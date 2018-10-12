@@ -192,7 +192,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                         detail.setStatus(taskStatus.getValue());
                         detail.setStatusText(taskStatus.getName());
                     }
-                    if (model.getSubjectCnt() == 0) {
+                    if (model.getSubjectCnt() == null || model.getSubjectCnt() == 0) {
                         detail.setReviewer("系统");
                     } else {
                         if (model.getMarkType().equals(CommonEnum.GradeType.AUTO_EVA.getValue())) {
