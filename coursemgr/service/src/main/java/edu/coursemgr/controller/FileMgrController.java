@@ -65,27 +65,15 @@ public class FileMgrController extends BaseController {
     @ResponseBody
     public void downloadStuTemplate(HttpServletResponse response) throws Exception {
 
-        response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment;filename="
-                .concat(String.valueOf(URLEncoder.encode("学生导入模板.xlsx", "UTF-8"))));
-        OutputStream out = response.getOutputStream();
+        fileMgrService.downloadTemplate(response, "/templates/学生导入模板.xlsx",
+                "学生导入模板.xlsx");
+    }
 
-        InputStream template = this.getClass().getResourceAsStream("/templates/学生导入模板.xlsx");
-
-        if (template != null) {
-            //5.创建数据缓冲区
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            //7.将InputStream流写入到buffer缓冲区
-            while ((len = template.read(buffer)) > 0) {
-                //template.read(byte[] b)最多读入b.length个字节 在碰到流的结尾时 返回-1
-                //8.使用OutputStream将缓冲区的数据输出到客户端浏览器
-                out.write(buffer,0,len);
-            }
-            template.close();
-        }
-        out.flush();
-        out.close();
+    @RequestMapping("/downloadTeaTemplate")
+    @ResponseBody
+    public void downloadTeaTemplate(HttpServletResponse response) throws Exception {
+        fileMgrService.downloadTemplate(response, "/templates/教师导入模板.xlsx",
+                "教师导入模板.xlsx");
     }
 
 }

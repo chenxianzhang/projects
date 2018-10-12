@@ -37,6 +37,7 @@
             <div class="left">
                 <el-button type="primary" @click="addUser">添加</el-button>
                 <el-button type="primary" @click="handleImport">批量导入</el-button>
+                <el-button type="primary" @click="handleDownload">模板下载</el-button>
             </div>
             <div class="right">
                 <el-input :placeholder="placeholder" v-model="nameOfNo" @input="queryChange">
@@ -52,7 +53,8 @@
 import userEditDlg from '../components/userEditDlg'
 import uploadStudentComp from '@/components/uploadStudentComp'
 
-import { addUser, updateUser, getCourseByUser, resetPwd, deleteUser } from '@/api/manager'
+import { addUser, updateUser, getCourseByUser, resetPwd, deleteUser, downloadTemplate } from '@/api/manager'
+import { dodwnloadStuTemp } from '@/api/course'
 
 export default {
   name: 'index',
@@ -95,6 +97,13 @@ export default {
   methods: {
     queryChange() {
       this.$refs.child.$emit('query', this.nameOfNo)
+    },
+    handleDownload() {
+      if (this.role === 'student') {
+        dodwnloadStuTemp()
+        return;
+      }
+      downloadTemplate()
     },
     handleImport() {
       this.showUploadDialog = true;

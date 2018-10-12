@@ -2,6 +2,7 @@ package edu.coursemgr.service.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 
 /**
@@ -19,4 +20,13 @@ public interface FileMgrService {
     String saveFile(MultipartFile file, String root, String trunkDir,
                     String subDir) throws Exception;
 
+    /**
+     * 下载模板
+     * @param response
+     * @param filePath
+     * @param fileName
+     * @throws Exception
+     */
+    void downloadTemplate(HttpServletResponse response, String filePath,
+                          String fileName) throws Exception;
 }

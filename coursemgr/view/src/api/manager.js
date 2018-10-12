@@ -71,3 +71,11 @@ export function deleteUser(params) {
         data: params
     });
 }
+
+/**
+ * 下载用户管理导入模板
+ * @param {*} params 
+ */
+export function downloadTemplate(params) {
+    window.location.href = window.global.BASE_API + "/fileMgr/downloadTeaTemplate";
+}
