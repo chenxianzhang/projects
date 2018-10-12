@@ -46,6 +46,14 @@ export default {
   mounted() {
     this.$refs.routerScrollbar.$el.style.height =
       window.innerHeight - 100 + 'px'
+
+    let self = this
+    window.onresize = () => {
+      return (() => {
+        self.$refs.routerScrollbar.$el.style.height =
+          window.innerHeight - 100 + 'px'
+      })()
+    }
   },
   methods: {}
 }
