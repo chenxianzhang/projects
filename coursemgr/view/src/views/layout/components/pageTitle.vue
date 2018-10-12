@@ -18,6 +18,7 @@
 </template>
 <script>
 import { findUser } from '@/api/login'
+import { removeCourseId } from '@/utils/auth'
 
 export default {
   name: 'title',
@@ -55,6 +56,7 @@ export default {
           this.logout()
           break
         case 'backHome':
+          removeCourseId()
           this.$router.push('/home')
           break
       }

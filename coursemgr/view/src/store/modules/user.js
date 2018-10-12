@@ -1,11 +1,12 @@
 import { login, getUserInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getLoginRole, setLoginRole, removeLoginRole, removeCourseId } from '@/utils/auth'
 
 const user = {
     state: {
         name: '',
         token: getToken(),
-        roles: []
+        roles: [],
+        loginRole: getLoginRole()
     },
     mutations: {
         SET_TOKEN: (state, token) => {
@@ -16,6 +17,9 @@ const user = {
         },
         SET_NAME: (state, name) => {
             state.name = name;
+        },
+        SET_LOGIN_ROLE: (state, loginRole) => {
+            state.loginRole = loginRole
         }
     },
     actions: {
@@ -24,6 +28,8 @@ const user = {
                 login(userInfo).then(response => {
                     if (response.status === 1) {
                         commit('SET_TOKEN', response.data.token)
+                        commit('SET_LOGIN_ROLE', userInfo.role)
+                        setLoginRole(userInfo.role);
                         setToken(response.data.token)
                         resolve()
                     } else {
@@ -61,6 +67,8 @@ const user = {
                 commit('SET_TOKEN', '');
                 commit('SET_ROLES', []);
                 removeToken();
+                removeLoginRole();
+                removeCourseId()
                 resolve();
             })
         }

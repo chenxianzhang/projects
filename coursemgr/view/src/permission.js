@@ -30,10 +30,9 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) {
         store.dispatch('getUser').then(response => {
-          const roles = response.data.roles;
-
+          // const roles = response.data.roles;
           // 根据角色动态生成可访问的路由表
-          store.dispatch('generateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+          store.dispatch('generateRoutes', { loginRole: store.getters.loginRole }).then(() => { // 根据roles权限生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })

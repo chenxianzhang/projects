@@ -112,6 +112,7 @@
 import { getTeacherCourseList, saveCourse, getStuCourseList } from '@/api/home'
 import { findUser, update } from '@/api/login'
 import { validateEmail, validatePhone } from '@/utils/validate'
+import { setCourseId } from '@/utils/auth'
 import dragDialog from '@/components/dragDialog'
 
 export default {
@@ -387,6 +388,7 @@ export default {
         })
     },
     handleCourseClick(cId) {
+      setCourseId(cId)
       this.variables.courseId = cId;
       this.$router.push({ name: 'basicInfo' })
     },

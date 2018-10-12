@@ -45,7 +45,8 @@ const permission = {
   actions: {
     generateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { roles } = data
+        const roles  = []
+        roles.push(data.loginRole)
         let accessedRouters
         accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         commit('SET_ROUTERS', accessedRouters)
