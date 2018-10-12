@@ -28,23 +28,35 @@
 </template>
 
 <script>
-import global from '../../static/global.config'
 import dragDialog from '@/components/dragDialog';
 
     export default {
       name: "uploadStudentComp",
-      props:['showUploadDialog'],
       data() {
         return {
           showProgress:false,
           progressStatus:'',
           progress:0,
-          uploadAction: global.BASE_API + "/userMgr/batchUploadStudents",
           uploadData:{}
         };
       },
       created(){
         this.uploadData.courseId = this.$route.params.courseId;
+      },
+      props: {
+        uploadAction: {
+          type: String,
+          default: window.global.BASE_API + "/userMgr/batchUploadStudents"
+        },
+        showUploadDialog: {
+          type: Boolean,
+          default: false
+        }
+      },
+      watch: {
+        uploadAction (val) {
+          this.uploadAction = val;
+        }
       },
       components:{dragDialog},
       methods: {

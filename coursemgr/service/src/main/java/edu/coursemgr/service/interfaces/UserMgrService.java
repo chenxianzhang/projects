@@ -45,6 +45,13 @@ public interface UserMgrService {
     void importStudents(MultipartFile file, String courseId) throws Exception;
 
     /**
+     * 导入教师用户
+     * @param file
+     * @throws Exception
+     */
+    void importTeacher(MultipartFile file) throws Exception;
+
+    /**
      * 获取课程下所有未分组的学生信息
      * @param courseId
      * @return

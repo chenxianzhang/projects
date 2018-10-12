@@ -29,10 +29,14 @@
             </div>
         </drag-dialog>
 
+        <upload-student-comp :showUploadDialog="showUploadDialog"
+         @hideUploadDialog="hideUploadDialog"
+         :uploadAction="uploadAction"></upload-student-comp>
+
         <div class="operation">
             <div class="left">
                 <el-button type="primary" @click="addUser">添加</el-button>
-                <el-button type="primary">批量导入</el-button>
+                <el-button type="primary" @click="handleImport">批量导入</el-button>
             </div>
             <div class="right">
                 <el-input :placeholder="placeholder" v-model="nameOfNo" @input="queryChange">
@@ -46,6 +50,8 @@
 
 <script>
 import userEditDlg from '../components/userEditDlg'
+import uploadStudentComp from '@/components/uploadStudentComp'
+
 import { addUser, updateUser, getCourseByUser, resetPwd, deleteUser } from '@/api/manager'
 
 export default {
@@ -66,24 +72,36 @@ export default {
       delDlgVisible: false,
       levelPwd: '',
       delSerialNo: '',
-      currUserSerialNo: this.$store.state.user.token
+      currUserSerialNo: this.$store.state.user.token,
+      showUploadDialog: false,
+      uploadAction: ""
     }
   },
   components: {
-    userEditDlg
+    userEditDlg,
+    uploadStudentComp
   },
   mounted() {
     if (this.$route.path.indexOf('student') >= 0) {
       this.placeholder = '输入姓名或者学号'
       this.role = 'student'
+      this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadStudents"
     } else {
       this.placeholder = '输入姓名或者教工号'
       this.role = 'teacher'
+      this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadTeachers"
     }
   },
   methods: {
-    queryChange(value) {
+    queryChange() {
       this.$refs.child.$emit('query', this.nameOfNo)
+    },
+    handleImport() {
+      this.showUploadDialog = true;
+    },  
+    hideUploadDialog(val) {
+      this.showUploadDialog = false;
+      this.queryChange();
     },
     handleCommond(data) {
       switch (data.commond) {

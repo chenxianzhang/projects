@@ -121,6 +121,53 @@ public class UserMgrServiceImpl implements UserMgrService {
     }
 
     @Override
+    public void importTeacher(MultipartFile file) throws Exception {
+        //判断文件是否为空
+        if (file == null) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        String name = file.getOriginalFilename();
+        long size = file.getSize();
+        boolean illegal = name == null || ExcelUtil.EMPTY.equals(name) && size == 0;
+        if (illegal) {
+            throw new Exception(Constant.ExceptionMessage.EXCEL_EMPTY);
+        }
+        List<ArrayList<String>> list = new ExcelReader().readExcel(file);
+        illegal = null == list || list.size() == 0;
+        if (illegal) {
+            throw new Exception(Constant.ExceptionMessage.EXCEL_EMPTY);
+        }
+        int rowIndex = 0;
+        for (ArrayList<String> row : list) {
+
+            if (rowIndex == 0) {
+                rowIndex++;
+                continue;
+            }
+
+            User user = new User();
+            user.setSerialNo(row.get(1));
+            user.setPassword(row.get(1));
+            user.setLevelPwd(user.getSerialNo());
+            user.setHasLogin(0);
+            user.setCreateDate(new Date());
+            user.setRoles(CommonEnum.Role.TEACHER.getValue());
+            user.setCollege(row.get(3));
+            user.setName(row.get(2));
+
+            User tmpUser = userMapper.selectBySerialNo(user.getSerialNo());
+            // 如果用户不存在数据表中，则插入
+            if (tmpUser == null) {
+                if (userMapper.insert(user) == 0) {
+                    throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
+                }
+            }
+
+            rowIndex++;
+        }
+    }
+
+    @Override
     public List<User> getNoGroupStuList(String courseId) {
 
         return userMapper.selectSomeNoGroup(Integer.valueOf(courseId));
@@ -171,6 +218,9 @@ public class UserMgrServiceImpl implements UserMgrService {
         }
         user.setPassword(user.getSerialNo());
         user.setHasLogin(0);
+        if (user.getRoles().contains(CommonEnum.Role.TEACHER.getValue())) {
+            user.setLevelPwd(user.getSerialNo());
+        }
         return userMapper.insert(user);
     }
 
@@ -308,14 +358,13 @@ public class UserMgrServiceImpl implements UserMgrService {
         user.setRoles(CommonEnum.Role.STUDENT.getValue());
         user.setHasLogin(0);
         user.setCreateDate(new Date());
-        boolean illegal = user.getSerialNo().isEmpty() ||
-                user.getSerialNo().length() < Constant.Common.PASSWORD_MIN_LENGTH;
-        if (illegal) {
-            return null;
-        }
-        int len = Constant.Common.PASSWORD_MIN_LENGTH;
-        String stuNo = user.getSerialNo();
-        user.setPassword(stuNo.substring(stuNo.length() - len, stuNo.length()));
+//        boolean illegal = user.getSerialNo().isEmpty() ||
+//                user.getSerialNo().length() < Constant.Common.PASSWORD_MIN_LENGTH;
+//        if (illegal) {
+//            return null;
+//        }
+        user.setPassword(user.getSerialNo());
+        user.setLevelPwd(user.getSerialNo());
         return user;
     }
 
@@ -332,7 +381,8 @@ public class UserMgrServiceImpl implements UserMgrService {
         return false;
     }
 
-    private void readData2DB(List<ArrayList<String>> list, String courseId) throws Exception {
+    private void
+    readData2DB(List<ArrayList<String>> list, String courseId) throws Exception {
         boolean header = false;
         for (int i = 0; i < list.size(); i++) {
 
@@ -356,7 +406,9 @@ public class UserMgrServiceImpl implements UserMgrService {
                     throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);
                 }
             }
-
+            if (CommonUtils.isEmpty(courseId)) {
+                continue;
+            }
             // 并将数据关联到课程学生表中
             CourseStudents courseStudents = new CourseStudents();
             courseStudents.setCourseId(Integer.valueOf(courseId));

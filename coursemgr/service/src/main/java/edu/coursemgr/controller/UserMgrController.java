@@ -130,14 +130,33 @@ public class UserMgrController extends BaseController {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         Iterator iterator = multipartRequest.getFileNames();
         String courseId = multipartRequest.getParameter("courseId");
-        if (CommonUtils.isEmpty(courseId)) {
-            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
-        }
+//        if (CommonUtils.isEmpty(courseId)) {
+//            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+//        }
 
         while (iterator.hasNext()) {
             String file = iterator.next().toString();
             userMgrService.importStudents(multipartRequest.getFile(file),
                     courseId);
+        }
+        return true;
+    }
+
+    @RequestMapping("/batchUploadTeachers")
+    @ResponseBody
+    public Object batchUploadTeachers(HttpServletRequest request)
+            throws Exception {
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        Iterator iterator = multipartRequest.getFileNames();
+//        String courseId = multipartRequest.getParameter("courseId");
+//        if (CommonUtils.isEmpty(courseId)) {
+//            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+//        }
+
+        while (iterator.hasNext()) {
+            String file = iterator.next().toString();
+            userMgrService.importTeacher(multipartRequest.getFile(file));
         }
         return true;
     }
