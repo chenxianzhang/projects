@@ -44,11 +44,11 @@ public class CourseMgrController extends BaseController {
             throws Exception {
         String pageSize = getParam(requestMap, "pageSize");
         String currPage = getParam(requestMap, "currPage");
-        String courseName = getParam(requestMap, "courseName");
+        String courseOrTeacher = getParam(requestMap, "courseOrTeacher");
         if (CommonUtils.isEmpty(pageSize) || CommonUtils.isEmpty(currPage)) {
             throw new Exception("用户登录超时，请重新登录");
         }
-        return courseMgrService.getAllCourse(pageSize, currPage, courseName);
+        return courseMgrService.getAllCourse(pageSize, currPage, courseOrTeacher);
     }
 
     @RequestMapping(value="/selectTeacherCourse", method=RequestMethod.POST)

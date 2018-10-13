@@ -36,7 +36,8 @@ export default {
   mounted() {
    this.$on('query', (nameOrNo) => {
       this.nameOrNo = nameOrNo
-      console.log(nameOrNo)
+      this.currPage = 1
+      this.pageSize = 10
       this.queryAction()
     })
   },

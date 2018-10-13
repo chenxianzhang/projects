@@ -37,8 +37,9 @@
     select
     count(id)
     from course
-    <if test="courseName != null and courseName != ''">
-      where name like CONCAT('%',#{courseName},'%')
+    <if test="courseOrTeacher != null and courseOrTeacher != ''">
+      where name like CONCAT('%',#{courseOrTeacher},'%')
+      or creatorNo in (select serialNo from user where name like CONCAT('%', #{courseOrTeacher}, '%'))
     </if>
   </select>
   <select id="selectSomeByPage" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
@@ -47,9 +48,10 @@
     ,
     <include refid="Blob_Column_List" />
     from course
-    where
-    <if test="courseName != null and courseName != ''">
-      where name like CONCAT('%',#{courseName},'%')
+
+    <if test="courseOrTeacher != null and courseOrTeacher != ''">
+      where name like CONCAT('%',#{courseOrTeacher},'%')
+      or creatorNo in (select serialNo from user where name like CONCAT('%', #{courseOrTeacher}, '%'))
     </if>
     order by createDate desc limit ${offset},${pageSize}
   </select>

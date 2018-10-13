@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface CourseMgrService {
 
-    PageModel getAllCourse(String pageSize, String currPage, String courseName);
+    PageModel getAllCourse(String pageSize, String currPage, String courseOrTeacher);
 
     List<Course> getTeacherCourseList(String tearcherNo);
 

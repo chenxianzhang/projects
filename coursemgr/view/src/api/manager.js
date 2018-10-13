@@ -79,3 +79,27 @@ export function deleteUser(params) {
 export function downloadTemplate(params) {
     window.location.href = window.global.BASE_API + "/fileMgr/downloadTeaTemplate";
 }
+
+/**
+ * 获取所有课程信息
+ * @param {*} params 
+ */
+export function getCourseData(params) {
+    return request({
+        url: '/course/getAllCourse',
+        method: 'post',
+        data: params
+    });
+}
+
+/**
+ * 删除课程信息
+ * @param {*} params 
+ */
+export function deleteCourse(params) {
+    return request({
+        url: '/course/deleteCourse',
+        method: 'post',
+        data: params
+    });
+}

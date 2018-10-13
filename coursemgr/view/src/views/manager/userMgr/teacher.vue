@@ -36,6 +36,8 @@ export default {
   mounted() {
     this.$on('query', (nameOrNo) => {
       this.nameOrNo = nameOrNo
+      this.currPage = 1
+      this.pageSize = 10
       this.queryAction()
     })
   },
@@ -56,16 +58,6 @@ export default {
     },
     handleCommond(data) {
       this.$emit('handleCommond', data)
-      // switch (data.commond) {
-      //   case 'edit':
-      //     break
-      //   case 'course':
-      //     break
-      //   case 'reset':
-      //     break
-      //   case 'delete':
-      //     break
-      // }
     },
     getUserData() {
       let params = {

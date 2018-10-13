@@ -7,10 +7,7 @@ import edu.coursemgr.excel.ExcelReader;
 import edu.coursemgr.model.Course;
 import edu.coursemgr.model.GroupMember;
 import edu.coursemgr.model.User;
-import edu.coursemgr.pojo.GradeDetail;
-import edu.coursemgr.pojo.PageModel;
-import edu.coursemgr.pojo.StudentTaskInfo;
-import edu.coursemgr.pojo.UserGroup;
+import edu.coursemgr.pojo.*;
 import edu.coursemgr.service.interfaces.CourseMgrService;
 import edu.coursemgr.utils.CollectionUtils;
 import edu.coursemgr.utils.CommonUtils;
@@ -62,10 +59,10 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     private CourseStudentsMapper courseStudentsMapper;
 
     @Override
-    public PageModel getAllCourse(String pageSize, String currPage, String courseName) {
+    public PageModel getAllCourse(String pageSize, String currPage, String courseOrTeacher) {
 
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("courseName", courseName);
+        paramMap.put("courseOrTeacher", courseOrTeacher);
         paramMap.put("pageSize", pageSize);
         int offset = (Integer.valueOf(currPage) - 1) * Integer.valueOf(pageSize);
         paramMap.put("offset", offset);
@@ -74,8 +71,23 @@ public class CourseMgrServiceImpl implements CourseMgrService {
 
         List<Course> courseList = courseMapper.selectSomeByPage(paramMap);
 
+        List<CourseMgrModel> modelList = CollectionUtils.arrayListCast(courseList, course -> {
+            CourseMgrModel model = new CourseMgrModel();
+            model.setCourseId(course.getId());
+            model.setCredit(course.getCredit());
+            model.setTeacherNo(course.getCreatorNo());
+            model.setCourseName(course.getName());
+
+            User user = userMapper.selectBySerialNo(course.getCreatorNo());
+            if (user != null) {
+                model.setTeacher(user.getName());
+            }
+            return model;
+        });
+
         PageModel model = new PageModel();
-        model.setPageData(courseList);
+        model.setPageData(modelList);
+        
         model.setTotalCount(totalCount);
 
         return model;

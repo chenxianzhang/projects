@@ -17,10 +17,10 @@
     </el-table>
     <el-table :data="data" border v-if="role==='admin'">
       <!-- <el-table-column v-if="editable" type="selection" width="55" align="center"></el-table-column> -->
-      <el-table-column align="center" prop="name" label="课程名称" width="180"></el-table-column>
-      <el-table-column align="center" prop="score" label="学分数"></el-table-column>
+      <el-table-column align="center" prop="courseName" label="课程名称" width="180"></el-table-column>
+      <el-table-column align="center" prop="credit" label="学分数"></el-table-column>
       <el-table-column align="center" prop="teacher" label="任课教师"></el-table-column>
-      <el-table-column align="center" prop="teacherId" label="教师工号"></el-table-column>
+      <el-table-column align="center" prop="teacherNo" label="教师工号"></el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button @click="handleClk(scope.row, 'viewGrade')" type="text" size="small">成绩</el-button>
