@@ -348,9 +348,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
     public List<Course> getCourseByUser(String role, String serialNo) {
 
         if (CommonEnum.Role.STUDENT.getValue().equals(role)) {
-            return courseMapper.selectTeacherCourse(serialNo);
-        } else {
             return courseMapper.selectStuCourse(serialNo);
+        } else {
+            return courseMapper.selectTeacherCourse(serialNo);
         }
     }
 
