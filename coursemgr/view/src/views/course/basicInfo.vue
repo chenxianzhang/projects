@@ -51,7 +51,7 @@
           :page-sizes="[10, 15, 20, 30]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="totalCount" style="float: right">
+          :total="totalCount" style="float: right ">
         </el-pagination>
       </div>
     </div>
