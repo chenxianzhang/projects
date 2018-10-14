@@ -1,7 +1,9 @@
 <template>
     <div class="title">
         <span>课程管理系统</span>
+
         <div class="title-operator">
+            当前课程：<span style="margin-right:10px">{{ courseName }}</span>
             当前用户：
             <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
@@ -18,13 +20,15 @@
 </template>
 <script>
 import { findUser } from '@/api/login'
+import { getCourseById } from '@/api/course'
 import { removeCourseId } from '@/utils/auth'
 
 export default {
   name: 'title',
   data() {
     return {
-      userInfo: {}
+      userInfo: {},
+      courseName: ''
     }
   },
   mounted() {
@@ -39,6 +43,14 @@ export default {
         })
       }
       self.userInfo = response.data
+    })
+
+    getCourseById({ courseId: this.variables.courseId }).then(res => {
+      if (res.status === 0) {
+        this.$msg.error(res.msg)
+        return
+      }
+      this.courseName = res.data.name
     })
   },
   methods: {
