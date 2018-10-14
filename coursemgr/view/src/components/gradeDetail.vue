@@ -11,7 +11,6 @@
         <div style="margin-bottom:10px; line-height: 32px">
           <span>{{index + 1}}.</span>
           <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 240px)"></el-input>
-          <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 40px; height: 30px;"/>分</span>
         </div>
         <!--单选题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.CHOOSE">
@@ -25,6 +24,7 @@
               <span v-html="cItem.optionDes"></span>
             </el-radio>
           </el-radio-group>
+          <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 40px; height: 30px;"/>分</span>
         </div>
         <!--判断题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.JUDGE">
@@ -34,23 +34,42 @@
             <el-radio label="否" style="margin: 5px;">
             </el-radio>
           </el-radio-group>
+          <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 40px; height: 30px;"/>分</span>
         </div>
         <!--主观题 答题 设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">
-          <!--主观题 答题-->
-          <el-input type="textarea"
-                    v-model="item.taskQuestions.answers"
-                    style="width: calc(100% - 100px)"
-                    placeholder="请填写答案"
-                    disabled>
-          </el-input>
+          <el-row :gutter="10">
+            <el-col :span="22">
+              <!--主观题 答题-->
+              <el-input type="textarea"
+                        v-model="item.taskQuestions.answers"
+                        placeholder="请填写答案"
+                        disabled>
+              </el-input>
+            </el-col>
+            <el-col :span="2">
+              <div>得分：{{item.taskQuestions.score}}</div>
+              <div>评阅人：张三</div>
+              <div style="margin-top: 10px" v-if="showCxdfInput">
+                得分：<input v-model="item.teacherScore" type="number" min="0" max="100" style="height: 30px; width: 30px"/>
+              </div>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </div>
+    <el-row :gutter="20">
+      <el-col>
+        <el-button type="primary" @click="cxdf">重新评阅</el-button>
+        <el-button type="primary" @click="cxdfSubmit" :disabled="canSubmit">提 交</el-button>
+      </el-col>
+      <el-col></el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+  import { updateSubjectScore } from '@/api/grade'
   import {getStuTaskDetail} from '@/api/task'
   import {SUBJECT_TYPE} from '../utils/statusUtil'
 
@@ -59,6 +78,8 @@
     props:['taskId', 'uId'],
     data(){
       return{
+        canSubmit:true,
+        showCxdfInput:false,//是否重新打分
         task:{
           task:{
             name:'',
@@ -89,24 +110,27 @@
     },
     methods:{
       /**
-       * 根据task的信息  设置学生答卷信息
-       * params taskInfo
-       * return null
-       **/
-      // setStudentPaperByTask(task){
-      //   this.taskStudent.courseId = this.$route.params.courseId;
-      //   this.taskStudent.studentNo = this.$store.state.user.token;
-      //   this.taskStudent.taskId = this.taskId;
-      //   for(let q of task.subjects){
-      //     this.taskStudent.questionList.push({
-      //       questionId: q.id,
-      //       questionType: q.questionType,
-      //       standardAnswers: '',//标准答案
-      //       answers:q.answer,
-      //       score:q.score
-      //     });
-      //   }
-      // },
+       * cxdf 重新评阅
+       *
+       * */
+      cxdf(){
+        this.canSubmit = false;
+        this.showCxdfInput = true;
+      },
+      /**
+       * cxdfSubmit 重新评阅提交
+       *
+       * */
+      cxdfSubmit(){
+        updateSubjectScore(this.task)
+          .then(resp=>{
+            if(resp.status === 0){
+              this.$message.warn('评分失败')
+              return
+            }
+            this.$message.success('评分成功')
+          });
+      },
     },
   }
 </script>

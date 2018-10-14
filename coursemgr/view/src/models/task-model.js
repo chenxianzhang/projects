@@ -33,6 +33,7 @@ export class Subject {
     this.edit = false;
     this.answer = '';//答案
     this.questionType = '';
+    this.teacherScore = '';
   }
 };
 

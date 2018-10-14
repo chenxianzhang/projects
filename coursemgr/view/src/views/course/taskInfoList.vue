@@ -62,9 +62,9 @@
                     :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
             <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
             <el-table-column prop="studentName" label="姓名" align="center"> </el-table-column>
-            <el-table-column prop="studentNo" label="学号" align="center" :formatter="dateFormat"> </el-table-column>
-            <el-table-column prop="statusText" label="状态" align="center" :formatter="dateFormat"></el-table-column>
-            <el-table-column prop="reviewer" label="评阅人" align="center" :formatter="dateFormat"> </el-table-column>
+            <el-table-column prop="studentNo" label="学号" align="center"> </el-table-column>
+            <el-table-column prop="statusText" label="状态" align="center"></el-table-column>
+            <el-table-column prop="reviewer" label="评阅人" align="center"> </el-table-column>
           </el-table>
         </el-row>
       </el-dialog>
@@ -124,6 +124,7 @@
       },
       methods: {
         handleViewFinishState(rowData){
+          this.taskFinishStateList = [];
           this.curTaskRowData = rowData;
           let params = {taskId:rowData.id, courseId:rowData.courseId, pageSize: 200, currPage: 1};
           getTaskSituationList(params).then(resp=>{

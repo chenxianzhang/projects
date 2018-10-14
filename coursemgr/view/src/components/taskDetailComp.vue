@@ -55,7 +55,7 @@
             </div>
 
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :span="2" style="height: 100%;"><div style="height: 100%; display: flex;align-items: center;justify-content: center"><span>标准答案：</span></div></el-col>
               <el-col :span="22">
                 <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"
@@ -178,6 +178,7 @@
             subject_c.qScore = item.taskQuestions.questionScore;
             subject_c.stem = item.taskQuestions.stems;
             subject_c.questionType = item.taskQuestions.questionType;
+            subject_c.teacherScore = item.taskQuestions.teacherScore;
             this.task.subjects.push(subject_c);
           }
         },
@@ -214,6 +215,7 @@
                     questionType:item.questionType,
                     answers:item.answer,
                     score:item.score,
+                    teacherScore:item.teacherScore
                   }
                 );
               }
