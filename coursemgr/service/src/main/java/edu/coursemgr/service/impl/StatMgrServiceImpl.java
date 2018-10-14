@@ -234,8 +234,8 @@ public class StatMgrServiceImpl implements StatMgrService {
                 }
             }
 
-            result.setSubjectScoreRate(subjectiveScore / subjective * 100);
-            result.setObjectiveItemScoreRate(objectiveScore / objective * 100);
+            result.setSubjectScoreRate(subjective != null && subjective != 0 ? subjectiveScore / subjective * 100 : 0);
+            result.setObjectiveItemScoreRate(objective != null && objective != 0 ? objectiveScore / objective * 100 : 0);
         }
 
         int totalCount = userMapper.selectTotalCntByCourseId(Integer.valueOf(courseId));

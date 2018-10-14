@@ -381,8 +381,7 @@ public class UserMgrServiceImpl implements UserMgrService {
         return false;
     }
 
-    private void
-    readData2DB(List<ArrayList<String>> list, String courseId) throws Exception {
+    private void readData2DB(List<ArrayList<String>> list, String courseId) throws Exception {
         boolean header = false;
         for (int i = 0; i < list.size(); i++) {
 
