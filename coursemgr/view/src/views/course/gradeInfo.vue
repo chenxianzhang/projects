@@ -283,9 +283,9 @@
                     name: '名次',
                     type: 'gauge',
                     z: 3,
-                    min: 0,
-                    max: 220,
-                    splitNumber: 11,
+                    min: 1,
+                    max: resp.data.totalStudentCnt,
+                    splitNumber: resp.data.totalStudentCnt - 1,
                     radius: '85%',
                     axisLine: {            // 坐标轴线
                       lineStyle: {       // 属性lineStyle控制线条样式
@@ -322,12 +322,12 @@
                     },
                     detail : {
                       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                      formatter: function (value) {
-                        value = (value + '').split('.');
-                        value.length < 2 && (value.push('00'));
-                        return ('00' + value[0]).slice(-2)
-                          + '.' + (value[1] + '00').slice(0, 2);
-                      },
+                      // formatter: function (value) {
+                      //   value = (value + '').split('.');
+                      //   value.length < 2 && (value.push('00'));
+                      //   return ('00' + value[0]).slice(-2)
+                      //     + '.' + (value[1] + '00').slice(0, 2);
+                      // },
                       fontWeight: 'bolder',
                       borderRadius: 3,
                       backgroundColor: '#444',
@@ -348,7 +348,7 @@
                       color: '#eee',
                       rich: {}
                     },
-                    data:[{value: 1, name: '名次'}]
+                    data:[{value: resp.data.rank, name: '名次'}]
                   },
                   {
                     name: '得分',
@@ -387,7 +387,7 @@
                       fontWeight: 'bolder',
                       fontSize: '16'
                     },
-                    data:[{value: 10, name: '得分'}]
+                    data:[{value: resp.data.totalScore, name: '得分'}]
                   },
                   {
                     name: '客观题得分率',
@@ -434,7 +434,7 @@
                     detail : {
                       show: false
                     },
-                    data:[{value: 0.5, name: '客观题得分率'}]
+                    data:[{value: resp.data.objectiveItemScoreRate, name: '客观题得分率'}]
                   },
                   {
                     name: '主观题得分率',
@@ -477,15 +477,10 @@
                     detail: {
                       show: false
                     },
-                    data:[{value: 0.5, name: '主观题得分率'}]
+                    data:[{value: resp.data.subjectScoreRate, name: '主观题得分率'}]
                   }
                 ]
               };
-
-              option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
-              option.series[1].data[0].value = (Math.random()*7).toFixed(2) - 0;
-              option.series[2].data[0].value = (Math.random()*2).toFixed(2) - 0;
-              option.series[3].data[0].value = (Math.random()*2).toFixed(2) - 0;
               this.sortChart = this.$echarts.init(this.$refs.statisticSortEl);
               this.sortChart.setOption(option,true);
             });
