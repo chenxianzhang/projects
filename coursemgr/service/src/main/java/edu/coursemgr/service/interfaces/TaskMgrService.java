@@ -4,6 +4,7 @@ import edu.coursemgr.model.CourseTasks;
 import edu.coursemgr.model.TaskQuestions;
 import edu.coursemgr.pojo.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -105,14 +106,12 @@ public interface TaskMgrService {
      * @param response
      * @param courseId
      */
-    void exportCourseProcess(HttpServletResponse response, String courseId,
-                             String realPath) throws Exception ;
+    void exportCourseProcess(HttpServletResponse response, HttpServletRequest request, String courseId) throws Exception ;
 
     /**
      * 导出学生过程打包文件
      * @param response
      * @param courseId
      */
-    void exportStuCourseProcess(HttpServletResponse response, String courseId,
-                             String realPath, String studentNo) throws Exception;
+    void exportStuCourseProcess(HttpServletResponse response, HttpServletRequest request, String courseId, String studentNo) throws Exception;
 }

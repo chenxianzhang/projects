@@ -189,7 +189,7 @@ public class CourseMgrController extends BaseController {
         if (CommonUtils.isEmpty(courseId)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        taskMgrService.exportCourseProcess(response, courseId, request.getRealPath("/"));
+        taskMgrService.exportCourseProcess(response, request, courseId);
         return 1;
     }
 
@@ -203,7 +203,7 @@ public class CourseMgrController extends BaseController {
         if (CommonUtils.isEmpty(courseId)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        taskMgrService.exportStuCourseProcess(response, courseId, request.getRealPath("/"), studentNo);
+        taskMgrService.exportStuCourseProcess(response,request, courseId, studentNo);
         return 1;
     }
 
