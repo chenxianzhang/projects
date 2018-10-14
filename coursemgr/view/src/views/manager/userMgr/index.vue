@@ -1,13 +1,13 @@
 <template>
     <div class="user-container">
 
-        <user-edit-dlg 
-            v-if="uEditDlgVisible" 
-            :visible="uEditDlgVisible" 
-            :role="role" 
+        <user-edit-dlg
+            v-if="uEditDlgVisible"
+            :visible="uEditDlgVisible"
+            :role="role"
             :title="uEditDlgTitle"
             @close="handleClose"
-            @confirm="handleConfirm" 
+            @confirm="handleConfirm"
             :user='user'></user-edit-dlg>
 
         <drag-dialog :title="courseTitle" width="36%" :dialogVisible="courseVisible" :hiddenOperator="true" @close="handleCourseClose">
@@ -107,7 +107,7 @@ export default {
     },
     handleImport() {
       this.showUploadDialog = true;
-    },  
+    },
     hideUploadDialog(val) {
       this.showUploadDialog = false;
       this.queryChange();
@@ -187,6 +187,7 @@ export default {
             this.$msg.error(response.msg)
             return
           }
+          debugger
           this.courseList = response.data
         })
         .catch(err => {

@@ -1,6 +1,37 @@
 <template>
   <div class="registery-container">
-    <el-form ref="regForm" v-model="regInfo" label-width="100px" label-color="#fff" style="width: 400px; padding: 5px;">
+    <!--<div style="padding: 20px; width: 400px; background: white; box-shadow: 0px 0px 12px 1px grey">-->
+      <!--<div class="register-item">-->
+        <!--<el-input-->
+          <!--placeholder="请输入内容"-->
+          <!--v-model="regInfo.name">-->
+          <!--<i slot="prefix" class="el-input__icon icon_user_code"></i>-->
+        <!--</el-input>-->
+      <!--</div>-->
+      <!--<div class="register-item">-->
+        <!--<el-input-->
+          <!--placeholder="请输入内容"-->
+          <!--v-model="regInfo.name">-->
+          <!--<i slot="prefix" class="el-input__icon icon-user-name"></i>-->
+        <!--</el-input>-->
+      <!--</div>-->
+      <!--<div class="register-item">-->
+        <!--<el-button type="primary" @click="handleCancel()"-->
+                   <!--style="float: right; background-color: #009285" >取 消</el-button>-->
+        <!--<el-button type="primary" @click="handleSubmit()"-->
+                   <!--style="float: right; margin-left: 10px; background-color: #00574F">提 交</el-button>-->
+      <!--</div>-->
+    <!--</div>-->
+    <el-form ref="regForm" v-model="regInfo" label-width="100px" label-color="#fff"
+             style="width: 400px; padding: 5px; background: white; box-shadow: 0px 0px 12px 1px grey">
+      <el-form-item>
+        <el-input
+          placeholder="请输入内容"
+          v-model="regInfo.name">
+          <i slot="prefix" class="el-input__icon el-icon-edit"></i>
+        </el-input>
+      </el-form-item>
+
       <el-form-item label="姓名：" required>
         <el-input v-model="regInfo.name" placeholder="请输入姓名" style="background: transparent"></el-input>
       </el-form-item>
@@ -23,8 +54,10 @@
         <el-input v-model="pwdConfirm" placeholder="请确认密码"></el-input>
       </el-form-item>
 
-      <el-button type="primary" @click="handleSubmit()" style="float: right; margin-left: 10px;">提 交</el-button>
-      <el-button type="primary" @click="handleCancel()" style="float: right" >取 消</el-button>
+      <el-button type="primary" @click="handleSubmit()"
+                 style="float: right; margin-left: 10px; background-color: #00574F">提 交</el-button>
+      <el-button type="primary" @click="handleCancel()"
+                 style="float: right; background-color: #009285" >取 消</el-button>
     </el-form>
   </div>
 
@@ -99,19 +132,49 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #2d3a4b;
     height: 100%;
     width: 100%;
     color: #fff;
+    background: url("../../../static/img/register_bg.png") no-repeat;
+  }
+  .registery-container .register-item{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    margin-top: 10px;
   }
   label{
     color: #fff !important;
   }
+  .icon-user-name:before{
+    content: '1';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 2px;
+    top:14px;
+    color: white;
+    background: url("../../../static/img/icon_user_name.png") no-repeat left;
+  }
+  .icon_user_code:before{
+    content: '1';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 2px;
+    top:14px;
+    color: white;
+    background: url("../../../static/img/icon_user_code.png") no-repeat left;
+  }
 </style>
 <style>
-  .registery-container .el-input__inner{
-    background: transparent;
+  .registery-container .register-item .el-input__inner{
     border: 1px solid;
+    height: 40px;
+    border-radius: 0;
   }
   .registery-container .el-form-item__label{
     color: #fff;

@@ -21,12 +21,33 @@
     </div>
 
     <user-table :data="courseList" :role="role" :currPage="currPage" :pageSize="pageSize" :totalCount="totalCount" @handlePage="handlePage" @handleCommond="handleCommond"></user-table>
+
+    <drag-dialog title="课程成绩" width="80%" :dialogVisible="viewCourseGradeDlg" :hiddenOperator="true" @close="handleDelDlgClose">
+      <el-table :data="tableData" style="width: 100%" border height="80%"
+                :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" >
+        <el-table-column v-for="(task,index) in columns"
+                         :label="task.label"
+                         :prop="task.prop"
+                         align="center"
+                         :key="index">
+          <template slot-scope="scope">
+            <!--<div v-if="task.type && task.type==='link'"-->
+                 <!--@click.stop="viewScoreDetail(task.taskId, scope.row.studentNo)"-->
+                 <!--style="cursor: pointer; color: #ee9900;">-->
+              <!--{{scope.row[task.prop]}}-->
+            <!--</div>-->
+            <div>{{scope.row[task.prop]}}</div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </drag-dialog>
   </div>
 </template>
 
 <script>
 import userTable from '../components/userTable'
 import { getCourseData, deleteCourse } from '@/api/manager'
+import { getAllGradeInfo } from '@/api/grade'
 
 export default {
   name: 'courseMgr',
@@ -44,13 +65,65 @@ export default {
       delDlgTitle: '删除确认',
       delDlgVisible: false,
       levelPwd: '',
-      delCourseId: ''
+      delCourseId: '',
+
+      viewCourseGradeDlg:false,
+      columns:[],
+      tableData:[],
     }
   },
   mounted() {
     this.getCourseData()
   },
   methods: {
+    getGradeByCourse(courseId) {
+      let self = this;
+      getAllGradeInfo({courseId: courseId, pageSize: 100, currPage: 1})
+        .then(resp => {
+          if (resp.status === 0) {
+            self.$message.warning('获取成绩信息失败：' + resp.msg);
+            return;
+          }
+
+          self.transferData(resp.data.pageData);
+          this.viewCourseGradeDlg = true;
+          //todo 动态计算表格高度
+        });
+    },
+    transferData(data) {
+      if (!data) {
+        return;
+      }
+      this.columns = [];
+      this.tableData = [];
+      this.columns.push({prop:"studentName", label: "姓名"});
+      this.columns.push({prop:"studentNo", label: "学号"});
+      this.columns.push({prop:"groupNo", label: "所在小组"});
+      let hasInitCol = false;
+      for (let item = 0; item < data.length; item++) {
+        let tableItem = {};
+        tableItem.studentName = data[item].studentName;
+        tableItem.studentNo = data[item].studentNo;
+        tableItem.groupNo = data[item].groupNo;
+
+        data[item].studentTaskInfos.forEach(task => {
+          tableItem[task.taskId + "_score"] = task.score;
+          if (!task.score && task.score !== 0) {
+            debugger
+
+            tableItem[task.taskId + "_score"] = task.status;
+          }
+          if (!hasInitCol) {
+            this.columns.push({prop:task.taskId + "_score",
+              label: task.taskName + "(" + task.taskWeight + "%)", type:'link', taskId: task.taskId});
+          }
+        });
+        hasInitCol = true;
+        tableItem.totalScore = data[item].totalScore;
+        this.tableData.push(tableItem);
+      }
+      this.columns.push({prop:"totalScore", label: "加权总分"});
+    },
     queryChange() {
       this.currPage = 1
       this.pageSize = 10
@@ -88,10 +161,8 @@ export default {
     handleCommond(data) {
       switch (data.commond) {
         case 'viewGrade':
-          this.uEditDlgTitle = '成绩信息'
-          this.user = data.value
-          this.uEditDlgVisible = true
-          this.userOperStatus = 'edit'
+          debugger
+          this.getGradeByCourse(data.value.courseId);
           break
         case 'deleteCourse':
           this.delDlgVisible = true
@@ -100,7 +171,8 @@ export default {
       }
     },
     handleDelDlgClose() {
-      this.delDlgVisible = false
+      this.delDlgVisible = false;
+      this.viewCourseGradeDlg = false;
     },
     handleDelDlgConfirm() {
       if (!this.levelPwd || this.levelPwd.trim() === '') {
