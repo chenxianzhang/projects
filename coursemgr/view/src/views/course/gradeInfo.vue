@@ -37,7 +37,7 @@
         :page-sizes="[10, 15, 20, 30]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount">
+        :total="totalCount" style="float: right">
       </el-pagination>
     </div>
 
@@ -99,6 +99,7 @@
                 return;
               }
               self.transferData([resp.data]);
+              this.calcTableHeight();
             });
           return;
         }
@@ -107,15 +108,14 @@
       },
       mounted(){
         if(this.isStudent){
-          this.calcTableHeight();
           this.statisticTaskScore();
           this.statisticSort();
 
           window.onresize = ()=>{
             setTimeout(()=>{
               this.calcTableHeight();
-              this.taskStaticChart.resize();
-              this.sortChart.resize();
+              this.taskStaticChart && this.taskStaticChart.resize();
+              this.sortChart && this.sortChart.resize();
             }, 100);
           }
         }
@@ -126,10 +126,15 @@
       },
       methods: {
         calcTableHeight(){
+          let subHeight = 250;
+          if(this.isStudent){
+            subHeight = 530;
+          }
           setTimeout(()=>{
-            let totalHeight = document.getElementsByClassName('el-scrollbar')[0].clientHeight;
-            this.tableHeight = totalHeight - 300 - 140 + 'px';
-          }, 100);
+            let totalHeight = document.body.getBoundingClientRect().height;
+            document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
+            document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
+          }, 50);
         },
         transferData(data) {
           if (!data) {
@@ -150,8 +155,6 @@
             data[item].studentTaskInfos.forEach(task => {
               tableItem[task.taskId + "_score"] = task.score;
               if (!task.score && task.score !== 0) {
-                debugger
-
                 tableItem[task.taskId + "_score"] = task.status;
               }
               if (!hasInitCol) {
@@ -185,6 +188,7 @@
 
             self.transferData(resp.data.pageData);
             self.totalCount = resp.data.totalCount;
+            this.calcTableHeight();
           });
         },
         download() {
