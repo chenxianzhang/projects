@@ -369,10 +369,16 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         resultMap.put("task", task);
         resultMap.put("questionList", taskPaperList);
         resultMap.put("status", CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue());
-        GradeRelate relate = gradeRelateMapper.selectByStudent(params);
-        if (relate != null) {
-            User user = userMapper.selectBySerialNo(relate.getStudentNo());
+
+        if (task.getMarkType().equals(CommonEnum.GradeType.SELF_EVA.getValue())) {
+            User user = userMapper.selectBySerialNo(studentNo);
             resultMap.put("markUser", user);
+        } else {
+            GradeRelate relate = gradeRelateMapper.selectByStudent(params);
+            if (relate != null) {
+                User user = userMapper.selectBySerialNo(relate.getStudentNo());
+                resultMap.put("markUser", user);
+            }
         }
         if (studentTasks != null) {
             resultMap.put("studentTotalScore", studentTasks.getScore());
