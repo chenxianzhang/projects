@@ -198,6 +198,9 @@ public class StatMgrServiceImpl implements StatMgrService {
         Map<String, Float> stuScoreMap = new HashMap<>();
         if (taskScoreList != null) {
             for (StudentTaskScore studentTaskScore : taskScoreList) {
+                if (studentTaskScore.getScore() == null) {
+                    continue;
+                }
                 if (!stuScoreMap.containsKey(studentTaskScore.getStudentNo())) {
                     stuScoreMap.put(studentTaskScore.getStudentNo(),
                             studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
