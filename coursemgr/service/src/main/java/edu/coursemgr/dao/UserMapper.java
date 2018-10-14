@@ -47,4 +47,6 @@ public interface UserMapper {
     int getFinishedTaskStuTotalCnt(Integer courseId);
 
     List<User> selectFinishedTaskStu(Map params);
+
+    List<User> getExceptStudentList(Map params);
 }

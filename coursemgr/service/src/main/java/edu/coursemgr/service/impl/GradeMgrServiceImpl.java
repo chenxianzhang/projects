@@ -212,8 +212,14 @@ public class GradeMgrServiceImpl implements GradeMgrService {
                     if (CommonUtils.isEmpty(relate.getGradeObjNo())) {
                         relate.setGradeObjNo(originRelate.getGradeObjNo());
                     } else {
-                        relate.setGradeObjNo(String.format("%s,%s", relate.getGradeObjNo(),
-                                originRelate.getGradeObjNo()));
+                        String[] stuArr = originRelate.getGradeObjNo().split(Constant.Common.SEPARATE_COMMA);
+                        for (int i = 0; i < stuArr.length; i++) {
+                            if (!relate.getGradeObjNo().contains(stuArr[i])) {
+                                relate.setGradeObjNo(String.format("%s,%s",
+                                        relate.getGradeObjNo(), stuArr[i]));
+                            }
+                        }
+
                     }
                     updateList.add(relate);
                     break;
@@ -231,6 +237,10 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         }
 
         updateBatch(updateList);
+
+        // 删除移交的待办
+        params.put("studentNo", originStuNo);
+        gradeRelateMapper.deleteByCourseStudent(params);
     }
 
     private List<Schedule> transferSchedule(List<GradeRelate> gradeRelateList,
@@ -377,7 +387,7 @@ public class GradeMgrServiceImpl implements GradeMgrService {
             return;
         }
         relateList.forEach(relate -> {
-            if (relate.getTaskId() != null) {
+            if (relate.getId() != null) {
                 gradeRelateMapper.updateByIdSelective(relate);
             } else {
                 gradeRelateMapper.insertSelective(relate);

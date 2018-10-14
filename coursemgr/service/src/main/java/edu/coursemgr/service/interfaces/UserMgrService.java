@@ -113,4 +113,12 @@ public interface UserMgrService {
      * @return
      */
     void checkLevelPwd(String serialNo, String levelPwd) throws Exception;
+
+    /**
+     * 获取除指定学生之外的其它所有学生
+     * @param courseId
+     * @param studentNo
+     * @return
+     */
+    List<User> getExceptStudentList(String courseId, String studentNo);
 }

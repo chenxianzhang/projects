@@ -78,6 +78,17 @@
       where courseId= #{courseId, jdbcType=INTEGER}
     )
   </select>
+  <select id="getExceptStudentList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where serialNo in (
+    select studentNo
+    from course_students
+    where courseId= #{courseId, jdbcType=INTEGER}
+    )
+    and serialNo != #{studentNo, jdbcType=VARCHAR}
+  </select>
   <select id="selectSomeByPage" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select
     <include refid="Base_Column_List" />

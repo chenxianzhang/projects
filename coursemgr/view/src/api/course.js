@@ -90,3 +90,12 @@ export function getAllStudentsByCourseId(params) {
     });
 }
 
+
+export function getExceptStudentList(params) {
+  return request({
+      url: '/userMgr/getExceptStudentList',
+      method: 'post',
+      data: params
+    });
+}
+

@@ -66,6 +66,19 @@ public class UserMgrController extends BaseController {
         return userMgrService.getUserByRole(role, pageSize, currPage, nameOrNo);
     }
 
+    @RequestMapping(value="/getExceptStudentList", method=RequestMethod.POST)
+    @ResponseBody
+    public Object getExceptStudentList(@RequestBody Map<String, Object> requestMap)
+            throws Exception {
+        String courseId = getParam(requestMap, "courseId");
+        String studentNo = getParam(requestMap, "studentNo");
+        boolean illegal = CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(studentNo);
+        if (illegal) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return userMgrService.getExceptStudentList(courseId, studentNo);
+    }
+
     @RequestMapping(value="/getAllStudentsByCourseId", method=RequestMethod.GET)
     @ResponseBody
     public Object getAllStudentsByCourseId(@RequestParam String courseId)

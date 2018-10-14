@@ -29,4 +29,6 @@ public interface GradeRelateMapper {
     int updateByIdSelective(GradeRelate record);
 
     List<GradeRelate> selectByOnlyStudent(String studentNo);
+
+    int deleteByCourseStudent(Map params);
 }

@@ -80,6 +80,12 @@
         where courseId in (#{courseIds,jdbcType=VARCHAR})
     </delete>
 
+    <delete id="deleteByCourseStudent" parameterType="java.util.HashMap" >
+        delete from `grade_relate`
+        where courseId = #{courseId,jdbcType=INTEGER}
+        and studentNo = #{studentNo, jdbcType=VARCHAR}
+    </delete>
+
     <select id="selectSomeByStudent" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
         select
         gr.*

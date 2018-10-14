@@ -265,6 +265,16 @@ public class UserMgrServiceImpl implements UserMgrService {
         }
     }
 
+    @Override
+    public List<User> getExceptStudentList(String courseId, String studentNo) {
+
+        Map params = new HashMap();
+        params.put("courseId", courseId);
+        params.put("studentNo", studentNo);
+
+        return userMapper.getExceptStudentList(params);
+    }
+
     private void checkWhetherDelete(String studentNo, String courseId) throws Exception {
 
         if (!CommonUtils.isEmpty(courseId)) {
