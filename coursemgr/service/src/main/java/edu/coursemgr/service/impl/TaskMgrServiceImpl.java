@@ -451,9 +451,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
     private void generateWord(User student, List<CourseTasks> taskList,
                               String unpackDir, HttpServletRequest request) {
-        String html = "";
-//        List<Map<String, Object>> resultList = new ArrayList<>();
-//        Map<String, Object> temp = null;
+//        String html = "";
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        Map<String, Object> temp = null;
         for (CourseTasks task : taskList) {
             Map taskDetail = getStuTaskDetail(task.getId().toString(),
                     student.getSerialNo());
@@ -461,31 +461,31 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             if (!status.equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
                 return;
             }
-            html += transfer2Html(taskDetail);
-            if (html == null) {
-                continue;
-            }
-            html += "<br/>";
-
-//            temp = transferTemplateData(taskDetail);
-//            if (temp == null) {
+//            html += transfer2Html(taskDetail);
+//            if (html == null) {
 //                continue;
 //            }
-//            resultList.add(temp);
+//            html += "<br/>";
+
+            temp = transferTemplateData(taskDetail);
+            if (temp == null) {
+                continue;
+            }
+            resultList.add(temp);
         }
 
-//        Map<String, Object> root = new HashMap<>();
-//        root.put("taskList", resultList);
-        if (html == null) {
-            return;
-        }
-//        String fileName = String.format("%s(%s)", student.getName(), student.getSerialNo());
-        String fileName = String.format("%s/%s(%s).doc", unpackDir, student.getName(), student.getSerialNo());
-        new JsoupWordOper().html2Word(html, unpackDir, fileName);
+        Map<String, Object> root = new HashMap<>();
+        root.put("taskList", resultList);
+//        if (html == null) {
+//            return;
+//        }
+        String fileName = String.format("%s(%s)", student.getName(), student.getSerialNo());
+//        String fileName = String.format("%s/%s(%s).doc", unpackDir, student.getName(), student.getSerialNo());
+//        new JsoupWordOper().html2Word(html, unpackDir, fileName);
 
         // 生成word文档
-//        WordExportUtil.generatorWord(request, WordExportUtil.WORD_2007, fileName, "wordTemplate.ftl",
-//                unpackDir, root);
+        WordExportUtil.generatorWord(request, WordExportUtil.WORD_2003, fileName, "wordTemplate.ftl",
+                unpackDir, root);
     }
 
     private Map<String, Object> transferTemplateData(Map taskDetail) {
