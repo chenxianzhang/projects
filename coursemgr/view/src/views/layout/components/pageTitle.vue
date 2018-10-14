@@ -1,34 +1,37 @@
 <template>
-    <div class="title">
-        <span>课程管理系统</span>
+  <div class="title">
+    <span>课程管理系统</span>
 
-        <div class="title-operator">
-            当前课程：<span style="margin-right:10px">{{ courseName }}</span>
-            当前用户：
-            <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link">
-                    {{userInfo.name}}
-                    <i class="el-icon-arrow-down el-icon--right white-color"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
-                    <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
-                    <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
-        </div>
+    <div class="title-operator">
+      <span v-if="role != 'admin'">当前课程：
+        <span style="margin-right:10px">{{ courseName }}</span>
+      </span>
+      当前用户：
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link">
+          {{userInfo.name}}
+          <i class="el-icon-arrow-down el-icon--right white-color"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
+          <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
+          <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
+  </div>
 </template>
 <script>
 import { findUser } from '@/api/login'
 import { getCourseById } from '@/api/course'
-import { removeCourseId } from '@/utils/auth'
+import { removeCourseId, getLoginRole } from '@/utils/auth'
 
 export default {
   name: 'title',
   data() {
     return {
       userInfo: {},
-      courseName: ''
+      courseName: '',
+      role: getLoginRole()
     }
   },
   mounted() {
@@ -45,19 +48,21 @@ export default {
       self.userInfo = response.data
     })
 
-    getCourseById({ courseId: this.variables.courseId }).then(res => {
-      if (res.status === 0) {
-        this.$msg.error(res.msg)
-        return
-      }
-      this.courseName = res.data.name
-    })
+    if (this.role != 'admin') {
+      getCourseById({ courseId: this.variables.courseId }).then(res => {
+        if (res.status === 0) {
+          this.$msg.error(res.msg)
+          return
+        }
+        this.courseName = res.data.name
+      })
+    }
   },
   methods: {
     logout() {
       this.$store.dispatch('logOut').then(() => {
-          // 清空tagsview
-          this.$store.dispatch('delAllViews')
+        // 清空tagsview
+        this.$store.dispatch('delAllViews')
         //   this.$router.push('/login')
         location.reload()
       })
