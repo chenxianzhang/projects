@@ -51,7 +51,7 @@
           :page-sizes="[10, 15, 20, 30]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="totalCount">
+          :total="totalCount" style="float: right">
         </el-pagination>
       </div>
     </div>
@@ -176,6 +176,15 @@
       }
     },
     methods:{
+      calcTableHeight(){
+        setTimeout(()=>{
+          let totalHeight = document.body.getBoundingClientRect().height;
+          let courseElHeight = document.getElementsByClassName('course-info')[0].getBoundingClientRect().height;
+          let subHeight = 285;
+          document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - courseElHeight - subHeight + 'px';
+          document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
+        }, 50);
+      },
       downloadStuTemplate() {
         dodwnloadStuTemp();
       },
@@ -219,6 +228,7 @@
           }
           self.totalCount = response.data.totalCount;
           self.studentsInCourse = response.data.pageData;
+          this.calcTableHeight();
         });
       },
       //添加学生
