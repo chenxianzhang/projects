@@ -198,12 +198,14 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                     if (model.getSubjectCnt() == null || model.getSubjectCnt() == 0) {
                         detail.setReviewer("系统");
                     } else {
-                        if (model.getMarkType().equals(CommonEnum.GradeType.AUTO_EVA.getValue())) {
+                        if (model.getMarkType().equals(CommonEnum.GradeType.SELF_EVA.getValue())) {
                             detail.setReviewer(user.getName());
                         } else {
                             GradeRelate relate = gradeRelateMapper.selectByStudent(params);
-                            User userTmp = userMapper.selectBySerialNo(relate.getStudentNo());
-                            detail.setReviewer(userTmp.getName());
+                            if (relate != null) {
+                                User userTmp = userMapper.selectBySerialNo(relate.getStudentNo());
+                                detail.setReviewer(userTmp.getName());
+                            }
                         }
                     }
                     return detail;

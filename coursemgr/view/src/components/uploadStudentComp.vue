@@ -41,7 +41,7 @@ import dragDialog from '@/components/dragDialog';
         };
       },
       created(){
-        this.uploadData.courseId = this.$route.params.courseId;
+        this.uploadData.courseId = this.variables.courseId
       },
       props: {
         uploadAction: {
