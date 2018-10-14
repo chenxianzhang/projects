@@ -92,7 +92,7 @@
         <span style="color: #4481ff;">{{curHandleUser.name}}</span><span> 的待办事项</span>
         <div style="max-height: 300px; overflow: auto;">
           <div v-if="curHandleUsergTasks.length === 0" style="margin: 10px 0; text-align: center; color: #ffb02c;">暂无待办事项</div>
-          <el-checkbox-group v-model="gTaskCheckList">
+          <el-checkbox-group v-model="gTaskCheckList" style="margin: 20px">
             <el-checkbox v-for="(gTask, index) in curHandleUsergTasks" :label="gTask.taskName" :key="index"></el-checkbox>
           </el-checkbox-group>
         </div>
@@ -322,7 +322,7 @@
       handleStudentTodoClick(data){
         this.curHandleUser = data;
         this.showgTaskHandleOutDlg = true;
-        //todo 当前用户的获取待办事项
+        //当前用户的获取待办事项
         getScheduleByStudent({studentNo:data.serialNo, courseId:this.variables.courseId})
           .then(resp=>{
             if(resp.status === 0){

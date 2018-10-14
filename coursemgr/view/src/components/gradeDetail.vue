@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <el-row :gutter="20">
+    <el-row :gutter="20" v-if="!isStudent && hasSubject">
       <el-col>
         <el-button type="primary" @click="cxdf">重新评阅</el-button>
         <el-button type="primary" @click="cxdfSubmit" :disabled="canSubmit">提 交</el-button>
@@ -78,6 +78,8 @@
     props:['taskId', 'uId'],
     data(){
       return{
+        isStudent:false,
+        hasSubject:false,
         canSubmit:true,
         showCxdfInput:false,//是否重新打分
         task:{
@@ -93,6 +95,8 @@
       }
     },
     created(){
+      this.isStudent = this.$store.state.user.roles.in_array('student');
+
       //获取任务详情
       if(!this.taskId || this.taskId === ''){
         return;
@@ -107,6 +111,9 @@
           //根据结果设置subject值
           this.task = resp.data;
         });
+    },
+    mounted() {
+
     },
     methods:{
       /**
