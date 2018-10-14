@@ -76,6 +76,14 @@ export default {
     this.getCourseData()
   },
   methods: {
+    calcTableHeight(){
+      setTimeout(()=>{
+        let totalHeight = document.body.getBoundingClientRect().height;
+        let subHeight = 270;
+        document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
+        document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
+      }, 50);
+    },
     getGradeByCourse(courseId) {
       let self = this;
       getAllGradeInfo({courseId: courseId, pageSize: 100, currPage: 1})
@@ -88,6 +96,12 @@ export default {
           self.transferData(resp.data.pageData);
           this.viewCourseGradeDlg = true;
           //todo 动态计算表格高度
+          setTimeout(()=>{
+            let totalHeight = document.body.getBoundingClientRect().height * 0.9;
+            let subHeight = 270;
+            document.getElementsByClassName('el-table__body-wrapper')[1].style.height = totalHeight - subHeight + 'px';
+            document.getElementsByClassName('el-table__body-wrapper')[1].style.overflowY = 'auto';
+          }, 50);
         });
     },
     transferData(data) {
@@ -151,8 +165,9 @@ export default {
             this.$msg.error(data.msg)
             return
           }
-          this.courseList = data.data.pageData
-          this.totalCount = data.data.totalCount
+          this.courseList = data.data.pageData;
+          this.totalCount = data.data.totalCount;
+          this.calcTableHeight();
         })
         .catch(err => {
           this.$msg.error(err)

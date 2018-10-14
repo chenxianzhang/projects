@@ -28,7 +28,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currPage" :page-sizes="[10, 15, 20, 30]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                   :current-page="currPage" :page-sizes="[10, 15, 20, 30]" :page-size="pageSize"
+                   layout="total, sizes, prev, pager, next, jumper" :total="totalCount" style="float: right">
     </el-pagination>
   </div>
 </template>

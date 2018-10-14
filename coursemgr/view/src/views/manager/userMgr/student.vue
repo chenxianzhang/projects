@@ -1,12 +1,12 @@
 <template>
   <div class="student-container">
-    <user-table 
-      :data="userList" 
-      :role="role" 
+    <user-table
+      :data="userList"
+      :role="role"
       :currPage="currPage"
       :pageSize="pageSize"
       :totalCount="totalCount"
-      @handlePage="handlePage" 
+      @handlePage="handlePage"
       @handleCommond="handleCommond"></user-table>
   </div>
 </template>
@@ -42,6 +42,15 @@ export default {
     })
   },
   methods: {
+    calcTableHeight(){
+      setTimeout(()=>{
+        let totalHeight = document.body.getBoundingClientRect().height;
+        let subHeight = 270;
+        document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
+        document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
+      }, 50);
+    },
+
     queryAction() {
       this.getUserData()
     },
@@ -74,6 +83,7 @@ export default {
         }
         this.userList = response.data.pageData
         this.totalCount = response.data.totalCount
+        this.calcTableHeight();
       }).catch(err => {
         this.$msg.error(err)
       })
