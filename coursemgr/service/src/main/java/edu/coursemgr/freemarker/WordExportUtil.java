@@ -138,6 +138,7 @@ public class WordExportUtil {
         try {
             String tempFilePath = WordExportUtil.class.getClassLoader().getResource("templates").getPath();
 //            File tempFile = new File(tempFilePath);
+            config.setDefaultEncoding("UTF-8");
             config.setDirectoryForTemplateLoading(new File(tempFilePath));
             config.setObjectWrapper(new DefaultObjectWrapper());
             Template template = config.getTemplate(templateFile, "UTF-8");
