@@ -182,7 +182,7 @@ public class GradeMgrServiceImpl implements GradeMgrService {
     }
 
     @Override
-    public List<Schedule> getScheduleByStudent(String courseId, String studentNo) {
+    public List<Schedule> getScheduleByStudent(String studentNo, String courseId) {
 
         User user = userMapper.selectBySerialNo(studentNo);
 
