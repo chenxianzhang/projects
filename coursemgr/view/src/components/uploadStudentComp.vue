@@ -18,7 +18,7 @@
       :data="uploadData">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">只能上传[.xlsx]文件</div>
+      <div class="el-upload__tip" slot="tip">只能上传[*.xls或*.xlsx]文件</div>
     </el-upload>
     <div class="upload-progress" v-if="showProgress">
       <span>上传进度：</span>

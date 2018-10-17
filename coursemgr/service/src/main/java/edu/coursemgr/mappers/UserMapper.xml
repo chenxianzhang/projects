@@ -97,7 +97,7 @@
     select studentNo
     from course_students
     where courseId= #{courseId, jdbcType=INTEGER}
-    ) order by createDate desc limit ${currSize},${pageSize}
+    ) order by id asc limit ${currSize},${pageSize}
   </select>
   <select id="selectTotalCntByCourseId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select
@@ -128,7 +128,7 @@
       and (name like CONCAT('%',#{nameOrNo},'%')
       or serialNo like CONCAT('%',#{nameOrNo},'%'))
     </if>
-    order by createDate desc limit ${offset},${pageSize}
+    order by id asc limit ${offset},${pageSize}
   </select>
   <select id="selectSomByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select

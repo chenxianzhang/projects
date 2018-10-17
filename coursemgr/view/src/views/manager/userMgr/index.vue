@@ -11,11 +11,14 @@
             :user='user'></user-edit-dlg>
 
         <drag-dialog :title="courseTitle" width="36%" :dialogVisible="courseVisible" :hiddenOperator="true" @close="handleCourseClose">
-            <el-card class="box-card">
+            <el-card class="box-card" v-if="courseList && courseList.length > 0">
                 <div v-for="course in courseList" :key="course.id">
                     {{ course.name }}
                 </div>
             </el-card>
+            <div v-else>
+              <span>{{ courseTipInfo }}</span>
+            </div>
         </drag-dialog>
 
         <drag-dialog :title="delDlgTitle" width="36%" :dialogVisible="delDlgVisible" @close="handleDelDlgClose" @confirm="handleDelDlgConfirm">
@@ -76,7 +79,8 @@ export default {
       delSerialNo: '',
       currUserSerialNo: this.$store.state.user.token,
       showUploadDialog: false,
-      uploadAction: ""
+      uploadAction: "",
+      courseTipInfo: ''
     }
   },
   components: {
@@ -86,11 +90,13 @@ export default {
   mounted() {
     if (this.$route.path.indexOf('student') >= 0) {
       this.placeholder = '输入姓名或者学号'
+      this.courseTipInfo = '没有关联的课程信息'
       this.role = 'student'
       this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadStudents"
     } else {
       this.placeholder = '输入姓名或者教工号'
       this.role = 'teacher'
+      this.courseTipInfo = '该教师暂未开设课程'
       this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadTeachers"
     }
   },

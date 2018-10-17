@@ -280,7 +280,7 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
                             taskInfo.getTaskWeight().toString()));
                 }
-                arrayList.add(taskInfo.getScore().toString());
+                arrayList.add(taskInfo.getScore() == null ? "" : taskInfo.getScore().toString());
             }
             flag = true;
             arrayList.add(detail.getTotalScore().toString());
@@ -419,6 +419,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     Float totalScore = 0f;
                     if (taskInfos != null) {
                         for (StudentTaskInfo taskInfo : taskInfos) {
+                            if (taskInfo.getScore() == null) {
+                                continue;
+                            }
                             totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
                         }
                     }

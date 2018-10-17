@@ -14,6 +14,7 @@
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
           <el-button @click="resetForm('ruleForm2')">重置</el-button>
+          <el-button @click="logout">返回登录界面</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -218,14 +219,14 @@ export default {
       this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak))
     },
     save(mes) {
-      if (this.userInfo.college.trim() === '') {
-        this.$message({
-          showClose: true,
-          type: 'warning',
-          message: '学院信息不能为空'
-        })
-        return
-      }
+      // if (this.userInfo.college.trim() === '') {
+      //   this.$message({
+      //     showClose: true,
+      //     type: 'warning',
+      //     message: '学院信息不能为空'
+      //   })
+      //   return
+      // }
       // if (!validatePhone(this.userInfo.cellphone)) {
       //   this.$message({
       //           showClose: true,
@@ -328,7 +329,7 @@ export default {
         self.userInfo = response.data
         self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo))
 
-        if (response.data.hasLogin === 0) {
+        if (!response.data.hasLogin || response.data.hasLogin === 0) {
           this.firstLogin = true
           return
         }

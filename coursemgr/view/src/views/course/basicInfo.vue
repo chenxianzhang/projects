@@ -155,7 +155,6 @@ export default {
     }
   },
   created() {
-    //let cId = this.$store.getters.courseId;
     let cId = this.variables.courseId
     this.getCourseInfo(cId)
     this.getStudentsOfCourse(cId)
