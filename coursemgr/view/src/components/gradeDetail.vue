@@ -48,10 +48,10 @@
               </el-input>
             </el-col>
             <el-col :span="2">
-              <div>得分：{{item.taskQuestions.score}}</div>
-              <div>评阅人：张三</div>
-              <div style="margin-top: 10px" v-if="showCxdfInput">
-                得分：<input v-model="item.teacherScore" type="number" min="0" max="100" style="height: 30px; width: 30px"/>
+              <div>得分：{{item.taskQuestions.score}}<span v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>
+              <div>评阅人：{{task.markUser && task.markUser.name}}</div>
+              <div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">
+                得分：<input v-model="item.taskQuestions.teacherScore" type="number" min="0" max="100" style="height: 30px; width: 30px"/>
               </div>
             </el-col>
           </el-row>
@@ -109,7 +109,15 @@
             return;
           }
           //根据结果设置subject值
+          debugger
+
           this.task = resp.data;
+          for (let item of this.task.questionList) {
+            if (item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE) {
+              this.hasSubject = true;
+              break;
+            }
+          }
         });
     },
     mounted() {
@@ -121,6 +129,7 @@
        *
        * */
       cxdf(){
+
         this.canSubmit = false;
         this.showCxdfInput = true;
       },
@@ -129,7 +138,13 @@
        *
        * */
       cxdfSubmit(){
-        updateSubjectScore(this.task)
+        let totalScore = 0;
+        for(let item of this.task.questionList){
+          totalScore += item.taskQuestions.teacherScore !== '' ? +item.taskQuestions.teacherScore : item.taskQuestions.score;
+        }
+        this.task.studentTotalScore = totalScore;
+
+        updateSubjectScore(this.setStudentPaperByTask(this.task))
           .then(resp=>{
             if(resp.status === 0){
               this.$message.warn('评分失败')
@@ -137,6 +152,26 @@
             }
             this.$message.success('评分成功')
           });
+      },
+
+      setStudentPaperByTask(task){
+        debugger
+        let taskTmp = {};
+        taskTmp.courseId = this.variables.courseId;
+        taskTmp.studentNo = this.uId;
+        taskTmp.taskId = task.task.id;
+        taskTmp.questionList = [];
+        for(let q of task.questionList){
+          taskTmp.questionList.push({
+            questionId: q.taskQuestions.id,
+            questionType: q.taskQuestions.questionType,
+            standardAnswers: q.taskQuestions.standardAnswer,//标准答案
+            answers:q.taskQuestions.answers,
+            score:q.taskQuestions.score,
+            teacherScore: q.taskQuestions.teacherScore
+          });
+        }
+        return taskTmp;
       },
     },
   }

@@ -2,7 +2,10 @@
     <div :style="{height: containerHeight}">
       <el-row class="statistic-all-grade">
         <el-col :span="24" class="grade-item">
-          <div ref="grade_static" class="grade-item">
+          <div style="height: 20px; display: flex; align-items: right; justify-content: right; padding-right: 20px">
+            <el-button v-show="showBackBtn" type="primary" size="mini" @click.stop="back2AllGradeStatistic">返回</el-button>
+          </div>
+          <div ref="grade_static" class="all-grade-item">
             所有成绩统计
           </div>
         </el-col>
@@ -23,7 +26,7 @@
 </template>
 
 <script>
-  import {statAllGrade, statTaskSubmitReview, statQuestionTypeCnt} from '@/api/statistics'
+  import {statAllGrade, statTaskSubmitReview, statQuestionTypeCnt, statStudentTaskScore} from '@/api/statistics'
 
     export default {
         name: "courseStatistic",
@@ -32,7 +35,8 @@
             containerHeight:0,
             scoreStaticChart:null,
             taskStaticChart:null,
-            stemStaticChart:null
+            stemStaticChart:null,
+            showBackBtn:false,
           }
       },
       mounted(){
@@ -62,6 +66,7 @@
          * 所有成绩统计
          * */
         lineGroup() {
+          let self = this;
           let params = {
             courseId: this.variables.courseId,
             sort: 'desc'
@@ -74,6 +79,9 @@
               this.$message.warning('获取全部成绩统计结果失败');
               return;
             }
+
+            this.showBackBtn = false;
+
             if(resp.data.studentScoreList && resp.data.studentScoreList.length !== 0){
               resp.data.studentScoreList.forEach((item)=>{
                 xData.push(item.studentName);
@@ -81,11 +89,7 @@
               });
             }
             let option = {
-              title : {
-                text: '成绩统计',
-                // subtext: '纯属虚构',
-                x:'center'
-              },
+              barMaxWidth:60,
               tooltip: {
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -128,11 +132,14 @@
                 }
               ]
             };
-            this.scoreStaticChart = this.$echarts.init(this.$refs.grade_static);
+            if(this.scoreStaticChart === null){
+              this.scoreStaticChart = this.$echarts.init(this.$refs.grade_static);
+            }
             this.scoreStaticChart.setOption(option);
-            // window.onresize = ()=>{
-            //   this.scoreStaticChart.resize();
-            // }
+            this.scoreStaticChart.on('dblclick', (params) => {
+              let studentNo = resp.data.studentScoreList[params.dataIndex].studentNo;
+              self.go2StudentGradeStatistic(studentNo);
+            });
           });
         },
         /**
@@ -166,6 +173,7 @@
               }
             };
             let option = {
+              barMaxWidth:60,
               color: ['#003366', '#006699', '#4cabce', '#e5323e'],
               tooltip: {
                 trigger: 'axis',
@@ -176,19 +184,6 @@
               legend: {
                 data: ['提交次数', '审批次数']
               },
-              // toolbox: {
-              //   show: true,
-              //   orient: 'vertical',
-              //   left: 'right',
-              //   top: 'center',
-              //   feature: {
-              //     mark: {show: true},
-              //     dataView: {show: true, readOnly: false},
-              //     magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-              //     restore: {show: true},
-              //     saveAsImage: {show: true}
-              //   }
-              // },
               calculable: true,
               xAxis: [
                 {
@@ -222,9 +217,6 @@
             };
             this.taskStaticChart = this.$echarts.init(this.$refs.task_static)
             this.taskStaticChart.setOption(option);
-            // window.onresize = ()=>{
-            //   this.taskStaticChart.resize();
-            // }
           });
         },
         /**
@@ -273,18 +265,95 @@
             };
             this.stemStaticChart = this.$echarts.init(this.$refs.stem_static);
             this.stemStaticChart.setOption(option);
-            // window.onresize = ()=>{
-            //   this.stemStaticChart.resize();
-            // }
           });
         },
-      }
+        /**
+         * back2AllGradeStatistic 返回所有成绩统计
+         * */
+        back2AllGradeStatistic(){
+          this.lineGroup();
+        },
+        /**
+         * go2StudentGradeStatistic 下钻到学生个人成绩统计
+         * */
+        go2StudentGradeStatistic(sNo){
+          let xData = [], score=[], totalScore=[];
+          statStudentTaskScore({courseId: this.variables.courseId, studentNo: sNo})
+            .then(resp => {
+              if (resp.status === 0) {
+                console.log(resp.msg);
+                this.$message.warning('获取任务完成情况失败！');
+                return;
+              }
+              this.showBackBtn = true;
+              // this.$refs.grade_static.innerHTML = '';
+
+              if(resp.data && resp.data.length !== 0){
+                resp.data.forEach((item)=>{
+                  xData.push(item.taskName);
+                  score.push(item.score);
+                  totalScore.push(item.totalScore);
+                });
+              }
+              let option = {
+                color: [ '#4cabce', '#006699', '#003366', '#e5323e'],
+                barMaxWidth:60,
+                tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                    type: 'shadow'
+                  }
+                },
+                legend: {
+                  data: ['得分', '总分']
+                },
+                calculable: true,
+                xAxis: [
+                  {
+                    name:'任务',
+                    type: 'category',
+                    axisTick: {show: false},
+                    data: xData
+                  }
+                ],
+                yAxis: [
+                  {
+                    type: 'value',
+                    name:'分数'
+                  }
+                ],
+                series: [
+                  {
+                    name: '得分',
+                    type: 'bar',
+                    stack:'score',
+                    barGap: 0,
+                    data: score
+                  },
+                  {
+                    name: '总分',
+                    type: 'bar',
+                    stack:'score',
+                    data: totalScore
+                  }
+                ]
+              };
+              this.scoreStaticChart.setOption(option);
+            });
+        },
+      },
     }
 </script>
 
 <style scoped>
   .statistic-all-grade{
     height: calc(50% - 10px);
+  }
+
+  .all-grade-item{
+    height: calc(100% - 20px);
+    width: 100%;
+    /*box-shadow: 0px 0px 2px 1px gray;*/
   }
 
   .grade-item{
