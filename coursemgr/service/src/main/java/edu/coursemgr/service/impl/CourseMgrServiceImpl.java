@@ -186,7 +186,8 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                             if (taskInfo.getScore() == null) {
                                 continue;
                             }
-                            totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+//                            totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+                            totalScore += taskInfo.getScore();
                         }
                     }
                     detail.setTotalScore(totalScore);
@@ -237,7 +238,8 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                     if (taskInfo.getScore() == null) {
                         continue;
                     }
-                    totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+//                    totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+                    totalScore += taskInfo.getScore();
                 }
             }
             detail.setTotalScore(totalScore);
@@ -277,8 +279,9 @@ public class CourseMgrServiceImpl implements CourseMgrService {
 
             for (StudentTaskInfo taskInfo : detail.getStudentTaskInfos()) {
                 if (!flag) {
-                    columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
-                            taskInfo.getTaskWeight().toString()));
+//                    columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
+//                            taskInfo.getTaskWeight().toString()));
+                    columnList.add(taskInfo.getTaskName());
                 }
                 arrayList.add(taskInfo.getScore() == null ? "" : taskInfo.getScore().toString());
             }
@@ -286,7 +289,8 @@ public class CourseMgrServiceImpl implements CourseMgrService {
             arrayList.add(detail.getTotalScore().toString());
             dataList.add(arrayList);
         }
-        columnList.add("加权总分");
+//        columnList.add("加权总分");
+        columnList.add("总分");
         Course course = courseMapper.selectById(Integer.valueOf(courseId));
 
         ExcelReader excelReader = new ExcelReader();
@@ -315,13 +319,15 @@ public class CourseMgrServiceImpl implements CourseMgrService {
         arrayList.add(detail.getStudentNo());
         arrayList.add(detail.getGroupNo().toString());
         for (StudentTaskInfo taskInfo : detail.getStudentTaskInfos()) {
-            columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
-                    taskInfo.getTaskWeight().toString()));
+//            columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
+//                    taskInfo.getTaskWeight().toString()));
+            columnList.add(taskInfo.getTaskName());
             arrayList.add(taskInfo.getScore().toString());
         }
         arrayList.add(detail.getTotalScore().toString());
         dataList.add(arrayList);
-        columnList.add("加权总分");
+        columnList.add("总分");
+//        columnList.add("加权总分");
 
         Course course = courseMapper.selectById(Integer.valueOf(courseId));
         User user = userMapper.selectBySerialNo(studentNo);
@@ -422,7 +428,8 @@ public class CourseMgrServiceImpl implements CourseMgrService {
                             if (taskInfo.getScore() == null) {
                                 continue;
                             }
-                            totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+//                            totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+                            totalScore += taskInfo.getScore();
                         }
                     }
                     detail.setTotalScore(totalScore);

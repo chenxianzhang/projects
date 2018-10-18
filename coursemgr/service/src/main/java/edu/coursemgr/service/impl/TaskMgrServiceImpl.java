@@ -129,6 +129,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                 });
 
         CourseTaskDetail taskDetail = new CourseTaskDetail();
+        if (!task.getMarkType().isEmpty()) {
+            task.setMarkType(CommonEnum.GradeType.valueOf(task.getMarkType()).getText());
+        }
         taskDetail.setTask(task);
         taskDetail.setQuestionList(taskPaperList);
         return taskDetail;

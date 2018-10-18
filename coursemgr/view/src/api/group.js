@@ -95,3 +95,16 @@ export function getAllGradeInfo(params) {
     data: params
   });
 }
+
+
+/**
+ * 获取当前课程的所有成绩
+ * params courseId
+ * */
+export function checkCourseGrouped(params) {
+  return request({
+    url: '/groupMgr/checkCourseGrouped',
+    method: 'post',
+    data: params
+  });
+}

@@ -159,14 +159,15 @@
               }
               if (!hasInitCol) {
                 this.columns.push({prop:task.taskId + "_score",
-                 label: task.taskName + "(" + task.taskWeight + "%)", type:'link', taskId: task.taskId});
+                //  label: task.taskName + "(" + task.taskWeight + "%)", type:'link', taskId: task.taskId});
+                label: task.taskName, type:'link', taskId: task.taskId});
               }
             });
             hasInitCol = true;
             tableItem.totalScore = data[item].totalScore;
             this.tableData.push(tableItem);
           }
-          this.columns.push({prop:"totalScore", label: "加权总分"});
+          this.columns.push({prop:"totalScore", label: "总分"});
         },
         handleSizeChange(val) {
            this.pageSize = val;

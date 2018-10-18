@@ -56,10 +56,10 @@
 
 
             <el-row :gutter="10">
-              <el-col :span="2" style="height: 100%;"><div style="height: 100%; display: flex;align-items: center;justify-content: center"><span>标准答案：</span></div></el-col>
+              <el-col :span="2" style="height: 100%;"><div style="height: 100%; display: flex;align-items: center;justify-content: center"><span>评分模式：</span></div></el-col>
               <el-col :span="22">
-                <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"
-                          style="margin-top: 5px; background: #ee9900; color: white">{{item.sAnswer}}</span>
+                <!-- <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" -->
+                         <span style="margin-top: 5px; background: #ee9900; color: white">{{task.markType}}</span>
               </el-col>
             </el-row>
           </div>
