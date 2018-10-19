@@ -2,8 +2,10 @@
     <div :style="{height: containerHeight}">
       <el-row class="statistic-all-grade">
         <el-col :span="24" class="grade-item">
-          <div style="height: 20px; display: flex; align-items: right; justify-content: right; padding-right: 20px">
-            <el-button v-show="showBackBtn" type="primary" size="mini" @click.stop="back2AllGradeStatistic">返回</el-button>
+          <div style="padding-right: 20px; text-align: right; margin-top: 5px;">
+            <el-button v-show="!showBackBtn" type="primary" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('asc')">升序</el-button>
+            <el-button v-show="!showBackBtn" type="primary" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('desc')">降序</el-button>
+            <el-button v-show="showBackBtn" type="primary" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="back2AllGradeStatistic">返回</el-button>
           </div>
           <div ref="grade_static" class="all-grade-item">
             所有成绩统计
@@ -32,6 +34,7 @@
         name: "courseStatistic",
       data(){
           return{
+            sortType:'desc',
             containerHeight:0,
             scoreStaticChart:null,
             taskStaticChart:null,
@@ -69,7 +72,7 @@
           let self = this;
           let params = {
             courseId: this.variables.courseId,
-            sort: 'desc'
+            sort: this.sortType
           };
 
           let xData = [], yData = [];
@@ -135,12 +138,20 @@
             if(this.scoreStaticChart === null){
               this.scoreStaticChart = this.$echarts.init(this.$refs.grade_static);
             }
+            this.scoreStaticChart.clear();
             this.scoreStaticChart.setOption(option);
             this.scoreStaticChart.on('dblclick', (params) => {
               let studentNo = resp.data.studentScoreList[params.dataIndex].studentNo;
               self.go2StudentGradeStatistic(studentNo);
             });
           });
+        },
+        /**
+         * handleSortFunc
+         * */
+        handleSortFunc(sortType){
+          this.sortType = sortType;
+          this.lineGroup();
         },
         /**
          * 任务完成情况/评阅情况统计
@@ -286,6 +297,7 @@
                 return;
               }
               this.showBackBtn = true;
+              this.scoreStaticChart.clear();
               // this.$refs.grade_static.innerHTML = '';
 
               if(resp.data && resp.data.length !== 0){
