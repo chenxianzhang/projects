@@ -202,13 +202,16 @@ public class StatMgrServiceImpl implements StatMgrService {
                     continue;
                 }
                 if (!stuScoreMap.containsKey(studentTaskScore.getStudentNo())) {
-                    stuScoreMap.put(studentTaskScore.getStudentNo(),
-                            studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
+//                    stuScoreMap.put(studentTaskScore.getStudentNo(),
+//                            studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
+                    stuScoreMap.put(studentTaskScore.getStudentNo(), studentTaskScore.getScore());
                     continue;
                 }
+//                stuScoreMap.put(studentTaskScore.getStudentNo(),
+//                        stuScoreMap.get(studentTaskScore.getStudentNo()) +
+//                                studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
                 stuScoreMap.put(studentTaskScore.getStudentNo(),
-                        stuScoreMap.get(studentTaskScore.getStudentNo()) +
-                                studentTaskScore.getScore() * studentTaskScore.getTaskWeight() / 100);
+                        stuScoreMap.get(studentTaskScore.getStudentNo()) + studentTaskScore.getScore());
             }
             Integer rank = getRank(stuScoreMap, studentNo);
             if (stuScoreMap.containsKey(studentNo)) {

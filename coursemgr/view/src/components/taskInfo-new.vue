@@ -287,10 +287,10 @@ export default {
         this.$message.warning('请设置截止日期！')
         return false
       }
-      if (this.task.weight === '') {
-        this.$message.warning('请设置任务权重！')
-        return false
-      }
+      // if (this.task.weight === '') {
+      //   this.$message.warning('请设置任务权重！')
+      //   return false
+      // }
       if (this.task.subjects.length === 0) {
         this.$message.warning('请添加相关题目！')
         return false
