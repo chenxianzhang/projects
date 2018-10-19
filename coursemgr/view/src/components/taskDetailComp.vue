@@ -38,12 +38,14 @@
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
             <!--主观题 答题-->
-            <el-input type="textarea"
-                      v-model="item.answer"
-                      style="width: calc(100% - 100px)"
-                      placeholder="请填写答案"
-                      :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
-            </el-input>
+            <!--<el-input type="textarea"-->
+                      <!--v-if="!TASK_OPERATOR_TYPE.STUDENT_ANSWER"-->
+                      <!--v-model="item.answer"-->
+                      <!--style="width: calc(100% - 100px)"-->
+                      <!--placeholder="请填写答案"-->
+                      <!--:disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">-->
+            <!--</el-input>-->
+            <Tinymce :height=200 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
 
             <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
                  style="width: 100px; float: right; line-height: 50px; text-align: right;">
@@ -79,10 +81,14 @@
   import {Subject, Task, Selection} from "../models/task-model";
   import {getTaskDetailByTaskId, submitTaskPaper, getStuTaskDetail} from '@/api/task'
   import { updateSubjectScore } from '@/api/grade'
+  import Tinymce from '../components/Tinymce/index'
 
     export default {
       name: "taskDetailComp",
       props:['operateType', 'taskId', 'markUid'],
+      components: {
+        Tinymce
+      },
       data(){
         return{
           SUBJECT_TYPE:SUBJECT_TYPE,

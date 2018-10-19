@@ -1,6 +1,6 @@
 <template>
     <div class="tinymce-container editor-container" :class="{fullscreen:fullscreen}">
-      <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
+      <textarea class="tinymce-textarea" :id="tinymceId" placeholder="placeholder"></textarea>
       <div class="editor-custom-btn-container">
         <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
       </div>
@@ -16,6 +16,9 @@ export default {
   name: 'tinymce',
   components: { editorImage },
   props: {
+    placeholder:{
+      type: String
+    },
     id: {
       type: String
     },

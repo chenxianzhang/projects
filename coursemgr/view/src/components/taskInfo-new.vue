@@ -20,7 +20,7 @@
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道， 总分值 <input v-model="totalScore" disabled/> 分
     <!-- ， 权重： <input type="number" v-model="task.weight" /> %。-->
-    </div> 
+    </div>
     <div class="subject-container">
       <div class="subject-item" v-for="(item, index) in task.subjects" style="margin-bottom: 10px; border-bottom: 1px solid rgba(28, 77, 125, 0.8)">
         <!--题干设置区域-->
@@ -82,7 +82,7 @@
         </div>
         <!--主观题  答题设置-->
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: 90%; margin: 0 auto">
-          <div style="margin: 7px 20px; line-height: 40px; float: left;display: flex">
+          <div style="margin: 7px 20px; line-height: 40px; float: left;">
             <el-radio-group v-model="task.markType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
               <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
               <el-radio label="GROUP_INNER_EVA" :disabled="courseGroupStatus === 0 ? true : false" style="margin: 5px;">组内互评</el-radio>
@@ -91,6 +91,7 @@
             <span style="margin-left: 15px;font-size: 12px; color: red">{{ tipinfo }}</span>
           </div>
           <el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>
+          <!--<Tinymce :height=200 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />-->
         </div>
         <!--编辑和完成编辑按钮-->
         <!--<el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>-->
