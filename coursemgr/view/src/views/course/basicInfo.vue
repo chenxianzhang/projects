@@ -24,7 +24,7 @@
         </div>
       </div>
       <el-table :data="studentsInCourse" border :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" style="width: 100%;">
-        <el-table-column v-if="editable" type="selection" width="55" align="center"></el-table-column>
+        <el-table-column type="index" width="55" align="center"></el-table-column>
         <el-table-column align="center" prop="name" label="姓名" width="180"></el-table-column>
         <el-table-column align="center" prop="serialNo" label="学号"></el-table-column>
         <el-table-column align="center" prop="college" label="学院"></el-table-column>
@@ -33,7 +33,7 @@
         <el-table-column align="center" prop="email" label="邮箱"></el-table-column>
         <el-table-column v-if="editable" align="center" label="操作" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleStudentDetailClick(scope.row)" type="text" size="small">查看</el-button>
+            <!--<el-button @click="handleStudentDetailClick(scope.row)" type="text" size="small">查看</el-button>-->
             <el-button @click="handleStudentEditClick(scope.row)" type="text" size="small">编辑</el-button>
             <el-button @click="handleStudentDeleteClick(scope.row)" type="text" size="small">删除</el-button>
             <el-button @click="handleStudentTodoClick(scope.row)" type="text" size="small">待办</el-button>

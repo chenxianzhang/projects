@@ -1,7 +1,14 @@
 <template>
   <div>
     <task-info-new ref="taskInfo"></task-info-new>
-    <el-button type="primary" class="save-btn" @click="handleSaveTask">保  存</el-button>
+    <el-row :gutter="60">
+      <el-col :span="12">
+        <el-button type="primary" class="save-btn" @click="handleSaveTask">保 存</el-button>
+      </el-col>
+      <el-col :span="12">
+        <el-button type="primary" class="save-btn" @click="handleViewTask">预 览</el-button>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -82,6 +89,12 @@
             });
           }
           return {task:task, questionList:questionList};
+        },
+        /**
+         * handleViewTask 新建预览任务
+         * */
+        handleViewTask(){
+
         },
       }
     }

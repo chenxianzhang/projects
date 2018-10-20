@@ -194,10 +194,10 @@
             case "自由分组":
               freedomGroup({ courseId: this.variables.courseId}).then(response => {
                 if (response.status === 0) {
-                    self.$message.warning('设置自由分组失败：' + resp.msg);
+                    self.$message.warning('设置自由分组失败：' + response.msg);
                     return;
                 }
-                self.$message.warning('设置自由分组失成功' );
+                self.$message.success('设置自由分组成功！' );
               })
               break;
             case "指定分组":

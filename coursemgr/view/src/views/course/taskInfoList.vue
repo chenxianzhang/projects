@@ -5,13 +5,12 @@
                 style="width: 100%"
                 border
                 :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column type="index" width="55" align="center"></el-table-column>
         <el-table-column prop="name" label="任务名称" align="center"> </el-table-column>
         <el-table-column prop="publishTime" label="发布日期" align="center" :formatter="dateFormat"> </el-table-column>
         <el-table-column prop="startTime" label="开始日期" align="center" :formatter="dateFormat"> </el-table-column>
         <el-table-column prop="deadline" label="截止日期" align="center" :formatter="dateFormat"> </el-table-column>
-        <el-table-column prop="finishStatus" label="完成状态"
-                         align="center">
+        <el-table-column prop="finishStatus" label="完成状态" align="center">
           <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium" v-if="isStudent&&scope.row.finishStatus==='FINISHED'" type="success">已完成</el-tag>
@@ -72,7 +71,6 @@
 </template>
 
 <script>
-  import TaskInfo from '../../components/taskInfo'
   import TaskDetailComp from '../../components/taskDetailComp'
   import {getCourseTasksByCourseId, deleteTask, getCourseById} from '@/api/course'
   import {getMyTaskSituation, getCourseTaskSituation} from '@/api/task'
@@ -82,7 +80,7 @@
 
   export default {
       name: "taskInfoList",
-      components:{TaskInfoNew, TaskDetailComp, TaskInfo, },
+      components:{TaskInfoNew, TaskDetailComp },
       data(){
           return {
             operate:'',
