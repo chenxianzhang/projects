@@ -1,63 +1,51 @@
 <template>
   <div class="registery-container">
-    <!--<div style="padding: 20px; width: 400px; background: white; box-shadow: 0px 0px 12px 1px grey">-->
-      <!--<div class="register-item">-->
-        <!--<el-input-->
-          <!--placeholder="请输入内容"-->
-          <!--v-model="regInfo.name">-->
-          <!--<i slot="prefix" class="el-input__icon icon_user_code"></i>-->
-        <!--</el-input>-->
-      <!--</div>-->
-      <!--<div class="register-item">-->
-        <!--<el-input-->
-          <!--placeholder="请输入内容"-->
-          <!--v-model="regInfo.name">-->
-          <!--<i slot="prefix" class="el-input__icon icon-user-name"></i>-->
-        <!--</el-input>-->
-      <!--</div>-->
-      <!--<div class="register-item">-->
-        <!--<el-button type="primary" @click="handleCancel()"-->
-                   <!--style="float: right; background-color: #009285" >取 消</el-button>-->
-        <!--<el-button type="primary" @click="handleSubmit()"-->
-                   <!--style="float: right; margin-left: 10px; background-color: #00574F">提 交</el-button>-->
-      <!--</div>-->
-    <!--</div>-->
-    <el-form ref="regForm" v-model="regInfo" label-width="100px" label-color="#fff"
-             style="width: 400px; padding: 5px; background: white; box-shadow: 0px 0px 12px 1px grey">
-      <el-form-item>
-        <el-input
-          placeholder="请输入内容"
-          v-model="regInfo.name">
-          <i slot="prefix" class="el-input__icon el-icon-edit"></i>
+    <el-form ref="regForm" v-model="regInfo" label-color="#fff" :rules="registerRules"
+             style="width: 400px; background: white; box-shadow: 0px 0px 12px 1px grey; padding: 20px;">
+      <el-form-item prop="name">
+        <el-input placeholder="请输入姓名" v-model="regInfo.name">
+          <i slot="prefix" class="register-icon icon-user-name"></i>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="serialNo">
+        <el-input placeholder="请输入教工号" v-model="regInfo.serialNo">
+          <i slot="prefix" class="register-icon icon_user_code"></i>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="college">
+        <el-input placeholder="请输入学院" v-model="regInfo.college">
+          <i slot="prefix" class="register-icon icon-user-college"></i>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="cellphone">
+        <el-input placeholder="请输入电话" v-model="regInfo.cellphone">
+          <i slot="prefix" class="register-icon icon-user-tel"></i>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="email">
+        <el-input placeholder="请输入邮箱" v-model="regInfo.email">
+          <i slot="prefix" class="register-icon icon-user-email"></i>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input placeholder="请输入密码" v-model="regInfo.password">
+          <i slot="prefix" class="register-icon icon-user-pwd"></i>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="pwdConfirm">
+        <el-input placeholder="确认密码" v-model="regInfo.pwdConfirm">
+          <i slot="prefix" class="register-icon icon-user-pwd"></i>
         </el-input>
       </el-form-item>
 
-      <el-form-item label="姓名：" required>
-        <el-input v-model="regInfo.name" placeholder="请输入姓名" style="background: transparent"></el-input>
-      </el-form-item>
-      <el-form-item label="教工号：" required>
-        <el-input v-model="regInfo.serialNo" placeholder="请输入教工号"></el-input>
-      </el-form-item>
-      <el-form-item label="学院：">
-        <el-input v-model="regInfo.college" placeholder="请输入学院名称"></el-input>
-      </el-form-item>
-      <el-form-item label="电话：">
-        <el-input v-model="regInfo.cellphone" placeholder="请输入电话"></el-input>
-      </el-form-item>
-      <el-form-item label="邮箱：">
-        <el-input v-model="regInfo.email" placeholder="请输入邮箱"></el-input>
-      </el-form-item>
-      <el-form-item label="密码：" required>
-        <el-input v-model="regInfo.password" placeholder="请输入密码"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码：" required>
-        <el-input v-model="pwdConfirm" placeholder="请确认密码"></el-input>
-      </el-form-item>
-
-      <el-button type="primary" @click="handleSubmit()"
-                 style="float: right; margin-left: 10px; background-color: #00574F">提 交</el-button>
-      <el-button type="primary" @click="handleCancel()"
-                 style="float: right; background-color: #009285" >取 消</el-button>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-button type="primary" @click="handleSubmit()" style="background-color: #00574F;">提 交</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button type="primary" @click="handleCancel()" style="background-color: #009285" >取 消</el-button>
+        </el-col>
+      </el-row>
     </el-form>
   </div>
 
@@ -69,8 +57,45 @@
   export default {
         name: "registry",
       data(){
+        const validateUsername = (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('用户名不能为空'))
+          }
+          else if(value.length > 10){
+            callback(new Error('用户名不能超过10个字符'))
+          }else {
+            callback()
+          }
+        }
+        const validateSerialNo = (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('教工号不能为空'))
+          }else {
+            callback()
+          }
+        }
+
+        const validatePassword = (rule, value, callback) => {
+          if(!value){
+            callback(new Error('密码不能为空'))
+          }
+          else if (value.length < 6) {
+            callback(new Error('密码长度不能少于6个字符'))
+          } else {
+            callback()
+          }
+        }
+        const validateConfirmPwd = (rule, value, callback) => {
+          if(!value){
+            callback(new Error('密码不能为空'))
+          }
+          else if (value !== this.regInfo.pwdConfirm) {
+            callback(new Error('两次密码不一致'))
+          } else {
+            callback()
+          }
+        }
           return {
-            pwdConfirm:'',
             regInfo:{
               name:'',
               serialNo:'',
@@ -78,47 +103,50 @@
               cellphone:'',
               email:'',
               password:'',
+              pwdConfirm:'',
               roles:'teacher',
               sex:'男',
-              createDate:''
-            }
+              createDate:'',
+            },
+            registerRules: {
+              name: [
+                { required: true, trigger: 'blur', validator: validateUsername }
+              ],
+              serialNo: [
+                { required: true, trigger: 'blur', validator: validateSerialNo }
+              ],
+              password: [
+                { required: true, trigger: 'blur', validator: validatePassword }
+              ],
+              pwdConfirm: [
+                { required: true, trigger: 'blur', validator: validateConfirmPwd }
+              ]
+            },
           }
       },
       methods:{
         handleSubmit(){
-          if(this.regInfo.name === ''){
-            this.$message.warning('用户名不能为空！');
-            return;
-          }
-          if(this.regInfo.serialNo === ''){
-            this.$message.warning('教工号不能为空！');
-            return;
-          }
-          // if(this.regInfo.college === ''){
-          //   this.$message.warning('学院名称不能为空！');
-          //   return;
-          // }
-          if(this.regInfo.password === ''){
-            this.$message.warning('密码不能为空！');
-            return;
-          }
-          if(this.regInfo.password !== this.pwdConfirm){
-            this.$message.warning('两次密码不一致！');
-            return;
-          }
-          this.regInfo.createDate = new Date();
-          //保存注册信息
-          register(this.regInfo)
-            .then(resp=>{
-              if(resp.status === 0){
-                this.$message.warning('注册失败!');
-                return;
-              }
-              this.$message.success('注册成功');
-              this.$router.push({
-                name:"login",
-                params:{from:'registery',role:'teacher', serialNo:this.regInfo.serialNo, pwd:this.regInfo.password}});
-            });
+          this.$refs.regForm.validate(valid => {
+            if (valid) {
+              this.regInfo.createDate = new Date();
+              //保存注册信息
+              register(this.regInfo)
+                .then(resp=>{
+                  if(resp.status === 0){
+                    this.$message.warning('注册失败!');
+                    return;
+                  }
+                  this.$message.success('注册成功');
+                  this.$router.push({
+                    name:"login",
+                    params:{from:'registery',role:'teacher', serialNo:this.regInfo.serialNo, pwd:this.regInfo.password}});
+                });
+            }
+            else {
+              console.log('error submit!!')
+              return false
+            }
+          });
         },
         handleCancel(){
           this.$refs.regForm.resetFields();
@@ -149,32 +177,46 @@
   label{
     color: #fff !important;
   }
-  .icon-user-name:before{
-    content: '1';
+  .register-icon{
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: 22px;
+    height: 22px;
     left: 2px;
-    top:14px;
+    top:10px;
     color: white;
+  }
+  .icon-user-name{
     background: url("../../../static/img/icon_user_name.png") no-repeat left;
   }
-  .icon_user_code:before{
-    content: '1';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    left: 2px;
-    top:14px;
-    color: white;
+  .icon_user_code{
     background: url("../../../static/img/icon_user_code.png") no-repeat left;
+  }
+  .icon-user-college{
+    background: url("../../../static/img/icon_user_college.png") no-repeat left;
+  }
+  .icon-user-tel{
+    background: url("../../../static/img/icon_user_tel.png") no-repeat left;
+  }
+  .icon-user-email{
+    background: url("../../../static/img/icon_user_email.png") no-repeat left;
+  }
+  .icon-user-pwd{
+    background: url("../../../static/img/icon_user_pwd.png") no-repeat left;
+  }
+  .el-button--primary{
+    height: 40px !important;
+    width: 170px !important;
+    border-radius: 0 !important;
   }
 </style>
 <style>
-  .registery-container .register-item .el-input__inner{
-    border: 1px solid;
+  .registery-container .el-input__inner{
+    border: 1px solid #b4bccc;
     height: 40px;
     border-radius: 0;
+  }
+  .registery-container .el-input__inner:focus{
+    border-color: #009285;
   }
   .registery-container .el-form-item__label{
     color: #fff;
