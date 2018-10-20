@@ -1,6 +1,6 @@
 <template>
   <div class="registery-container">
-    <el-form ref="regForm" v-model="regInfo" label-color="#fff" :rules="registerRules"
+    <el-form ref="regForm" :model="regInfo" label-color="#fff" :rules="registerRules"
              style="width: 400px; background: white; box-shadow: 0px 0px 12px 1px grey; padding: 20px;">
       <el-form-item prop="name">
         <el-input placeholder="请输入姓名" v-model="regInfo.name">
@@ -28,13 +28,15 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input placeholder="请输入密码" v-model="regInfo.password">
+        <el-input placeholder="请输入密码" v-model="regInfo.password" :type="pwdType">
           <i slot="prefix" class="register-icon icon-user-pwd"></i>
+          <i slot="suffix" class="el-input__icon el-icon-view pwd-eye" @click.stop="showPwd('pwd')"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="pwdConfirm">
-        <el-input placeholder="确认密码" v-model="regInfo.pwdConfirm">
+        <el-input placeholder="确认密码" v-model="regInfo.pwdConfirm" :type="pwdTypeConfirm">
           <i slot="prefix" class="register-icon icon-user-pwd"></i>
+          <i slot="suffix" class="el-input__icon el-icon-view pwd-eye" @click.stop="showPwd('confirm')"></i>
         </el-input>
       </el-form-item>
 
@@ -55,75 +57,80 @@
   import {register} from "../../api/login";
 
   export default {
-        name: "registry",
-      data(){
-        const validateUsername = (rule, value, callback) => {
-          if (!value) {
-            callback(new Error('用户名不能为空'))
-          }
-          else if(value.length > 10){
-            callback(new Error('用户名不能超过10个字符'))
-          }else {
-            callback()
-          }
+    name: "registry",
+    data() {
+      const validateUsername = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('用户名不能为空'))
         }
-        const validateSerialNo = (rule, value, callback) => {
-          if (!value) {
-            callback(new Error('教工号不能为空'))
-          }else {
-            callback()
-          }
+        else if (value.length > 10) {
+          callback(new Error('用户名不能超过10个字符'))
+        } else {
+          callback()
         }
+      };
 
-        const validatePassword = (rule, value, callback) => {
-          if(!value){
-            callback(new Error('密码不能为空'))
-          }
-          else if (value.length < 6) {
-            callback(new Error('密码长度不能少于6个字符'))
-          } else {
-            callback()
-          }
+      const validateSerialNo = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('教工号不能为空'))
+        } else {
+          callback()
         }
-        const validateConfirmPwd = (rule, value, callback) => {
-          if(!value){
-            callback(new Error('密码不能为空'))
-          }
-          else if (value !== this.regInfo.pwdConfirm) {
-            callback(new Error('两次密码不一致'))
-          } else {
-            callback()
-          }
+      };
+
+      const validatePassword = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('密码不能为空'))
         }
-          return {
-            regInfo:{
-              name:'',
-              serialNo:'',
-              college:'',
-              cellphone:'',
-              email:'',
-              password:'',
-              pwdConfirm:'',
-              roles:'teacher',
-              sex:'男',
-              createDate:'',
-            },
-            registerRules: {
-              name: [
-                { required: true, trigger: 'blur', validator: validateUsername }
-              ],
-              serialNo: [
-                { required: true, trigger: 'blur', validator: validateSerialNo }
-              ],
-              password: [
-                { required: true, trigger: 'blur', validator: validatePassword }
-              ],
-              pwdConfirm: [
-                { required: true, trigger: 'blur', validator: validateConfirmPwd }
-              ]
-            },
-          }
-      },
+        else if (value.length < 6) {
+          callback(new Error('密码长度不能少于6个字符'))
+        } else {
+          callback()
+        }
+      };
+
+      const validateConfirmPwd = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('密码不能为空'))
+        }
+        else if (value !== this.regInfo.pwdConfirm) {
+          callback(new Error('两次密码不一致'))
+        } else {
+          callback()
+        }
+      };
+
+      return {
+        pwdType:'password',
+        pwdTypeConfirm:'password',
+        regInfo: {
+          name: '',
+          serialNo: '',
+          college: '',
+          cellphone: '',
+          email: '',
+          password: '',
+          pwdConfirm: '',
+          roles: 'teacher',
+          sex: '男',
+          createDate: '',
+        },
+        registerRules: {
+          name: [
+            {required: true, trigger: 'blur', validator: validateUsername}
+          ],
+          serialNo: [
+            {required: true, trigger: 'blur', validator: validateSerialNo}
+          ],
+          password: [
+            {required: true, trigger: 'blur', validator: validatePassword}
+          ],
+          pwdConfirm: [
+            {required: true, trigger: 'blur', validator: validateConfirmPwd}
+          ]
+        },
+      }
+    },
       methods:{
         handleSubmit(){
           this.$refs.regForm.validate(valid => {
@@ -150,6 +157,24 @@
         },
         handleCancel(){
           this.$refs.regForm.resetFields();
+        },
+        showPwd(type){
+          if(type === 'pwd'){
+            if(this.pwdType === 'password'){
+              this.pwdType = 'text';
+            }
+            else {
+              this.pwdType = 'password'
+            }
+          }
+          else {
+            if(this.pwdTypeConfirm === 'password'){
+              this.pwdTypeConfirm = 'text';
+            }
+            else {
+              this.pwdTypeConfirm = 'password'
+            }
+          }
         },
       },
     }
@@ -207,6 +232,11 @@
     height: 40px !important;
     width: 170px !important;
     border-radius: 0 !important;
+  }
+
+  .pwd-eye:hover{
+    cursor: pointer;
+    color: #009285;
   }
 </style>
 <style>
