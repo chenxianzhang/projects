@@ -250,14 +250,14 @@
                 {
                   name: '得分',
                   type: 'bar',
-                  stack:'score',
+                  //stack:'score',
                   barGap: 0,
                   data: score
                 },
                 {
                   name: '总分',
                   type: 'bar',
-                  stack:'score',
+                  //stack:'score',
                   data: totalScore
                 }
               ]
@@ -349,7 +349,7 @@
                       color: '#eee',
                       rich: {}
                     },
-                    data:[{value: resp.data.rank, name: '名次'}]
+                    data:[{value: (!resp.data.rank || resp.data.rank === "") ? resp.data.totalStudentCnt : resp.data.rank, name: '名次'}]
                   },
                   {
                     name: '得分',
@@ -388,7 +388,7 @@
                       fontWeight: 'bolder',
                       fontSize: '16'
                     },
-                    data:[{value: resp.data.totalScore, name: '得分'}]
+                    data:[{value: (!resp.data.totalScore || resp.data.totalScore === "") ? 0 : resp.data.totalScore, name: '得分'}]
                   },
                   {
                     name: '客观题得分率',
