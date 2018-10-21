@@ -579,13 +579,50 @@
 						<w:sz w:val="24"/>
 					</w:rPr>
 				</w:pPr>
+				<#list option.itemList as item>
+				<#if item.type == "img" && item.content != "">
+				<w:r wsp:rsidR="00CA517B">
+					<w:rPr>
+						<w:rFonts w:hint="fareast"/>
+					</w:rPr>
+					<w:pict>
+						<v:shapetype coordsize="21600,21600" filled="f" id="_x0000_t75" o:preferrelative="t" o:spt="75" path="m@4@5l@4@11@9@11@9@5xe" stroked="f">
+							<v:stroke joinstyle="miter"/>
+							<v:formulas>
+								<v:f eqn="if lineDrawn pixelLineWidth 0"/>
+								<v:f eqn="sum @0 1 0"/>
+								<v:f eqn="sum 0 0 @1"/>
+								<v:f eqn="prod @2 1 2"/>
+								<v:f eqn="prod @3 21600 pixelWidth"/>
+								<v:f eqn="prod @3 21600 pixelHeight"/>
+								<v:f eqn="sum @0 0 1"/>
+								<v:f eqn="prod @6 1 2"/>
+								<v:f eqn="prod @7 21600 pixelWidth"/>
+								<v:f eqn="sum @8 21600 0"/>
+								<v:f eqn="prod @7 21600 pixelHeight"/>
+								<v:f eqn="sum @10 21600 0"/>
+							</v:formulas>
+							<v:path gradientshapeok="t" o:connecttype="rect" o:extrusionok="f"/>
+							<o:lock aspectratio="t" v:ext="edit"/>
+						</v:shapetype>
+						<w:binData w:name="wordml://02000001.jpg" xml:space="preserve">${item.content}</w:binData>
+						<v:shape id="_x0000_i1025" style="width:175.8pt;height:69.5pt" type="#_x0000_t75">
+							<v:imagedata o:title="题干图片" src="wordml://02000001.jpg"/>
+						</v:shape>
+					</w:pict>
+				</w:r>
+				<#else>
+				<#if item.content != "">
 				<w:r>
 					<w:rPr>
 						<w:rFonts w:hint="fareast"/>
 						<w:sz w:val="24"/>
 					</w:rPr>
-					<w:t>${option.optionDes}</w:t>
+					<w:t>${item.content}</w:t>
 				</w:r>
+				</#if>
+				</#if>
+				</#list>
 			</w:p>
 			</#list>
 			<w:p wsp:rsidP="0063417F" wsp:rsidR="0063417F" wsp:rsidRDefault="0063417F">

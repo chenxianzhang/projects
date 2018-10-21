@@ -514,17 +514,17 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
             temp.put("questionStemsList", transferImgContent(questionStems, rootPath));
             if (markModel.getQuestionType().equals(CommonEnum.QuestionType.JUDGE.getValue())) {
-                List<QuestionOptions> judgeOptions = new ArrayList<>();
-                QuestionOptions option = new QuestionOptions();
-                option.setOptionDes("是");
-                judgeOptions.add(option);
+                List<Map<String, Object>> tempOptList = new ArrayList<>();
+                Map<String, Object> tmpMap = new HashMap<>();
+                tmpMap.put("itemList", transferImgContent("是", rootPath));
+                tempOptList.add(tmpMap);
+                tmpMap = new HashMap<>();
+                tmpMap.put("itemList", transferImgContent("否", rootPath));
+                tempOptList.add(tmpMap);
 
-                option = new QuestionOptions();
-                option.setOptionDes("否");
-                judgeOptions.add(option);
-                temp.put("optionList", judgeOptions);
+                temp.put("optionList", tempOptList);
             } else {
-                temp.put("optionList", questionList.get(i).getOptionList());
+                temp.put("optionList", getOptionList(questionList.get(i).getOptionList(), rootPath));
             }
             temp.put("studentAnswer", questionList.get(i).getTaskQuestions().getAnswers());
             temp.put("standardAnswer", questionList.get(i).getTaskQuestions().getStandardAnswer());
@@ -535,6 +535,24 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         resultMap.put("studentTotalScore", studentTotalScore);
 
         return resultMap;
+    }
+
+    private List<Map<String, Object>> getOptionList(List<QuestionOptions> optionList,
+                                                    String rootPath) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        if (optionList == null || optionList.size() == 0) {
+            return resultList;
+        }
+
+        for (QuestionOptions option : optionList) {
+            if (option.getOptionTag().isEmpty()) {
+
+            }
+            Map<String, Object> tmpMap = new HashMap<>();
+            tmpMap.put("itemList", transferImgContent(option.getOptionDes(), rootPath));
+            resultList.add(tmpMap);
+        }
+        return resultList;
     }
 
 //    private void generateWord(Integer taskId, List<User> studentList, String unpackDir) {
