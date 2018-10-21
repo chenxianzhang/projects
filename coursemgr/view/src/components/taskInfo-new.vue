@@ -186,6 +186,9 @@ export default {
         subject_c.id = item.taskQuestions.id
         subject_c.edit = false
         subject_c.selections = item.optionList
+        subject_c.selections && subject_c.selections.forEach(item => {
+          item.edit = false
+        })
         subject_c.answer = item.taskQuestions.answers
         subject_c.score = item.taskQuestions.score
         subject_c.stem = item.taskQuestions.stems
@@ -247,7 +250,7 @@ export default {
      * */
     handleImageEditSelection(cIndex, selections) {
       selections[cIndex].edit = true
-      this.editContent = selections[cIndex].value
+      // this.editContent = selections[cIndex].value
     },
     /**
      * editConfirm 题干编辑确认
