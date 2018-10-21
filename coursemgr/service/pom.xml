@@ -54,16 +54,16 @@
       <!-- 文件上传 end -->
 
       <!--jsoup-->
-      <dependency>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-          <version>1.8.1</version>
-      </dependency>
-      <dependency>
-          <groupId>com.jacob</groupId>
-          <artifactId>jacob</artifactId>
-          <version>1.18</version>
-      </dependency>
+      <!--<dependency>-->
+          <!--<groupId>org.jsoup</groupId>-->
+          <!--<artifactId>jsoup</artifactId>-->
+          <!--<version>1.8.1</version>-->
+      <!--</dependency>-->
+      <!--<dependency>-->
+          <!--<groupId>com.jacob</groupId>-->
+          <!--<artifactId>jacob</artifactId>-->
+          <!--<version>1.18</version>-->
+      <!--</dependency>-->
 
 
       <!-- poi -->

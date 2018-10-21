@@ -4,12 +4,9 @@ import edu.coursemgr.common.CommonEnum;
 import edu.coursemgr.common.Constant;
 import edu.coursemgr.dao.*;
 import edu.coursemgr.freemarker.WordExportUtil;
-import edu.coursemgr.freemarker.WordGenerator;
-import edu.coursemgr.jsoup.JsoupWordOper;
 import edu.coursemgr.model.*;
 import edu.coursemgr.pojo.*;
 import edu.coursemgr.service.interfaces.GradeMgrService;
-import edu.coursemgr.service.interfaces.GroupMgrService;
 import edu.coursemgr.service.interfaces.TaskMgrService;
 import edu.coursemgr.utils.CollectionUtils;
 import edu.coursemgr.utils.CommonUtils;
@@ -20,9 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chenxianzhang on 2018/8/24 0024 上午 12:14
@@ -476,7 +474,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 //            }
 //            html += "<br/>";
 
-            temp = transferTemplateData(taskDetail);
+            temp = transferTemplateData(taskDetail, request.getServletContext().getRealPath("/"));
             if (temp == null) {
                 continue;
             }
@@ -497,7 +495,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                 unpackDir, root);
     }
 
-    private Map<String, Object> transferTemplateData(Map taskDetail) {
+    private Map<String, Object> transferTemplateData(Map taskDetail, String rootPath) {
         CourseTasks task = (CourseTasks) taskDetail.get("task");
         List<TaskMarkPaper> questionList = (List<TaskMarkPaper>) taskDetail.get("questionList");
         Float studentTotalScore = (Float) taskDetail.get("studentTotalScore");
@@ -514,7 +512,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             String questionStems = String.format("%s、%s   (分数：%s)", questionNo, markModel.getStems(),
                     markModel.getScore().toString());
 
-            temp.put("questionStems", questionStems);
+            temp.put("questionStemsList", transferImgContent(questionStems, rootPath));
             if (markModel.getQuestionType().equals(CommonEnum.QuestionType.JUDGE.getValue())) {
                 List<QuestionOptions> judgeOptions = new ArrayList<>();
                 QuestionOptions option = new QuestionOptions();
@@ -539,52 +537,101 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return resultMap;
     }
 
-    private void generateWord(Integer taskId, List<User> studentList, String unpackDir) {
-        if (studentList == null) {
-            return;
+//    private void generateWord(Integer taskId, List<User> studentList, String unpackDir) {
+//        if (studentList == null) {
+//            return;
+//        }
+//        studentList.forEach(student -> {
+//            Map taskDetail = getStuTaskDetail(taskId.toString(),
+//                    student.getSerialNo());
+//            if (!taskDetail.get("status").toString().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
+//                return;
+//            }
+//            String html = transfer2Html(taskDetail);
+//            CourseTasks task = (CourseTasks) taskDetail.get("task");
+//            String fileName = String.format("%s/%s(%s%s).doc", unpackDir, task.getName(),
+//                    student.getName(), student.getSerialNo());
+//            new JsoupWordOper().html2Word(html, unpackDir, fileName);
+//        });
+//    }
+
+//    private String transfer2Html(Map taskDetail) {
+//        CourseTasks task = (CourseTasks) taskDetail.get("task");
+//        List<TaskMarkPaper> questionList = (List<TaskMarkPaper>) taskDetail.get("questionList");
+//        String html = String.format("<p style=\"text-align:center;font-weight: bolder;font-size:20px;\">%s</p>",
+//                task.getName());
+//        for (TaskMarkPaper question : questionList) {
+//            html += "<div>";
+//            html += String.format("<p style=\"font-weight: bolder;\">%s</p>",
+//                    question.getTaskQuestions().getStems());
+//            Integer index = 1;
+//
+//            html += "<div style=\"margin-left: 20px;font-size:14px;\">";
+//            for (QuestionOptions option : question.getOptionList()) {
+//                html += String.format("<span style=\"margin-right:30px\">%s、%s </span>", index.toString(),
+//                        option.getOptionDes());
+//                index++;
+//            }
+//            html += "</div>";
+//
+//            html += "<div style=\"margin-top: 10px;font-size:14px;color:red\">";
+//            html += String.format("<span>所选答案：%s</span>", question.getTaskQuestions().getAnswers());
+//            html += "</div>";
+//
+//            html += "</div>";
+//        }
+//        return html;
+//    }
+
+    private List<Map<String, Object>> transferImgContent(String content, String rootPath) {
+        content = content.replaceAll("<p>", "");
+        content = content.replaceAll("</p>", "");
+        List<Map<String, Object>> stemsList = new ArrayList<>();
+        Map<String, Object> stems = new HashMap<>();
+        if (!content.contains("img")) {
+            stems.put("type", "text");
+            stems.put("content", content);
+            stemsList.add(stems);
+            return stemsList;
         }
-        studentList.forEach(student -> {
-            Map taskDetail = getStuTaskDetail(taskId.toString(),
-                    student.getSerialNo());
-            if (!taskDetail.get("status").toString().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
-                return;
+        String regx = "src=\"(.*?)\"";
+        while (content.indexOf("<img") >= 0) {
+            String img = content.substring(content.indexOf("<img"), content.indexOf("/>") + 2);
+            if (content.indexOf("<img") > 0) {
+                String partText = content.substring(0, content.indexOf("<img"));
+                content = content.substring(content.indexOf("<img"));
+                stems = new HashMap<>();
+                stems.put("type", "text");
+                stems.put("content", partText);
+                stemsList.add(stems);
             }
-            String html = transfer2Html(taskDetail);
-            CourseTasks task = (CourseTasks) taskDetail.get("task");
-            String fileName = String.format("%s/%s(%s%s).doc", unpackDir, task.getName(),
-                    student.getName(), student.getSerialNo());
-            new JsoupWordOper().html2Word(html, unpackDir, fileName);
-        });
-    }
+            content = content.replace(img, "");
 
-    private String transfer2Html(Map taskDetail) {
-        CourseTasks task = (CourseTasks) taskDetail.get("task");
-        List<TaskMarkPaper> questionList = (List<TaskMarkPaper>) taskDetail.get("questionList");
-        String html = String.format("<p style=\"text-align:center;font-weight: bolder;font-size:20px;\">%s</p>",
-                task.getName());
-        for (TaskMarkPaper question : questionList) {
-            html += "<div>";
-            html += String.format("<p style=\"font-weight: bolder;\">%s</p>",
-                    question.getTaskQuestions().getStems());
-            Integer index = 1;
-
-            html += "<div style=\"margin-left: 20px;font-size:14px;\">";
-            for (QuestionOptions option : question.getOptionList()) {
-                html += String.format("<span style=\"margin-right:30px\">%s、%s </span>", index.toString(),
-                        option.getOptionDes());
-                index++;
+            Pattern pattern = Pattern.compile(regx);// 匹配的模式
+            Matcher m = pattern.matcher(img);
+            String src = "";
+            if (m.find()){
+                src = m.group(1);
             }
-            html += "</div>";
-
-            html += "<div style=\"margin-top: 10px;font-size:14px;color:red\">";
-            html += String.format("<span>所选答案：%s</span>", question.getTaskQuestions().getAnswers());
-            html += "</div>";
-
-            html += "</div>";
+            if (src.isEmpty()) {
+                continue;
+            }
+            String imgPath = src.substring(src.indexOf("upload\\"));
+            imgPath = String.format("%s%s", rootPath, imgPath);
+            stems = new HashMap<>();
+            stems.put("type", "img");
+            stems.put("content", CommonUtils.imgToBase64(imgPath));
+            stemsList.add(stems);
         }
-        return html;
-    }
+        if (!content.isEmpty()) {
+            stems = new HashMap<>();
+            stems.put("type", "text");
+            stems.put("content", content);
+            stemsList.add(stems);
+        }
 
+        return stemsList;
+    }
 
     private boolean isRight(String standardAnswer, String answer) {
         List<String> answers = Arrays.asList(answer.split(","));
@@ -641,7 +688,6 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                 questionOptionsMapper.updateSelective(option);
             }
         });
-
     }
 
     private boolean hasSubject(CourseTaskDetail taskDetail) {

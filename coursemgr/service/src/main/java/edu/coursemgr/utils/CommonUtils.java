@@ -1,9 +1,12 @@
 package edu.coursemgr.utils;
 
 import edu.coursemgr.common.Constant;
+import sun.misc.BASE64Encoder;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -91,5 +94,30 @@ public final class CommonUtils {
             result = String.format(",%s", obj.toString());
         }
         return result;
+    }
+
+    public static String imgToBase64(String imgPath) {
+        if (isEmpty(imgPath)) {
+            return "";
+        }
+        File file = new File(imgPath);
+        if (!file.exists()) {
+            return "";
+        }
+        InputStream in = null;
+        byte[] data = null;
+        try {
+            in = new FileInputStream(file);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        } catch (Exception e) {
+            return "";
+        }
+        if (data == null) {
+            return "";
+        }
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
     }
 }
