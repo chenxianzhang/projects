@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth' // getToken from cookie
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-const whiteList = ['/login', '/register']// no redirect whitelist
+const whiteList = ['/login/logIn', '/login/register']// no redirect whitelist
 
 function hasPermission(roles, permissionRoles) {
   if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
@@ -17,10 +17,9 @@ function hasPermission(roles, permissionRoles) {
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-
   if (getToken()) {
     // 存在token信息
-    if (to.path === '/login') {
+    if (to.path === '/login/logIn') {
       // 如果当前是跳转登录页面，则可直接进入首页  开发时暂时注释
      // next({ path: '/' });
      // NProgress.done()

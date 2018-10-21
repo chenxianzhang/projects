@@ -1,41 +1,41 @@
 <template>
   <div class="registery-container">
     <el-form ref="regForm" :model="regInfo" label-color="#fff" :rules="registerRules"
-             style="width: 400px; background: white; box-shadow: 0px 0px 12px 1px grey; padding: 20px;">
+             style="background: white; box-shadow: 0px 0px 12px 1px grey; padding: 20px;">
       <el-form-item prop="name">
         <el-input placeholder="请输入姓名" v-model="regInfo.name">
-          <i slot="prefix" class="register-icon icon-user-name"></i>
+          <i slot="prefix" class="icon icon-user-name"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="serialNo">
         <el-input placeholder="请输入教工号" v-model="regInfo.serialNo">
-          <i slot="prefix" class="register-icon icon_user_code"></i>
+          <i slot="prefix" class="icon icon_user_code"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="college">
         <el-input placeholder="请输入学院" v-model="regInfo.college">
-          <i slot="prefix" class="register-icon icon-user-college"></i>
+          <i slot="prefix" class="icon icon-user-college"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="cellphone">
         <el-input placeholder="请输入电话" v-model="regInfo.cellphone">
-          <i slot="prefix" class="register-icon icon-user-tel"></i>
+          <i slot="prefix" class="icon icon-user-tel"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="email">
         <el-input placeholder="请输入邮箱" v-model="regInfo.email">
-          <i slot="prefix" class="register-icon icon-user-email"></i>
+          <i slot="prefix" class="icon icon-user-email"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input placeholder="请输入密码" v-model="regInfo.password" :type="pwdType">
-          <i slot="prefix" class="register-icon icon-user-pwd"></i>
+          <i slot="prefix" class="icon icon-user-pwd"></i>
           <i slot="suffix" class="el-input__icon el-icon-view pwd-eye" @click.stop="showPwd('pwd')"></i>
         </el-input>
       </el-form-item>
       <el-form-item prop="pwdConfirm">
         <el-input placeholder="确认密码" v-model="regInfo.pwdConfirm" :type="pwdTypeConfirm">
-          <i slot="prefix" class="register-icon icon-user-pwd"></i>
+          <i slot="prefix" class="icon icon-user-pwd"></i>
           <i slot="suffix" class="el-input__icon el-icon-view pwd-eye" @click.stop="showPwd('confirm')"></i>
         </el-input>
       </el-form-item>
@@ -187,8 +187,8 @@
     justify-content: center;
     height: 100%;
     width: 100%;
-    color: #fff;
-    background: url("../../../static/img/register_bg.png") no-repeat;
+    /* color: #fff;
+    background: url("../../../static/img/register_bg.png") no-repeat; */
   }
   .registery-container .register-item{
     width: 100%;
@@ -202,17 +202,6 @@
   label{
     color: #fff !important;
   }
-  .register-icon{
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    left: 2px;
-    top:10px;
-    color: white;
-  }
-  .icon-user-name{
-    background: url("../../../static/img/icon_user_name.png") no-repeat left;
-  }
   .icon_user_code{
     background: url("../../../static/img/icon_user_code.png") no-repeat left;
   }
@@ -225,13 +214,8 @@
   .icon-user-email{
     background: url("../../../static/img/icon_user_email.png") no-repeat left;
   }
-  .icon-user-pwd{
-    background: url("../../../static/img/icon_user_pwd.png") no-repeat left;
-  }
   .el-button--primary{
-    height: 40px !important;
     width: 170px !important;
-    border-radius: 0 !important;
   }
 
   .pwd-eye:hover{

@@ -1,341 +1,112 @@
 <template>
   <div class="login-container">
-
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-
-      <div class="title-container">
-        <!--<h3 class="title">课程管理系统</h3>-->
-        <span class="title">课程管理系统</span>
-        <el-select v-model="loginForm.role" placeholder="角色选择" @change="roleChange">
-          <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.value">
-          </el-option>
-        </el-select>
+    <div class="content">
+      <div class="title">
+        <div class="logo">
+          <img src="../../assets/logo.png" />
+        </div>
+        <p class="zh">
+          {{ titleZh }}
+        </p>
+        <p class="en">
+          {{ titleEn }}
+        </p>
       </div>
-
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入用户名" />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input name="password" :type="passwordType" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码" />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
-      </el-form-item>
-
-      <div class="verification-code">
-        <el-form-item prop="verificationCode">
-          <span class="svg-container svg-container_login">
-            <svg-icon icon-class="user" />
-          </span>
-          <el-input name="verificationCode" type="text" v-model="loginForm.verificationCode" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="请输入验证码" />
-        </el-form-item>
-        <a href="javascript:void(0);" @click="generateVerCode">
-          <img alt="验证码" :src="verCodeImageUrl" />
-        </a>
-      </div>
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-      <div class="login-foot">
-        <el-button type="text">忘记密码？</el-button>
-        <el-button type="text" v-if="selectRoleValue === 'teacher'" @click="registery">立即注册！</el-button>
-      </div>
-    </el-form>
+      <transition name="fade-transform" mode="out-in">
+        <router-view />
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
-import { getVerCodeImageUrl, getRoleList } from '@/api/login'
-
 export default {
-  components: {},
-  name: 'login',
+  name: 'index',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名称'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码长度不能少于6个字符'))
-      } else {
-        callback()
-      }
-    }
-    const validateCode = (rule, value, callback) => {
-      if (value === '' || value === 'undefined' || value === null) {
-        callback(new Error('验证码不能为空'))
-      } else {
-        callback()
-      }
-    }
     return {
-      loginForm: {
-        username: '',
-        password: '',
-        verificationCode: '',
-        role: ''
-      },
-      loginRules: {
-        username: [
-          { required: true, trigger: 'blur', validator: validateUsername }
-        ],
-        password: [
-          { required: true, trigger: 'blur', validator: validatePassword }
-        ],
-        verificationCode: [
-          { required: true, trigger: 'blur', validator: validateCode }
-        ]
-      },
-      passwordType: 'password',
-      loading: false,
-      verCodeImageUrl: '',
-      roleList: [],
-      selectRoleValue: ''
+      titleZh: '研究型课程管理过程性考核系统登录',
+      titleEn: 'RESEARCH COURSE MANAGEMENT PROCESS ASSESSMENT SYSTEM LOGIN'
     }
-  },
-  methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-    },
-    handleLogin() {
-      let self = this
-      if (this.loginForm.role === '') {
-        self.$message({
-          showClose: true,
-          type: 'warning',
-          message: '用户角色不能为空'
-        })
-        return
-      }
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          self.loading = true
-          self.$store
-            .dispatch('loginProcess', self.loginForm)
-            .then(() => {
-              self.loading = false
-              self.$router.push('/')
-            })
-            .catch(err => {
-              self.loading = false
-              self.$message({
-                showClose: true,
-                type: 'error',
-                message: err
-              })
-              self.generateVerCode()
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-    generateVerCode() {
-      this.verCodeImageUrl = getVerCodeImageUrl()
-      this.loginForm.verificationCode = ''
-    },
-    getRoleList() {
-      getRoleList().then(response => {
-        if (response.status == 1) {
-          this.roleList = response.data
-        } else {
-          self.$message({
-            showClose: true,
-            type: 'error',
-            message: response.msg
-          })
-        }
-      })
-    },
-    roleChange(val) {
-      let self = this
-      this.roleList &&
-        this.roleList.forEach(rItem => {
-          if (rItem.value === val) {
-            self.selectRoleValue = rItem.value
-          }
-        })
-    },
-    registery() {
-      this.$router.push('/register')
-    }
-  },
-  created() {
-    this.verCodeImageUrl = getVerCodeImageUrl()
-    this.getRoleList()
-    if (
-      this.$route.params &&
-      this.$route.params.from &&
-      this.$route.params.from === 'registery'
-    ) {
-      this.loginForm.role = this.$route.params.role
-      this.loginForm.username = this.$route.params.serialNo
-      this.loginForm.password = this.$route.params.pwd
-    }
-  },
-  destroyed() {}
+  }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-
-$bg: #283443;
-$light_gray: #eee;
-$cursor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-    &::first-line {
-      color: $light_gray;
-    }
-  }
-}
-
-/* reset element-ui css */
+<style lang="scss">
 .login-container {
   .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
+    .el-input__inner {
+      border: 1px solid #b4bccc;
+      height: 40px;
+      border-radius: 0;
+      &:focus {
+        border-color: #009285;
       }
     }
-  }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-  .verification-code {
-    display: flex;
-    justify-content: space-between;
-    .el-form-item {
-      width: calc(100% - 150px);
-    }
-    .el-input {
-      width: 80%;
-    }
-    a {
-      margin-top: 5px;
+    // .el-form-item__label {
+    //   color: #fff;
+    // }
+    .el-input__prefix {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
-  .el-select {
-    width: 83px;
-    .el-input {
-      width: 100%;
-      input {
-        padding: 0;
-      }
-    }
+  .icon {
+    width: 22px;
+    height: 22px;
+    left: 2px;
+    color: white;
+  }
+  .icon-user-name{
+    background: url("../../../static/img/icon_user_name.png") no-repeat left;
+  }
+  .icon-user-pwd{
+    background: url("../../../static/img/icon_user_pwd.png") no-repeat left;
+  }
+  .pwd-eye {
+    cursor: pointer;
+  }
+   .el-button--primary{
+    height: 40px !important;
+    border-radius: 0;
+    border: 0;
   }
 }
 </style>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #889aa4;
-$light_gray: #eee;
 
+<style rel="stylesheet/scss" lang="scss" scoped>
 .login-container {
-  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   width: 100%;
-  background-color: $bg;
-  .el-button--primary {
-    background-color: #409eff !important;
-    &:hover {
-      // background-color: rgba(64, 158, 255, 0.8) !important;
-      background-color: #409effcc !important;
-    }
-  }
-  .login-form {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 520px;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
-    .login-foot {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
+  color: #fff;
+  background: url('../../../static/img/login/register_bg.png') no-repeat;
+  background-size: 100% 100%;
+  .content {
+    width: 460px;
+    .title {
+      margin-bottom: 20px;
+      p {
+        margin: 0;
+      }
+      .logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      .zh {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .en {
+        font-size: 12px;
+        text-align: center;
       }
     }
-  }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-    &_login {
-      font-size: 20px;
-    }
-  }
-  .title-container {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 0 0 10px;
-    .title {
-      //font-size: 26px;
-      color: $light_gray;
-      //margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-  }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
   }
 }
 </style>

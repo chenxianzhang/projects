@@ -5,9 +5,27 @@ import layout from '@/views/layout/layout'
 Vue.use(Router);
 
 export const constantRouterMap = [
-  { name: 'login', path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  // { name: 'login', path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { name: 'home', path: '/home', component: () => import('@/views/home/index'), hidden: true },
-  { name: 'registery', path: '/register', component: () => import('@/views/register/register'), hidden: true }
+  // { name: 'register', path: '/register', component: () => import('@/views/register/register'), hidden: true },
+  { 
+    name: 'login', 
+    path: '/login', 
+    component: () => import('@/views/login/index'),
+    redirect: { name: 'logIn', path: 'logIn' },
+    children: [
+      {
+        path: 'logIn',
+        component: () => import('@/views/login/login'),
+        name: 'logIn'
+      },
+      {
+        path: 'register',
+        component: () => import('@/views/register/register'),
+        name: 'register'
+      }
+    ]
+   },
 ];
 
 export default new Router({
