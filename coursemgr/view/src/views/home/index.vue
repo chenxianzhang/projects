@@ -426,9 +426,11 @@ export default {
   }
   .container {
     width: 100%;
-    height: calc(100% - 55px);
+    height: calc(100% - 70px);
     display: flex;
     justify-content: center;
+    background: url('../../../static/img/home-bg.png') no-repeat;
+    background-size: 100% 100%;
     padding: 10px 0px;
     .flex-center {
       width: 84%;
@@ -439,7 +441,7 @@ export default {
         border-radius: 4px;
         height: 100%;
         width: calc(100% - 400px);
-        background-color: white;
+        // background-color: white;
         .course-list {
           width: 100%;
           height: calc(100% - 44px);
@@ -483,7 +485,7 @@ export default {
         width: 400px;
         height: 400px;
         border-radius: 4px;
-        background-color: #fff;
+        // background-color: #fff;
         margin-left: 10px;
         .content {
           width: 100%;

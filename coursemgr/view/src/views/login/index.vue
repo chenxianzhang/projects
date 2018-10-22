@@ -116,7 +116,7 @@ export default {
   background-size: 100% 100%;
   .content {
     width: 520px;
-    margin-top: -120px;
+    // margin-top: -120px;
     .title {
       margin-bottom: 20px;
       p {
