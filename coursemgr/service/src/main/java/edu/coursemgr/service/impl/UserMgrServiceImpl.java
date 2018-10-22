@@ -283,7 +283,7 @@ public class UserMgrServiceImpl implements UserMgrService {
             params.put("studentNo", studentNo);
             params.put("courseId", courseId);
             List<GradeRelate> gradeRelateList = gradeRelateMapper.selectByCourseStudent(params);
-            if (gradeRelateList != null) {
+            if (gradeRelateList != null && gradeRelateList.size() != 0) {
                 throw new Exception("无法删除该学生，该学生有待办事项，请先进行移交");
             }
             // 判断当前学生是否担任组长

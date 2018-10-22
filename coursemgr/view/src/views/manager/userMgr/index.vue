@@ -91,12 +91,14 @@ export default {
     if (this.$route.path.indexOf('student') >= 0) {
       this.placeholder = '输入姓名或者学号'
       this.courseTipInfo = '没有关联的课程信息'
+      this.courseTitle = '参与课程';
       this.role = 'student'
       this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadStudents"
     } else {
       this.placeholder = '输入姓名或者教工号'
       this.role = 'teacher'
       this.courseTipInfo = '该教师暂未开设课程'
+      this.courseTitle = '开设课程';
       this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadTeachers"
     }
   },
