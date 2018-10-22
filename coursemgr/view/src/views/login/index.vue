@@ -6,10 +6,10 @@
           <img src="../../assets/logo.png" />
         </div>
         <p class="zh">
-          {{ titleZh }}
+          <span v-for="(ch, index) in titleZh" :key="index">{{ ch }}</span>
         </p>
         <p class="en">
-          {{ titleEn }}
+          <span v-for="(en, index) in titleEns" :key="index">{{ en }}</span>
         </p>
       </div>
       <transition name="fade-transform" mode="out-in">
@@ -25,7 +25,36 @@ export default {
   data() {
     return {
       titleZh: '研究型课程管理过程性考核系统登录',
-      titleEn: 'RESEARCH COURSE MANAGEMENT PROCESS ASSESSMENT SYSTEM LOGIN'
+      titleEn: 'RESEARCH COURSE MANAGEMENT PROCESS ASSESSMENT SYSTEM LOGIN',
+      titleEns: []
+    }
+  },
+  created() {
+    this.changeTitle(this.$route.path)
+  },
+  watch: {
+    $route(to, from) {
+      this.changeTitle(to.path)
+    }
+  },
+  methods: {
+    changeTitle(path) {
+      if (path.indexOf("logIn") >= 0) {
+        this.titleZh = '研究型课程管理过程性考核系统登录'
+        this.titleEn = 'RESEARCH COURSE MANAGEMENT PROCESS ASSESSMENT SYSTEM LOGIN'
+      } else if (path.indexOf("register") >= 0) {
+        this.titleZh = '研究型课程管理过程性考核系统注册'
+        this.titleEn = 'REGISTRATION OF RESEARCH COURSE MANAGEMENT PROCESS ASSESSMENT SYSTEM'
+      }
+      this.titleEns = []
+      let arr = this.titleEn.split(' ')
+      for (let i = 0;i < arr.length; i++) {
+        let tmp = arr[i];
+        if (i < arr.length - 1) {
+          tmp = tmp + ""
+        }
+        this.titleEns.push(tmp)
+      }
     }
   }
 }
@@ -86,7 +115,8 @@ export default {
   background: url('../../../static/img/login/register_bg.png') no-repeat;
   background-size: 100% 100%;
   .content {
-    width: 460px;
+    width: 520px;
+    margin-top: -120px;
     .title {
       margin-bottom: 20px;
       p {
@@ -101,10 +131,14 @@ export default {
         font-size: 18px;
         font-weight: bold;
         text-align: center;
+        display: flex;
+        justify-content: space-between;
       }
       .en {
         font-size: 12px;
         text-align: center;
+        display: flex;
+        justify-content: space-between;
       }
     }
   }

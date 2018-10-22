@@ -222,6 +222,7 @@ export default {
       align-items: center;
       cursor: pointer;
       height: 50px;
+      width: 20%;
       &:hover {
         color: #777;
       }

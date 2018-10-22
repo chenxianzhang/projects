@@ -1,6 +1,6 @@
 <template>
-  <div class="registery-container">
-    <el-form ref="regForm" :model="regInfo" label-color="#fff" :rules="registerRules"
+  <!-- <div class="registery-container"> -->
+    <el-form class="registery-form" ref="regForm" :model="regInfo" label-color="#fff" :rules="registerRules"
              style="background: white; box-shadow: 0px 0px 12px 1px grey; padding: 20px;">
       <el-form-item prop="name">
         <el-input placeholder="请输入姓名" v-model="regInfo.name">
@@ -40,16 +40,21 @@
         </el-input>
       </el-form-item>
 
-      <el-row :gutter="20">
+      <div class="register-operator">
+        <el-button type="primary" @click="handleSubmit()" style="background-color: #00574F;">提 交</el-button>
+        <el-button type="primary" @click="handleCancel()" style="background-color: #009285" >取 消</el-button>
+      </div>
+
+      <!-- <el-row :gutter="20">
         <el-col :span="12">
           <el-button type="primary" @click="handleSubmit()" style="background-color: #00574F;">提 交</el-button>
         </el-col>
         <el-col :span="12">
           <el-button type="primary" @click="handleCancel()" style="background-color: #009285" >取 消</el-button>
         </el-col>
-      </el-row>
+      </el-row> -->
     </el-form>
-  </div>
+  <!-- </div> -->
 
 </template>
 
@@ -181,16 +186,7 @@
 </script>
 
 <style scoped>
-  .registery-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    /* color: #fff;
-    background: url("../../../static/img/register_bg.png") no-repeat; */
-  }
-  .registery-container .register-item{
+  .registery-form .register-item{
     width: 100%;
     height: 40px;
     line-height: 40px;
@@ -222,17 +218,22 @@
     cursor: pointer;
     color: #009285;
   }
+
+  .register-operator {
+    display: flex;
+    justify-content: space-around;
+  }
 </style>
 <style>
-  .registery-container .el-input__inner{
+  .registery-form .el-input__inner{
     border: 1px solid #b4bccc;
     height: 40px;
     border-radius: 0;
   }
-  .registery-container .el-input__inner:focus{
+  .registery-form .el-input__inner:focus{
     border-color: #009285;
   }
-  .registery-container .el-form-item__label{
+  .registery-form .el-form-item__label{
     color: #fff;
   }
 </style>
