@@ -1,20 +1,30 @@
 <template>
   <div style="margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
     <div class="task-name">
-      <el-row>
-        <el-col :span="10">
+      <el-row :gutter="20">
+        <el-col :span="8">
           <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">任务名称：</span>
           <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px)"></el-input>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">开始日期：</span>
           <el-date-picker v-model="task.startDate" type="date" placeholder="选择日期">
           </el-date-picker>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">截止日期：</span>
           <el-date-picker v-model="task.inspireDate" type="date" placeholder="选择日期">
           </el-date-picker>
+        </el-col>
+        <el-col :span="6">
+          <div v-show="haSubjective" style="margin: 7px 20px; line-height: 40px; float: left;">
+            <el-radio-group v-model="task.markType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+              <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
+              <el-radio label="GROUP_INNER_EVA" :disabled="courseGroupStatus === 0 ? true : false" style="margin: 5px;">组内互评</el-radio>
+              <el-radio label="GROUP_INTERBLOCK_EVA" :disabled="courseGroupStatus > 1 ? false : true" style="margin: 5px;">组间互评</el-radio>
+            </el-radio-group>
+            <span style="margin-left: 15px;font-size: 12px; color: red">{{ tipinfo }}</span>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -82,14 +92,6 @@
         </div>
         <!--主观题  答题设置-->
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: 90%; margin: 0 auto">
-          <div style="margin: 7px 20px; line-height: 40px; float: left;">
-            <el-radio-group v-model="task.markType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
-              <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
-              <el-radio label="GROUP_INNER_EVA" :disabled="courseGroupStatus === 0 ? true : false" style="margin: 5px;">组内互评</el-radio>
-              <el-radio label="GROUP_INTERBLOCK_EVA" :disabled="courseGroupStatus > 1 ? false : true" style="margin: 5px;">组间互评</el-radio>
-            </el-radio-group>
-            <span style="margin-left: 15px;font-size: 12px; color: red">{{ tipinfo }}</span>
-          </div>
           <el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>
           <!--<Tinymce :height=200 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />-->
         </div>
@@ -162,7 +164,15 @@ export default {
       }
       this.task.totalScore = subjectiveScore
       return this.task.totalScore
-    }
+    },
+    haSubjective(){
+      for (let item of this.task.subjects){
+        if(item.questionType === SUBJECT_TYPE.SUBJECTIVE){
+         return true;
+        }
+      }
+      return false;
+    },
   },
   methods: {
     /**
