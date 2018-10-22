@@ -26,7 +26,7 @@ public interface GroupMgrService {
      * @param studentNos
      * @return
      */
-    int appendStudent2Group(String groupId, String studentNos);
+    int appendStudent2Group(String groupId, String studentNos, String courseId, String groupNo);
 
     /**
      * 指定分组

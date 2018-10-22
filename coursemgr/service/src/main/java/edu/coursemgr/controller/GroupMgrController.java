@@ -48,10 +48,13 @@ public class GroupMgrController extends BaseController {
         throws Exception {
         String groupId = getParam(requestMap, "groupId");
         String studentNos = getParam(requestMap, "studentNos");
-        if (CommonUtils.isEmpty(groupId) || CommonUtils.isEmpty(studentNos)) {
+        String courseId = getParam(requestMap, "courseId");
+        String groupNo = getParam(requestMap, "groupNo");
+        if (CommonUtils.isEmpty(courseId) || CommonUtils.isEmpty(groupId)
+                || CommonUtils.isEmpty(studentNos)) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
-        return groupMgrService.appendStudent2Group(groupId, studentNos);
+        return groupMgrService.appendStudent2Group(groupId, studentNos, courseId, groupNo);
     }
 
     @RequestMapping(value="/assignGroup", method=RequestMethod.POST)
