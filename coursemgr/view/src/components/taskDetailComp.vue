@@ -38,14 +38,14 @@
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
             <!--主观题 答题-->
-            <!--<el-input type="textarea"-->
-                      <!--v-if="!TASK_OPERATOR_TYPE.STUDENT_ANSWER"-->
-                      <!--v-model="item.answer"-->
-                      <!--style="width: calc(100% - 100px)"-->
-                      <!--placeholder="请填写答案"-->
-                      <!--:disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">-->
-            <!--</el-input>-->
-            <Tinymce :height=200 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
+            <el-input type="textarea"
+                      v-model="item.answer"
+                      style="width: calc(100% - 100px)"
+                      placeholder="请填写答案"
+                      :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
+            </el-input>
+            <!--<Tinymce v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"-->
+                     <!--:height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />-->
 
             <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
                  style="width: 100px; float: right; line-height: 50px; text-align: right;">
@@ -236,6 +236,7 @@
                   return
                 }
                 this.$message.success('评分成功')
+                this.$emit('closeDlg');
               });
           }
         },

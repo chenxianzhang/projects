@@ -43,6 +43,7 @@
           }
       },
       mounted(){
+          let self = this;
           this.$nextTick(()=>{
             this.containerHeight = document.getElementsByClassName('container')[0].clientHeight - 74 + 'px';
             setTimeout(()=>{
@@ -53,9 +54,9 @@
           });
           window.onresize = ()=>{
             setTimeout(()=>{
-              this.scoreStaticChart.resize();
-              this.taskStaticChart.resize();
-              this.stemStaticChart.resize();
+              self.scoreStaticChart && self.scoreStaticChart.resize();
+              self.taskStaticChart && self.taskStaticChart.resize();
+              self.stemStaticChart && self.stemStaticChart.resize();
             }, 100);
           }
       },
@@ -241,7 +242,6 @@
               this.$message.warning('获取题型统计情况失败！');
               return;
             }
-            debugger
             if(resp.data && resp.data.length !== 0){
               resp.data.forEach((item)=>{
                 data.push({value:item.count, name:item.getQuestionTypeText});
@@ -338,14 +338,12 @@
                   {
                     name: '得分',
                     type: 'bar',
-                    stack:'score',
                     barGap: 0,
                     data: score
                   },
                   {
                     name: '总分',
                     type: 'bar',
-                    stack:'score',
                     data: totalScore
                   }
                 ]

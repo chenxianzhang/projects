@@ -12,7 +12,7 @@
       <task-detail-comp v-if="showTaskInfoDialog" ref="taskInfoComp"
                         :taskId="selectTaskId"
                         :operateType="operateType"
-                        :markUid="markUid"></task-detail-comp>
+                        :markUid="markUid" @closeDlg="closeDlg"></task-detail-comp>
     </el-dialog>
   </div>
 </template>
@@ -38,17 +38,10 @@
           }
       },
       created(){
-        // private Integer taskId;
-        //
-        // private String taskName;
-        //
-        // private String markPersonSerialNo;
-        //
-        // private String markPersonName;
-        //
-        // private String targetSerialNo;
-        //
-        // private String targetSerialName;
+          this.getData();
+      },
+      methods:{
+        getData(){
           //获取我的任务待办列表
           getMySchedule({courseId:this.variables.courseId, studentNo:this.$store.state.user.token})
             .then(resp=>{
@@ -58,14 +51,17 @@
               }
               this.gTasks = resp.data;
             });
-      },
-      methods:{
+        },
         approvalTask(tId, markUid){
           //显示task信息，填写得分
           this.selectTaskId = tId;
           this.operateType = TASK_OPERATOR_TYPE.MARK_POINT;
           this.markUid = markUid;
           this.showTaskInfoDialog = true;
+        },
+        closeDlg(){
+          this.showTaskInfoDialog = false;
+          this.getData();
         }
       }
     }

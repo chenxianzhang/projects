@@ -201,12 +201,26 @@
               })
               break;
             case "指定分组":
+              if(this.zdGroupMembers.length === 0){
+                this.$message.warning('请至少选择一个学生进行分组！');
+                return;
+              }
               //获取指定分组对象
               let leaderName = '';
               for(let item of this.zdGroupData){
                 if(item.key === this.groupLeader){
                   leaderName = item.label;
                 }
+              }
+              if(leaderName === ''){
+                this.$message.warning('请设置组长！');
+                return;
+                // for(let item of this.zdGroupData){
+                //   if(item.key === this.zdGroupMembers[0]){
+                //     leaderName = item.label;
+                //   }
+                // }
+                // this.groupLeader = this.zdGroupMembers[0];
               }
               let assignGroupObj = {
                 courseId: this.variables.courseId,
@@ -229,7 +243,18 @@
               for(let item of this.multipleSelection){
                 stus.push(item.serialNo);
               }
-              appendStudent2Group({groupId: this.appointGroup, studentNo: stus.join(',')})
+              debugger
+              let groupNo = '';
+              for(let item of this.usableGroups){
+                if(this.appointGroup === item.groupId){
+                  groupNo = item.groupNo;
+                }
+              }
+              let params = {
+                groupId: this.appointGroup, studentNos: stus.join(','),
+                courseId: this.variables.courseId, groupNo: groupNo
+              };
+              appendStudent2Group(params)
                 .then(resp=>{
                   if(resp.status === 0){
                     self.$message.warning('添加到分组失败！');
