@@ -15,7 +15,7 @@
     id,taskId, studentNo, questionId, questionType, answers, score,teacherScore
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from student_paper
     where id = #{id,jdbcType=INTEGER}
@@ -51,7 +51,7 @@
     delete from student_paper
     where taskId in (select id from course_tasks
     where courseId = #{courseId, jdbcType=INTEGER})
-    and studentNo = ${studentNo, jdbcType=VARCHAR}
+    and studentNo = #{studentNo, jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="edu.coursemgr.model.StudentPaper" >
     insert into student_paper (id, taskId,studentNo, questionId, questionType,
