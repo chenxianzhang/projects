@@ -240,7 +240,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
     @Override
     public Integer checkCourseGrouped(String courseId) {
         List<User> userList = userMapper.selectSomeNoGroup(Integer.valueOf(courseId));
-        if (userList != null) {
+        if (userList != null && userList.size() != 0) {
             return 0;
         }
         List<Group> groupList = groupMapper.getGroupList(Integer.valueOf(courseId));
