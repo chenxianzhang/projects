@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <page-title></page-title>
+    <page-title :homePage="false"></page-title>
     <div class="main">
       <sidebar class="sidebar-container"></sidebar>
       <div class="container">
@@ -81,10 +81,10 @@ export default {
     .sidebar-container {
       transition: width 0.28s;
       width: 180px !important;
-      height: calc(100% - 50px);
+      height: calc(100% - 70px);
       position: fixed;
       font-size: 0px;
-      top: 50px;
+      top: 70px;
       bottom: 0;
       left: 0;
       z-index: 1001;

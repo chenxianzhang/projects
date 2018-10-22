@@ -113,3 +113,23 @@ div:focus{
   background: #99a9bf;
   border-radius: 20px;
 }
+
+.custom-icon {
+  display: inline-block;
+  background-size: 100% 100%;
+}
+.custom-icon-quit {
+  width: 17px;
+  height: 20px;
+  background: url('../../static/img/icon-quit.png') no-repeat;
+}
+.custom-icon-home {
+  width: 17px;
+  height: 20px;
+  background: url('../../static/img/icon-quit.png') no-repeat;
+}
+.custom-icon-book {
+  width: 17px;
+  height: 20px;
+  background: url('../../static/img/icon-quit.png') no-repeat;
+}

@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <router-view/>
+    <transition name="fade-transform" mode="out-in">
+      <router-view />
+    </transition>
   </div>
 </template>
 
 <script>
-
 import { getCourseId } from '@/utils/auth'
 
 export default {

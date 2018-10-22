@@ -18,7 +18,8 @@
         </el-form-item>
       </el-form>
     </div>
-    <div v-if="firstLogin===false" style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
+    <page-title v-if="firstLogin===false"></page-title>
+    <!-- <div v-if="firstLogin===false" style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
       <span>课程管理系统</span>
       <div style="float: right; margin-right: 50px;font-size:14px">
         当前用户：
@@ -33,7 +34,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-    </div>
+    </div> -->
     <div v-if="firstLogin===false" class="container">
       <div class="flex-center">
         <div class="container-left">
@@ -115,6 +116,7 @@ import { findUser, update } from '@/api/login'
 import { validateEmail, validatePhone } from '@/utils/validate'
 import { setCourseId } from '@/utils/auth'
 import dragDialog from '@/components/dragDialog'
+import pageTitle from '../layout/components/pageTitle'
 
 export default {
   name: 'home',
@@ -177,7 +179,8 @@ export default {
     }
   },
   components: {
-    dragDialog
+    dragDialog,
+    pageTitle
   },
   created() {
     if (!this.$store.state.user.roles) {
@@ -416,14 +419,12 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .main {
-  background-color: #567;
   width: 100%;
   height: 100%;
   .el-dropdown-link {
     color: #fff;
   }
   .container {
-    background-color: #567;
     width: 100%;
     height: calc(100% - 55px);
     display: flex;
