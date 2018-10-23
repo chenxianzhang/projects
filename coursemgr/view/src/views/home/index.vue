@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="home-main">
     <div class="change-pass" v-if="firstLogin===true" style="height: 300px; width: 500px; margin: 0 auto; color: white">
       <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
         <el-form-item label="旧密码" prop="oldPass">
@@ -19,75 +19,57 @@
       </el-form>
     </div>
     <page-title v-if="firstLogin===false"></page-title>
-    <!-- <div v-if="firstLogin===false" style="height: 50px; width: 100%; background-color: #456; line-height: 50px; color: white; padding-left: 20px;">
-      <span>课程管理系统</span>
-      <div style="float: right; margin-right: 50px;font-size:14px">
-        当前用户：
-        <el-dropdown @command="handleCommand">
-          <span class="el-dropdown-link">
-            {{userInfo.name}}
-            <i class="el-icon-arrow-down el-icon--right white-color"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown" class="el-menu-vertical-demo">
-            <el-dropdown-item command="backHome">返回首页</el-dropdown-item>
-            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </div> -->
+
     <div v-if="firstLogin===false" class="container">
-      <div class="flex-center">
-        <div class="container-left">
-          <div class="module-title">
-            <span>课程列表</span>
-          </div>
-          <div class="course-list">
-            <div class="card-panel" v-for="(item, index) in courseList" :key="index" @click="handleCourseClick(item.id)">
-              <span>{{ item.name }}</span>
-            </div>
-            <div class="card-panel" @click.stop="addCourse" v-if="canAddCourse">
-              <i class="el-icon-plus"></i>
-            </div>
+      <el-card class="course-list">
+        <div slot="header">
+          <span>课程列表</span>
+        </div>
+        <div class="content">
+          <i class="custom-icon item" v-for="(item, index) in courseList" :key="index" @click="handleCourseClick(item.id)">{{ item.name }}</i>
+          <div class="custom-icon item" @click.stop="addCourse" v-if="canAddCourse">
+            <i class="custom-icon plus"></i>
           </div>
         </div>
-        <div class="container-right">
-          <div class="module-title">
-            <span>用户信息</span>
-            <!--<svg-icon icon-class="edit"></svg-icon>-->
-            <i class="el-icon-edit-outline" @click="handleEdit"></i>
+      </el-card>
+
+      <el-card class="user-detail">
+        <div slot="header" class="header">
+          <span>用户信息</span>
+          <i class="el-icon-edit" @click="handleEdit"></i>
+        </div>
+        <div class="detail-content">
+          <div class="info-row">
+            <span class="label">姓名</span>
+            <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
+            <el-input v-model="userInfo.name" v-if="editUserInfo" />
           </div>
-          <div class="content">
-            <div class="info-row">
-              <span class="label">姓名</span>
-              <span class="value" v-if="!editUserInfo"> {{ userInfo.name }} </span>
-              <el-input v-model="userInfo.name" v-if="editUserInfo" />
-            </div>
-            <div class="info-row">
-              <span class="label">{{ getSearialLabel() }} </span>
-              <span class="value">{{ userInfo.serialNo }}</span>
-            </div>
-            <div class="info-row">
-              <span class="label">学院</span>
-              <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
-              <el-input v-model="userInfo.college" v-if="editUserInfo" />
-            </div>
-            <div class="info-row">
-              <span class="label">电话</span>
-              <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
-              <el-input v-model="userInfo.cellphone" v-if="editUserInfo" />
-            </div>
-            <div class="info-row">
-              <span class="label">邮箱</span>
-              <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
-              <el-input v-model="userInfo.email" v-if="editUserInfo" />
-            </div>
-            <div class="edit-oper" v-if="editUserInfo">
-              <el-button @click="cancel">取消</el-button>
-              <el-button type="primary" @click="save">修改</el-button>
-            </div>
+          <div class="info-row">
+            <span class="label">{{ getSearialLabel() }} </span>
+            <span class="value">{{ userInfo.serialNo }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">学院</span>
+            <span class="value" v-if="!editUserInfo">{{ userInfo.college }}</span>
+            <el-input v-model="userInfo.college" v-if="editUserInfo" />
+          </div>
+          <div class="info-row">
+            <span class="label">电话</span>
+            <span class="value" v-if="!editUserInfo">{{ userInfo.cellphone }}</span>
+            <el-input v-model="userInfo.cellphone" v-if="editUserInfo" />
+          </div>
+          <div class="info-row">
+            <span class="label">邮箱</span>
+            <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
+            <el-input v-model="userInfo.email" v-if="editUserInfo" />
+          </div>
+          <div class="edit-oper" v-if="editUserInfo">
+            <el-button @click="cancel">取消</el-button>
+            <el-button type="primary" @click="save">修改</el-button>
           </div>
         </div>
-      </div>
+      </el-card>
+
     </div>
     <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible" @close="handleCourseClose" @confirm="saveCourse">
       <div class="edit-container">
@@ -393,13 +375,13 @@ export default {
     },
     handleCourseClick(cId) {
       setCourseId(cId)
-      this.variables.courseId = cId;
+      this.variables.courseId = cId
       this.$router.push({ name: 'basicInfo' })
     },
     logout() {
       this.$store.dispatch('logOut').then(() => {
-          // 清空tagsview
-          this.$store.dispatch('delAllViews')
+        // 清空tagsview
+        this.$store.dispatch('delAllViews')
         //   this.$router.push('/login')
         location.reload()
       })
@@ -417,8 +399,31 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.home-main {
+  .el-card {
+    min-height: 100px;
+    height: 378px;
+    border-radius: 0;
+    margin-top: 10px;
+    .el-card__header {
+      color: #fff;
+      padding: 10px 20px;
+      background: url('../../../static/img/card-title-bg.png');
+    }
+    .el-card__body {
+      height: calc(100% - 42px);
+      overflow: auto;
+    }
+  }
+  .el-input-number {
+    line-height: 30px !important;
+  }
+}
+</style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
-.main {
+.home-main {
   width: 100%;
   height: 100%;
   .el-dropdown-link {
@@ -432,114 +437,96 @@ export default {
     background: url('../../../static/img/home-bg.png') no-repeat;
     background-size: 100% 100%;
     padding: 10px 0px;
-    .flex-center {
-      width: 84%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      .container-left {
-        border-radius: 4px;
+    .course-list {
+      height: 90%;
+      width: 50%;
+      margin-right: 20px;
+      padding-bottom: 10px;
+      .content {
         height: 100%;
-        width: calc(100% - 400px);
-        // background-color: white;
-        .course-list {
-          width: 100%;
-          height: calc(100% - 44px);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        //justify-content: space-around;
+        align-content: flex-start;
+        .item {
+          background: url('../../../static/img/course-item-bg.png') no-repeat;
+          width: 101px;
+          height: 101px;
+          word-break: break-all;
+          word-wrap: break-word;
+          margin-top: 10px;
+          margin-left: 5px;
+          cursor: pointer;
           display: flex;
-          flex-wrap: wrap;
-          justify-content: flex-start;
-          //justify-content: space-around;
-          align-content: flex-start;
-          overflow: auto;
-          .card-panel {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            align-items: center;
-            width: 100px;
-            height: 100px;
-            background-color: #87a035;
-            border-radius: 4px;
-            margin-top: 10px;
-            margin-left: 5px;
-            cursor: pointer;
-            span {
-              text-align: center;
-              font-size: 18px;
-              font-weight: 800;
-              color: #ccc;
-            }
-            .el-icon-plus {
-              color: #ccc;
-            }
-          }
-          .card-panel:hover {
-            background-color: rgba(135, 160, 53, 0.8);
-            span {
-              color: #fff;
-            }
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+          padding: 5px;
+          font-size: 15px;
+          font-weight: bolder;
+          color: rgb(0, 150, 136);
+          &:hover {
+            background: url('../../../static/img/course-item-bg-hover.png')
+              no-repeat;
+            color: #fff;
           }
         }
-      }
-      .container-right {
-        width: 400px;
-        height: 400px;
-        border-radius: 4px;
-        // background-color: #fff;
-        margin-left: 10px;
-        .content {
-          width: 100%;
-          height: calc(100% - 44px);
-          .info-row {
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            span {
-              display: inline-block;
-            }
-            .label {
-              width: 70px;
-              text-align: right;
-              color: #555;
-              font-weight: 600;
-            }
-            .value {
-              padding-left: 15px;
-              color: #888;
-            }
-            .el-input {
-              width: calc(80% - 60px);
-              margin-left: 10px;
-            }
-          }
-          .edit-oper {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-          }
+        .plus {
+          background: url('../../../static/img/plus.png') no-repeat;
+          width: 30px;
+          height: 30px;
         }
       }
-      .module-title {
-        color: #303133;
-        font-weight: 800;
-        transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-        border-bottom: 1px solid #ccc;
-        box-shadow: 0 1px 0 #ccc;
+    }
+    .user-detail {
+      width: 30%;
+      .header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        span {
-          padding: 10px;
-          display: inline-block;
-        }
-        .el-icon-edit-outline {
+        i {
           cursor: pointer;
-          margin-right: 10px;
+          &:hover {
+            opacity: 0.8;
+          }
         }
-        .el-icon-edit-outline:hover {
-          opacity: 0.8;
+      }
+      .detail-content {
+        border: 1px solid #ccc;
+        border-bottom: 0;
+        .info-row {
+          border-bottom: 1px solid #ccc;
+          // padding: 10px;
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          span {
+            display: inline-block;
+          }
+          .label {
+            border-right: 1px solid #ccc;
+            padding: 10px;
+            width: 70px;
+            text-align: right;
+            color: rgb(27, 44, 54);
+            font-weight: bolder;
+            background-color: rgb(246, 248, 247);
+            height: 100%;
+          }
+          .value {
+            padding-left: 15px;
+            color: rgb(27, 44, 54);
+          }
+          .el-input {
+            width: calc(80% - 60px);
+            margin-left: 10px;
+          }
+        }
+        .edit-oper {
+          padding: 5px 0;
+          display: flex;
+          justify-content: center;
+          border-bottom: 1px solid #ccc;
         }
       }
     }
