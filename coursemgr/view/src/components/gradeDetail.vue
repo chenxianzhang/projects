@@ -3,7 +3,11 @@
     <div class="task-name-label">
       任务名称：<span>{{task.task.name}}</span>
     </div>
-    <div class="subjectStatic">总题数 {{task.questionList.length}} 道，总分值 {{task.task.totalScore}} 分，权重：{{task.task.weight}} %。</div>
+    <div class="subjectStatic">总题数 {{task.questionList.length}} 道，总分值 {{task.task.totalScore}} 分。
+      <span v-if="hasSubject" style="margin-left: 30px; display: inline-block;">评分方式：
+        <span style="color: #ee5134;">{{task.task.markType === 'GROUP_INNER_EVA' ? '组内互评' : (task.task.markType === 'SELF_EVA' ? '自主评分' : '组间互评')}}</span>
+      </span>
+    </div>
     <div class="subject-container">
       <div class="subject-item" v-for="(item, index) in task.questionList"
            style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
@@ -11,6 +15,7 @@
         <div style="margin-bottom:10px; line-height: 32px">
           <span>{{index + 1}}.</span>
           <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 240px)"></el-input>
+          <span v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">满分： {{item.taskQuestions.questionScore}} 分</span>
         </div>
         <!--单选题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.CHOOSE">
@@ -39,7 +44,7 @@
         <!--主观题 答题 设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">
           <el-row :gutter="10">
-            <el-col :span="22">
+            <el-col :span="20">
               <!--主观题 答题-->
               <el-input type="textarea"
                         v-model="item.taskQuestions.answers"
@@ -47,11 +52,12 @@
                         disabled>
               </el-input>
             </el-col>
-            <el-col :span="2">
-              <div>得分：{{item.taskQuestions.score}}<span v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>
+            <el-col :span="4">
+              <div>得分：{{item.taskQuestions.score}} <span style="color: orangered;" v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>
               <div>评阅人：{{task.markUser && task.markUser.name}}</div>
               <div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">
-                得分：<input v-model="item.taskQuestions.teacherScore" type="number" min="0" max="100" style="height: 30px; width: 30px"/>
+                得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"
+                          type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 30px"/>
               </div>
             </el-col>
           </el-row>
@@ -86,7 +92,7 @@
           task:{
             name:'',
             totalScore:'',
-            weight:''
+            // weight:''
           },
           questionList:[],
 
@@ -109,8 +115,6 @@
             return;
           }
           //根据结果设置subject值
-          debugger
-
           this.task = resp.data;
           for (let item of this.task.questionList) {
             if (item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE) {
@@ -138,11 +142,11 @@
        *
        * */
       cxdfSubmit(){
-        let totalScore = 0;
-        for(let item of this.task.questionList){
-          totalScore += item.taskQuestions.teacherScore !== '' ? +item.taskQuestions.teacherScore : item.taskQuestions.score;
-        }
-        this.task.studentTotalScore = totalScore;
+        // let totalScore = 0;
+        // for(let item of this.task.questionList){
+        //   totalScore += item.taskQuestions.teacherScore !== '' ? +item.taskQuestions.teacherScore : item.taskQuestions.score;
+        // }
+        // this.task.studentTotalScore = totalScore;
 
         updateSubjectScore(this.setStudentPaperByTask(this.task))
           .then(resp=>{
@@ -151,6 +155,7 @@
               return
             }
             this.$message.success('评分成功')
+            this.$emit('remarkSuccess');
           });
       },
 
@@ -159,10 +164,13 @@
         let taskTmp = {};
         taskTmp.courseId = this.variables.courseId;
         taskTmp.studentNo = this.uId;
+        taskTmp.teacherNo = this.$store.state.user.token;
         taskTmp.taskId = task.task.id;
-        taskTmp.questionList = [];
+        taskTmp.subjectList = [];
         for(let q of task.questionList){
-          taskTmp.questionList.push({
+          taskTmp.subjectList.push({
+            taskId:task.task.id,
+            studentNo : this.uId,
             questionId: q.taskQuestions.id,
             questionType: q.taskQuestions.questionType,
             standardAnswers: q.taskQuestions.standardAnswer,//标准答案

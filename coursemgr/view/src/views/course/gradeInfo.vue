@@ -17,7 +17,7 @@
                        :key="index">
         <template slot-scope="scope">
           <div v-if="task.type && task.type==='link'"
-               @click.stop="viewScoreDetail(task.taskId, scope.row.studentNo)"
+               @click.stop="viewScoreDetail(task.taskId, scope.row.studentNo, scope.row[task.prop])"
                style="cursor: pointer; color: #ee9900;">
             {{scope.row[task.prop]}}
           </div>
@@ -43,7 +43,7 @@
 
     <!--查看当前任务答题情况-->
     <el-dialog v-if="showAnswer" :visible.sync="showAnswer" width="1240px" title="成绩信息">
-      <grade-detail :taskId="taskSelect.taskId" :uId="taskSelect.uId"></grade-detail>
+      <grade-detail :taskId="taskSelect.taskId" :uId="taskSelect.uId" @remarkSuccess="remarkSuccess"></grade-detail>
     </el-dialog>
   </div>
 </template>
@@ -125,6 +125,10 @@
         this.sortChart = null;
       },
       methods: {
+        remarkSuccess(){
+          this.showAnswer = false;
+          this.getGradeByCourse(this.variables.courseId );
+        },
         calcTableHeight(){
           let subHeight = 250;
           if(this.isStudent){
@@ -198,7 +202,11 @@
         exportZip() {
           exportZip(this.variables.courseId, this.$store.state.user.token, this.isStudent);
         },
-        viewScoreDetail(taskId, uId){
+        viewScoreDetail(taskId, uId, val){
+          if(val === '未作答'){
+            this.$message.warning('该学生还未答题，无可查看成绩！')
+            return;
+          }
           this.taskSelect.taskId = taskId;
           this.taskSelect.uId = uId;
           this.showAnswer = true;
