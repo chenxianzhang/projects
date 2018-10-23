@@ -4,7 +4,7 @@
       <div class="task-name-label">
         任务名称：<span>{{task.name}}</span>
       </div>
-      <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分，权重：{{task.weight}} %。</div>
+      <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分。</div>
       <div class="subject-container">
         <div class="subject-item" v-for="(item, index) in task.subjects"
              style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
@@ -169,10 +169,22 @@
           }
           this.task.id = this.taskId;
           this.task.name = taskDetailInfo.task.name;
-          this.task.weight = taskDetailInfo.task.weight;
+          // this.task.weight = taskDetailInfo.task.weight;
           this.task.totalScore = taskDetailInfo.task.totalScore;
           this.task.inspireDate = taskDetailInfo.task.deadline;
-          this.task.markType = taskDetailInfo.task.markType;
+          switch (taskDetailInfo.task.markType) {
+            case "SELF_EVA":
+              this.task.markType = '自评';
+              break;
+            case "GROUP_INNER_EVA":
+              this.task.markType = '组内互评';
+              break;
+            case "GROUP_INTERBLOCK_EVA":
+              this.task.markType = '组间互评';
+              break;
+            default:
+              this.task.markType = '自动评分';
+          }
           for(let item of taskDetailInfo.questionList){
             let subject_c = new Subject();
             subject_c.id = item.taskQuestions.id;

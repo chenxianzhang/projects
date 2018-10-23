@@ -276,29 +276,35 @@
          * */
         handleDeleteClick(row) {
           let self = this;
-          deleteTask({
-            courseId: this.variables.courseId,
-            taskId: row.id
-          }).then(response => {
-            debugger
-            if (response.status === 1) {
-              self.getTaskList(self.variables.courseId);
-              self.$message({
-                showClose: true,
-                type: 'success',
-                message: "删除成功"
-              });
-            } else {
-              self.$message({
-                showClose: true,
-                type: 'warning',
-                message: "删除失败"
-              });
-            }
-
+          this.$confirm('确认删除此任务?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=>{
+            deleteTask({courseId: this.variables.courseId, taskId: row.id})
+              .then(response => {
+                if (response.status === 1) {
+                  self.getTaskList(self.variables.courseId);
+                  self.$message({
+                    showClose: true,
+                    type: 'success',
+                    message: "删除成功"
+                  });
+                } else {
+                  self.$message({
+                    showClose: true,
+                    type: 'warning',
+                    message: "删除失败"
+                  });
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              })
           }).catch(err => {
             console.log(err);
-          })
+          });
+
         },
         /**
          * 时间格式转换
