@@ -405,7 +405,7 @@ public class UserMgrServiceImpl implements UserMgrService {
                 continue;
             }
             User user = list2Obj(list.get(i));
-            if (user == null) {
+            if (user == null || user.getSerialNo().trim().isEmpty()) {
                 continue;
             }
             User tmpUser = userMapper.selectBySerialNo(user.getSerialNo());
@@ -427,7 +427,7 @@ public class UserMgrServiceImpl implements UserMgrService {
             params.put("studentNo", user.getSerialNo());
             CourseStudents existCS = courseStudentsMapper.selectByStudent(params);
             if (existCS != null) {
-                return;
+                continue;
             }
             if (courseStudentsMapper.insert(courseStudents) == 0) {
                 throw new Exception(Constant.ExceptionMessage.DATA_SAVE_EXCEPTION);

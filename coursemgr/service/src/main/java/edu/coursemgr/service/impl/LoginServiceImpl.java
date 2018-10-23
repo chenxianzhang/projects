@@ -103,7 +103,7 @@ public class LoginServiceImpl implements LoginService {
         if (hasUser != null) {
             throw new Exception("已经存在该用户");
         }
-
+        user.setHasLogin(1);
         return userMapper.insert(user);
     }
 }
