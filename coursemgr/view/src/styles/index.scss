@@ -83,6 +83,19 @@ div:focus{
   }
 }
 
+.is-plain{
+  padding: 8px 15px;
+  //background: rgb(0, 146, 133) !important;
+  color: rgb(0, 146, 133) !important;
+  border-color: rgb(0, 146, 133) !important;
+  &:visited {
+    border-color: rgb(84, 92, 100);
+  }
+  &:hover {
+    border-color: rgba(0, 146, 133, 0.8) !important;
+  }
+}
+
 .el-input {
   .el-input__inner {
     height: 32px;
@@ -96,7 +109,7 @@ div:focus{
   }
   .el-table__header {
     th {
-      background-color:rgba(28, 77, 125, 0.8);
+      background-color:#009285;
       color:white;
       font-weight:bold ;
     }

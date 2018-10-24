@@ -2,17 +2,33 @@
   <div class="main-container">
     <div v-if="hasGroup" class="grouped-item">
       <div class="group-leader">
-        <span>组长：<span>{{groupInfo.groupLeaderName}}  （学号：{{groupInfo.groupLeaderNo}}）</span></span>
+        <span>
+          <span style="font-weight: bold; font-size: 24px; color: black;">{{groupInfo.groupLeaderName}}</span>
+          <div style="border-radius: 12px; background-color: #E8EBF0; font-size: 12px; display: inline-block; height: 24px; line-height: 24px; margin-left: 10px; padding: 0 5px">
+            <span>
+              <span>组长</span>
+              <span style="color: #41A599; display: inline-block; margin-left: 5px;">学号：{{groupInfo.groupLeaderNo}}</span>
+            </span>
+          </div>
+        </span>
       </div>
       <div class="group-members">
         <span>组员列表：</span>
         <span v-for="(member,index) in groupInfo.groupMemberList">
-            <span>{{member.name}}（学号：{{member.serialNo}}）</span>
+            <span>
+              <span>{{member.name}}</span>
+              <span style="color: #41A599;">（学号：{{member.serialNo}}）</span>
+            </span>
             <span v-if="index < groupInfo.groupMemberList.length - 1">,</span>
         </span>
       </div>
       <div class="divide-type">
-        <span>分组方式：<span>{{groupInfo.groupedType}}</span></span>
+          <span style="display: inline-flex; justify-content: center; width: 110px; text-align: center; background-color: rgb(224, 254, 252);
+            align-items: center; line-height: 30px; border: 1px solid rgb(232, 235, 240);">
+            <img src="../../../static/img/group/group-type.png" style="margin-right: 4px"/>分组方式</span>
+          <span style=" display: inline-flex; align-items: center; justify-content: center;
+            background-color: rgb(247, 247, 247); border: 1px solid rgb(232, 235, 240); margin-left: -4px;
+            width: 80px; text-align: center; line-height: 30px;">{{groupInfo.groupedType}}</span>
       </div>
     </div>
     <div v-if="!hasGroup">
@@ -122,18 +138,27 @@
   .grouped-item {
     padding: 10px;
     line-height: 30px;
-    width: 90%;
+    width: calc(100% - 55px);
     margin: 30px auto;
     display: grid;
-    background-color: rgba(84, 92, 100, 0.8);
+    border: 5px solid #E8EBF0;
   }
 
   .grouped-item:hover {
-    box-shadow: 0px 0px 10px 4px #3a8ee6;
+    /*box-shadow: 0px 0px 10px 4px #3a8ee6;*/
+    border: 5px solid #9AEDE5;
   }
 
-  .group-leader > span > span, .group-members > span > span, .divide-type > span > span {
+  .group-leader{
+    border-bottom: 1px solid #F7F7F7;
+  }
+
+  .group-leader > span > span, .group-members > span, .group-members > span > span {
     font-size: 12px;
+  }
+
+  .divide-type{
+    display: flex;
   }
 
   .no-group {

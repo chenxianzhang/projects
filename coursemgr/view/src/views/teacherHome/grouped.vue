@@ -1,30 +1,82 @@
 <template>
   <div style="height: 100%; overflow: auto;">
-    <div v-if="hasGroup" class="grouped-item" v-for="(gItem, index) in groups"
+    <!--<div v-if="hasGroup" class="grouped-item" v-for="(gItem, index) in groups"-->
+         <!--@mousemove="showDismissBtn($event, index)" @mouseleave="hideDIsmissBtn($event, index)">-->
+      <!--<el-row>-->
+        <!--<el-col :span="22">-->
+          <!--<div>组长：{{gItem.groupLeaderName}}（学号：{{gItem.groupLeaderNo}}）</div>-->
+          <!--<div>-->
+            <!--<span>组员列表：</span>-->
+            <!--<span v-for="mItem in gItem.groupMemberList">-->
+            <!--{{mItem.name}}（学号：{{mItem.serialNo}}）-->
+          <!--</span>-->
+          <!--</div>-->
+          <!--<span>分组方式：{{gItem.groupedType}}</span>-->
+        <!--</el-col>-->
+        <!--<el-col :span="2" v-show="gItem.show">-->
+          <!--<el-button type="primary" size="small" round-->
+                     <!--style="margin-top: 10px;"-->
+                     <!--@click.stop="dismissGroup(gItem)">-->
+            <!--解散分组-->
+          <!--</el-button>-->
+          <!--<el-button type="primary" size="small" round-->
+                     <!--style="margin-top: 10px; margin-left: 0"-->
+                     <!--@click.stop="handleChangeLeader(gItem)">变更组长</el-button>-->
+        <!--</el-col>-->
+      <!--</el-row>-->
+    <!--</div>-->
+
+    <div v-if="hasGroup" class="grouped-item" v-for="(groupInfo, index) in groups"
          @mousemove="showDismissBtn($event, index)" @mouseleave="hideDIsmissBtn($event, index)">
       <el-row>
         <el-col :span="22">
-          <div>组长：{{gItem.groupLeaderName}}（学号：{{gItem.groupLeaderNo}}）</div>
-          <div>
-            <span>组员列表：</span>
-            <span v-for="mItem in gItem.groupMemberList">
-            {{mItem.name}}（学号：{{mItem.serialNo}}）
-          </span>
+          <div class="group-leader">
+        <span>
+          <span style="font-weight: bold; font-size: 24px; color: black;">{{groupInfo.groupLeaderName}}</span>
+          <div
+            style="border-radius: 12px; background-color: #E8EBF0; font-size: 12px; display: inline-block; height: 24px; line-height: 24px; margin-left: 10px; padding: 0 5px">
+            <span>
+              <span>组长</span>
+              <span
+                style="color: #41A599; display: inline-block; margin-left: 5px;">学号：{{groupInfo.groupLeaderNo}}</span>
+            </span>
           </div>
-          <span>分组方式：{{gItem.groupedType}}</span>
+        </span>
+          </div>
+          <div class="group-members">
+            <span>组员列表：</span>
+            <span v-for="(member,index) in groupInfo.groupMemberList">
+            <span>
+              <span>{{member.name}}</span>
+              <span style="color: #41A599;">（学号：{{member.serialNo}}）</span>
+            </span>
+            <span v-if="index < groupInfo.groupMemberList.length - 1">,</span>
+        </span>
+          </div>
+          <div class="divide-type">
+          <span style="display: inline-flex; justify-content: center; width: 110px; text-align: center; background-color: rgb(224, 254, 252);
+            align-items: center; line-height: 30px; border: 1px solid rgb(232, 235, 240);">
+            <img src="../../../static/img/group/group-type.png" style="margin-right: 4px"/>分组方式</span>
+            <span style=" display: inline-flex; align-items: center; justify-content: center;
+            background-color: rgb(247, 247, 247); border: 1px solid rgb(232, 235, 240); margin-left: -4px;
+            width: 80px; text-align: center; line-height: 30px;">{{groupInfo.groupedType}}</span>
+          </div>
         </el-col>
-        <el-col :span="2" v-show="gItem.show">
-          <el-button type="primary" size="small" round
+        <el-col :span="2" v-show="groupInfo.show">
+          <el-button size="small" round plain
                      style="margin-top: 10px;"
-                     @click.stop="dismissGroup(gItem)">
+                     @click.stop="dismissGroup(groupInfo)">
             解散分组
           </el-button>
           <el-button type="primary" size="small" round
                      style="margin-top: 10px; margin-left: 0"
-                     @click.stop="handleChangeLeader(gItem)">变更组长</el-button>
+                     @click.stop="handleChangeLeader(groupInfo)">变更组长
+          </el-button>
         </el-col>
       </el-row>
     </div>
+
+
     <div v-if="!hasGroup" class="grouped-item">暂无分组信息</div>
     <el-dialog :visible.sync="changeLeaderDialog" title="更改组长" width="300px" @close="handleDialogClose">
         <el-select v-model="changeLeaderObj.studentNo" placeholder="请选择组长" @change="handleSelectClk" style="width: 100%;">
@@ -164,12 +216,20 @@
   .grouped-item{
     padding: 10px;
     line-height: 30px;
-    width: 90%;
+    width: calc(100% - 55px);
     margin: 30px auto;
     display: grid;
-    background-color: #FFD04B;
+    border: 5px solid #E8EBF0;
   }
   .grouped-item:hover{
-    box-shadow: 0px 0px 10px 4px #3a8ee6;
+    border: 5px solid #9AEDE5;
+  }
+
+  .group-leader > span > span, .group-members > span, .group-members > span > span {
+    font-size: 12px;
+  }
+
+  .divide-type{
+    display: flex;
   }
 </style>
