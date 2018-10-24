@@ -72,7 +72,8 @@ public class StatMgrServiceImpl implements StatMgrService {
                     if (taskInfo.getScore() == null) {
                         continue;
                     }
-                    totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+//                    totalScore += taskInfo.getScore() * taskInfo.getTaskWeight() / 100;
+                    totalScore += taskInfo.getScore();
                 }
             }
             if (minScore == null || minScore > totalScore) {
