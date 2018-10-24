@@ -49,7 +49,7 @@ export const asyncRouterMap = [
       name: 'basicInfo',
       meta: {
         title: '基本信息',
-        icon: 'el-icon-info',
+        icon: 'custom-icon-tickets',
         roles: ['teacher', 'student']
       }
     }, {
@@ -58,7 +58,7 @@ export const asyncRouterMap = [
       name: 'groupInfo',
       meta: {
         title: '我的分组',
-        icon: 'el-icon-menu',
+        icon: 'custom-icon-group',
         roles: ['student']
       }
     }, {
@@ -67,7 +67,7 @@ export const asyncRouterMap = [
       name: 'myTask',
       meta: {
         title: '我的任务',
-        icon: 'el-icon-document',
+        icon: 'custom-icon-task',
         roles: ['student']
       }
     }, {
@@ -76,7 +76,7 @@ export const asyncRouterMap = [
       name: 'myGrade',
       meta: {
         title: '我的成绩',
-        icon: 'el-icon-tickets',
+        icon: 'custom-icon-paper',
         roles: ['student']
       }
     }, {
@@ -85,7 +85,7 @@ export const asyncRouterMap = [
       name: 'backlog',
       meta: {
         title: '我的待办',
-        icon: 'el-icon-bell',
+        icon: 'custom-icon-schedule',
         roles: ['student']
       }
     }, {        // 教师
@@ -95,7 +95,7 @@ export const asyncRouterMap = [
       meta: {
         title: '分组情况',
         isGroup: true,
-        icon: 'el-icon-menu',
+        icon: 'custom-icon-group',
         roles: ['teacher']
       },
       children: [
@@ -105,7 +105,7 @@ export const asyncRouterMap = [
           name: 'grouped',
           meta: {
             title: '已分组',
-            icon: 'el-icon-success',
+            icon: 'custom-icon-check',
             roles: ['teacher']
           }
         },
@@ -115,7 +115,7 @@ export const asyncRouterMap = [
           name: 'nogroup',
           meta: {
             title: '未分组',
-            icon: 'el-icon-error',
+            icon: 'custom-icon-uncheck',
             roles: ['teacher']
           }
         }
@@ -127,7 +127,7 @@ export const asyncRouterMap = [
       meta: {
         title: '课程任务',
         isGroup: true,
-        icon: 'el-icon-document',
+        icon: 'custom-icon-books',
         roles: ['teacher']
       },
       children: [{
@@ -136,7 +136,7 @@ export const asyncRouterMap = [
         name: 'list',
         meta: {
           title: '任务列表',
-          icon: 'el-icon-tickets',
+          icon: 'custom-icon-task',
           roles: ['teacher']
         }
       }, {
@@ -145,7 +145,7 @@ export const asyncRouterMap = [
         name: 'new',
         meta: {
           title: '新建任务',
-          icon: 'el-icon-news',
+          icon: 'custom-icon-new',
           roles: ['teacher']
         }
       }]
@@ -155,7 +155,7 @@ export const asyncRouterMap = [
       name: 'allGrade',
       meta: {
         title: '所有成绩',
-        icon: 'el-icon-tickets',
+        icon: 'custom-icon-paper',
         roles: ['teacher']
       }
     }, {
@@ -164,7 +164,7 @@ export const asyncRouterMap = [
       name: 'statAnalysis',
       meta: {
         title: '统计分析',
-        icon: 'el-icon-time',
+        icon: 'custom-icon-stat',
         roles: ['teacher']
       }
     }, {  // 管理员模块

@@ -80,7 +80,7 @@ export default {
     position: relative;
     .sidebar-container {
       transition: width 0.28s;
-      width: 180px !important;
+      width: 240px !important;
       height: calc(100% - 70px);
       position: fixed;
       font-size: 0px;
@@ -93,7 +93,7 @@ export default {
     // 主体区域
     .container {
       transition: margin-left 0.28s;
-      margin-left: 180px;
+      margin-left: 240px;
       position: relative;
       overflow: hidden;
       .is-horizontal {

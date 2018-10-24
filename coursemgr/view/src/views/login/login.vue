@@ -84,6 +84,9 @@ export default {
       selectRoleValue: 'student'
     }
   },
+  created() {
+    this.loginForm.role = this.selectRoleValue;
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {

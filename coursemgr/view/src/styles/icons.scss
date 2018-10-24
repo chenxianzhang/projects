@@ -1,0 +1,84 @@
+.custom-icon {
+    font-style: normal;
+    display: inline-block;
+    background-size: 100% 100%;
+}
+.custom-icon-quit {
+    width: 17px;
+    height: 20px;
+    background: url('../../static/img/icon-quit.png') no-repeat;
+}
+.custom-icon-home {
+    width: 17px;
+    height: 20px;
+    background: url('../../static/img/icon-quit.png') no-repeat;
+}
+.custom-icon-book {
+    width: 17px;
+    height: 20px;
+    background: url('../../static/img/icon-quit.png') no-repeat;
+}
+
+.custom-menu-icon {
+    width: 15px;
+    height: 15px;
+    font-style: normal;
+    display: inline-block;
+}
+.custom-icon-books {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-books-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-tickets {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-tickets-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-paper {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-paper-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-group {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-group-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-check {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-check-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-uncheck {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-uncheck-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-schedule {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-schedule.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-stat {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-stat-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-task {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-task-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-new {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-new-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-protrait {
+    @extend .custom-icon;
+    width: 96px;
+    height: 96px;
+    background: url('../../static/img/icons/custom-icon-protrait.png') no-repeat;
+    background-size: 100% 100%;
+}

@@ -1,11 +1,10 @@
 <template>
     <el-menu 
+        class="custom-menu"
         :router="router" 
         :collapse="collapse" 
         :default-active="active"
-        background-color="#545c64"
         text-color="#fff" 
-        active-text-color="#ffd04b"
         @select="handleSelect">
         <template v-for="menu in menus">
             <el-menu-item v-if="!menu.meta.isGroup" :key="menu.name" :index="resolvePath(menu.path)">
@@ -70,5 +69,32 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.custom-menu {
+  background-color: transparent;
+  .el-menu {
+    background-color: transparent;
+  }
+  .el-menu-item, .el-submenu__title {
+    border-bottom: 1px solid rgb(19, 27, 34) !important;
+    background-color: transparent;
+    i {
+      margin-right: 5px;
+    }
+    &:hover {
+      background: url('../../../../static/img/menu-item-hover.png');
+    }
+  }
+  .is-active {
+    color: rgb(0, 149, 137);
+    border-left: 3px solid rgb(0, 150, 135);
+  }
+  .el-submenu {
+    border-left: 0;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
+
 </style>
