@@ -10,7 +10,9 @@ export const TASK_OPERATOR_TYPE = {
   STUDENT_VIEW_DETAIL:3,
   STUDENT_ANSWER:4,
 
-  MARK_POINT:5
+  MARK_POINT:5,
+
+  PRE_VIEW:6,//预览
 };
 
 export const SUBJECT_TYPE = {
