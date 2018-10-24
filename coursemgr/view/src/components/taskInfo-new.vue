@@ -55,12 +55,14 @@
         <div v-if="item.questionType === SUBJECT_TYPE.JUDGE" style="width: 90%; margin: 0 auto">
           <div style="margin: 5px">选项设置：</div>
           <div style="margin-bottom: 5px;">
+            <!--<span>A. </span>-->
             <el-input value="是" disabled style="width: calc(100% - 100px); margin-right: 10px;"></el-input>
             <el-tooltip content="设置为答案" placement="top">
               <el-radio v-model="item.answer" label="是">{{emptyContent}}</el-radio>
             </el-tooltip>
           </div>
           <div style="margin-bottom: 5px;">
+            <!--<span>B. </span>-->
             <el-input value="否" disabled style="width: calc(100% - 100px); margin-right: 10px;">否</el-input>
             <el-tooltip content="设置为答案" placement="top">
               <el-radio v-model="item.answer" label="否">{{emptyContent}}</el-radio>
@@ -71,8 +73,10 @@
         <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE" style="width: 90%; margin: 0 auto">
           <div style="margin: 5px">选项设置：</div>
           <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px;">
-            <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" placeholder="请设置选项" style="width: calc(100% - 100px)"></el-input>
-            <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit" v-html="item.selections[cIndex].optionDes" style="width: calc(100% - 100px)"></el-input>
+            <span v-show="false">{{setOptionTag(cItem, cIndex)}}</span>
+            <span>{{String.fromCharCode((65+cIndex))}}. </span>
+            <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" placeholder="请设置选项" style="width: calc(100% - 120px)"></el-input>
+            <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit" v-html="item.selections[cIndex].optionDes" style="width: calc(100% - 120px)"></el-input>
 
             <el-tooltip content="添加选项" placement="top">
               <i class="el-icon-circle-plus-outline" @click="handleAddSelection(cIndex, item.selections)" />
@@ -84,7 +88,8 @@
               <i class="el-icon-picture-outline" @click="handleImageEditSelection(cIndex, item.selections)" />
             </el-tooltip>
             <el-tooltip content="设置为答案" placement="top">
-              <el-radio v-model="item.answer" :label="item.selections[cIndex].optionDes">{{emptyContent}}</el-radio>
+              <!--<el-radio v-model="item.answer" :label="item.selections[cIndex].optionDes">{{emptyContent}}</el-radio>-->
+              <el-radio v-model="item.answer" :label="String.fromCharCode((65+cIndex))">{{emptyContent}}</el-radio>
             </el-tooltip>
             <Tinymce :height=200 v-if="item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" style="margin: 5px" />
             <el-button v-if="item.selections[cIndex].edit" type="primary" @click="editConfirm(cIndex, item.selections[cIndex])">确定</el-button>
@@ -351,6 +356,9 @@ export default {
         }
       }
       return true
+    },
+    setOptionTag(cItem, cIndex){
+      cItem.optionTag = String.fromCharCode(65+cIndex);
     }
   }
 }

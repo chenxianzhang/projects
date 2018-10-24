@@ -23,9 +23,10 @@
                           style="display: grid"
                           :disabled="true">
             <el-radio v-for="(cItem, cIndex) in item.optionList"
-                      :label="cItem.optionDes"
+                      :label="cItem.optionTag"
                       :key="cIndex"
                       style="margin: 5px;">
+              <span>{{cItem.optionTag}}. </span>
               <span v-html="cItem.optionDes"></span>
             </el-radio>
           </el-radio-group>
