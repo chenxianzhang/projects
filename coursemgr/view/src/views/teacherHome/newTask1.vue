@@ -9,18 +9,28 @@
         <el-button type="primary" class="save-btn" @click="handleViewTask">预 览</el-button>
       </el-col>
     </el-row>
+
+    <el-dialog :visible.sync="showTaskInfoDialog" width="1240px" title="任务信息" @close="handleCloseDlg">
+      <task-detail-comp v-if="showTaskInfoDialog"
+                        ref="taskInfoComp"
+                        :operateType="operate" :preViewTask="task"></task-detail-comp>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {SUBJECT_TYPE} from "../../utils/statusUtil";
+  import {SUBJECT_TYPE, TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
   import {saveTask} from '@/api/task'
   import TaskInfoNew from '../../components/taskInfo-new'
+  import taskDetailComp from '@/components/taskDetailComp'
+
     export default {
       name: "newTask1",
-      components:{TaskInfoNew},
+      components:{TaskInfoNew, taskDetailComp},
       data(){
         return {
+          operate:TASK_OPERATOR_TYPE.PRE_VIEW,
+          showTaskInfoDialog:false,
           SUBJECT_TYPE:SUBJECT_TYPE,
           task:{}
         }
@@ -94,8 +104,18 @@
          * handleViewTask 新建预览任务
          * */
         handleViewTask(){
-
+          if(!this.$refs.taskInfo.taskVerify()){
+            return;
+          }
+          this.task = this.$refs.taskInfo.task;
+          this.showTaskInfoDialog = true;
         },
+        /**
+         * handleCloseDlg 关闭弹窗
+         * */
+        handleCloseDlg(){
+          this.showTaskInfoDialog = false;
+        }
       }
     }
 </script>

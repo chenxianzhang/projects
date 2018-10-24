@@ -5,7 +5,7 @@
         任务名称：<span>{{task.name}}</span>
       </div>
       <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分。
-        <span v-if="task.markType !== '自动评分'" style="margin-left: 30px; display: inline-block;">评分方式：
+        <span v-if="task.markType !== '自动评分' && task.markType !== ''" style="margin-left: 30px; display: inline-block;">评分方式：
           <span style="color: #ee5134;">{{task.markType}}</span>
         </span>
       </div>
@@ -81,7 +81,7 @@
 
     export default {
       name: "taskDetailComp",
-      props:['operateType', 'taskId', 'markUid'],
+      props:['operateType', 'taskId', 'markUid', 'preViewTask'],
       components: {
         Tinymce
       },
@@ -99,6 +99,11 @@
         }
       },
       created(){
+        //教师预览
+        if(TASK_OPERATOR_TYPE.PRE_VIEW === this.operateType){
+          this.task = this.preViewTask;
+          return;
+        }
         //获取任务详情
         if(!this.taskId || this.taskId === ''){
           return;
