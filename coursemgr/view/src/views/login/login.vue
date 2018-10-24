@@ -84,9 +84,6 @@ export default {
       selectRoleValue: 'student'
     }
   },
-  created() {
-    this.loginForm.role = this.selectRoleValue;
-  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -165,6 +162,8 @@ export default {
       this.loginForm.role = this.$route.params.role
       this.loginForm.username = this.$route.params.serialNo
       this.loginForm.password = this.$route.params.pwd
+    } else {
+      this.loginForm.role = this.selectRoleValue;
     }
   },
   destroyed() {}
