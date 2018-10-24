@@ -211,10 +211,18 @@ export default {
       background-size: 100% 100%;
     }
     .role-icon-student {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 20px;
       display: inline-block;
       background: url('../../../static/img/login/role-icon-student.png')
+        no-repeat;
+      background-size: 100% 100%;
+    }
+    .role-icon-admin {
+      width: 22px;
+      height: 20px;
+      display: inline-block;
+      background: url('../../../static/img/login/role-icon-admin.png')
         no-repeat;
       background-size: 100% 100%;
     }

@@ -1,17 +1,18 @@
 .custom-icon {
     font-style: normal;
     display: inline-block;
-    background-size: 100% 100%;
 }
 .custom-icon-quit {
     width: 17px;
     height: 20px;
     background: url('../../static/img/icon-quit.png') no-repeat;
+    background-size: 100% 100%;
 }
 .custom-icon-home {
     width: 17px;
     height: 20px;
-    background: url('../../static/img/icon-quit.png') no-repeat;
+    background: url('../../static/img/custom-icon-home.png') no-repeat;
+    background-size: 100% 100%;
 }
 .custom-icon-book {
     width: 17px;
