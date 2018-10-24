@@ -4,7 +4,11 @@
       <div class="task-name-label">
         任务名称：<span>{{task.name}}</span>
       </div>
-      <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分。</div>
+      <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分。
+        <span v-if="task.markType !== '自动评分'" style="margin-left: 30px; display: inline-block;">评分方式：
+          <span style="color: #ee5134;">{{task.markType}}</span>
+        </span>
+      </div>
       <div class="subject-container">
         <div class="subject-item" v-for="(item, index) in task.subjects"
              style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
@@ -56,14 +60,6 @@
               评分：<input style="width: 40px; height: 30px;" type="number" min="0" :max="item.qScore" v-model="item.score" />分
             </div>
 
-
-            <el-row :gutter="10">
-              <el-col :span="2" style="height: 100%;"><div style="height: 100%; display: flex;align-items: center;justify-content: center"><span>评分模式：</span></div></el-col>
-              <el-col :span="22">
-                <!-- <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" -->
-                         <span style="margin-top: 5px; background: #ee9900; color: white">{{task.markType}}</span>
-              </el-col>
-            </el-row>
           </div>
         </div>
         <!--编辑和完成编辑按钮-->
@@ -174,7 +170,7 @@
           this.task.inspireDate = taskDetailInfo.task.deadline;
           switch (taskDetailInfo.task.markType) {
             case "SELF_EVA":
-              this.task.markType = '自评';
+              this.task.markType = '自主评分';
               break;
             case "GROUP_INNER_EVA":
               this.task.markType = '组内互评';
