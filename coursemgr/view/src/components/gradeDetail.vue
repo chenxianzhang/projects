@@ -46,11 +46,7 @@
           <el-row :gutter="10">
             <el-col :span="20">
               <!--主观题 答题-->
-              <el-input type="textarea"
-                        v-model="item.taskQuestions.answers"
-                        placeholder="请填写答案"
-                        disabled>
-              </el-input>
+              <el-input v-html="item.taskQuestions.answers"></el-input>
             </el-col>
             <el-col :span="4">
               <div>得分：{{item.taskQuestions.score}} <span style="color: orangered;" v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>
