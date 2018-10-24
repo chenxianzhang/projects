@@ -85,14 +85,14 @@ div:focus{
 
 .is-plain{
   padding: 8px 15px;
-  //background: rgb(0, 146, 133) !important;
   color: rgb(0, 146, 133) !important;
   border-color: rgb(0, 146, 133) !important;
   &:visited {
     border-color: rgb(84, 92, 100);
   }
   &:hover {
-    border-color: rgba(0, 146, 133, 0.8) !important;
+    background-color: rgba(0, 146, 133, 0.8) !important;
+    color: white !important;
   }
 }
 
@@ -109,9 +109,9 @@ div:focus{
   }
   .el-table__header {
     th {
-      background-color:#009285;
-      color:white;
-      font-weight:bold ;
+      background-color:#009285 !important;
+      color:white !important;
+      font-weight:bold !important;
     }
   }
 }

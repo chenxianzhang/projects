@@ -13,10 +13,10 @@
       </el-table-column>
     </el-table>
     <div class="btn-group">
-      <el-button type="primary" @click="makeGroup('随机分组')">随机分组</el-button>
-      <el-button type="primary" @click="makeGroup('自由分组')">学生自由分组</el-button>
-      <el-button type="primary" @click="makeGroup('指定分组')">指定分组</el-button>
-      <el-button type="primary" @click="makeGroup('添加到分组')">添加到已有分组</el-button>
+      <el-button round plain @click="makeGroup('随机分组')">随机分组</el-button>
+      <el-button round plain @click="makeGroup('自由分组')">学生自由分组</el-button>
+      <el-button round plain @click="makeGroup('指定分组')">指定分组</el-button>
+      <el-button round plain @click="makeGroup('添加到分组')">添加到已有分组</el-button>
     </div>
 
     <el-dialog
