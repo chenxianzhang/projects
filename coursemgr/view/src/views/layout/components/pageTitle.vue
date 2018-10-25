@@ -24,7 +24,7 @@
           <i class="custom-icon custom-icon-quit"></i>
           <span>退出登录</span>
         </div>
-        <div class="item" @click="handleCommand('backHome')">
+        <div class="item" @click="handleCommand('backHome')" v-if="role != 'admin'">
           <i class="custom-icon custom-icon-home"></i>
           <span>返回首页</span>
         </div>

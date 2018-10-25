@@ -337,6 +337,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         // 再次学生任务
         studentTasksMapper.deleteByTaskId(Integer.valueOf(taskId));
 
+        // 删除待办
+        gradeRelateMapper.deleteByTaskId(Integer.valueOf(taskId));
+
         // 最后任务
         return courseTasksMapper.deleteTask(Integer.valueOf(taskId));
     }

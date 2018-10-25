@@ -154,7 +154,10 @@ public class UserMgrServiceImpl implements UserMgrService {
             user.setRoles(CommonEnum.Role.TEACHER.getValue());
             user.setCollege(row.get(3));
             user.setName(row.get(2));
-
+            if (user.getSerialNo().trim().isEmpty()) {
+                rowIndex++;
+                continue;
+            }
             User tmpUser = userMapper.selectBySerialNo(user.getSerialNo());
             // 如果用户不存在数据表中，则插入
             if (tmpUser == null) {
@@ -321,9 +324,11 @@ public class UserMgrServiceImpl implements UserMgrService {
         List<GradeRelate> gradeRelateList = gradeRelateMapper.selectByGradeObjNo(params);
         if (gradeRelateList != null) {
             for (GradeRelate relate : gradeRelateList) {
-                List<String> gradeObjNos = Arrays.asList(relate.getGradeObjNo().split(
-                        Constant.Common.SEPARATE_COMMA));
+                List<String> gradeObjNos = new ArrayList<>(Arrays.asList(relate.getGradeObjNo().split(
+                        Constant.Common.SEPARATE_COMMA)));
                 gradeObjNos.remove(studentNo);
+//                int index = gradeObjNos.indexOf(studentNo);
+//                gradeObjNos.remove(index);
                 relate.setGradeObjName("");
                 relate.setGradeObjNo(CommonUtils.join(gradeObjNos,
                         Constant.Common.SEPARATE_COMMA));

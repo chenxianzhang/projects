@@ -91,6 +91,7 @@ public final class CommonUtils {
                 result = obj.toString();
                 continue;
             }
+
             result = String.format(",%s", obj.toString());
         }
         return result;

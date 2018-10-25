@@ -32,3 +32,5 @@ public interface GradeRelateMapper {
 
     int deleteByCourseStudent(Map params);
 }
+
+

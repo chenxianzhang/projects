@@ -146,11 +146,12 @@ public class UserMgrController extends BaseController {
 //        if (CommonUtils.isEmpty(courseId)) {
 //            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
 //        }
-
-        while (iterator.hasNext()) {
-            String file = iterator.next().toString();
-            userMgrService.importStudents(multipartRequest.getFile(file),
-                    courseId);
+        synchronized (Constant.Common.lock) {
+            while (iterator.hasNext()) {
+                String file = iterator.next().toString();
+                userMgrService.importStudents(multipartRequest.getFile(file),
+                        courseId);
+            }
         }
         return true;
     }
@@ -166,11 +167,13 @@ public class UserMgrController extends BaseController {
 //        if (CommonUtils.isEmpty(courseId)) {
 //            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
 //        }
-
-        while (iterator.hasNext()) {
-            String file = iterator.next().toString();
-            userMgrService.importTeacher(multipartRequest.getFile(file));
+        synchronized (Constant.Common.lock) {
+            while (iterator.hasNext()) {
+                String file = iterator.next().toString();
+                userMgrService.importTeacher(multipartRequest.getFile(file));
+            }
         }
+
         return true;
     }
 

@@ -6,10 +6,15 @@ package edu.coursemgr.common;
  */
 public interface Constant {
 
+
+
     /**
      * 公共常量
      */
     final class Common {
+
+        public static final Object lock = new Object();
+
         public static final String SEPARATE_COMMA = ",";
 
         public static final String UNDEFINED = "undefined";
