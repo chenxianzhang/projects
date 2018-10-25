@@ -102,6 +102,14 @@ public interface TaskMgrService {
     Map getStuTaskDetail(String taskId, String studentNo);
 
     /**
+     * 检测学生任务是否已完成
+     * @param studentNo
+     * @param taskId
+     * @return
+     */
+    boolean checkStuTaskFinished(String studentNo, String taskId);
+
+    /**
      * 导出过程打包文件
      * @param response
      * @param courseId

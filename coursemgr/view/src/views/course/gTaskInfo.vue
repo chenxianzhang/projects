@@ -19,7 +19,7 @@
 
 <script>
   import {TASK_OPERATOR_TYPE} from "../../utils/statusUtil";
-  import {getMySchedule} from '@/api/gTasks'
+  import {getMySchedule, checkStuTaskFinished} from '@/api/gTasks'
 
   import TaskDetailComp from '../../components/taskDetailComp'
 
@@ -53,11 +53,25 @@
             });
         },
         approvalTask(tId, markUid){
-          //显示task信息，填写得分
-          this.selectTaskId = tId;
-          this.operateType = TASK_OPERATOR_TYPE.MARK_POINT;
-          this.markUid = markUid;
-          this.showTaskInfoDialog = true;
+
+          // 判断当前学生该任务是否已经完成
+          checkStuTaskFinished({ studentNo: this.$store.state.user.token, taskId:tId }).then(res => {
+            if (res.status === 0) {
+              this.$msg.warn(res.msg)
+              return
+            }
+            if (res.data === 'true') {
+              //显示task信息，填写得分
+              this.selectTaskId = tId;
+              this.operateType = TASK_OPERATOR_TYPE.MARK_POINT;
+              this.markUid = markUid;
+              this.showTaskInfoDialog = true;
+            } else {
+              this.$msg.warn('当前任务未完成，不能对该学生的任务进行审阅操作')
+            }
+          }).catch (err => {
+            this.$msg.error(err)
+          })
         },
         closeDlg(){
           this.showTaskInfoDialog = false;

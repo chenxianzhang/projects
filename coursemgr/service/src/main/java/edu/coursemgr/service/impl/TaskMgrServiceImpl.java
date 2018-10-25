@@ -394,6 +394,19 @@ public class TaskMgrServiceImpl implements TaskMgrService {
     }
 
     @Override
+    public boolean checkStuTaskFinished(String studentNo, String taskId) {
+        Map params = new HashMap();
+        params.put("studentNo", studentNo);
+        params.put("taskId", taskId);
+        StudentTasks task = studentTasksMapper.selectByStudent(params);
+        if (task == null) {
+            return false;
+        }
+
+        return task.getStatus().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue());
+    }
+
+    @Override
     public void exportCourseProcess(HttpServletResponse response, HttpServletRequest request, String courseId) throws Exception {
         List<CourseTasks> tasksList = getCourseTasksByCourseId(courseId);
         if (tasksList == null) {

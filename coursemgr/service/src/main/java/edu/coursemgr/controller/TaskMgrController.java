@@ -168,4 +168,14 @@ public class TaskMgrController extends BaseController {
         return taskMgrService.deleteQuestions(ids);
     }
 
+    @RequestMapping(value="/checkStuTaskFinished", method=RequestMethod.GET)
+    @ResponseBody
+    public Object checkStuTaskFinished(@RequestParam String studentNo, @RequestParam String taskId)
+            throws Exception {
+        if (CommonUtils.isEmpty(studentNo) || CommonUtils.isEmpty(taskId)) {
+            throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
+        }
+        return taskMgrService.checkStuTaskFinished(studentNo, taskId);
+    }
+
 }

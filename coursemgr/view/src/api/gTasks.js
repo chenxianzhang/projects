@@ -33,3 +33,11 @@ export function handOverSchedule(params) {
     data: params
   });
 }
+
+export function checkStuTaskFinished(params) {
+  return request({
+    url: '/taskMgr/checkStuTaskFinished',
+    method: 'get',
+    params: params
+  });
+}
