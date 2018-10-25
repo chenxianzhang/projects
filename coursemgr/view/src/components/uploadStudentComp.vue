@@ -3,7 +3,7 @@
   <drag-dialog title="批量导入" width="500px" :dialogVisible="showUploadDialog"
                @close="handleDialogClose" @confirm="handleImportStudents"
                :hiddenOperator="false">
-    <el-upload ref="upload"
+    <el-upload ref="upload" v-if="showUploadDialog"
       class="upload-demo"
       name="file"
       drag
@@ -56,6 +56,12 @@ import dragDialog from '@/components/dragDialog';
       watch: {
         uploadAction (val) {
           this.uploadAction = val;
+        },
+        showUploadDialog(val){
+          if(val === false){
+            this.progress = 0;
+            this.showProgress = false;
+          }
         }
       },
       components:{dragDialog},
