@@ -547,13 +547,14 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (optionList == null || optionList.size() == 0) {
             return resultList;
         }
-
+        String tmpOption = "";
         for (QuestionOptions option : optionList) {
-            if (option.getOptionTag().isEmpty()) {
-
+            tmpOption = option.getOptionDes();
+            if (!option.getOptionTag().isEmpty()) {
+                tmpOption = String.format("%s、%s", option.getOptionTag(), tmpOption);
             }
             Map<String, Object> tmpMap = new HashMap<>();
-            tmpMap.put("itemList", transferImgContent(option.getOptionDes(), rootPath));
+            tmpMap.put("itemList", transferImgContent(tmpOption, rootPath));
             resultList.add(tmpMap);
         }
         return resultList;
