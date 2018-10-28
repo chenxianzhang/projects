@@ -8,6 +8,7 @@
       name="file"
       drag
       accept=".xlsx"
+      multiple="true"
       :auto-upload="false"
       :action="uploadAction"
       :on-remove="handleRemove"

@@ -6,6 +6,7 @@
             :visible="uEditDlgVisible"
             :role="role"
             :title="uEditDlgTitle"
+            :from="'admin_edit'"
             @close="handleClose"
             @confirm="handleConfirm"
             :user='user'></user-edit-dlg>

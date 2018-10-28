@@ -1,5 +1,13 @@
 <template>
   <div class="main-container">
+    <div class="course-student-title">
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <i class="course-icon-info"></i>
+        <span style="display: inline-block; margin-right: 10px">课程信息</span>
+        <span style="color: #009687; font-weight: bold;">COURSE INFORMATION</span>
+      </div>
+    </div>
+
     <div class="course-info">
       <div class="course-title">
         <span class="course-name">课程名称：{{course.name}}</span>
@@ -16,11 +24,15 @@
     <!-- <div style="width: calc(100% - 60px); margin-left: 30px;"> -->
     <div>
       <div class="course-student-title">
-        <span>学生信息（总人数：{{totalCount}}）</span>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <i class="role-icon-student"></i>
+          <span>学生信息（总人数：{{totalCount}}）</span>
+          <span style="color: #009687; font-weight: bold;">STUDENT INFORMATION</span>
+        </div>
         <div v-if="editable" class="add-student-btn">
-          <el-button type="primary" @click="addStudents2Course">添加学生</el-button>
-          <el-button type="primary" @click="uploadStudents2Course">导入学生</el-button>
-          <el-button type="primary" @click="downloadStuTemplate">模板下载</el-button>
+          <el-button round plain @click="addStudents2Course">添加学生</el-button>
+          <el-button round plain @click="uploadStudents2Course">导入学生</el-button>
+          <el-button round plain @click="downloadStuTemplate">模板下载</el-button>
         </div>
       </div>
       <el-table :data="studentsInCourse" border :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" style="width: 100%;">
@@ -33,10 +45,9 @@
         <el-table-column align="center" prop="email" label="邮箱"></el-table-column>
         <el-table-column v-if="editable" align="center" label="操作" width="180">
           <template slot-scope="scope">
-            <!--<el-button @click="handleStudentDetailClick(scope.row)" type="text" size="small">查看</el-button>-->
-            <el-button @click="handleStudentEditClick(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleStudentDeleteClick(scope.row)" type="text" size="small">删除</el-button>
-            <el-button @click="handleStudentTodoClick(scope.row)" type="text" size="small">待办</el-button>
+            <div class="icon icon-course-edit" @click.stop="handleStudentEditClick(scope.row)"></div>
+            <div class="icon icon-course-todo" @click.stop="handleStudentTodoClick(scope.row)"></div>
+            <div class="icon icon-course-delete" @click.stop="handleStudentDeleteClick(scope.row)"></div>
           </template>
         </el-table-column>
       </el-table>
@@ -69,14 +80,17 @@
     <student-add-comp :studentOperInfo="studentOperInfo" :showStudentAddDialog="showStudentAddDialog" @hideStudentAddDialog="handleHideStudentAddDialog">
     </student-add-comp>
 
-    <drag-dialog title="学生待办移交" width="36%" :dialogVisible="showgTaskHandleOutDlg" @close="handlegTaskClose" @confirm="handleOutgTask">
+    <drag-dialog title="学生待办移交" width="36%" v-if="showgTaskHandleOutDlg"
+                 :dialogVisible="showgTaskHandleOutDlg" @close="handlegTaskClose" @confirm="handleOutgTask">
       <div>
         <span style="color: #4481ff;">{{curHandleUser.name}}</span>
         <span> 的待办事项</span>
         <div style="max-height: 300px; overflow: auto;">
           <div v-if="curHandleUsergTasks.length === 0" style="margin: 10px 0; text-align: center; color: #ffb02c;">暂无待办事项</div>
           <el-checkbox-group v-model="gTaskCheckList">
-            <el-checkbox v-for="(gTask, index) in curHandleUsergTasks" :label="gTask.taskName" :key="index"></el-checkbox>
+            <el-checkbox v-for="(gTask, index) in curHandleUsergTasks" :label="'审阅【' + gTask.targetSerialName + '】关于【' +  gTask.taskName + '】任务的主观题'" :key="index">
+              <template slot=""></template>
+            </el-checkbox>
           </el-checkbox-group>
         </div>
         <el-row :scutter="10" v-if="curHandleUsergTasks.length !== 0">
@@ -172,7 +186,7 @@ export default {
         let courseElHeight = document
           .getElementsByClassName('course-info')[0]
           .getBoundingClientRect().height
-        let subHeight = 285
+        let subHeight = 335
         document.getElementsByClassName(
           'el-table__body-wrapper'
         )[0].style.height =
@@ -469,11 +483,62 @@ export default {
   float: right;
 }
 .course-student-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 44px;
   line-height: 44px;
   margin: 10px 0px;
-  border-bottom: 1px solid gray;
 }
+
+.role-icon-student {
+  margin-right: 5px;
+  width: 22px;
+  height: 20px;
+  display: inline-block;
+  background: url('../../../static/img/login/role-icon-student.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+.course-icon-info {
+  margin-right: 5px;
+  width: 22px;
+  height: 20px;
+  display: inline-block;
+  background: url('../../../static/img/login/role-icon-student.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+  .icon {
+    width: 22px;
+    height: 22px;
+    left: 2px;
+    color: white;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .icon-course-edit {
+    background: url("../../../static/img/basicInfo/edit-normal.png") no-repeat left;
+  }
+  .icon-course-edit:hover {
+    background: url("../../../static/img/basicInfo/edit-hover.png") no-repeat left;
+  }
+
+  .icon-course-delete{
+    background: url("../../../static/img/basicInfo/del-normal.png") no-repeat left;
+  }
+  .icon-course-delete:hover{
+    background: url("../../../static/img/basicInfo/del-hover.png") no-repeat left;
+  }
+
+  .icon-course-todo{
+    background: url("../../../static/img/basicInfo/gtask-normal.png") no-repeat left;
+  }
+  .icon-course-todo:hover{
+    background: url("../../../static/img/basicInfo/gtask-hover.png") no-repeat left;
+  }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .edit-container {

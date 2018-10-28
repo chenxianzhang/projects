@@ -36,7 +36,9 @@
       <el-card class="user-detail">
         <div slot="header" class="header">
           <span>用户信息</span>
-          <i class="el-icon-edit" @click="handleEdit"></i>
+          <div class="user-info-edit-icon">
+            <i class="el-icon-edit-outline" @click="handleEdit"></i>
+          </div>
         </div>
         <div class="detail-content">
           <div class="info-row">
@@ -62,6 +64,11 @@
             <span class="label">邮箱</span>
             <span class="value" v-if="!editUserInfo">{{ userInfo.email }}</span>
             <el-input v-model="userInfo.email" v-if="editUserInfo" />
+          </div>
+          <div class="info-row" v-if="editUserInfo">
+            <span class="label">密码</span>
+            <span class="value" v-if="!editUserInfo">{{ userInfo.password }}</span>
+            <el-input v-model="userInfo.password" />
           </div>
           <div class="edit-oper" v-if="editUserInfo">
             <el-button @click="cancel">取消</el-button>
@@ -552,6 +559,18 @@ export default {
     }
   }
 }
+
+.user-info-edit-icon{
+  height: 20px;
+  width: 20px ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  .user-info-edit-icon:hover{
+    background-color: rgb(0, 87, 79);
+  }
 </style>
 <style>
 .change-pass .el-form-item__label {
