@@ -59,5 +59,5 @@ public interface GradeMgrService {
      * @param originStuNo
      * @param dstStuNo
      */
-    void handOverSchedule(String courseId, String originStuNo, String dstStuNo);
+    void handOverSchedule(String courseId, String originStuNo, String dstStuNo, List<Schedule> sheduleList);
 }

@@ -1,6 +1,7 @@
 package edu.coursemgr.controller;
 
 import edu.coursemgr.common.Constant;
+import edu.coursemgr.pojo.Schedule;
 import edu.coursemgr.pojo.SubjectGradeModel;
 import edu.coursemgr.service.interfaces.GradeMgrService;
 import edu.coursemgr.utils.CommonUtils;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,7 +88,12 @@ public class GradeMgrController extends BaseController {
             throw new Exception(Constant.ExceptionMessage.PARAM_EMPTY);
         }
 
-        gradeMgrService.handOverSchedule(courseId, originStudentNo, dstStudentNo);
+        List<Schedule> sheduleList = null;
+        if (requestMap.containsKey("scheduleList") && requestMap.get("scheduleList") != null) {
+            sheduleList = (List<Schedule>)requestMap.get("scheduleList");
+        }
+
+        gradeMgrService.handOverSchedule(courseId, originStudentNo, dstStudentNo, sheduleList);
 
         return Constant.Common.SUCCESS;
 

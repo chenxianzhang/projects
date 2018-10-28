@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by chenxianzhang on 2018/9/1 0001 下午 10:37
  */
-public class GradeRelate implements Serializable {
+public class GradeRelate implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -79,4 +79,14 @@ public class GradeRelate implements Serializable {
         this.courseId = courseId;
     }
 
+    @Override
+    public Object clone() {
+        GradeRelate relate = null;
+        try {
+            relate = (GradeRelate)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return relate;
+    }
 }

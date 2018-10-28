@@ -16,6 +16,8 @@ public interface GradeRelateMapper {
 
     int deleteByTaskId(Integer taskId);
 
+    int deleteById(Integer id);
+
     List<GradeRelate> selectSomeByStudent(Map<String ,Object> params);
 
     GradeRelate selectByStudent(Map params);

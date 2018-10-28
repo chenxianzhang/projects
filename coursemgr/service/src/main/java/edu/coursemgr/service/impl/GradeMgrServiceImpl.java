@@ -198,7 +198,14 @@ public class GradeMgrServiceImpl implements GradeMgrService {
     }
 
     @Override
-    public void handOverSchedule(String courseId, String originStuNo, String dstStuNo) {
+    public void handOverSchedule(String courseId, String originStuNo, String dstStuNo, List<Schedule> scheduleList) {
+        boolean handoverAll = false;
+        Map<Integer, String> taskScheduleMap = null;
+        if (scheduleList == null || scheduleList.size() == 0) {
+            handoverAll = true;
+        } else {
+            taskScheduleMap = getTaskSchedule(scheduleList);
+        }
 
         Map params = new HashMap<>();
         params.put("courseId", courseId);
@@ -207,15 +214,43 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         params.put("studentNo", dstStuNo);
         List<GradeRelate> dstStuRelateList = gradeRelateMapper.selectByCourseStudent(params);
         List<GradeRelate> updateList = new ArrayList<>();
+        List<GradeRelate> removeList = new ArrayList<>();
         for (GradeRelate originRelate : originStuRelateList) {
+            if (!handoverAll) {
+                if (!taskScheduleMap.containsKey(originRelate.getTaskId())) {
+                    continue;
+                }
+                String temp = taskScheduleMap.get(originRelate.getTaskId());
+                String[] tempArr =  originRelate.getGradeObjNo().split(Constant.Common.SEPARATE_COMMA);
+                String str = "";
+                for (int i = 0; i < tempArr.length; i++) {
+                    if (temp.contains(tempArr[i])) {
+                        continue;
+                    }
+                    str += tempArr[i] + Constant.Common.SEPARATE_COMMA;
+                }
+                if (!str.isEmpty()) {
+                    str = str.substring(0, str.length() - 1);
+                    // 更新数据库
+                    GradeRelate relate = (GradeRelate)originRelate.clone();
+                    relate.setGradeObjNo(str);
+                    gradeRelateMapper.updateByIdSelective(relate);
+                } else {
+                    gradeRelateMapper.deleteById(originRelate.getId());
+                }
+            }
             boolean contain = false;
             for (GradeRelate relate : dstStuRelateList) {
                 if (relate.getTaskId() == originRelate.getTaskId()) {
                     contain = true;
+                    String gradeObjNo = originRelate.getGradeObjNo();
+                    if (!handoverAll) {
+                        gradeObjNo = taskScheduleMap.get(originRelate.getTaskId());
+                    }
                     if (CommonUtils.isEmpty(relate.getGradeObjNo())) {
-                        relate.setGradeObjNo(originRelate.getGradeObjNo());
+                        relate.setGradeObjNo(gradeObjNo);
                     } else {
-                        String[] stuArr = originRelate.getGradeObjNo().split(Constant.Common.SEPARATE_COMMA);
+                        String[] stuArr = gradeObjNo.split(Constant.Common.SEPARATE_COMMA);
                         for (int i = 0; i < stuArr.length; i++) {
                             if (!relate.getGradeObjNo().contains(stuArr[i])) {
                                 relate.setGradeObjNo(String.format("%s,%s",
@@ -242,8 +277,24 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         updateBatch(updateList);
 
         // 删除移交的待办
-        params.put("studentNo", originStuNo);
-        gradeRelateMapper.deleteByCourseStudent(params);
+        if (handoverAll) {
+            params.put("studentNo", originStuNo);
+            gradeRelateMapper.deleteByCourseStudent(params);
+        }
+    }
+
+    private Map<Integer, String> getTaskSchedule(List<Schedule> scheduleList) {
+        Map<Integer, String> resultMap = new HashMap<>();
+
+        for (Schedule schedule : scheduleList) {
+            if (!resultMap.containsKey(schedule.getTaskId())) {
+                resultMap.put(schedule.getTaskId(), schedule.getTargetSerialNo());
+                continue;
+            }
+            resultMap.put(schedule.getTaskId(), resultMap.get(schedule.getTaskId()) +
+                    ", " + schedule.getTargetSerialNo());
+        }
+        return resultMap;
     }
 
     private List<Schedule> transferSchedule(List<GradeRelate> gradeRelateList,
