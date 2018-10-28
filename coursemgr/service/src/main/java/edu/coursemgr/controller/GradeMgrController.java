@@ -4,11 +4,13 @@ import edu.coursemgr.common.Constant;
 import edu.coursemgr.pojo.Schedule;
 import edu.coursemgr.pojo.SubjectGradeModel;
 import edu.coursemgr.service.interfaces.GradeMgrService;
+import edu.coursemgr.utils.CollectionUtils;
 import edu.coursemgr.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +92,34 @@ public class GradeMgrController extends BaseController {
 
         List<Schedule> sheduleList = null;
         if (requestMap.containsKey("scheduleList") && requestMap.get("scheduleList") != null) {
-            sheduleList = (List<Schedule>)requestMap.get("scheduleList");
+            sheduleList = new ArrayList<>();
+            List<Map<String, Object>> tmpMap = (List<Map<String, Object>>)requestMap.get("scheduleList");
+            for (Map<String, Object> item : tmpMap) {
+                Schedule schedule = new Schedule();
+                String taskId = getParam(item, "taskId");
+                if (!taskId.isEmpty()) {
+                    schedule.setTaskId(Integer.valueOf(taskId));
+                }
+                schedule.setTaskName(getParam(item, "taskName"));
+                schedule.setMarkPersonSerialNo(getParam(item, "markPersonSerialNo"));
+                schedule.setMarkPersonName(getParam(item, "markPersonName"));
+                schedule.setTargetSerialNo(getParam(item, "targetSerialNo"));
+                schedule.setTargetSerialName(getParam(item, "targetSerialName"));
+                sheduleList.add(schedule);
+            }
+//            sheduleList = CollectionUtils.arrayListCast(tmpMap, item -> {
+//                Schedule schedule = new Schedule();
+//                String taskId = getParam(item, "taskId");
+//                if (!taskId.isEmpty()) {
+//                    schedule.setTaskId(Integer.valueOf(taskId));
+//                }
+//                schedule.setTaskName(getParam(item, "taskName"));
+//                schedule.setMarkPersonSerialNo(getParam(item, "markPersonSerialNo"));
+//                schedule.setMarkPersonName(getParam(item, "markPersonName"));
+//                schedule.setTargetSerialNo(getParam(item, "targetSerialNo"));
+//                schedule.setTargetSerialName(getParam(item, "targetSerialName"));
+//                return schedule;
+//            });
         }
 
         gradeMgrService.handOverSchedule(courseId, originStudentNo, dstStudentNo, sheduleList);
