@@ -127,7 +127,8 @@
           this.$message.warning('请确认学号是否正确！');
           return;
         }
-        this.studentOperInfo.student.password = serialNo.substr(serialNo.length - 6, 6);
+        // this.studentOperInfo.student.password = serialNo.substr(serialNo.length - 6, 6);
+        this.studentOperInfo.student.password = serialNo
       },
       handleClose(){
         this.$refs.regForm.resetFields();
