@@ -124,6 +124,9 @@ public class GradeMgrServiceImpl implements GradeMgrService {
 
         // 先更新学员主观题分数
         subjectGradeModel.getSubjectList().forEach(sub -> {
+            if (!sub.getQuestionType().equals(CommonEnum.QuestionType.SUBJECTIVE_ITEM.getValue())) {
+                return;
+            }
             StudentPaper paper = new StudentPaper();
             if (firstScore) {
                 paper.setScore(sub.getScore());
