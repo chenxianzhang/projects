@@ -86,12 +86,11 @@
         <span style="color: #4481ff;">{{curHandleUser.name}}</span>
         <span> 的待办事项</span>
         <div style="max-height: 300px; overflow: auto;">
-          <div v-if="curHandleUsergTasks.length === 0" style="margin: 10px 0; text-align: center; color: #ffb02c;">暂无待办事项</div>
-          <el-checkbox-group v-model="gTaskCheckList">
-            <el-checkbox v-for="(gTask, index) in curHandleUsergTasks" :label="'审阅【' + gTask.targetSerialName + '】关于【' +  gTask.taskName + '】任务的主观题'" :key="index">
-              <template slot=""></template>
-            </el-checkbox>
-          </el-checkbox-group>
+          <el-tree ref="gtaskTree" :data="curHandleUsergTasks" show-checkbox>
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              审阅<span style="color: #009687"> {{data.targetSerialName}} </span>关于“<span style="color: #009687"> {{data.taskName}} </span>”任务主观题
+            </span>
+          </el-tree>
         </div>
         <el-row :scutter="10" v-if="curHandleUsergTasks.length !== 0">
           <el-col :span="6" style="text-align: center">
@@ -128,6 +127,9 @@ export default {
   components: { UploadStudentComp, dragDialog, studentAddComp },
   data() {
     return {
+      defaultProps:{
+
+      },
       showgTaskHandleOutDlg: false, //待办移交弹窗
       curHandleUser: '',
       curHandleUsergTasks: [], //当前用户的待办事项
@@ -370,10 +372,12 @@ export default {
      * 确认移交待办事项
      * */
     handleOutgTask() {
+      let scheduleList = this.$refs.gtaskTree.getCheckedNodes();
       handOverSchedule({
         courseId: this.variables.courseId,
         originStudentNo: this.curHandleUser.serialNo,
-        dstStudentNo: this.handleOver2UserId
+        dstStudentNo: this.handleOver2UserId,
+        scheduleList:scheduleList
       }).then(resp => {
         if (resp.status === 0) {
           this.$message.warning('移交待办事项失败！')
