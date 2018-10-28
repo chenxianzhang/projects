@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <el-row :gutter="20" v-if="!isStudent && hasSubject">
+    <el-row :gutter="20" v-if="!isStudent && hasSubject && task.status === 'FINISHED'">
       <el-col>
         <el-button type="primary" @click="cxdf">重新评阅</el-button>
         <el-button type="primary" @click="cxdfSubmit" :disabled="canSubmit">提 交</el-button>
