@@ -543,8 +543,10 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             } else {
                 temp.put("optionList", getOptionList(questionList.get(i).getOptionList(), rootPath));
             }
-            temp.put("studentAnswer", questionList.get(i).getTaskQuestions().getAnswers());
-            temp.put("standardAnswer", questionList.get(i).getTaskQuestions().getStandardAnswer());
+            temp.put("studentAnswerList", transferImgContent(questionList.get(i).getTaskQuestions().getAnswers(),
+                    rootPath));
+            temp.put("standardAnswerList", transferImgContent(questionList.get(i).getTaskQuestions().getStandardAnswer(),
+                    rootPath));
 
             tempQuestionList.add(temp);
         }
