@@ -1,6 +1,6 @@
 <template>
     <div class="tinymce-container editor-container" :class="{fullscreen:fullscreen}">
-      <textarea class="tinymce-textarea" :id="tinymceId" :placeholder="placeholder"></textarea>
+      <textarea class="tinymce-textarea" :id="tinymceId" placeholder="请填写答案..."></textarea>
       <div class="editor-custom-btn-container">
         <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
       </div>

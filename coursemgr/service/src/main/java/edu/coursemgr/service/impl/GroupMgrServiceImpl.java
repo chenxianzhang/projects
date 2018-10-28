@@ -188,7 +188,7 @@ public class GroupMgrServiceImpl implements GroupMgrService {
         Group group = new Group();
         group.setId(Integer.valueOf(groupId));
         group.setGroupNo(Integer.valueOf(groupNo));
-        return groupMapper.updateGroupNo(group) == 0 ? false : true;
+        return groupMapper.updateGroupNo(group) < 0 ? false : true;
     }
 
     @Override

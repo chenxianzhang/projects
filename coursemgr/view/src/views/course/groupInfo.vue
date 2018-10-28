@@ -86,19 +86,22 @@
       })
 
       //获取个人分组
-      getGroupDetailByStudent({courseId: this.variables.courseId, studentNo: this.$store.state.user.token})
-        .then(resp => {
-          if (resp.status === 0) {
-            this.$message.warning('获取个人分组失败');
-            return;
-          }
-          if (resp.data !== '') {
-            this.hasGroup = true;
-          }
-          this.groupInfo = resp.data;
-        });
+      this.getGroupDetails();
     },
     methods: {
+      getGroupDetails(){
+        getGroupDetailByStudent({courseId: this.variables.courseId, studentNo: this.$store.state.user.token})
+          .then(resp => {
+            if (resp.status === 0) {
+              this.$message.warning('获取个人分组失败');
+              return;
+            }
+            if (resp.data !== '') {
+              this.hasGroup = true;
+            }
+            this.groupInfo = resp.data;
+          });
+      },
       handleMakeGroup() {
         //获取 新建分组-组员
         let newGroupMembers = this.$refs.newGroupDialog.zdGroupMembers;
@@ -119,6 +122,8 @@
             }
             this.$message.success('分组成功！');
             this.showDialog = false;
+            //获取分组信息
+            this.getGroupDetails();
           });
       },
       createGroup() {

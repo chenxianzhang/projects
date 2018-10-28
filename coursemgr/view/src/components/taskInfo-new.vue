@@ -96,9 +96,9 @@
           </div>
         </div>
         <!--主观题  答题设置-->
-        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: 90%; margin: 0 auto">
-          <el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>
-          <!--<Tinymce :height=200 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />-->
+        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
+          <!--<el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>-->
+          <Tinymce :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
         </div>
         <!--编辑和完成编辑按钮-->
         <!--<el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>-->
