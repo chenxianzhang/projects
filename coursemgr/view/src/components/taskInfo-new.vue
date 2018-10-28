@@ -29,7 +29,7 @@
       </el-row>
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道， 总分值 <input v-model="totalScore" disabled/> 分
-    <!-- ， 权重： <input type="number" v-model="task.weight" /> %。-->
+      <!-- ， 权重： <input type="number" v-model="task.weight" /> %。-->
     </div>
     <div class="subject-container">
       <div class="subject-item" v-for="(item, index) in task.subjects" style="margin-bottom: 10px; border-bottom: 1px solid rgba(28, 77, 125, 0.8)">
@@ -140,7 +140,8 @@ export default {
       }
       this.courseGroupStatus = res.data
       if (this.courseGroupStatus === 0) {
-        this.tipinfo = '当前尚有学生未进行分组，请先设置分组或者采用其他评分方式'
+        this.tipinfo =
+          '当前尚有学生未进行分组，请先设置分组或者采用其他评分方式'
       } else if (this.courseGroupStatus === 1) {
         this.tipinfo = '当前课程只存在一个组，不能选择组间互评'
       } else {
@@ -170,14 +171,20 @@ export default {
       this.task.totalScore = subjectiveScore
       return this.task.totalScore
     },
-    haSubjective(){
-      for (let item of this.task.subjects){
-        if(item.questionType === SUBJECT_TYPE.SUBJECTIVE){
-         return true;
+    haSubjective() {
+      for (let item of this.task.subjects) {
+        if (item.questionType === SUBJECT_TYPE.SUBJECTIVE) {
+          return true
         }
       }
-      return false;
-    },
+      return false
+    }
+  },
+  mounted() {
+    this.$on('reset', () => {
+      // debugger
+      this.task = new Task()
+    })
   },
   methods: {
     /**
@@ -201,9 +208,10 @@ export default {
         subject_c.id = item.taskQuestions.id
         subject_c.edit = false
         subject_c.selections = item.optionList
-        subject_c.selections && subject_c.selections.forEach(item => {
-          item.edit = false
-        })
+        subject_c.selections &&
+          subject_c.selections.forEach(item => {
+            item.edit = false
+          })
         subject_c.answer = item.taskQuestions.answers
         subject_c.score = item.taskQuestions.score
         subject_c.stem = item.taskQuestions.stems
@@ -357,8 +365,8 @@ export default {
       }
       return true
     },
-    setOptionTag(cItem, cIndex){
-      cItem.optionTag = String.fromCharCode(65+cIndex);
+    setOptionTag(cItem, cIndex) {
+      cItem.optionTag = String.fromCharCode(65 + cIndex)
     }
   }
 }

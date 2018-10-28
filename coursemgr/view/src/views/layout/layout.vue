@@ -7,7 +7,7 @@
         <tags-view></tags-view>
         <el-scrollbar wrap-class="container-scrollbar" ref="routerScrollbar">
           <transition name="fade-transform" mode="out-in">
-            <keep-alive :include="cachedViews">
+            <keep-alive>
               <router-view :key="key" />
             </keep-alive>
           </transition>
@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews
+      return ['new']
     },
     key() {
       return this.$route.fullPath
