@@ -156,7 +156,7 @@
             tableItem.studentNo = data[item].studentNo;
             tableItem.groupNo = data[item].groupNo;
 
-            data[item].studentTaskInfos.forEach(task => {
+            data[item].studentTaskInfos && data[item].studentTaskInfos.length !== 0 && data[item].studentTaskInfos.forEach(task => {
               tableItem[task.taskId + "_score"] = task.score;
               if (!task.score && task.score !== 0) {
                 tableItem[task.taskId + "_score"] = task.status;
@@ -285,7 +285,7 @@
               debugger
               let option = {
                 tooltip : {
-                  formatter: "{a} <br/>{c} {b}"
+                  formatter: "{a}：{c}"
                 },
                 series : [
                   {
