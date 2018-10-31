@@ -3,7 +3,8 @@
     <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
       <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)"
         :to="tag" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
-        {{tag.title}}
+        <i :class="tag.meta.icon"></i>
+        <span class="content">{{tag.title}}</span>
         <span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
       </router-link>
     </scroll-pane>
@@ -132,6 +133,13 @@ export default {
       font-size: 12px;
       margin-left: 5px;
       margin-top: 4px;
+      i {
+        position: absolute;
+        margin-top: 4px;
+      }
+      .content {
+        margin-left: 20px;
+      }
       &:first-of-type {
         margin-left: 15px;
       }
@@ -139,16 +147,16 @@ export default {
         background-color: rgba(84, 92, 100, 1);
         color: #fff;
         border-color: rgb(84, 92, 100);
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
+        // &::before {
+        //   content: '';
+        //   background: #fff;
+        //   display: inline-block;
+        //   width: 8px;
+        //   height: 8px;
+        //   border-radius: 50%;
+        //   position: relative;
+        //   margin-right: 2px;
+        // }
       }
     }
   }
