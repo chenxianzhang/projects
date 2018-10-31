@@ -114,8 +114,8 @@
           window.onresize = ()=>{
             setTimeout(()=>{
               this.calcTableHeight();
-              this.taskStaticChart && this.taskStaticChart.resize();
-              this.sortChart && this.sortChart.resize();
+              // this.taskStaticChart && this.taskStaticChart.resize();
+              // this.sortChart && this.sortChart.resize();
             }, 100);
           }
         }
@@ -271,7 +271,10 @@
               ]
             };
             this.taskStaticChart = this.$echarts.init(this.$refs.statisticTaskScoreEl);
-            this.taskStaticChart.setOption(option);
+            this.taskStaticChart.setOption(option, true);
+              window.onresize = () => {
+                this.sortChart.resize();
+              }
           });
         },
         statisticSort(){
@@ -291,10 +294,9 @@
                   {
                     name: '名次',
                     type: 'gauge',
-                    z: 3,
-                    min: 1,
-                    max: resp.data.totalStudentCnt,
-                    splitNumber: resp.data.totalStudentCnt - 1,
+                    min: 0,
+                    max: resp.data.totalStudentCnt/5===0 ? resp.data.totalStudentCnt : (resp.data.totalStudentCnt/5 + 1)*5,
+                    splitNumber: resp.data.totalStudentCnt/5 === 0 ? resp.data.totalStudentCnt : (resp.data.totalStudentCnt/5 + 1),
                     radius: '85%',
                     axisLine: {            // 坐标轴线
                       lineStyle: {       // 属性lineStyle控制线条样式
@@ -330,13 +332,6 @@
                       fontStyle: 'italic'
                     },
                     detail : {
-                      // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                      // formatter: function (value) {
-                      //   value = (value + '').split('.');
-                      //   value.length < 2 && (value.push('00'));
-                      //   return ('00' + value[0]).slice(-2)
-                      //     + '.' + (value[1] + '00').slice(0, 2);
-                      // },
                       fontWeight: 'bolder',
                       borderRadius: 3,
                       backgroundColor: '#444',
@@ -492,6 +487,9 @@
               };
               this.sortChart = this.$echarts.init(this.$refs.statisticSortEl);
               this.sortChart.setOption(option,true);
+              window.onresize = () => {
+                this.sortChart.resize();
+              }
             });
         },
       },
