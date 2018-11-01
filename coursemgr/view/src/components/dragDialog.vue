@@ -50,7 +50,7 @@ import elDragDialog from '@/directive/el-dragDialog'
 
   .el-dialog {
     .el-dialog__header {
-      background-color: rgba(28, 77, 125, 0.8);
+      background-color: #009788;
       padding: 15px 20px 15px;
       height: 50px;
       color: white;
@@ -60,6 +60,9 @@ import elDragDialog from '@/directive/el-dragDialog'
     }
     .el-dialog__body {
       //padding: 10px 20px 20px 20px;
+    }
+    .el-dialog__close{
+      color: white !important;
     }
   }
 

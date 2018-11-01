@@ -67,7 +67,7 @@
               this.markUid = markUid;
               this.showTaskInfoDialog = true;
             } else {
-              this.$msg.warn('当前任务未完成，不能对该学生的任务进行审阅操作')
+              this.$msg.warning('当前任务未完成，不能对该学生的任务进行审阅操作')
             }
           }).catch (err => {
             this.$msg.error(err)
