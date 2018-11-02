@@ -12,10 +12,9 @@
       <div class="subject-item" v-for="(item, index) in task.questionList"
            style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
         <!--题干设置区域-->
-        <div style="margin-bottom:10px; line-height: 32px">
-          <span>{{index + 1}}.</span>
-          <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 240px)"></el-input>
-          <span v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">满分： {{item.taskQuestions.questionScore}} 分</span>
+        <div style="margin-bottom:10px; line-height: 32px; display: flex">
+          <span style="display: inline-block; width: 20px">{{index + 1}}.</span>
+          <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 20px)"></el-input>
         </div>
         <!--单选题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.CHOOSE">
@@ -30,7 +29,7 @@
               <span v-html="cItem.optionDes"></span>
             </el-radio>
           </el-radio-group>
-          <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 40px; height: 30px;"/>分</span>
+          <div class="score-label">得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</div>
         </div>
         <!--判断题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.JUDGE">
@@ -40,24 +39,29 @@
             <el-radio label="否" style="margin: 5px;">
             </el-radio>
           </el-radio-group>
-          <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 40px; height: 30px;"/>分</span>
+          <div class="score-label">得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</div>
         </div>
         <!--主观题 答题 设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">
-          <el-row :gutter="10">
-            <el-col :span="20">
-              <!--主观题 答题-->
-              <el-input v-html="item.taskQuestions.answers"></el-input>
-            </el-col>
-            <el-col :span="4">
-              <div>得分：{{item.taskQuestions.score}} <span style="color: orangered;" v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>
-              <div>评阅人：{{task.markUser && task.markUser.name}}</div>
-              <div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">
-                得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"
-                          type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 30px"/>
-              </div>
-            </el-col>
-          </el-row>
+          <!--主观题 答题-->
+          <el-input v-html="item.taskQuestions.answers"
+                    style="min-height: 78px; overflow-y: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
+          <!--<div>得分：{{item.taskQuestions.score}} <span style="color: orangered;" v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>-->
+          <!--<div>评阅人：{{task.markUser && task.markUser.name}}</div>-->
+          <!--<div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">-->
+          <!--得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"-->
+          <!--type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 30px"/>-->
+          <!--</div>-->
+          <div class="score-label">
+            <span v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">满分：{{item.taskQuestions.questionScore}} 分</span>
+            <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</span>
+            <span style="color: #FE9226;" v-if="item.taskQuestions.teacherScore !== ''">作废</span>
+            <span>评阅人：{{task.markUser && task.markUser.name}}</span>
+          </div>
+          <div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">
+            得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"
+                      type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 30px"/>
+          </div>
         </div>
       </div>
     </div>
@@ -186,13 +190,30 @@
   .main-frame{
     width: 1200px;
     margin: 0 auto;
-    border: 1px solid #ee9900;
-    padding: 5px;
+    border: 1px solid #EBEBEB;
+  }
+
+  .subjectStatic{
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    background-color: #F6F6F6;
+    padding: 0 20px;
   }
 
   .task-name-label{
-    line-height: 40px;
+    height: 45px;
+    line-height: 45px;
     font-size: 16px;
+    padding: 0 20px;
+  }
+
+  .subject-container{
+    padding: 20px;
+  }
+
+  span .is-checked{
+    color: #009687;
   }
 
   .save-btn{
@@ -204,6 +225,20 @@
   .task-name-label > span{
     font-family: cursive;
     color: #e6a23c;
+  }
+
+  .score-label{
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+    margin-top: 10px;
+    background-color: #FEF4EA;
+    border: 1px solid #FE9226;
+  }
+
+  .score-label > span{
+    display: inline-block;
+    margin-right: 20px;
   }
 </style>
 

@@ -1,94 +1,112 @@
 <template>
-  <div style="margin: 0 auto; border: 1px solid #ee9900; padding: 5px;">
+  <div style="margin: 29px 22px 65px 22px; ">
     <div class="task-name">
       <el-row :gutter="20">
-        <el-col :span="8">
-          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">任务名称：</span>
-          <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px)"></el-input>
+        <el-col :span="12" style="height: 35px;">
+          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">任务名称：</span>
+          <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px);"></el-input>
         </el-col>
-        <el-col :span="5">
-          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">开始日期：</span>
-          <el-date-picker v-model="task.startDate" type="date" placeholder="选择日期">
-          </el-date-picker>
-        </el-col>
-        <el-col :span="5">
-          <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 40px">截止日期：</span>
-          <el-date-picker v-model="task.inspireDate" type="date" placeholder="选择日期">
-          </el-date-picker>
-        </el-col>
-        <el-col :span="6">
-          <div v-show="haSubjective" style="margin: 7px 20px; line-height: 40px; float: left;">
-            <el-radio-group v-model="task.markType" style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
-              <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
-              <el-radio label="GROUP_INNER_EVA" :disabled="courseGroupStatus === 0 ? true : false" style="margin: 5px;">组内互评</el-radio>
-              <el-radio label="GROUP_INTERBLOCK_EVA" :disabled="courseGroupStatus > 1 ? false : true" style="margin: 5px;">组间互评</el-radio>
-            </el-radio-group>
-            <span style="margin-left: 15px;font-size: 12px; color: red">{{ tipinfo }}</span>
-          </div>
+        <el-col :span="12">
+          <el-row :gutter="20">
+            <el-col :span="12" style="height: 35px">
+              <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">开始日期：</span>
+              <el-date-picker v-model="task.startDate" type="date" placeholder="选择开始日期" style="width: calc(100% - 100px)">
+              </el-date-picker>
+            </el-col>
+            <el-col :span="12" style="height: 35px">
+              <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">截止日期：</span>
+              <el-date-picker v-model="task.inspireDate" type="date" placeholder="选择结束日期" style="width: calc(100% - 100px)">
+              </el-date-picker>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道， 总分值 <input v-model="totalScore" disabled/> 分
-      <!-- ， 权重： <input type="number" v-model="task.weight" /> %。-->
+      <div v-show="haSubjective" style="margin: 7px 20px; display: inline-grid;">
+        <el-radio-group v-model="task.markType"
+                        style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
+          <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
+          <el-radio label="GROUP_INNER_EVA" :disabled="courseGroupStatus === 0 ? true : false" style="margin: 5px;">
+            组内互评
+          </el-radio>
+          <el-radio label="GROUP_INTERBLOCK_EVA" :disabled="courseGroupStatus > 1 ? false : true" style="margin: 5px;">
+            组间互评
+          </el-radio>
+        </el-radio-group>
+        <span style="margin-left: 15px;font-size: 12px; color: red">{{ tipinfo }}</span>
+      </div>
     </div>
     <div class="subject-container">
-      <div class="subject-item" v-for="(item, index) in task.subjects" style="margin-bottom: 10px; border-bottom: 1px solid rgba(28, 77, 125, 0.8)">
+      <div class="subject-item" v-for="(item, index) in task.subjects">
         <!--题干设置区域-->
-        <div style="margin-bottom:10px">
+        <div style="display: flex; align-items: center; width: 100%">
           <span>{{index + 1}}.</span>
           <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem" placeholder="请设置题干" style="width: calc(100% - 430px)"></el-input>
           <el-input v-if="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem" style="width: calc(100% - 430px)"></el-input>
 
-          <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 130px">
+          <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 122px; margin-left: 15px">
             <el-option label="单选题" :value="SUBJECT_TYPE.CHOOSE"></el-option>
             <el-option label="判断题" :value="SUBJECT_TYPE.JUDGE"></el-option>
             <el-option label="主观题" :value="SUBJECT_TYPE.SUBJECTIVE"></el-option>
           </el-select>
 
           分数：<input type="number" min="0" max="100" v-model="item.score" style="width: 40px; height: 30px;" />分
-          <el-button type="primary" @click="handleStemHighSetting(index)">高级设置</el-button>
-          <el-button type="primary" @click="removeQuestion(index)">删除</el-button>
+          <el-tooltip content="高级设置" placement="top">
+            <img src="../../static/img/newTask/setting.png" @click="handleStemHighSetting(index)"
+                 style="cursor: pointer; margin-left: 10px;"/>
+          </el-tooltip>
+          <el-tooltip content="删除" placement="top">
+            <img src="../../static/img/newTask/remove.png" @click="removeQuestion(index)"
+                 style="cursor: pointer; margin-left: 10px;"/>
+          </el-tooltip>
           <Tinymce :height=200 v-if="item.edit" v-model="item.stem" style="margin-top: 5px;" />
           <el-button v-if="item.edit" type="primary" @click="editConfirm(index, item, task.subjects)">确定</el-button>
         </div>
         <!--判断题 选项设置区域-->
-        <div v-if="item.questionType === SUBJECT_TYPE.JUDGE" style="width: 90%; margin: 0 auto">
-          <div style="margin: 5px">选项设置：</div>
+        <div v-if="item.questionType === SUBJECT_TYPE.JUDGE" style="width: 100%;">
+          <div style="margin-top: 20px; margin-left: 13px; margin-bottom: 10px">选项设置：</div>
           <div style="margin-bottom: 5px;">
             <!--<span>A. </span>-->
-            <el-input value="是" disabled style="width: calc(100% - 100px); margin-right: 10px;"></el-input>
+            <el-input value="是" disabled style="width: calc(100% - 430px); margin-left: 13px; margin-right: 10px;"></el-input>
             <el-tooltip content="设置为答案" placement="top">
               <el-radio v-model="item.answer" label="是">{{emptyContent}}</el-radio>
             </el-tooltip>
           </div>
           <div style="margin-bottom: 5px;">
             <!--<span>B. </span>-->
-            <el-input value="否" disabled style="width: calc(100% - 100px); margin-right: 10px;">否</el-input>
+            <el-input value="否" disabled style="width: calc(100% - 430px); margin-left: 13px; margin-right: 10px;">否</el-input>
             <el-tooltip content="设置为答案" placement="top">
               <el-radio v-model="item.answer" label="否">{{emptyContent}}</el-radio>
             </el-tooltip>
           </div>
         </div>
         <!--单选题 选项设置区域-->
-        <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE" style="width: 90%; margin: 0 auto">
-          <div style="margin: 5px">选项设置：</div>
-          <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px;">
+        <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE" style="width: 100%;">
+          <div style="margin-top: 20px; margin-left: 13px; margin-bottom: 10px">选项设置：</div>
+          <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px; margin-left: -3px; display: flex;
+            justify-content: left; align-items: center;">
             <span v-show="false">{{setOptionTag(cItem, cIndex)}}</span>
             <span>{{String.fromCharCode((65+cIndex))}}. </span>
-            <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" placeholder="请设置选项" style="width: calc(100% - 120px)"></el-input>
-            <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit" v-html="item.selections[cIndex].optionDes" style="width: calc(100% - 120px)"></el-input>
+            <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit"
+                      v-model="item.selections[cIndex].optionDes"
+                      placeholder="请设置选项"
+                      style="width: calc(100% - 430px)"></el-input>
+            <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit"
+                      v-html="item.selections[cIndex].optionDes"
+                      style="width: calc(100% - 430px)"></el-input>
 
-            <el-tooltip content="添加选项" placement="top">
-              <i class="el-icon-circle-plus-outline" @click="handleAddSelection(cIndex, item.selections)" />
-            </el-tooltip>
-            <el-tooltip content="删除选项" placement="top">
-              <i class="el-icon-remove-outline" @click="handleRemoveSelection(cIndex, item.selections)" />
-            </el-tooltip>
-            <el-tooltip content="添加图片" placement="top">
-              <i class="el-icon-picture-outline" @click="handleImageEditSelection(cIndex, item.selections)" />
-            </el-tooltip>
+              <el-tooltip content="添加选项" placement="top">
+                <div class="icon-option-add" @click="handleAddSelection(cIndex, item.selections)"></div>
+              </el-tooltip>
+              <el-tooltip content="删除选项" placement="top">
+                <div class="icon-option-remove" @click="handleRemoveSelection(cIndex, item.selections)"></div>
+              </el-tooltip>
+              <el-tooltip content="添加图片" placement="top">
+                <div class="icon-option-pic" @click="handleImageEditSelection(cIndex, item.selections)"></div>
+              </el-tooltip>
+
             <el-tooltip content="设置为答案" placement="top">
-              <!--<el-radio v-model="item.answer" :label="item.selections[cIndex].optionDes">{{emptyContent}}</el-radio>-->
               <el-radio v-model="item.answer" :label="String.fromCharCode((65+cIndex))">{{emptyContent}}</el-radio>
             </el-tooltip>
             <Tinymce :height=200 v-if="item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" style="margin: 5px" />
@@ -96,7 +114,7 @@
           </div>
         </div>
         <!--主观题  答题设置-->
-        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
+        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: calc(100% - 422px); margin-left: 8px; margin-top: 20px;">
           <!--<el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>-->
           <Tinymce :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
         </div>
@@ -104,7 +122,12 @@
         <!--<el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>-->
         <el-button type="primary" v-if="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
       </div>
-      <div class="subject-add el-icon-plus" @click="addSubject"></div>
+      <!--添加按钮-->
+      <div class="add-sub-container">
+        <div class="subject-add" @click="addSubject">
+          <img src="../../static/img/newTask/subject-plus.png"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -373,29 +396,99 @@ export default {
 </script>
 
 <style scoped>
-.subject-add {
-  width: 100%;
-  height: 40px;
-  line-height: 40px;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  background: #9cb945;
-  text-align: center;
-  margin-bottom: 10px;
-}
+  .task-name {
+    background-color: #ffffff;
+    height: 65px;
+    padding-top: 15px;
+  }
 
-.subjectStatic {
-  margin: 5px 0 10px 5px;
-}
-.subjectStatic > input {
-  width: 40px;
-  height: 30px;
-}
-.el-button + .el-button {
-  margin-left: 0;
-}
-.subject-item {
-  padding: 5px;
-}
+  .add-sub-container{
+    height: 80px;
+    background-color: #ffffff;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .subject-add {
+    width: calc(100% - 40px);
+    height: 50px;
+    line-height: 50px;
+    color: white;
+    cursor: pointer;
+    background: #009788;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .subjectStatic {
+    margin-top: 12px;
+    height: 62px;
+    background-color: #F6F6F6;
+    line-height: 62px;
+    padding-left: 30px;
+  }
+
+  .subjectStatic > input {
+    width: 40px;
+    height: 30px;
+  }
+
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+
+  .subject-item {
+    padding-left: 30px;
+    padding-top: 16px;
+    padding-bottom: 23px;
+    border: 1px solid #EBEBEB;
+    background-color: #ffffff;
+  }
+
+  .icon-option-add{
+    display: inline-block;
+    height: 19px;
+    width: 19px;
+    margin-left: 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-image: url("../../static/img/newTask/icon-option-add.png");
+  }
+
+  .icon-option-remove{
+    display: inline-block;
+    height: 19px;
+    width: 19px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-image: url("../../static/img/newTask/icon-option-sub.png");
+  }
+
+  .icon-option-pic{
+    display: inline-block;
+    height: 19px;
+    width: 25px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-image: url("../../static/img/newTask/icon-pic.png");
+  }
+</style>
+<style>
+  .el-input .el-input__inner {
+    height: 35px;
+    line-height: 35px;
+    border-radius: 0;
+  }
+
+  .el-scrollbar__wrap{
+    background-color: #F3F4F8 !important;
+  }
+
+  .task-name .el-input__icon{
+    line-height: 35px !important;
+  }
 </style>
