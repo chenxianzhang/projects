@@ -13,11 +13,9 @@
         <div class="subject-item" v-for="(item, index) in task.subjects"
              style="padding-bottom: 10px; border-bottom: 1px solid #dff0d8">
           <!--题干设置区域-->
-          <div style="margin-bottom:10px">
-            <span>{{index + 1}}.</span>
-            <el-input v-html="item.stem" style="width: calc(100% - 240px)"></el-input>
-            <span v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">分数：<el-input v-html="item.score" style="width: 40px; height: 30px;" />分</span>
-            <span v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">总分：<el-input v-html="item.qScore" style="width: 40px; height: 30px;" />分</span>
+          <div style="margin-bottom:10px; line-height: 32px; display: flex">
+            <span style="display: inline-block; width: 20px">{{index + 1}}.</span>
+            <el-input v-html="item.stem" style="width: calc(100% - 20px)"></el-input>
           </div>
           <!--单选题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
@@ -29,6 +27,14 @@
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
+            <div  class="score-label"
+                  v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">
+              分数：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
+            </div>
+            <div  class="score-label"
+                  v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
+              总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分
+            </div>
           </div>
           <!--判断题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.JUDGE">
@@ -39,28 +45,41 @@
               <el-radio label="否" style="margin: 5px;">
               </el-radio>
             </el-radio-group>
+            <div  class="score-label"
+                  v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">
+              分数：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
+            </div>
+            <div  class="score-label"
+                  v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
+              总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分
+            </div>
           </div>
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
             <!--主观题 答题-->
-            <!--<el-input type="textarea"-->
-                      <!--v-model="item.answer"-->
-                      <!--style="width: calc(100% - 100px)"-->
-                      <!--placeholder="请填写答案"-->
-                      <!--:disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">-->
-            <!--</el-input>-->
-            <el-input v-html="item.answer" v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"></el-input>
+            <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"
+                      v-html="item.answers"
+                      style="min-height: 78px; overflow-y: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
             <Tinymce v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                      :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
 
-            <div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"
-                 style="width: 100px; float: right; line-height: 50px; text-align: right;">
-              评分：<input style="width: 40px; height: 30px;" v-model="item.score" disabled />分
+            <div  class="score-label"
+                  v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL">
+              分数：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
             </div>
-            <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"
-                 style="width: 100px; float: right; line-height: 50px; text-align: right;">
-              评分：<input style="width: 40px; height: 30px;" type="number" min="0" :max="item.qScore" v-model="item.score" />分
+            <div  class="score-label"
+                  v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
+              评分：<el-input v-model="item.score" style="width: 20px; height: 30px;" />分
             </div>
+            <!---->
+            <!--<div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"-->
+                 <!--style="width: 100px; float: right; line-height: 50px; text-align: right;">-->
+              <!--评分：<input style="width: 40px; height: 30px;" v-model="item.score" disabled />分-->
+            <!--</div>-->
+            <!--<div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"-->
+                 <!--style="width: 100px; float: right; line-height: 50px; text-align: right;">-->
+              <!--评分：<input style="width: 40px; height: 30px;" type="number" min="0" :max="item.qScore" v-model="item.score" />分-->
+            <!--</div>-->
 
           </div>
         </div>
@@ -263,13 +282,18 @@
   .main-frame{
     width: 1200px;
     margin: 0 auto;
-    border: 1px solid #ee9900;
-    padding: 5px;
+    border: 1px solid #EBEBEB;
   }
 
   .task-name-label{
-    line-height: 40px;
+    height: 45px;
+    line-height: 45px;
     font-size: 16px;
+    padding: 0 20px;
+  }
+
+  .subject-container{
+    padding: 20px;
   }
 
   .save-btn{
@@ -281,5 +305,22 @@
   .task-name-label > span{
     font-family: cursive;
     color: #e6a23c;
+  }
+
+  .subjectStatic{
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    background-color: #F6F6F6;
+    padding: 0 20px;
+  }
+
+  .score-label{
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+    margin-top: 10px;
+    background-color: #FEF4EA;
+    border: 1px solid #FE9226;
   }
 </style>
