@@ -8,7 +8,7 @@
                 <el-input v-model="user.college" placeholder="请输入学院名称"></el-input>
             </el-form-item>
             <el-form-item :label="serialText" prop="serialNo">
-                <el-input v-model="user.serialNo" placeholder="请输入学号" :disabled="from && from === 'admin_edit'"></el-input>
+                <el-input v-model="user.serialNo" placeholder="请输入学号" :disabled="operator === 'edit'"></el-input>
             </el-form-item>
             <el-form-item v-if="role === 'student'" label="专业" prop="profession">
                 <el-input v-model="user.profession" placeholder="请输入专业名称"></el-input>
@@ -41,7 +41,7 @@ export default {
     }
   },
   props: {
-    from:{
+    operator:{
       type: String,
       default:''
     },

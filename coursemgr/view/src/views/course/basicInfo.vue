@@ -92,7 +92,7 @@
             </span>
           </el-tree>
         </div>
-        <el-row :scutter="10" v-if="curHandleUsergTasks.length !== 0">
+        <el-row :scutter="10" v-if="curHandleUsergTasks && curHandleUsergTasks.length !== 0">
           <el-col :span="6" style="text-align: center">
             <span style="line-height: 30px">移交给：</span>
           </el-col>
@@ -354,6 +354,7 @@ export default {
           return
         }
         this.curHandleUsergTasks = resp.data
+        console.log(this.curHandleUsergTasks)
 
         getExceptStudentList({
           courseId: this.variables.courseId,

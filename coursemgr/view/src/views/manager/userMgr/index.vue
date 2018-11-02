@@ -1,63 +1,60 @@
 <template>
-    <div class="user-container">
+  <div class="user-container">
 
-        <user-edit-dlg
-            v-if="uEditDlgVisible"
-            :visible="uEditDlgVisible"
-            :role="role"
-            :title="uEditDlgTitle"
-            :from="'admin_edit'"
-            @close="handleClose"
-            @confirm="handleConfirm"
-            :user='user'></user-edit-dlg>
+    <user-edit-dlg v-if="uEditDlgVisible" :visible="uEditDlgVisible" :role="role" :title="uEditDlgTitle" :operator="userOperStatus" @close="handleClose" @confirm="handleConfirm" :user='user'></user-edit-dlg>
 
-        <drag-dialog :title="courseTitle" width="36%" :dialogVisible="courseVisible" :hiddenOperator="true" @close="handleCourseClose">
-            <el-card class="box-card" v-if="courseList && courseList.length > 0">
-                <div v-for="course in courseList" :key="course.id">
-                    {{ course.name }}
-                </div>
-            </el-card>
-            <div v-else>
-              <span>{{ courseTipInfo }}</span>
-            </div>
-        </drag-dialog>
-
-        <drag-dialog :title="delDlgTitle" width="36%" :dialogVisible="delDlgVisible" @close="handleDelDlgClose" @confirm="handleDelDlgConfirm">
-            <div class="del-container">
-                <div class="tipinfo">
-                    <span>删除用户的同时会删除相关的所有课程信息，请输入二级密码进行确认</span>
-                </div>
-                <div class="level-pwd-input">
-                    <el-input v-model="levelPwd" type="password" placeholder="请输入二级密码" :style="{width: '60%'}"></el-input>
-                </div>
-            </div>
-        </drag-dialog>
-
-        <upload-student-comp :showUploadDialog="showUploadDialog"
-         @hideUploadDialog="hideUploadDialog"
-         :uploadAction="uploadAction"></upload-student-comp>
-
-        <div class="operation">
-            <div class="left">
-                <el-button type="primary" @click="addUser">添加</el-button>
-                <el-button type="primary" @click="handleImport">批量导入</el-button>
-                <el-button type="primary" @click="handleDownload">模板下载</el-button>
-            </div>
-            <div class="right">
-                <el-input :placeholder="placeholder" v-model="nameOfNo" @input="queryChange">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
-            </div>
+    <drag-dialog :title="courseTitle" width="36%" :dialogVisible="courseVisible" :hiddenOperator="true" @close="handleCourseClose">
+      <el-card class="box-card" v-if="courseList && courseList.length > 0">
+        <div v-for="course in courseList" :key="course.id">
+          {{ course.name }}
         </div>
-        <router-view ref="child" @handleCommond="handleCommond" />
+      </el-card>
+      <div v-else>
+        <span>{{ courseTipInfo }}</span>
+      </div>
+    </drag-dialog>
+
+    <drag-dialog :title="delDlgTitle" width="36%" :dialogVisible="delDlgVisible" @close="handleDelDlgClose" @confirm="handleDelDlgConfirm">
+      <div class="del-container">
+        <div class="tipinfo">
+          <span>删除用户的同时会删除相关的所有课程信息，请输入二级密码进行确认</span>
+        </div>
+        <div class="level-pwd-input">
+          <el-input v-model="levelPwd" type="password" placeholder="请输入二级密码"></el-input>
+        </div>
+      </div>
+    </drag-dialog>
+
+    <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog" :uploadAction="uploadAction"></upload-student-comp>
+
+    <div class="operation">
+      <div class="left">
+        <el-button @click="addUser">添加</el-button>
+        <el-button @click="handleImport">批量导入</el-button>
+        <el-button type="primary" @click="handleDownload">模板下载</el-button>
+      </div>
+      <div class="right">
+        <el-input :placeholder="placeholder" v-model="nameOfNo" @input="queryChange">
+          <el-button type="primary" slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+      </div>
     </div>
+    <router-view ref="child" @handleCommond="handleCommond" />
+  </div>
 </template>
 
 <script>
 import userEditDlg from '../components/userEditDlg'
 import uploadStudentComp from '@/components/uploadStudentComp'
 
-import { addUser, updateUser, getCourseByUser, resetPwd, deleteUser, downloadTemplate } from '@/api/manager'
+import {
+  addUser,
+  updateUser,
+  getCourseByUser,
+  resetPwd,
+  deleteUser,
+  downloadTemplate
+} from '@/api/manager'
 import { dodwnloadStuTemp } from '@/api/course'
 
 export default {
@@ -80,7 +77,7 @@ export default {
       delSerialNo: '',
       currUserSerialNo: this.$store.state.user.token,
       showUploadDialog: false,
-      uploadAction: "",
+      uploadAction: '',
       courseTipInfo: ''
     }
   },
@@ -92,15 +89,17 @@ export default {
     if (this.$route.path.indexOf('student') >= 0) {
       this.placeholder = '输入姓名或者学号'
       this.courseTipInfo = '没有关联的课程信息'
-      this.courseTitle = '参与课程';
+      this.courseTitle = '参与课程'
       this.role = 'student'
-      this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadStudents"
+      this.uploadAction =
+        window.global.BASE_API + '/userMgr/batchUploadStudents'
     } else {
       this.placeholder = '输入姓名或者教工号'
       this.role = 'teacher'
       this.courseTipInfo = '该教师暂未开设课程'
-      this.courseTitle = '开设课程';
-      this.uploadAction = window.global.BASE_API + "/userMgr/batchUploadTeachers"
+      this.courseTitle = '开设课程'
+      this.uploadAction =
+        window.global.BASE_API + '/userMgr/batchUploadTeachers'
     }
   },
   methods: {
@@ -110,16 +109,16 @@ export default {
     handleDownload() {
       if (this.role === 'student') {
         dodwnloadStuTemp()
-        return;
+        return
       }
       downloadTemplate()
     },
     handleImport() {
-      this.showUploadDialog = true;
+      this.showUploadDialog = true
     },
     hideUploadDialog(val) {
-      this.showUploadDialog = false;
-      this.queryChange();
+      this.showUploadDialog = false
+      this.queryChange()
     },
     handleCommond(data) {
       switch (data.commond) {
@@ -143,13 +142,13 @@ export default {
       }
     },
     deleteUser() {
-        let params = {
-            serialNo: this.delSerialNo,
-            role: this.role,
-            levelPwd: this.levelPwd,
-            currUserSerialNo: this.currUserSerialNo
-        }
-        deleteUser(params)
+      let params = {
+        serialNo: this.delSerialNo,
+        role: this.role,
+        levelPwd: this.levelPwd,
+        currUserSerialNo: this.currUserSerialNo
+      }
+      deleteUser(params)
         .then(response => {
           if (response.status === 0) {
             this.$msg.error(response.msg)
@@ -207,6 +206,7 @@ export default {
       this.uEditDlgTitle = '增加用户信息'
       this.uEditDlgVisible = true
       this.userOperStatus = 'add'
+      this.user = {}
     },
     handleClose() {
       this.uEditDlgVisible = false
@@ -246,21 +246,43 @@ export default {
         })
     },
     handleCourseClose() {
-        this.courseVisible = false
+      this.courseVisible = false
     },
     handleDelDlgClose() {
-        this.delDlgVisible = false
+      this.delDlgVisible = false
     },
     handleDelDlgConfirm() {
-        if (!this.levelPwd || this.levelPwd.trim() === '') {
-            this.$msg.warning('二级密码不能为空')
-            return
-        }
-        this.deleteUser()
+      if (!this.levelPwd || this.levelPwd.trim() === '') {
+        this.$msg.warning('二级密码不能为空')
+        return
+      }
+      this.deleteUser()
     }
   }
 }
 </script>
+
+<style lang="scss">
+.user-container {
+  .right {
+    .el-input {
+      .el-input__inner {
+        border: 1px solid #009788;
+        &:focus {
+          border: 1px solid #ccc;
+        }
+      }
+      .el-input-group__append {
+        border-radius: unset;
+        background-color: #009788;
+        color: #fff;
+        border: 1px solid #009788;
+      }
+    }
+  }
+}
+</style>
+
 
 <style lang="scss" scoped>
 .user-container {
@@ -274,14 +296,19 @@ export default {
 }
 
 .del-container {
-    .tipinfo {
-        text-align: center;
-    }
-    .level-pwd-input {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
+  .tipinfo {
+    text-align: center;
+    border: 1px dashed #009788;
+    padding: 5px;
+    background-color: rgb(229, 243, 243);
+    font-size: 12px;
+    color: #009788;
+  }
+  .level-pwd-input {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>
 

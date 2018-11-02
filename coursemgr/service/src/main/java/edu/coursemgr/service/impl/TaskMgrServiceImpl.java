@@ -575,52 +575,6 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         return resultList;
     }
 
-//    private void generateWord(Integer taskId, List<User> studentList, String unpackDir) {
-//        if (studentList == null) {
-//            return;
-//        }
-//        studentList.forEach(student -> {
-//            Map taskDetail = getStuTaskDetail(taskId.toString(),
-//                    student.getSerialNo());
-//            if (!taskDetail.get("status").toString().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
-//                return;
-//            }
-//            String html = transfer2Html(taskDetail);
-//            CourseTasks task = (CourseTasks) taskDetail.get("task");
-//            String fileName = String.format("%s/%s(%s%s).doc", unpackDir, task.getName(),
-//                    student.getName(), student.getSerialNo());
-//            new JsoupWordOper().html2Word(html, unpackDir, fileName);
-//        });
-//    }
-
-//    private String transfer2Html(Map taskDetail) {
-//        CourseTasks task = (CourseTasks) taskDetail.get("task");
-//        List<TaskMarkPaper> questionList = (List<TaskMarkPaper>) taskDetail.get("questionList");
-//        String html = String.format("<p style=\"text-align:center;font-weight: bolder;font-size:20px;\">%s</p>",
-//                task.getName());
-//        for (TaskMarkPaper question : questionList) {
-//            html += "<div>";
-//            html += String.format("<p style=\"font-weight: bolder;\">%s</p>",
-//                    question.getTaskQuestions().getStems());
-//            Integer index = 1;
-//
-//            html += "<div style=\"margin-left: 20px;font-size:14px;\">";
-//            for (QuestionOptions option : question.getOptionList()) {
-//                html += String.format("<span style=\"margin-right:30px\">%s、%s </span>", index.toString(),
-//                        option.getOptionDes());
-//                index++;
-//            }
-//            html += "</div>";
-//
-//            html += "<div style=\"margin-top: 10px;font-size:14px;color:red\">";
-//            html += String.format("<span>所选答案：%s</span>", question.getTaskQuestions().getAnswers());
-//            html += "</div>";
-//
-//            html += "</div>";
-//        }
-//        return html;
-//    }
-
     private List<Map<String, Object>> transferImgContent(String content, String rootPath) {
         content = content.replaceAll("<p>", "");
         content = content.replaceAll("</p>", "");

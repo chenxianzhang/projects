@@ -17,7 +17,8 @@
 .custom-icon-book {
     width: 17px;
     height: 20px;
-    background: url('../../static/img/icon-quit.png') no-repeat;
+    background: url('../../static/img/custom-icon-book.png') no-repeat;
+    background-size: 100% 100%;
 }
 
 .custom-menu-icon {
@@ -25,6 +26,7 @@
     height: 15px;
     font-style: normal;
     display: inline-block;
+    cursor: pointer;
 }
 .custom-icon-books {
     @extend .custom-menu-icon;
@@ -34,6 +36,11 @@
 .custom-icon-tickets {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-tickets-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-tickets-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-tickets-active.png') no-repeat;
     background-size: 100% 100%;
 }
 .custom-icon-paper {
@@ -51,6 +58,11 @@
     background: url('../../static/img/icons/custom-icon-check-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-check-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-check-active.png') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-uncheck {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-uncheck-default.png') no-repeat;
@@ -66,6 +78,11 @@
     background: url('../../static/img/icons/custom-icon-stat-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-stat-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-stat-active.png') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-task {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-task-default.png') no-repeat;
@@ -76,10 +93,89 @@
     background: url('../../static/img/icons/custom-icon-new-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-course {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-course-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-student {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-student-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-teacher {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-teacher-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-course-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-course-active.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-student-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-student-active.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-teacher-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-teacher-active.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-admin {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/login/role-icon-admin.png') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-protrait {
     @extend .custom-icon;
     width: 96px;
     height: 96px;
     background: url('../../static/img/icons/custom-icon-protrait.png') no-repeat;
     background-size: 100% 100%;
+}
+
+
+/******************table 中的操作图标*********************/
+.operator-icon {
+    @extend .custom-menu-icon;
+    width: 16px;
+    height: 18px;
+}
+.operator-icon-edit {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/edit-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/edit-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+.operator-icon-course {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/course-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/course-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+.operator-icon-reset-pwd {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/reset-pwd-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/reset-pwd-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+.operator-icon-delete {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/delete-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/delete-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
 }

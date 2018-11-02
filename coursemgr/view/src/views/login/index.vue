@@ -62,6 +62,12 @@ export default {
 
 <style lang="scss">
 .login-container {
+  .el-form {
+  .el-form-item {
+    margin-bottom: 20px;
+  }
+}
+
   .el-input {
     .el-input__inner {
       border: 1px solid #b4bccc;

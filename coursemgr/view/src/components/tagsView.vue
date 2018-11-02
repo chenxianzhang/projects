@@ -3,7 +3,7 @@
     <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
       <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)"
         :to="tag" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
-        <i :class="tag.meta.icon"></i>
+        <i :class="getIcon(tag)"></i>
         <span class="content">{{tag.title}}</span>
         <span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
       </router-link>
@@ -51,6 +51,15 @@ export default {
     this.addViewTags()
   },
   methods: {
+    getIcon(tag) {
+      if (tag.meta.activeIcon) {
+        if (tag.path.indexOf('userMgr') >= 0 || tag.path.indexOf('courseMgr') >= 0) {
+          return !this.isActive(tag) ? tag.meta.activeIcon : tag.meta.icon
+        }
+        return this.isActive(tag) ? tag.meta.activeIcon : tag.meta.icon
+      }
+      return tag.meta.icon
+    },
     generateRoute() {
       if (this.$route.name) {
         return this.$route
@@ -105,7 +114,7 @@ export default {
       this.selectedTag = tag
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       this.left = e.clientX - offsetLeft + 15 // 15: margin right
-      this.top = e.clientY - 30
+      this.top = e.clientY - 65
     },
     closeMenu() {
       this.visible = false
@@ -128,7 +137,7 @@ export default {
       line-height: 26px;
       border: 1px solid #d8dce5;
       color: #495060;
-      background: #fff;
+      background: #F2F2F2;
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
@@ -144,9 +153,9 @@ export default {
         margin-left: 15px;
       }
       &.active {
-        background-color: rgba(84, 92, 100, 1);
+        background-color: #009788;
         color: #fff;
-        border-color: rgb(84, 92, 100);
+        border-color: #009788;
         // &::before {
         //   content: '';
         //   background: #fff;

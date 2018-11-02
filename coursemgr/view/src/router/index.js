@@ -50,6 +50,7 @@ export const asyncRouterMap = [
       meta: {
         title: '基本信息',
         icon: 'custom-icon-tickets',
+        activeIcon: 'custom-icon-tickets-active',
         roles: ['teacher', 'student']
       }
     }, {
@@ -106,6 +107,7 @@ export const asyncRouterMap = [
           meta: {
             title: '已分组',
             icon: 'custom-icon-check',
+            activeIcon: 'custom-icon-check-active',
             roles: ['teacher']
           }
         },
@@ -146,7 +148,8 @@ export const asyncRouterMap = [
         meta: {
           title: '新建任务',
           icon: 'custom-icon-new',
-          roles: ['teacher']
+          roles: ['teacher'],
+          keepAlive: true
         }
       }]
     }, {
@@ -165,6 +168,7 @@ export const asyncRouterMap = [
       meta: {
         title: '统计分析',
         icon: 'custom-icon-stat',
+        activeIcon: 'custom-icon-stat-active',
         roles: ['teacher']
       }
     }, {  // 管理员模块
@@ -175,7 +179,7 @@ export const asyncRouterMap = [
       meta: {
         title: '用户管理',
         isGroup: true,
-        icon: 'el-icon-setting',
+        icon: 'custom-icon-admin',
         roles: ['admin']
       },
       children: [{
@@ -184,7 +188,8 @@ export const asyncRouterMap = [
         name: 'teacher',
         meta: {
           title: '教师用户',
-          icon: 'el-icon-tickets',
+          icon: 'custom-icon-teacher',
+          activeIcon: 'custom-icon-teacher-active',
           roles: ['admin']
         }
       }, {
@@ -193,7 +198,8 @@ export const asyncRouterMap = [
         name: 'student',
         meta: {
           title: '学生用户',
-          icon: 'el-icon-tickets',
+          icon: 'custom-icon-student',
+          activeIcon: 'custom-icon-student-active',
           roles: ['admin']
         }
       }]
@@ -203,7 +209,8 @@ export const asyncRouterMap = [
       name: 'courseMgr',
       meta: {
         title: '课程管理',
-        icon: 'el-icon-setting',
+        icon: 'custom-icon-course',
+        activeIcon: 'custom-icon-course-active',
         roles: ['admin']
       }
     }]

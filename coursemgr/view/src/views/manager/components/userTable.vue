@@ -8,10 +8,16 @@
       <el-table-column v-else align="center" prop="profession" label="专业"></el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button @click="handleClk(scope.row, 'edit')" type="text" size="small">编辑</el-button>
-          <el-button @click="handleClk(scope.row, 'course')" type="text" size="small">课程</el-button>
+          <div class="operator">
+            <i class="operator-icon-edit"  @click="handleClk(scope.row, 'edit')"></i>
+            <i class="operator-icon-course"  @click="handleClk(scope.row, 'course')"></i>
+            <i class="operator-icon-reset-pwd"  @click="handleClk(scope.row, 'reset')"></i>
+            <i class="operator-icon-delete"  @click="handleClk(scope.row, 'delete')"></i>
+          </div>
+          <!-- <el-button @click="handleClk(scope.row, 'edit')" type="text" size="small">编辑</el-button> -->
+          <!-- <el-button @click="handleClk(scope.row, 'course')" type="text" size="small">课程</el-button>
           <el-button @click="handleClk(scope.row, 'reset')" type="text" size="small">重置密码</el-button>
-          <el-button @click="handleClk(scope.row, 'delete')" type="text" size="small">删除</el-button>
+          <el-button @click="handleClk(scope.row, 'delete')" type="text" size="small">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -100,6 +106,10 @@ export default {
   }
   .el-pagination {
     margin-top: 10px;
+  }
+  .operator {
+    display: flex;
+    justify-content: space-around;
   }
 }
 </style>
