@@ -73,6 +73,11 @@
     background: url('../../static/img/icons/custom-icon-schedule.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-schedule-default {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-schedule-default.png') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-stat {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-stat-default.png') no-repeat;

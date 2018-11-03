@@ -53,7 +53,9 @@ export default {
   methods: {
     getIcon(tag) {
       if (tag.meta.activeIcon) {
-        if (tag.path.indexOf('userMgr') >= 0 || tag.path.indexOf('courseMgr') >= 0) {
+        if (tag.path.indexOf('userMgr') >= 0 
+        || tag.path.indexOf('courseMgr') >= 0
+        || tag.path.indexOf('backlog') >= 0) {
           return !this.isActive(tag) ? tag.meta.activeIcon : tag.meta.icon
         }
         return this.isActive(tag) ? tag.meta.activeIcon : tag.meta.icon

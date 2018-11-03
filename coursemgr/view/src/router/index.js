@@ -87,6 +87,7 @@ export const asyncRouterMap = [
       meta: {
         title: '我的待办',
         icon: 'custom-icon-schedule',
+        activeIcon: 'custom-icon-schedule-default',
         roles: ['student']
       }
     }, {        // 教师
