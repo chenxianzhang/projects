@@ -142,6 +142,9 @@ export default {
       font-size: 12px;
       margin-left: 10px;
       margin-top: 12px;
+      &:hover {
+        opacity: 0.8;
+      }
       i {
         position: absolute;
         margin-top: 4px;
