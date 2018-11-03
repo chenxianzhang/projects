@@ -60,7 +60,7 @@
               this.$msg.warn(res.msg)
               return
             }
-            if (res.data === 'true') {
+            if (res.data === true) {
               //显示task信息，填写得分
               this.selectTaskId = tId;
               this.operateType = TASK_OPERATOR_TYPE.MARK_POINT;

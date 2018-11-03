@@ -29,7 +29,7 @@
             </el-radio-group>
             <div  class="score-label"
                   v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">
-              分数：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
+              得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
             </div>
             <div  class="score-label"
                   v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
@@ -47,7 +47,7 @@
             </el-radio-group>
             <div  class="score-label"
                   v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">
-              分数：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
+              得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
             </div>
             <div  class="score-label"
                   v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
@@ -58,18 +58,20 @@
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
             <!--主观题 答题-->
             <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"
-                      v-html="item.answers"
+                      v-html="item.answer"
                       style="min-height: 78px; overflow-y: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
             <Tinymce v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                      :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
 
             <div  class="score-label"
                   v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL">
-              分数：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
+              得分：<span v-html="item.score"></span>分;
+              总分：<span v-html="item.qScore"></span>分
             </div>
             <div  class="score-label"
                   v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
-              评分：<el-input v-model="item.score" style="width: 20px; height: 30px;" />分
+              得分：<input type="number" v-model="item.score" min="0" :max="item.qScore" style="width: 40px; height: 30px;" />分;
+              总分：<span v-html="item.qScore"  />分
             </div>
             <!---->
             <!--<div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"-->

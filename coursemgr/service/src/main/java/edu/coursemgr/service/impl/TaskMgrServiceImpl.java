@@ -399,11 +399,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         params.put("studentNo", studentNo);
         params.put("taskId", taskId);
         StudentTasks task = studentTasksMapper.selectByStudent(params);
-        if (task == null) {
+        if (task == null || task.getStatus().equals(CommonEnum.StudentTaskStatus.UNCOMMITTED.getValue())) {
             return false;
         }
 
-        return task.getStatus().equals(CommonEnum.StudentTaskStatus.FINISHED.getValue());
+        return true;
     }
 
     @Override

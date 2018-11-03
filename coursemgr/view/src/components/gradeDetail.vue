@@ -60,7 +60,7 @@
           </div>
           <div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">
             得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"
-                      type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 30px"/>
+                      type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 40px"/>
           </div>
         </div>
       </div>
