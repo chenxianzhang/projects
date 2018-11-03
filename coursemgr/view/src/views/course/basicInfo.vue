@@ -30,9 +30,9 @@
           <span style="color: #009687; font-weight: bold;">STUDENT INFORMATION</span>
         </div>
         <div v-if="editable" class="add-student-btn">
-          <el-button round plain @click="addStudents2Course">添加学生</el-button>
-          <el-button round plain @click="uploadStudents2Course">导入学生</el-button>
-          <el-button round plain @click="downloadStuTemplate">模板下载</el-button>
+          <el-button size="small" @click="addStudents2Course">添加学生</el-button>
+          <el-button size="small" @click="uploadStudents2Course">导入学生</el-button>
+          <el-button size="small" type="primary" @click="downloadStuTemplate">模板下载</el-button>
         </div>
       </div>
       <el-table :data="studentsInCourse" border :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" style="width: 100%;">

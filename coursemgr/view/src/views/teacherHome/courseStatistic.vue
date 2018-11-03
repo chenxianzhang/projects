@@ -3,9 +3,9 @@
       <el-row class="statistic-all-grade">
         <el-col :span="24" class="grade-item">
           <div style="padding-right: 20px; text-align: right; margin-top: 5px;">
-            <el-button v-show="!showBackBtn" type="primary" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('asc')">升序</el-button>
-            <el-button v-show="!showBackBtn" type="primary" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('desc')">降序</el-button>
-            <el-button v-show="showBackBtn" type="primary" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="back2AllGradeStatistic">返回</el-button>
+            <el-button v-show="!showBackBtn" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('asc')">升序</el-button>
+            <el-button v-show="!showBackBtn" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('desc')">降序</el-button>
+            <el-button v-show="showBackBtn" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="back2AllGradeStatistic">返回</el-button>
           </div>
           <div ref="grade_static" class="all-grade-item">
             所有成绩统计

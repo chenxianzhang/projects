@@ -15,7 +15,7 @@
     <div class="operation">
       <div class="right">
         <el-input placeholder="输入课程名称或任课教师" v-model="courseOrTeacher" @input="queryChange">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-button type="primary" slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
     </div>
@@ -216,6 +216,26 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.course-container {
+  .el-input {
+      .el-input__inner {
+        border: 1px solid #009788;
+        &:focus {
+          border: 1px solid #ccc;
+        }
+      }
+      .el-input-group__append {
+        border-radius: unset;
+        background-color: #009788 !important;
+        color: #fff;
+        border: 1px solid #009788;
+      }
+    }
+}
+</style>
+
 
 <style lang="scss" scoped>
 .course-container {

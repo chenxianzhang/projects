@@ -14,10 +14,6 @@
             <i class="operator-icon-reset-pwd"  @click="handleClk(scope.row, 'reset')"></i>
             <i class="operator-icon-delete"  @click="handleClk(scope.row, 'delete')"></i>
           </div>
-          <!-- <el-button @click="handleClk(scope.row, 'edit')" type="text" size="small">编辑</el-button> -->
-          <!-- <el-button @click="handleClk(scope.row, 'course')" type="text" size="small">课程</el-button>
-          <el-button @click="handleClk(scope.row, 'reset')" type="text" size="small">重置密码</el-button>
-          <el-button @click="handleClk(scope.row, 'delete')" type="text" size="small">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -27,10 +23,12 @@
       <el-table-column align="center" prop="credit" label="学分数"></el-table-column>
       <el-table-column align="center" prop="teacher" label="任课教师"></el-table-column>
       <el-table-column align="center" prop="teacherNo" label="教师工号"></el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" label="操作" width="80">
         <template slot-scope="scope">
-          <el-button @click="handleClk(scope.row, 'viewGrade')" type="text" size="small">成绩</el-button>
-          <el-button @click="handleClk(scope.row, 'deleteCourse')" type="text" size="small">删除</el-button>
+          <div class="operator">
+            <i class="operator-icon-grade"  @click="handleClk(scope.row, 'viewGrade')"></i>
+            <i class="operator-icon-delete"  @click="handleClk(scope.row, 'deleteCourse')"></i>
+          </div>
         </template>
       </el-table-column>
     </el-table>

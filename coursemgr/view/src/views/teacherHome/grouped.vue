@@ -29,7 +29,7 @@
     <div v-if="hasGroup" class="grouped-item" v-for="(groupInfo, index) in groups"
          @mousemove="showDismissBtn($event, index)" @mouseleave="hideDIsmissBtn($event, index)">
       <el-row>
-        <el-col :span="22">
+        <el-col :span="21">
           <div class="group-leader">
         <span>
           <span style="font-weight: bold; font-size: 24px; color: black;">{{groupInfo.groupLeaderName}}</span>
@@ -62,13 +62,13 @@
             width: 80px; text-align: center; line-height: 30px;">{{groupInfo.groupedType}}</span>
           </div>
         </el-col>
-        <el-col :span="2" v-show="groupInfo.show">
-          <el-button size="small" round plain
+        <el-col :span="3" v-show="groupInfo.show">
+          <el-button size="small"
                      style="margin-top: 10px;"
                      @click.stop="dismissGroup(groupInfo)">
             解散分组
           </el-button>
-          <el-button type="primary" size="small" round
+          <el-button type="primary" size="small"
                      style="margin-top: 10px; margin-left: 0"
                      @click.stop="handleChangeLeader(groupInfo)">变更组长
           </el-button>

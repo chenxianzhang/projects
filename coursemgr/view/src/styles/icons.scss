@@ -180,6 +180,15 @@
     }
 }
 
+.operator-icon-grade {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/custom-icon-paper-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/custom-icon-paper-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
 
 .custom-icon-upload {
     @extend .custom-icon;

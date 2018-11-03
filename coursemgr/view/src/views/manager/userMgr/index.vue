@@ -29,9 +29,9 @@
 
     <div class="operation">
       <div class="left">
-        <el-button @click="addUser">添加</el-button>
-        <el-button @click="handleImport">批量导入</el-button>
-        <el-button type="primary" @click="handleDownload">模板下载</el-button>
+        <el-button size="small" @click="addUser">添加</el-button>
+        <el-button size="small" @click="handleImport">批量导入</el-button>
+        <el-button size="small" type="primary" @click="handleDownload">模板下载</el-button>
       </div>
       <div class="right">
         <el-input :placeholder="placeholder" v-model="nameOfNo" @input="queryChange">

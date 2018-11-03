@@ -3,8 +3,8 @@
     <div>
       <span class="title">当前课程：{{courseName}}</span>
       <div class="buttons">
-        <el-button class="primary" @click="download()">导出为excel</el-button>
-        <el-button class="primary" @click="exportZip">过程性打包</el-button>
+        <el-button size="small" @click="download()">导出为excel</el-button>
+        <el-button size="small" @click="exportZip">过程性打包</el-button>
       </div>
     </div>
 
