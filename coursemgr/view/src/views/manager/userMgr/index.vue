@@ -5,7 +5,7 @@
 
     <drag-dialog :title="courseTitle" width="36%" :dialogVisible="courseVisible" :hiddenOperator="true" @close="handleCourseClose">
       <el-card class="box-card" v-if="courseList && courseList.length > 0">
-        <div v-for="course in courseList" :key="course.id">
+        <div class="item" v-for="course in courseList" :key="course.id">
           {{ course.name }}
         </div>
       </el-card>
@@ -292,6 +292,14 @@ export default {
     align-items: center;
     border-bottom: 1px solid gray;
     padding-bottom: 5px;
+  }
+  .el-card {
+      border: 6px solid rgb(232, 235, 242);
+      box-shadow: unset;
+      .item {
+        font-size: 14px;
+        font-weight: bolder;
+      }
   }
 }
 

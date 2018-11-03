@@ -179,3 +179,12 @@
         background-size: 100% 100%;
     }
 }
+
+
+.custom-icon-upload {
+    @extend .custom-icon;
+    width: 79px;
+    height: 59px;
+    background: url('../../static/img/icons/custom-icon-upload.png') no-repeat;
+    background-size: 100% 100%;
+}

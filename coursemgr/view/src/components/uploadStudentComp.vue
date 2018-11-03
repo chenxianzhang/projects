@@ -1,6 +1,6 @@
 <template>
     <!--<el-dialog :visible.sync="showUploadDialog" @close="handleDialogClose()">-->
-  <drag-dialog title="批量导入" width="500px" :dialogVisible="showUploadDialog"
+  <drag-dialog title="批量导入" width="350px" :dialogVisible="showUploadDialog"
                @close="handleDialogClose" @confirm="handleImportStudents"
                :hiddenOperator="false">
     <el-upload ref="upload" v-if="showUploadDialog"
@@ -17,7 +17,7 @@
       :on-error="handleUploadError"
       :on-progress="handleUploadProgress"
       :data="uploadData">
-      <i class="el-icon-upload"></i>
+      <i class="custom-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip">只能上传[*.xls或*.xlsx]文件</div>
     </el-upload>
@@ -107,11 +107,11 @@ import dragDialog from '@/components/dragDialog';
 
 <style>
 
-.el-upload{
+/* .el-upload{
   width: 100% !important;
 }
 .el-upload .el-upload-dragger{
   margin-left: 50px;
-}
+} */
 
 </style>

@@ -150,6 +150,29 @@ div:focus{
   }
 }
 
+.el-upload {
+  width: 100%;
+  .el-upload-dragger {
+    margin-left: 0;
+    width: 100%;
+    background-color: rgb(244, 244, 244);
+    .custom-icon-upload {
+      margin-top: 40px;
+    }
+    .el-upload__text {
+      color: rgb(27, 44, 54);
+      em {
+        color: #009788;
+        &:hover {
+          color: rgba(0, 150, 136, 0.8);
+        }
+      }
+    }
+    &:hover {
+      border: 1px dashed rgba(0, 150, 136, 0.8);
+    }
+  }
+}
 
 ::-webkit-scrollbar-track-piece {
   background: #d3dce6;

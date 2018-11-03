@@ -127,7 +127,7 @@ export default {
 .tags-view-container {
   .tags-view-wrapper {
     background: #fff;
-    height: 34px;
+    height: 50px;
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     .tags-view-item {
@@ -140,8 +140,8 @@ export default {
       background: #F2F2F2;
       padding: 0 8px;
       font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
+      margin-left: 10px;
+      margin-top: 12px;
       i {
         position: absolute;
         margin-top: 4px;
