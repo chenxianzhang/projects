@@ -1,26 +1,8 @@
 <template>
   <div class="home-main">
-    <div class="change-pass" v-if="firstLogin===true" style="height: 300px; width: 500px; margin: 0 auto; color: white">
-      <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="旧密码" prop="oldPass">
-          <el-input type="password" v-model="ruleForm2.oldPass" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="新密码" prop="newPass">
-          <el-input type="password" v-model="ruleForm2.newPass" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-          <el-button @click="resetForm('ruleForm2')">重置</el-button>
-          <el-button @click="logout">返回登录界面</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <page-title v-if="firstLogin===false"></page-title>
+    <page-title></page-title>
 
-    <div v-if="firstLogin===false" class="container">
+    <div class="container">
       <el-card class="course-list">
         <div slot="header">
           <span>课程列表</span>
@@ -110,41 +92,10 @@ import pageTitle from '../layout/components/pageTitle'
 export default {
   name: 'home',
   data() {
-    let self = this
-    var checkOldPass = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('密码不能为空'))
-      }
-      if (value.toString() !== self.userInfo.password) {
-        return callback(new Error('密码不正确'))
-      }
-      callback()
-    }
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.ruleForm2.checkPass !== '') {
-          this.$refs.ruleForm2.validateField('checkPass')
-        }
-        callback()
-      }
-    }
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm2.newPass) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
-
     return {
       canAddCourse: false,
       courseList: [],
       userInfo: {},
-      firstLogin: false,
       courseDlgTitle: '增加课程',
       courseDlgVisible: false,
       editCourse: {
@@ -154,17 +105,7 @@ export default {
         userNo: this.$store.state.user.token
       },
       editUserInfo: false,
-      userInfoBak: {},
-      ruleForm2: {
-        newPass: '',
-        checkPass: '',
-        oldPass: ''
-      },
-      rules2: {
-        newPass: [{ validator: validatePass, trigger: 'blur' }],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-        oldPass: [{ validator: checkOldPass, trigger: 'blur' }]
-      }
+      userInfoBak: {}
     }
   },
   components: {
@@ -190,22 +131,6 @@ export default {
   },
   mounted() {},
   methods: {
-    submitForm(formName) {
-      let self = this
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          debugger
-          self.userInfo.password = self.ruleForm2.newPass
-          self.save('updatePass')
-        } else {
-          this.$message.warning('请填写正确的信息！')
-          return false
-        }
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
     cancel() {
       this.editUserInfo = false
       this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak))
@@ -253,9 +178,6 @@ export default {
             type: 'success',
             message: '修改成功'
           })
-          if (mes && mes === 'updatePass') {
-            this.firstLogin = false
-          }
         })
         .catch(err => {
           console.log(err)
@@ -322,10 +244,8 @@ export default {
         self.userInfoBak = JSON.parse(JSON.stringify(self.userInfo))
 
         if (!response.data.hasLogin || response.data.hasLogin === 0) {
-          this.firstLogin = true
-          return
+          self.$router.push('/login/resetpwd')
         }
-        this.firstLogin = false
       })
     },
     addCourse() {

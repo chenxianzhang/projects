@@ -107,9 +107,13 @@ export default {
           self.loading = true
           self.$store
             .dispatch('loginProcess', self.loginForm)
-            .then(() => {
+            .then(data => {
               self.loading = false
-              self.$router.push('/')
+              if (!data.hasLogin || data.hasLogin === 0) {
+                self.$router.push('/login/resetpwd') 
+              } else {
+                self.$router.push('/')
+              }
             })
             .catch(err => {
               self.loading = false

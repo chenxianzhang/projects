@@ -23,6 +23,11 @@ export const constantRouterMap = [
         path: 'register',
         component: () => import('@/views/register/register'),
         name: 'register'
+      },
+      {
+        path: 'resetpwd',
+        component: () => import('@/views/login/resetpwd'),
+        name: 'resetpwd'
       }
     ]
    },

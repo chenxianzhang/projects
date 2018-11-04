@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenxianzhang on 2018/8/8 0008 下午 9:16
@@ -31,7 +33,7 @@ public class LoginServiceImpl implements LoginService {
     private RoleMapper roleMapper;
 
     @Override
-    public String login(String serialNo, String password, String role) throws Exception {
+    public Map<String, Object> login(String serialNo, String password, String role) throws Exception {
         boolean illegal = serialNo == null || serialNo.isEmpty()
                 || password == null || password.isEmpty();
         if (illegal) {
@@ -48,7 +50,10 @@ public class LoginServiceImpl implements LoginService {
         if (illegal) {
             throw new Exception("当前所选角色不匹配");
         }
-        return serialNo;
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("serialNo", serialNo);
+        resultMap.put("hasLogin", user.getHasLogin());
+        return resultMap;
     }
 
     @Override

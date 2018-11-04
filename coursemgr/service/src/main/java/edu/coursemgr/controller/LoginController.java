@@ -32,7 +32,8 @@ public class LoginController extends BaseController {
         String serialNo = getParam(requestMap,"username");
         String password = getParam(requestMap,"password");
         String role = getParam(requestMap,"role");
-        return customResponse("token", loginService.login(serialNo, password, role));
+//        return customResponse("token", loginService.login(serialNo, password, role));
+        return loginService.login(serialNo, password, role);
     }
 
     @RequestMapping(value="/getUserInfo", method=RequestMethod.POST)

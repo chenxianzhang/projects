@@ -27,11 +27,11 @@ const user = {
             return new Promise((resolve, reject) => {
                 login(userInfo).then(response => {
                     if (response.status === 1) {
-                        commit('SET_TOKEN', response.data.token)
+                        commit('SET_TOKEN', response.data.serialNo)
                         commit('SET_LOGIN_ROLE', userInfo.role)
                         setLoginRole(userInfo.role);
-                        setToken(response.data.token)
-                        resolve()
+                        setToken(response.data.serialNo)
+                        resolve(response.data)
                     } else {
                         reject(response.msg);
                     }

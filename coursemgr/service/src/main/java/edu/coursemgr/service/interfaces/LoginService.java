@@ -5,6 +5,7 @@ import edu.coursemgr.model.User;
 import edu.coursemgr.pojo.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,7 +21,7 @@ public interface LoginService {
      * @return
      * @throws Exception
      */
-    String login(String serialNo, String password, String roleId) throws Exception;
+    Map<String, Object> login(String serialNo, String password, String roleId) throws Exception;
 
     /**
      * 获取用户信息
