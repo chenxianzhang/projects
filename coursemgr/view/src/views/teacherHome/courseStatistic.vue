@@ -2,23 +2,45 @@
     <div :style="{height: containerHeight}">
       <el-row class="statistic-all-grade">
         <el-col :span="24" class="grade-item">
-          <div style="padding-right: 20px; text-align: right; margin-top: 5px;">
-            <el-button v-show="!showBackBtn" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('asc')">升序</el-button>
-            <el-button v-show="!showBackBtn" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('desc')">降序</el-button>
-            <el-button v-show="showBackBtn" size="mini" style="height: 20px; line-height: 5px; cursor: pointer;" @click.stop="back2AllGradeStatistic">返回</el-button>
+          <div class="card-title-span">
+            <span style="display: flex; align-items: center; justify-content: center;">
+              <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">成绩统计</div>
+              <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">GRADE STATISTIC</div>
+            </span>
+            <span>
+              <el-button v-show="!showBackBtn" size="small" style="height: 30px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('asc')">升序</el-button>
+              <el-button v-show="!showBackBtn" size="small" style="height: 30px; line-height: 5px; cursor: pointer;" @click.stop="handleSortFunc('desc')">降序</el-button>
+              <el-button v-show="showBackBtn" size="small" style="height: 30px; line-height: 5px; cursor: pointer;" @click.stop="back2AllGradeStatistic">返回</el-button>
+            </span>
           </div>
-          <div ref="grade_static" class="all-grade-item">
+          <div ref="grade_static" class="grade-item">
             所有成绩统计
           </div>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="statistic-all-grade-bottom">
         <el-col :span="12" class="statistic-task-finish">
+          <div class="card-title-span">
+            <span style="display: flex; align-items: center; justify-content: center;">
+              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #00C8B5; margin-right: 10px;"></div>
+              <span style=" margin-right: 15px;">提交次数</span>
+              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #008276; margin-right: 10px;"></div>
+              <span>审批次数</span>
+            </span>
+          </div>
           <div ref="task_static" class="grade-item">
             任务完成情况统计
           </div>
         </el-col>
         <el-col :span="12" class="statistic-task-finish">
+          <div class="card-title-span">
+            <span style="display: flex; align-items: center; justify-content: center;">
+              <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">题型占比统计</div>
+              <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">ITEM TYPE PROPORTION STATISTIC</div>
+          </span>
+          </div>
           <div ref="stem_static" class="grade-item">
             题型数目统计
           </div>
@@ -45,7 +67,7 @@
       mounted(){
           let self = this;
           this.$nextTick(()=>{
-            this.containerHeight = document.getElementsByClassName('container')[0].clientHeight - 74 + 'px';
+            this.containerHeight = document.getElementsByClassName('container')[0].clientHeight - 94 + 'px';
             setTimeout(()=>{
               this.lineGroup();
               this.taskFinishStatus();
@@ -85,12 +107,18 @@
             }
 
             this.showBackBtn = false;
-
+            let maxValue=0,minValue=0,avgValue=0,cnt=0,totalValue=0;
             if(resp.data.studentScoreList && resp.data.studentScoreList.length !== 0){
+              minValue=maxValue=avgValue=resp.data.studentScoreList[0].totalScore;
               resp.data.studentScoreList.forEach((item)=>{
                 xData.push(item.studentName);
                 yData.push(item.totalScore);
+                cnt++;
+                totalValue += item.totalScore;
+                maxValue = maxValue >= item.totalScore ? maxValue : item.totalScore;
+                minValue = minValue <= item.totalScore ? minValue : item.totalScore;
               });
+              avgValue = avgValue / cnt;
             }
             let option = {
               barMaxWidth:60,
@@ -132,7 +160,53 @@
                 {
                   name: '总分',
                   type: 'bar',
-                  data: yData
+                  data: yData,
+                  itemStyle: {
+                    normal: {
+                      color: function(params) {
+                        var colorList = ['#7266BA', '#01C8B5', '#FE9226'];
+                        return colorList[params.dataIndex % 3]
+                      }
+                    },
+                  },
+                  markLine: {
+                    silent: true,
+                    lineStyle:{
+                      type:'solid'
+                    },
+                    data: [
+                      {
+                        type : 'max',
+                        name: '最大值',
+                        itemStyle:{
+                          color:'#FFC892'
+                        },
+                        label:{
+                          formatter: maxValue
+                        }
+                      },
+                      {
+                        type : 'min',
+                        name: '最小值',
+                        itemStyle:{
+                          color:'#B9B2DC'
+                        },
+                        label:{
+                          formatter: minValue
+                        }
+                      },
+                      {
+                        type : 'average',
+                        name: '平均值',
+                        itemStyle:{
+                          color:'#7FE3D9'
+                        },
+                        label:{
+                          formatter: avgValue
+                        }
+                      }
+                    ]
+                  }
                 }
               ]
             };
@@ -158,7 +232,7 @@
          * 任务完成情况/评阅情况统计
          * */
         taskFinishStatus(){
-          let xData = [], finishData=[], submitData=[];
+          let xData = [], yData=[];
           statTaskSubmitReview({courseId: this.variables.courseId}).then(resp => {
               if (resp.status === 0) {
                 console.log(resp.msg);
@@ -168,33 +242,24 @@
               if(resp.data && resp.data.length !== 0){
                 resp.data.forEach((item)=>{
                   xData.push(item.taskName);
-                  finishData.push(item.finishedCnt);
-                  submitData.push(item.submitCnt);
+                  yData.push(item.submitCnt);
+                  yData.push(item.finishedCnt);
                 });
               }
-            let labelOption = {
-              normal: {
-                show: true,
-                formatter: '{c}  {name|{a}}',
-                fontSize: 12,
-                rich: {
-                  name: {
-                    textBorderColor: '#fff'
-                  }
-                }
-              }
-            };
             let option = {
               barMaxWidth:60,
-              color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+              color: ['#00C8B5', '#008276'],
               tooltip: {
                 trigger: 'axis',
                 axisPointer: {
                   type: 'shadow'
+                },
+                formatter: function (a,b,c) {
+                  if(a[0].dataIndex % 2 === 0){
+                    return `<span>提交次数：` + a[0].value + `次</span>`;
+                  }
+                  return `<span>审核次数：` + a[0].value + `次</span>`;
                 }
-              },
-              legend: {
-                data: ['提交次数', '审批次数']
               },
               calculable: true,
               xAxis: [
@@ -213,17 +278,23 @@
               ],
               series: [
                 {
-                  name: '提交次数',
-                  type: 'bar',
+                  name: '次数',
+                  type: 'line',
                   barGap: 0,
-                  label: labelOption,
-                  data: submitData
-                },
-                {
-                  name: '审批次数',
-                  type: 'bar',
-                  label: labelOption,
-                  data: finishData
+                  data: yData,
+                  symbol:'circle',
+                  symbolSize:10,
+                  itemStyle: {
+                    normal: {
+                      color: function(params) {
+                        var colorList = ['#00C8B5', '#008276'];
+                        return colorList[params.dataIndex % 2]
+                      },
+                      lineStyle:{
+                        color:'#00C8B5'
+                      }
+                    },
+                  },
                 }
               ]
             };
@@ -248,11 +319,6 @@
               });
             }
             let option = {
-              title : {
-                text: '题型占比统计',
-                // subtext: '纯属虚构',
-                x:'center'
-              },
               tooltip : {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -269,6 +335,12 @@
                       shadowBlur: 10,
                       shadowOffsetX: 0,
                       shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+                    normal:{
+                      color: function(params) {
+                        var colorList = ['#FE9226', '#7266BA', '#01C8B5'];
+                        return colorList[params.dataIndex % 3]
+                      },
                     }
                   }
                 }
@@ -356,21 +428,28 @@
 </script>
 
 <style scoped>
+  .card-title-span{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 0 20px;
+    height: 54px;
+    background-color: #F6F6F6;
+    border: 1px solid #EBEBEB;
+    border-bottom: 0px;
+  }
   .statistic-all-grade{
     height: calc(50% - 10px);
   }
 
-  .all-grade-item{
-    height: calc(100% - 20px);
+  .grade-item{
+    height: calc(100% - 54px);
     width: 100%;
-    /*box-shadow: 0px 0px 2px 1px gray;*/
+    background-color: white;
+    border: 1px solid #EBEBEB;
   }
 
-  .grade-item{
-    height: 100%;
-    width: 100%;
-    box-shadow: 0px 0px 2px 1px gray;
-  }
 
   .statistic-all-grade-bottom{
     margin-top: 20px;
@@ -379,5 +458,8 @@
 
   .statistic-task-finish{
     height: 100%;
+  }
+  .container-scrollbar{
+    background-color: #F3F4F8;
   }
 </style>
