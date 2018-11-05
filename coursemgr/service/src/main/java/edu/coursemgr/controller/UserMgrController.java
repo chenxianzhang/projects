@@ -132,6 +132,7 @@ public class UserMgrController extends BaseController {
         User user = new User();
         user.setSerialNo(serialNo);
         user.setPassword(serialNo);
+//        user.setHasLogin(1);
         return userMgrService.updateUser(user);
     }
 

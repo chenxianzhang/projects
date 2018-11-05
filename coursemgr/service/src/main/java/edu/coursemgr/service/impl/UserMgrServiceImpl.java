@@ -232,7 +232,7 @@ public class UserMgrServiceImpl implements UserMgrService {
         if (CommonUtils.isEmpty(user.getSerialNo())) {
             throw new Exception("用户信息异常，教工号或学号为空");
         }
-        user.setHasLogin(0);
+//        user.setHasLogin(0);
         return userMapper.updateBySerialNo(user);
     }
 
