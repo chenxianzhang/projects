@@ -58,7 +58,7 @@
     </div>
     <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog"></upload-student-comp>
 
-    <drag-dialog :title="courseDlgTitle" width="30%" :dialogVisible="courseDlgVisible" @close="handleCourseClose" @confirm="updateCourse">
+    <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible" @close="handleCourseClose" @confirm="updateCourse">
       <div class="edit-container">
         <div class="edit-row">
           <span class="label">课程名称</span>
@@ -80,24 +80,32 @@
     <student-add-comp :studentOperInfo="studentOperInfo" :showStudentAddDialog="showStudentAddDialog" @hideStudentAddDialog="handleHideStudentAddDialog">
     </student-add-comp>
 
-    <drag-dialog title="学生待办移交" width="36%" v-if="showgTaskHandleOutDlg" :dialogVisible="showgTaskHandleOutDlg" @close="handlegTaskClose" @confirm="handleOutgTask">
-      <div>
+    <drag-dialog title="学生待办移交" width="36%" v-if="showgTaskHandleOutDlg"
+                 :dialogVisible="showgTaskHandleOutDlg" @close="handlegTaskClose" @confirm="handleOutgTask">
+      <div class="handle-out-container">
         <span style="color: #4481ff;">{{curHandleUser.name}}</span>
         <span> 的待办事项</span>
         <div style="max-height: 300px; overflow: auto;">
           <el-tree ref="gtaskTree" :data="curHandleUsergTasks" show-checkbox>
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-              审阅
-              <span style="color: #009687"> {{data.targetSerialName}} </span>关于“
-              <span style="color: #009687"> {{data.taskName}} </span>”任务主观题
-            </span>
+            <!--<span class="custom-tree-node" slot-scope="{ node, data }">-->
+              <!--审阅<span style="color: #009687"> {{data.targetSerialName}} </span>关于“<span style="color: #009687"> {{data.taskName}} </span>”任务主观题-->
+            <!--</span>-->
+
+            <div class="grouped-item" slot-scope="{ node, data }">
+              <div style="margin-left: 10px">
+                审阅
+                <span class="span-hight-light"> {{data.targetSerialName}} </span>
+                关于<span class="span-hight-light"> {{data.taskName}} </span>任务的主观题
+              </div>
+             </div>
+
           </el-tree>
         </div>
-        <el-row :scutter="10" v-if="curHandleUsergTasks && curHandleUsergTasks.length !== 0">
-          <el-col :span="6" style="text-align: center">
-            <span style="line-height: 30px">移交给：</span>
+        <el-row :scutter="10" v-if="curHandleUsergTasks && curHandleUsergTasks.length !== 0" style="height: 40px; margin-top: 10px">
+          <el-col :span="4" style="text-align: center">
+            <span style="line-height: 40px">移交给：</span>
           </el-col>
-          <el-col :span="18">
+          <el-col :span="20" style="height: 40px">
             <el-select v-model="handleOver2UserId" filterable placeholder="请选择..." style="width: 90%">
               <el-option v-for="item in canHandleOverUsers" :key="item.serialNo" :label="item.name" :value="item.serialNo">
               </el-option>
@@ -128,7 +136,9 @@ export default {
   components: { UploadStudentComp, dragDialog, studentAddComp },
   data() {
     return {
-      defaultProps: {},
+      defaultProps:{
+
+      },
       showgTaskHandleOutDlg: false, //待办移交弹窗
       curHandleUser: '',
       curHandleUsergTasks: [], //当前用户的待办事项
@@ -372,12 +382,12 @@ export default {
      * 确认移交待办事项
      * */
     handleOutgTask() {
-      let scheduleList = this.$refs.gtaskTree.getCheckedNodes()
+      let scheduleList = this.$refs.gtaskTree.getCheckedNodes();
       handOverSchedule({
         courseId: this.variables.courseId,
         originStudentNo: this.curHandleUser.serialNo,
         dstStudentNo: this.handleOver2UserId,
-        scheduleList: scheduleList
+        scheduleList:scheduleList
       }).then(resp => {
         if (resp.status === 0) {
           this.$message.warning('移交待办事项失败！')
@@ -442,6 +452,22 @@ export default {
 </script>
 
 <style scoped>
+  .grouped-item{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .span-hight-light{
+    background-color: #FE9226;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+
 .main-container {
   height: 100%;
   width: 100%;
@@ -513,39 +539,36 @@ export default {
   background-size: 100% 100%;
 }
 
-.icon {
-  width: 22px;
-  height: 22px;
-  left: 2px;
-  color: white;
-  display: inline-block;
-  margin: 0 5px;
-  cursor: pointer;
-}
+  .icon {
+    width: 22px;
+    height: 22px;
+    left: 2px;
+    color: white;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+  }
 
-.icon-course-edit {
-  background: url('../../../static/img/basicInfo/edit-normal.png') no-repeat
-    left;
-}
-.icon-course-edit:hover {
-  background: url('../../../static/img/basicInfo/edit-hover.png') no-repeat left;
-}
+  .icon-course-edit {
+    background: url("../../../static/img/basicInfo/edit-normal.png") no-repeat left;
+  }
+  .icon-course-edit:hover {
+    background: url("../../../static/img/basicInfo/edit-hover.png") no-repeat left;
+  }
 
-.icon-course-delete {
-  background: url('../../../static/img/basicInfo/del-normal.png') no-repeat left;
-}
-.icon-course-delete:hover {
-  background: url('../../../static/img/basicInfo/del-hover.png') no-repeat left;
-}
+  .icon-course-delete{
+    background: url("../../../static/img/basicInfo/del-normal.png") no-repeat left;
+  }
+  .icon-course-delete:hover{
+    background: url("../../../static/img/basicInfo/del-hover.png") no-repeat left;
+  }
 
-.icon-course-todo {
-  background: url('../../../static/img/basicInfo/gtask-normal.png') no-repeat
-    left;
-}
-.icon-course-todo:hover {
-  background: url('../../../static/img/basicInfo/gtask-hover.png') no-repeat
-    left;
-}
+  .icon-course-todo{
+    background: url("../../../static/img/basicInfo/gtask-normal.png") no-repeat left;
+  }
+  .icon-course-todo:hover{
+    background: url("../../../static/img/basicInfo/gtask-hover.png") no-repeat left;
+  }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .edit-container {
@@ -560,12 +583,8 @@ export default {
       margin-right: 20px;
     }
     .el-input {
-      width: calc(100% - 90px);
-      // width: 180px;
-    }
-    .el-input-number {
-      line-height: 30px;
-      width: calc(100% - 90px);
+      // width: calc(100% - 90px);
+      width: 180px;
     }
     .el-textarea {
       width: calc(100% - 90px);
@@ -576,4 +595,9 @@ export default {
 .pagination {
   margin-top: 10px;
 }
+</style>
+<style>
+  .handle-out-container .el-input__inner{
+    height: 40px !important;
+  }
 </style>
