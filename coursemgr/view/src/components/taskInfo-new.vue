@@ -484,10 +484,6 @@ export default {
     border-radius: 0;
   }
 
-  .el-scrollbar__wrap{
-    background-color: #F3F4F8 !important;
-  }
-
   .task-name .el-input__icon{
     line-height: 35px !important;
   }

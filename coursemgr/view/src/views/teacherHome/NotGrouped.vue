@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-table
-      border
       ref="multipleTable"
       :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}"
       :data="groupableStudents"

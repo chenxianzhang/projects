@@ -7,7 +7,6 @@
       </div>
       <el-table :data="tasks"
                 style="width: 100%"
-                border
                 :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
         <el-table-column type="index" width="55" align="center"></el-table-column>
         <el-table-column prop="name" label="任务名称" align="center"> </el-table-column>
@@ -35,18 +34,32 @@
             <!-- <div class="operator">
               <i class="operator-icon-delete" @click="handleDeleteClick(scope.row)"></i>
             </div> -->
-            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">
-              <i class="operator-icon-detail"></i>
-            </el-button>
-            <el-button v-if="isStudent" :disabled="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false'" @click="handleAnswerClick(scope.row)" type="text" size="small">
-              <i class="operator-icon-answer"></i>
-            </el-button>
-            <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()" @click="handleModifyClick(scope.row)" type="text" size="small">
-              <i class="operator-icon-edit"></i>
-            </el-button>
-            <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">
-              <i class="operator-icon-delete"></i>
+            <el-tooltip content="详情" placement="top">
+              <el-button @click="handleDetailClick(scope.row)" type="text" size="small">
+                <i class="operator-icon-detail"></i>
               </el-button>
+            </el-tooltip>
+
+            <el-tooltip content="答题" placement="top">
+              <el-button v-if="isStudent"
+                         :disabled="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false'"
+                         @click="handleAnswerClick(scope.row)" type="text" size="small">
+                <i class="operator-icon-answer"></i>
+              </el-button>
+            </el-tooltip>
+
+            <el-tooltip content="编辑" placement="top">
+              <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()"
+                         @click="handleModifyClick(scope.row)" type="text" size="small">
+                <i class="operator-icon-edit"></i>
+              </el-button>
+            </el-tooltip>
+
+            <el-tooltip content="删除" placement="top">
+              <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">
+                <i class="operator-icon-delete"></i>
+              </el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -72,7 +85,7 @@
           <span style="margin-right: 20px">课程名：{{curTaskRowData.name}}</span><span>截止日期：{{new Date(curTaskRowData.deadline).toLocaleDateString()}}</span>
         </el-row>
         <el-row style="margin-top: 10px">
-          <el-table :data="taskFinishStateList" style="width: 100%" border
+          <el-table :data="taskFinishStateList" style="width: 100%"
                     :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
             <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
             <el-table-column prop="studentName" label="姓名" align="center"> </el-table-column>
