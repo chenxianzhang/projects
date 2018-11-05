@@ -193,6 +193,26 @@
     }
 }
 
+.operator-icon-detail {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/detail-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/detail-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+.operator-icon-answer {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/answer-default.png') no-repeat;
+    background-size: 100% 100%;
+    &:hover {
+        background: url('../../static/img/icons/answer-hover.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
+
 .operator-icon-grade {
     @extend .operator-icon;
     background: url('../../static/img/icons/custom-icon-paper-default.png') no-repeat;
@@ -216,5 +236,12 @@
     width: 18px;
     height: 18px;
     background: url('../../static/img/icons/custom-icon-back.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-info {
+    @extend .custom-icon;
+    width: 21px;
+    height: 23px;
+    background: url('../../static/img/icons/custom-icon-info.png') no-repeat;
     background-size: 100% 100%;
 }

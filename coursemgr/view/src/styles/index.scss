@@ -95,7 +95,7 @@ div:focus{
   padding: 8px 30px;
   background-color: #009788 !important;
   border: 1px solid #009788;
-  color: #fff;
+  color: #fff !important;
   &:hover {
     background-color: rgba(0, 151, 136, 0.8) !important;
     color: #fff;
@@ -104,11 +104,11 @@ div:focus{
 
 .el-button--default {
   padding: 8px 30px;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid #009788;
   color: #009788;
   &:hover {
-    background-color: rgba(0, 151, 136, 0.2) !important;
+    background-color: rgba(0, 151, 136, 0.2);
     border: 1px solid #009788;
     color: #009788;
   }
@@ -132,6 +132,12 @@ div:focus{
     border-radius: unset;
     height: 32px;
     line-height: 32px;
+  }
+}
+.el-input-number {
+  .el-input__inner {
+    border-radius: unset;
+    // height: 40px;
   }
 }
 

@@ -60,7 +60,7 @@
       </el-card>
 
     </div>
-    <drag-dialog :title="courseDlgTitle" width="36%" :dialogVisible="courseDlgVisible" @close="handleCourseClose" @confirm="saveCourse">
+    <drag-dialog :title="courseDlgTitle" width="30%" :dialogVisible="courseDlgVisible" @close="handleCourseClose" @confirm="saveCourse">
       <div class="edit-container">
         <div class="edit-row">
           <span class="label">课程名称</span>
@@ -457,7 +457,8 @@ export default {
         }
       }
     }
-    .edit-container {
+  }
+  .edit-container {
       padding: 0 20px;
       .edit-row {
         display: flex;
@@ -469,15 +470,17 @@ export default {
           margin-right: 20px;
         }
         .el-input {
-          // width: calc(100% - 90px);
-          width: 180px;
+          width: calc(100% - 90px);
+          // width: 180px;
+        }
+        .el-input-number {
+            width: calc(100% - 90px);
         }
         .el-textarea {
           width: calc(100% - 90px);
         }
       }
     }
-  }
 }
 
 .user-info-edit-icon{

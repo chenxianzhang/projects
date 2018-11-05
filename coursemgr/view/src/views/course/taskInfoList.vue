@@ -1,9 +1,9 @@
 <template>
     <div>
-      <div style="display: flex;align-items: center;justify-content: left; margin-bottom: 10px">
-        <i class="custom-icon-course-info"></i>
-        <span style="display: inline-block; margin-right: 10px; margin-left: 10px">当前课程： {{courseName}}</span>
-        <span style="color: #009687; font-weight: bold;">COURSE INFORMATION</span>
+      <div class="title">
+        <i class="custom-icon-info"></i>
+        <span class="zh">当前课程：{{courseName}}</span>
+        <span class="en">THE CURRENT COURSE</span>
       </div>
       <el-table :data="tasks"
                 style="width: 100%"
@@ -32,10 +32,21 @@
                          label="操作"
                          width="140">
           <template slot-scope="scope">
-            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">详情</el-button>
-            <el-button v-if="isStudent" :disabled="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false'" @click="handleAnswerClick(scope.row)" type="text" size="small">答题</el-button>
-            <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()" @click="handleModifyClick(scope.row)" type="text" size="small">修改</el-button>
-            <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
+            <!-- <div class="operator">
+              <i class="operator-icon-delete" @click="handleDeleteClick(scope.row)"></i>
+            </div> -->
+            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">
+              <i class="operator-icon-detail"></i>
+            </el-button>
+            <el-button v-if="isStudent" :disabled="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false'" @click="handleAnswerClick(scope.row)" type="text" size="small">
+              <i class="operator-icon-answer"></i>
+            </el-button>
+            <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()" @click="handleModifyClick(scope.row)" type="text" size="small">
+              <i class="operator-icon-edit"></i>
+            </el-button>
+            <el-button v-if="!isStudent" @click="handleDeleteClick(scope.row)" type="text" size="small">
+              <i class="operator-icon-delete"></i>
+              </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -346,4 +357,25 @@
 .ddd{
   background-color: #ee9900;
 }
+
 </style>
+
+<style lang="scss" scoped>
+.title{
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  i {
+    margin-right: 10px;
+  }
+  .zh {
+    margin-right: 20px;
+    color: #000;
+  }
+  .en {
+    color: #009788;
+    margin-top: 2px;
+  }
+}
+</style>
+
