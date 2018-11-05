@@ -370,7 +370,6 @@
               }
               this.showBackBtn = true;
               this.scoreStaticChart.clear();
-              // this.$refs.grade_static.innerHTML = '';
 
               if(resp.data && resp.data.length !== 0){
                 resp.data.forEach((item)=>{
@@ -380,8 +379,13 @@
                 });
               }
               let option = {
-                color: [ '#4cabce', '#006699', '#003366', '#e5323e'],
                 barMaxWidth:60,
+                grid:{
+                  top:40,
+                  left:40,
+                  right:50,
+                  bottom:30,
+                },
                 tooltip: {
                   trigger: 'axis',
                   axisPointer: {
@@ -411,12 +415,22 @@
                     name: '得分',
                     type: 'bar',
                     barGap: 0,
-                    data: score
+                    data: score,
+                    itemStyle: {
+                      normal: {
+                        color:'#FE9226'
+                      },
+                    },
                   },
                   {
                     name: '总分',
                     type: 'bar',
-                    data: totalScore
+                    data: totalScore,
+                    itemStyle: {
+                      normal: {
+                        color:'#7266BA'
+                      },
+                    },
                   }
                 ]
               };

@@ -2,8 +2,8 @@
   <div class="main-container">
     <div class="course-student-title">
       <div style="display: flex; align-items: center; justify-content: center;">
-        <i class="course-icon-info"></i>
-        <span style="display: inline-block; margin-right: 10px">课程信息</span>
+        <i class="custom-icon-course-info"></i>
+        <span style="display: inline-block; margin-right: 10px; margin-left: 10px">课程信息</span>
         <span style="color: #009687; font-weight: bold;">COURSE INFORMATION</span>
       </div>
     </div>

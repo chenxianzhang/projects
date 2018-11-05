@@ -1,7 +1,11 @@
 <template>
   <div>
-    <div>
-      <span class="title">当前课程：{{courseName}}</span>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <i class="custom-icon-course-info"></i>
+        <span class="title">当前课程：{{courseName}}</span>
+        <span style="margin-left: 10px; font-weight: bold; color: #009589">THE CURRENT COURSE</span>
+      </div>
       <div class="buttons">
         <el-button size="small" @click="download()">导出为excel</el-button>
         <el-button size="small" @click="exportZip">过程性打包</el-button>
@@ -26,8 +30,28 @@
       </el-table-column>
     </el-table>
     <div v-if="isStudent" class="statistic">
-      <div class="left" ref="statisticTaskScoreEl"></div>
-      <div class="right" ref="statisticSortEl"></div>
+      <div class="left">
+        <div class="card-title-span">
+            <span style="display: flex; align-items: center; justify-content: center;">
+              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #FE9226; margin-right: 10px;"></div>
+              <span style=" margin-right: 15px;">得分</span>
+              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #7266BA; margin-right: 10px;"></div>
+              <span>总分</span>
+            </span>
+        </div>
+        <div style="height: calc(100% - 54px); width: 100%; background-color: white;" ref="statisticTaskScoreEl"></div>
+      </div>
+
+      <div class="right">
+        <div class="card-title-span">
+            <span style="display: flex; align-items: center; justify-content: center;">
+              <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">统计图</div>
+              <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">THE STATISTICAL FIGURE</div>
+          </span>
+        </div>
+        <div style="height: calc(100% - 54px); width: 100%; background-color: white;" ref="statisticSortEl"></div>
+      </div>
     </div>
     <div class="pagination" v-if="!isStudent">
       <el-pagination
@@ -138,7 +162,7 @@
             let totalHeight = document.body.getBoundingClientRect().height;
             document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
             document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
-          }, 50);
+          }, 100);
         },
         transferData(data) {
           if (!data) {
@@ -228,17 +252,22 @@
               });
             }
             let option = {
-              color: [ '#4cabce', '#006699', '#003366', '#e5323e'],
               barMaxWidth:60,
+              grid:{
+                top:40,
+                left:40,
+                right:50,
+                bottom:30,
+              },
               tooltip: {
                 trigger: 'axis',
                 axisPointer: {
                   type: 'shadow'
                 }
               },
-              legend: {
-                data: ['得分', '总分']
-              },
+              // legend: {
+              //   data: ['得分', '总分']
+              // },
               calculable: true,
               xAxis: [
                 {
@@ -258,15 +287,19 @@
                 {
                   name: '得分',
                   type: 'bar',
-                  //stack:'score',
                   barGap: 0,
-                  data: score
+                  data: score,
+                  itemStyle:{
+                    color:'#FE9226'
+                  },
                 },
                 {
                   name: '总分',
                   type: 'bar',
-                  //stack:'score',
-                  data: totalScore
+                  data: totalScore,
+                  itemStyle:{
+                    color:'#7266BA'
+                  },
                 }
               ]
             };
@@ -287,6 +320,7 @@
               }
               debugger
               let option = {
+                color:['#7266BA','#02C9B6','#FE9226'],
                 tooltip : {
                   formatter: "{a}：{c}"
                 },
@@ -298,9 +332,10 @@
                     max: resp.data.totalStudentCnt/5===0 ? resp.data.totalStudentCnt : (resp.data.totalStudentCnt/5 + 1)*5,
                     splitNumber: resp.data.totalStudentCnt/5 === 0 ? resp.data.totalStudentCnt : (resp.data.totalStudentCnt/5 + 1),
                     radius: '85%',
-                    axisLine: {            // 坐标轴线
+                    axisLine: {         // 坐标轴线
                       lineStyle: {       // 属性lineStyle控制线条样式
-                        width: 10
+                        color: [[0.2, '#7266BA'], [0.8, '#02C9B6'], [1, '#FE9226']],
+                        width: 10,
                       }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -365,7 +400,8 @@
                     endAngle:45,
                     axisLine: {            // 坐标轴线
                       lineStyle: {       // 属性lineStyle控制线条样式
-                        width: 8
+                        width: 8,
+                        color: [[0.2, '#7266BA'], [0.8, '#02C9B6'], [1, '#FE9226']],
                       }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -404,7 +440,8 @@
                     endAngle: 45,
                     axisLine: {            // 坐标轴线
                       lineStyle: {       // 属性lineStyle控制线条样式
-                        width: 8
+                        width: 8,
+                        color: [[0.2, '#7266BA'], [0.8, '#02C9B6'], [1, '#FE9226']],
                       }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -417,9 +454,9 @@
                     axisLabel: {
                       formatter:function(v){
                         switch (v + '') {
-                          case '0' : return '100%';
+                          case '0' : return '';
                           case '1' : return '客观题得分率';
-                          case '2' : return '0%';
+                          case '2' : return '';
                         }
                       }
                     },
@@ -451,7 +488,8 @@
                     endAngle: 225,
                     axisLine: {            // 坐标轴线
                       lineStyle: {       // 属性lineStyle控制线条样式
-                        width: 8
+                        width: 8,
+                        color: [[0.2, '#7266BA'], [0.8, '#02C9B6'], [1, '#FE9226']],
                       }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -460,9 +498,9 @@
                     axisLabel: {
                       formatter:function(v){
                         switch (v + '') {
-                          case '0' : return '100%';
+                          case '0' : return '';
                           case '1' : return '主观题得分率';
-                          case '2' : return '0%';
+                          case '2' : return '';
                         }
                       }
                     },
@@ -497,29 +535,38 @@
 </script>
 
 <style scoped>
+  .card-title-span{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 0 20px;
+    height: 54px;
+    background-color: #F6F6F6;
+    border: 1px solid #EBEBEB;
+    border-bottom: 0px;
+  }
+
   .statistic{
     margin-top: 10px;
     height: 300px;
   }
   .statistic .left{
     height: 100%;
-    width: calc(50% - 10px);
-    margin: 0 5px;
+    width: calc(50% - 5px);
+    margin-right: 5px;
     float: left;
-    box-shadow: 0px 0px 2px 1px gray;
   }
   .statistic .right{
     height: 100%;
-    width: calc(50% - 10px);
-    margin: 0 5px;
+    width: calc(50% - 5px);
+    margin-left: 5px;
     float: left;
-    box-shadow: 0px 0px 2px 1px gray;
   }
   .title{
-    font-family: cursive;
     font-size: larger;
-    font-weight: bold;
     line-height: 30px;
+    margin-left: 5px;
   }
   .buttons{
     margin-bottom: 10px;

@@ -1,6 +1,10 @@
 <template>
     <div>
-      <h4>当前课程： {{courseName}}</h4>
+      <div style="display: flex;align-items: center;justify-content: left; margin-bottom: 10px">
+        <i class="custom-icon-course-info"></i>
+        <span style="display: inline-block; margin-right: 10px; margin-left: 10px">当前课程： {{courseName}}</span>
+        <span style="color: #009687; font-weight: bold;">COURSE INFORMATION</span>
+      </div>
       <el-table :data="tasks"
                 style="width: 100%"
                 border

@@ -302,7 +302,6 @@
     margin-left: calc(50% - 40px);
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 80px;
   }
   .task-name-label > span{
     font-family: cursive;
