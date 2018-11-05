@@ -84,7 +84,7 @@
 <script>
 import { getTeacherCourseList, saveCourse, getStuCourseList } from '@/api/home'
 import { findUser, update } from '@/api/login'
-import { validateEmail, validatePhone } from '@/utils/validate'
+import { validateEmail, validatePhone, validatePwd } from '@/utils/validate'
 import { setCourseId } from '@/utils/auth'
 import dragDialog from '@/components/dragDialog'
 import pageTitle from '../layout/components/pageTitle'
@@ -136,30 +136,30 @@ export default {
       this.userInfo = JSON.parse(JSON.stringify(this.userInfoBak))
     },
     save(mes) {
-      // if (this.userInfo.college.trim() === '') {
-      //   this.$message({
-      //     showClose: true,
-      //     type: 'warning',
-      //     message: '学院信息不能为空'
-      //   })
-      //   return
-      // }
-      // if (!validatePhone(this.userInfo.cellphone)) {
-      //   this.$message({
-      //           showClose: true,
-      //           type: 'warning',
-      //           message: "请输入有效的手机号码"
-      //        });
-      //      return;
-      // }
-      /*if (!validateEmail(this.userInfo.email)) {
-         this.$message({
-              showClose: true,
-              type: 'warning',
-              message: "请输入有效的邮箱地址"
-           });
+      if (!validatePwd(this.userInfo.password)) {
+        this.$message({
+          showClose: true,
+          type: 'warning',
+          message: '密码不能为空，且长度不能小于6！'
+        })
+        return
+      }
+      if (!validatePhone(this.userInfo.cellphone)) {
+        this.$message({
+                showClose: true,
+                type: 'warning',
+                message: "请输入有效的手机号码"
+             });
            return;
-      }*/
+      }
+      if (!validateEmail(this.userInfo.email)) {
+        this.$message({
+          showClose: true,
+          type: 'warning',
+          message: "请输入有效的邮箱地址"
+        });
+        return;
+      }
       let self = this
       update(this.userInfo)
         .then(response => {

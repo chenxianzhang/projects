@@ -45,3 +45,13 @@ export function validatePhone(phone) {
   return reg.test(phone);
 }
 
+export function validatePwd(pwd) {
+  if(pwd.trim() === ''){
+    return false;
+  }
+  if(pwd.trim().length < 6){
+    return false;
+  }
+  return true;
+}
+

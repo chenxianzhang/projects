@@ -35,7 +35,9 @@
           <el-button size="small" type="primary" @click="downloadStuTemplate">模板下载</el-button>
         </div>
       </div>
-      <el-table :data="studentsInCourse" border :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" style="width: 100%;">
+      <el-table :data="studentsInCourse"
+                :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}"
+                style="width: 100%;">
         <el-table-column type="index" width="55" align="center"></el-table-column>
         <el-table-column align="center" prop="name" label="姓名" width="180"></el-table-column>
         <el-table-column align="center" prop="serialNo" label="学号"></el-table-column>
@@ -52,7 +54,13 @@
         </el-table-column>
       </el-table>
       <div class="pagination">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currPage" :page-sizes="[10, 15, 20, 30]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalCount" style="float: right ">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currPage"
+                       :page-sizes="[10, 15, 20, 30]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="totalCount" style="float: right ">
         </el-pagination>
       </div>
     </div>

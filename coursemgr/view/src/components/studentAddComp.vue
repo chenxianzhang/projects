@@ -13,8 +13,8 @@
           <el-input v-model="studentOperInfo.student.name" placeholder="请输入姓名"></el-input>
         </el-tooltip>
       </el-form-item>
-      <el-form-item label="学院：" required>
-        <el-tooltip content="学院不能为空" placement="right">
+      <el-form-item label="学院：">
+        <el-tooltip content="请输入正确的学院信息" placement="right">
           <el-input v-model="studentOperInfo.student.college" placeholder="请输入学院名称"></el-input>
         </el-tooltip>
       </el-form-item>
@@ -28,7 +28,7 @@
           <el-input v-model="studentOperInfo.student.profession" placeholder="请输入专业名称"></el-input>
         </el-tooltip>
       </el-form-item>
-      <el-form-item label="性别：" required>
+      <el-form-item label="性别：">
         <el-radio-group v-model="studentOperInfo.student.sex">
           <el-radio label="男">男</el-radio>
           <el-radio label="女">女</el-radio>
@@ -86,14 +86,14 @@
           this.$message.warning('专业名称不能为空！');
           return;
         }
-        if(this.studentOperInfo.student.college.trim() === ''){
-          this.$message.warning('学院名称不能为空！');
-          return;
-        }
-        if(this.studentOperInfo.student.sex.trim() === ''){
-          this.$message.warning('性别不能为空！');
-          return;
-        }
+        // if(this.studentOperInfo.student.college.trim() === ''){
+        //   this.$message.warning('学院名称不能为空！');
+        //   return;
+        // }
+        // if(this.studentOperInfo.student.sex.trim() === ''){
+        //   this.$message.warning('性别不能为空！');
+        //   return;
+        // }
         this.getDefaultPwd(this.studentOperInfo.student.serialNo);
         let self = this;
         /**
