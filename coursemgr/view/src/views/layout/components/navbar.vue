@@ -1,10 +1,10 @@
 <template>
-    <el-menu 
+    <el-menu
         class="custom-menu"
-        :router="router" 
-        :collapse="collapse" 
+        :router="router"
+        :collapse="collapse"
         :default-active="active"
-        text-color="#fff" 
+        text-color="#fff"
         @select="handleSelect">
         <template v-for="menu in menus">
             <el-menu-item v-if="!menu.meta.isGroup" :key="menu.name" :index="resolvePath(menu.path)">
@@ -86,7 +86,7 @@ export default {
     }
   }
   .is-active {
-    color: rgb(0, 149, 137);
+    color: rgb(0, 149, 137) !important;
     border-left: 3px solid rgb(0, 150, 135);
   }
   .el-submenu {
