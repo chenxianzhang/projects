@@ -71,13 +71,13 @@ export default {
 </script>
 <style lang="scss">
 .custom-menu {
-  background-color: transparent;
+  background-color: transparent !important;
   .el-menu {
-    background-color: transparent;
+    background-color: transparent !important;
   }
   .el-menu-item, .el-submenu__title {
     border-bottom: 1px solid rgb(19, 27, 34) !important;
-    background-color: transparent;
+    background-color: transparent !important;
     i {
       margin-right: 5px;
     }
