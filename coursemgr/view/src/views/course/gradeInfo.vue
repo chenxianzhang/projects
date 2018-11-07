@@ -2,9 +2,10 @@
   <div>
     <div style="display: flex; align-items: center; justify-content: space-between">
       <div style="display: flex; align-items: center; justify-content: center;">
-        <i class="custom-icon-course-info"></i>
-        <span class="title">当前课程：{{courseName}}</span>
-        <span style="margin-left: 10px; font-weight: bold; color: #009589">THE CURRENT COURSE</span>
+        <!--<i class="custom-icon-course-info"></i>-->
+        <!--<span class="title">当前课程：{{courseName}}</span>-->
+        <!--<span style="margin-left: 10px; font-weight: bold; color: #009589">THE CURRENT COURSE</span>-->
+
       </div>
       <div class="buttons">
         <el-button size="small" @click="download()">导出为excel</el-button>

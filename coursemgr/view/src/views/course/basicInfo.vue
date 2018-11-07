@@ -211,7 +211,7 @@ export default {
         let courseElHeight = document
           .getElementsByClassName('course-info')[0]
           .getBoundingClientRect().height
-        let subHeight = 335
+        let subHeight = 350
         document.getElementsByClassName(
           'el-table__body-wrapper'
         )[0].style.height =

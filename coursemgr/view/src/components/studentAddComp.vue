@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item label="学号：" required>
         <el-tooltip content="学号不能少于7位" placement="right">
-          <el-input v-model="studentOperInfo.student.serialNo" placeholder="请输入学号"></el-input>
+          <el-input v-model="studentOperInfo.student.serialNo" placeholder="请输入学号" :disabled="studentOperInfo.operType === 'edit'"></el-input>
         </el-tooltip>
       </el-form-item>
       <el-form-item label="专业：" required>
