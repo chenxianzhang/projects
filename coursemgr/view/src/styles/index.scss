@@ -91,14 +91,27 @@ div:focus{
   border-radius: 32px;
 }
 
+.el-input-group__append{
+  .el-button--primary{
+    padding: 8px 30px;
+    background-color: rgba(0, 146, 133, 0.8) !important;
+    border: 1px solid #009788;
+    color: #fff !important;
+    &:hover {
+      background-color: #009788 !important;
+      color: #fff !important;
+    }
+  }
+}
+
 .el-button--primary {
   padding: 8px 30px;
-  background-color: #009788 !important;
+  background-color: #fff !important;
   border: 1px solid #009788;
-  color: #fff !important;
+  color: #009788 !important;
   &:hover {
-    background-color: rgba(0, 151, 136, 0.8) !important;
-    color: #fff;
+    background-color: #009788 !important;
+    color: #fff !important;
   }
 }
 
@@ -108,9 +121,9 @@ div:focus{
   border: 1px solid #009788;
   color: #009788;
   &:hover {
-    background-color: rgba(0, 151, 136, 0.2);
+    background-color: #009788;
     border: 1px solid #009788;
-    color: #009788;
+    color: white;
   }
 }
 

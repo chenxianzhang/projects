@@ -1,10 +1,10 @@
 <template>
     <div>
-      <div class="title">
-        <i class="custom-icon-info"></i>
-        <span class="zh">当前课程：{{courseName}}</span>
-        <span class="en">THE CURRENT COURSE</span>
-      </div>
+      <!--<div class="title">-->
+        <!--<i class="custom-icon-info"></i>-->
+        <!--<span class="zh">当前课程：{{courseName}}</span>-->
+        <!--<span class="en">THE CURRENT COURSE</span>-->
+      <!--</div>-->
       <el-table :data="tasks"
                 style="width: 100%"
                 :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}">
@@ -44,14 +44,14 @@
               <el-button v-if="isStudent"
                          :disabled="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false'"
                          @click="handleAnswerClick(scope.row)" type="text" size="small">
-                <i class="operator-icon-answer"></i>
+                <i :class="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false' ? 'operator-icon-answer-not' : 'operator-icon-answer'"></i>
               </el-button>
             </el-tooltip>
 
             <el-tooltip content="编辑" placement="top">
               <el-button v-if="!isStudent" :disabled="scope.row.startTime < new Date()"
                          @click="handleModifyClick(scope.row)" type="text" size="small">
-                <i class="operator-icon-edit"></i>
+                <i :class="scope.row.startTime < new Date() ? 'operator-icon-edit-not' : 'operator-icon-edit'"></i>
               </el-button>
             </el-tooltip>
 

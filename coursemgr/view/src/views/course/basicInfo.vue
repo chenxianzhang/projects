@@ -47,9 +47,15 @@
         <el-table-column align="center" prop="email" label="邮箱"></el-table-column>
         <el-table-column v-if="editable" align="center" label="操作" width="180">
           <template slot-scope="scope">
-            <div class="icon icon-course-edit" @click.stop="handleStudentEditClick(scope.row)"></div>
-            <div class="icon icon-course-todo" @click.stop="handleStudentTodoClick(scope.row)"></div>
-            <div class="icon icon-course-delete" @click.stop="handleStudentDeleteClick(scope.row)"></div>
+            <el-tooltip content="编辑" placement="top">
+              <div class="icon icon-course-edit" @click.stop="handleStudentEditClick(scope.row)"></div>
+            </el-tooltip>
+            <el-tooltip content="待办" placement="top">
+              <div class="icon icon-course-todo" @click.stop="handleStudentTodoClick(scope.row)"></div>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <div class="icon icon-course-delete" @click.stop="handleStudentDeleteClick(scope.row)"></div>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>

@@ -165,6 +165,12 @@
         background-size: 100% 100%;
     }
 }
+.operator-icon-edit-not {
+    @extend .operator-icon;
+    background: url('../../static/img/icons/edit-default.png') no-repeat;
+    background-size: 100% 100%;
+    cursor: not-allowed;
+}
 .operator-icon-course {
     @extend .operator-icon;
     background: url('../../static/img/icons/course-default.png') no-repeat;
@@ -204,12 +210,18 @@
 }
 .operator-icon-answer {
     @extend .operator-icon;
-    background: url('../../static/img/icons/answer-default.png') no-repeat;
+    background: url('../../static/img/icons/answer-defalut.png') no-repeat;
     background-size: 100% 100%;
     &:hover {
         background: url('../../static/img/icons/answer-hover.png') no-repeat;
         background-size: 100% 100%;
     }
+}
+.operator-icon-answer-not{
+  @extend .operator-icon;
+  background: url('../../static/img/icons/answer-defalut.png') no-repeat;
+  background-size: 100% 100%;
+  cursor: not-allowed;
 }
 
 

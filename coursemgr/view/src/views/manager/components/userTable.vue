@@ -9,10 +9,18 @@
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <div class="operator">
-            <i class="operator-icon-edit"  @click="handleClk(scope.row, 'edit')"></i>
-            <i class="operator-icon-course"  @click="handleClk(scope.row, 'course')"></i>
-            <i class="operator-icon-reset-pwd"  @click="handleClk(scope.row, 'reset')"></i>
-            <i class="operator-icon-delete"  @click="handleClk(scope.row, 'delete')"></i>
+            <el-tooltip content="编辑" placement="top">
+              <i class="operator-icon-edit"  @click="handleClk(scope.row, 'edit')"></i>
+            </el-tooltip>
+            <el-tooltip content="课程信息" placement="top">
+              <i class="operator-icon-course"  @click="handleClk(scope.row, 'course')"></i>
+            </el-tooltip>
+            <el-tooltip content="重置密码" placement="top">
+              <i class="operator-icon-reset-pwd"  @click="handleClk(scope.row, 'reset')"></i>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <i class="operator-icon-delete"  @click="handleClk(scope.row, 'delete')"></i>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -26,8 +34,12 @@
       <el-table-column align="center" label="操作" width="80">
         <template slot-scope="scope">
           <div class="operator">
-            <i class="operator-icon-grade"  @click="handleClk(scope.row, 'viewGrade')"></i>
-            <i class="operator-icon-delete"  @click="handleClk(scope.row, 'deleteCourse')"></i>
+            <el-tooltip content="成绩信息" placement="top">
+              <i class="operator-icon-grade"  @click="handleClk(scope.row, 'viewGrade')"></i>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <i class="operator-icon-delete"  @click="handleClk(scope.row, 'deleteCourse')"></i>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
