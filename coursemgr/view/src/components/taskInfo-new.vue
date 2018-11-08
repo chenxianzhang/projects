@@ -23,7 +23,7 @@
       </el-row>
     </div>
     <div class="subjectStatic">总题数 {{task.subjects.length}} 道， 总分值 <input v-model="totalScore" disabled/> 分
-      <div v-show="haSubjective" style="margin: 7px 20px; display: inline-grid;">
+      <div v-show="haSubjective" style="margin: 7px 20px; display: inline-flex;">
         <el-radio-group v-model="task.markType"
                         style=" display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap">
           <el-radio label="SELF_EVA" style="margin: 5px;">自评</el-radio>
@@ -60,8 +60,10 @@
             <img src="../../static/img/newTask/remove.png" @click="removeQuestion(index)"
                  style="cursor: pointer; margin-left: 10px;"/>
           </el-tooltip>
-          <Tinymce :height=200 v-if="item.edit" v-model="item.stem" style="margin-top: 5px;" />
-          <el-button v-if="item.edit" type="primary" @click="editConfirm(index, item, task.subjects)">确定</el-button>
+        </div>
+        <div v-if="item.edit" style="width: calc(100% - 422px); margin-left: 8px;">
+          <Tinymce :height=100 v-model="item.stem" style="margin-top: 5px; margin-bottom: 5px" />
+          <el-button type="primary" @click="editConfirm(index, item, task.subjects)">确定</el-button>
         </div>
         <!--判断题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.JUDGE" style="width: 100%;">
@@ -84,8 +86,7 @@
         <!--单选题 选项设置区域-->
         <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE" style="width: 100%;">
           <div style="margin-top: 20px; margin-left: 13px; margin-bottom: 10px">选项设置：</div>
-          <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px; margin-left: -3px; display: flex;
-            justify-content: left; align-items: center;">
+          <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px; margin-left: -3px; ">
             <span v-show="false">{{setOptionTag(cItem, cIndex)}}</span>
             <span>{{String.fromCharCode((65+cIndex))}}. </span>
             <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit"
@@ -109,17 +110,19 @@
             <el-tooltip content="设置为答案" placement="top">
               <el-radio v-model="item.answer" :label="String.fromCharCode((65+cIndex))">{{emptyContent}}</el-radio>
             </el-tooltip>
-            <Tinymce :height=200 v-if="item.selections[cIndex].edit" v-model="item.selections[cIndex].optionDes" style="margin: 5px" />
-            <el-button v-if="item.selections[cIndex].edit" type="primary" @click="editConfirm(cIndex, item.selections[cIndex])">确定</el-button>
+
+            <div v-if="item.selections[cIndex].edit" style="width: calc(100% - 422px); margin-left: 8px;">
+              <Tinymce :height=100 v-model="item.selections[cIndex].optionDes" style="margin: 5px" />
+              <el-button type="primary" @click="editConfirm(cIndex, item.selections[cIndex])">确定</el-button>
+            </div>
           </div>
         </div>
         <!--主观题  答题设置-->
-        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" style="width: calc(100% - 422px); margin-left: 8px; margin-top: 20px;">
-          <!--<el-input type="textarea" v-model="item.answer" placeholder="请填写主观题答案"></el-input>-->
+        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE"
+             style="width: calc(100% - 422px); margin-left: 8px; margin-top: 20px;">
           <Tinymce :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
         </div>
         <!--编辑和完成编辑按钮-->
-        <!--<el-button type="primary" v-if="!item.edit" @click="handleSubjectEdit(index, item)">编辑</el-button>-->
         <el-button type="primary" v-if="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
       </div>
       <!--添加按钮-->
