@@ -20,7 +20,7 @@
           <span>删除用户的同时会删除相关的所有课程信息，请输入二级密码进行确认</span>
         </div>
         <div class="level-pwd-input">
-          <el-input v-model="levelPwd" type="password" placeholder="请输入二级密码"></el-input>
+          <el-input v-model="levelPwd" type="password" placeholder="请输入二级密码" style="height: 40px !important;"></el-input>
         </div>
       </div>
     </drag-dialog>
@@ -264,12 +264,12 @@ export default {
 
 <style lang="scss">
 .user-container {
-  .right {
     .el-input {
       .el-input__inner {
-        border: 1px solid #009788;
+        border: 1px solid #ccc;
+        height: 40px !important;
         &:focus {
-          border: 1px solid #ccc;
+          border: 1px solid #009788;
         }
       }
       .el-input-group__append {
@@ -279,7 +279,6 @@ export default {
         border: 1px solid #009788;
       }
     }
-  }
 }
 </style>
 

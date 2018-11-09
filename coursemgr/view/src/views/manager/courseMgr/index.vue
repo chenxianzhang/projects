@@ -7,7 +7,7 @@
           <span>删除课程的同时会删除相关的所有成绩信息，请输入二级密码进行确认</span>
         </div>
         <div class="level-pwd-input">
-          <el-input v-model="levelPwd" type="password" placeholder="请输入二级密码" :style="{width: '60%'}"></el-input>
+          <el-input v-model="levelPwd" type="password" placeholder="请输入二级密码" style="height: 40px;"></el-input>
         </div>
       </div>
     </drag-dialog>
@@ -31,11 +31,6 @@
                          align="center"
                          :key="index">
           <template slot-scope="scope">
-            <!--<div v-if="task.type && task.type==='link'"-->
-                 <!--@click.stop="viewScoreDetail(task.taskId, scope.row.studentNo)"-->
-                 <!--style="cursor: pointer; color: #ee9900;">-->
-              <!--{{scope.row[task.prop]}}-->
-            <!--</div>-->
             <div>{{scope.row[task.prop]}}</div>
           </template>
         </el-table-column>
@@ -221,9 +216,10 @@ export default {
 .course-container {
   .el-input {
       .el-input__inner {
-        border: 1px solid #009788;
+        height: 40px !important;
+        border: 1px solid #ccc;
         &:focus {
-          border: 1px solid #ccc;
+          border: 1px solid #009788;
         }
       }
       .el-input-group__append {
@@ -251,6 +247,11 @@ export default {
 .del-container {
   .tipinfo {
     text-align: center;
+    border: 1px dashed #009788;
+    padding: 5px;
+    background-color: rgb(229, 243, 243);
+    font-size: 12px;
+    color: #009788;
   }
   .level-pwd-input {
     margin-top: 20px;
