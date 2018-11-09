@@ -384,7 +384,7 @@ export default {
             subject.stem === '' ||
             this.task.markType === ''
           ) {
-            this.$message.warning('请设置判断题题干或答案或评分方式！')
+            this.$message.warning('请设置主观题题干或答案或评分方式！')
             return false
           }
         }

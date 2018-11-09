@@ -5,7 +5,10 @@
         任务名称：<span>{{task.name}}</span>
       </div>
       <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分。
-        <span v-if="task.markType !== '自动评分' && task.markType !== ''" style="margin-left: 30px; display: inline-block;">评分方式：
+        <span v-if="task.markType !== '自动评分' && task.markType !== '' && TASK_OPERATOR_TYPE.PRE_VIEW !== operateType" style="margin-left: 30px; display: inline-block;">评分方式：
+          <span style="color: #ee5134;">{{task.markType}}</span>
+        </span>
+        <span v-if="TASK_OPERATOR_TYPE.PRE_VIEW === operateType" style="margin-left: 30px; display: inline-block;">评分方式：
           <span style="color: #ee5134;">{{task.markType === 'GROUP_INNER_EVA' ? '组内互评' : (task.markType === 'SELF_EVA' ? '自主评分' : '组间互评')}}</span>
         </span>
       </div>
@@ -73,16 +76,6 @@
               得分：<input type="number" v-model="item.score" min="0" :max="item.qScore" style="width: 40px; height: 30px;" />分;
               总分：<span v-html="item.qScore"  />分
             </div>
-            <!---->
-            <!--<div v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL"-->
-                 <!--style="width: 100px; float: right; line-height: 50px; text-align: right;">-->
-              <!--评分：<input style="width: 40px; height: 30px;" v-model="item.score" disabled />分-->
-            <!--</div>-->
-            <!--<div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT"-->
-                 <!--style="width: 100px; float: right; line-height: 50px; text-align: right;">-->
-              <!--评分：<input style="width: 40px; height: 30px;" type="number" min="0" :max="item.qScore" v-model="item.score" />分-->
-            <!--</div>-->
-
           </div>
         </div>
         <!--编辑和完成编辑按钮-->
@@ -123,7 +116,7 @@
       },
       created(){
         //教师预览
-        if(TASK_OPERATOR_TYPE.PRE_VIEW === this.operateType){
+        if(this.TASK_OPERATOR_TYPE.PRE_VIEW === this.operateType){
           this.task = this.preViewTask;
           return;
         }
