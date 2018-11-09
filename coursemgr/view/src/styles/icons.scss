@@ -56,9 +56,19 @@
     background: url('../../static/img/icons/custom-icon-paper-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-paper-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-paper-active.png') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-group {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-group-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-group-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-group-active.png') no-repeat;
     background-size: 100% 100%;
 }
 .custom-icon-check {
@@ -78,12 +88,12 @@
 }
 .custom-icon-schedule {
     @extend .custom-menu-icon;
-    background: url('../../static/img/icons/custom-icon-schedule.png') no-repeat;
+    background: url('../../static/img/icons/custom-icon-schedule-default.png') no-repeat;
     background-size: 100% 100%;
 }
-.custom-icon-schedule-default {
+.custom-icon-schedule-active {
     @extend .custom-menu-icon;
-    background: url('../../static/img/icons/custom-icon-schedule-default.png') no-repeat;
+    background: url('../../static/img/icons/custom-icon-schedule-active.png') no-repeat;
     background-size: 100% 100%;
 }
 .custom-icon-stat {
@@ -101,7 +111,17 @@
     background: url('../../static/img/icons/custom-icon-task-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-task-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-task-active.png') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-new {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-new-default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.custom-icon-new-active {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-new-default.png') no-repeat;
     background-size: 100% 100%;

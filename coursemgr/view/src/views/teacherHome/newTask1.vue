@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="new-task-container">
     <task-info-new ref="taskInfo"></task-info-new>
     <el-row :gutter="60">
       <el-col :span="8">
@@ -54,9 +54,8 @@ export default {
       if (!this.$refs.taskInfo.taskVerify()) {
         return
       }
-      this.task = this.$refs.taskInfo.task
-      let saveData = this.getSaveData()
-      debugger
+      this.task = this.$refs.taskInfo.task;
+      let saveData = this.getSaveData();
       saveTask(saveData).then(response => {
         if (response.status === 0) {
           this.$message({
@@ -66,6 +65,7 @@ export default {
           })
           return
         }
+        this.task.id = response.data.taskId;
         this.$message({
           showClose: true,
           type: 'success',
@@ -137,4 +137,13 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+</style>
+<style>
+  .new-task-container .el-dialog__header{
+    background-color: #009687;
+    color: white;
+  }
+  .el-dialog__close{
+   color: white !important;
+  }
 </style>

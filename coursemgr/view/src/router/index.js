@@ -8,9 +8,9 @@ export const constantRouterMap = [
   // { name: 'login', path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { name: 'home', path: '/home', component: () => import('@/views/home/index'), hidden: true },
   // { name: 'register', path: '/register', component: () => import('@/views/register/register'), hidden: true },
-  { 
-    name: 'login', 
-    path: '/login', 
+  {
+    name: 'login',
+    path: '/login',
     component: () => import('@/views/login/index'),
     redirect: { name: 'logIn', path: 'logIn' },
     children: [
@@ -65,6 +65,7 @@ export const asyncRouterMap = [
       meta: {
         title: '我的分组',
         icon: 'custom-icon-group',
+        activeIcon: 'custom-icon-group-active',
         roles: ['student']
       }
     }, {
@@ -74,6 +75,7 @@ export const asyncRouterMap = [
       meta: {
         title: '我的任务',
         icon: 'custom-icon-task',
+        activeIcon: 'custom-icon-task-active',
         roles: ['student']
       }
     }, {
@@ -83,6 +85,7 @@ export const asyncRouterMap = [
       meta: {
         title: '我的成绩',
         icon: 'custom-icon-paper',
+        activeIcon: 'custom-icon-paper-active',
         roles: ['student']
       }
     }, {
@@ -92,7 +95,7 @@ export const asyncRouterMap = [
       meta: {
         title: '我的待办',
         icon: 'custom-icon-schedule',
-        activeIcon: 'custom-icon-schedule-default',
+        activeIcon: 'custom-icon-schedule-active',
         roles: ['student']
       }
     }, {        // 教师
@@ -145,6 +148,7 @@ export const asyncRouterMap = [
         meta: {
           title: '任务列表',
           icon: 'custom-icon-task',
+          activeIcon: 'custom-icon-task-active',
           roles: ['teacher']
         }
       }, {
@@ -154,6 +158,7 @@ export const asyncRouterMap = [
         meta: {
           title: '新建任务',
           icon: 'custom-icon-new',
+          activeIcon: 'custom-icon-new-active',
           roles: ['teacher'],
           keepAlive: true
         }
@@ -165,6 +170,7 @@ export const asyncRouterMap = [
       meta: {
         title: '所有成绩',
         icon: 'custom-icon-paper',
+        activeIcon: 'custom-icon-paper-active',
         roles: ['teacher']
       }
     }, {
