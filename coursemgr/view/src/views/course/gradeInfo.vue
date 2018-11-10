@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" :height="tableHeight"
+    <el-table :data="tableData" :height="tableHeight"
               :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" >
       <el-table-column v-for="(task,index) in columns"
                        :label="task.label"
@@ -155,13 +155,17 @@
         this.getGradeByCourse(this.variables.courseId );
       },
       calcTableHeight(){
-        let subHeight = 250;
+        let subHeight = 230;
         if(this.isStudent){
-          subHeight = 530;
+          subHeight = 510;
         }
         setTimeout(()=>{
+          if(!document.getElementsByClassName('el-table__header-wrapper')[0]){
+            return;
+          }
           let totalHeight = document.body.getBoundingClientRect().height;
-          document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
+          let headHeight = document.getElementsByClassName('el-table__header-wrapper')[0].clientHeight;
+          document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight - headHeight + 'px';
           document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
         }, 100);
       },

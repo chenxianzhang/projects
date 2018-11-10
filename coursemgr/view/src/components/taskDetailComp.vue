@@ -30,14 +30,14 @@
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
-            <div  class="score-label"
-                  v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">
-              得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
-            </div>
-            <div  class="score-label"
-                  v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
-              总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分
-            </div>
+            <!--<div  class="score-label"-->
+                  <!--v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">-->
+              <!--得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分-->
+            <!--</div>-->
+            <!--<div  class="score-label"-->
+                  <!--v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">-->
+              <!--总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分-->
+            <!--</div>-->
           </div>
           <!--判断题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.JUDGE">
@@ -48,14 +48,14 @@
               <el-radio label="否" style="margin: 5px;">
               </el-radio>
             </el-radio-group>
-            <div  class="score-label"
-                  v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">
-              得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分
-            </div>
-            <div  class="score-label"
-                  v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
-              总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分
-            </div>
+            <!--<div  class="score-label"-->
+                  <!--v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">-->
+              <!--得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分-->
+            <!--</div>-->
+            <!--<div  class="score-label"-->
+                  <!--v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">-->
+              <!--总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分-->
+            <!--</div>-->
           </div>
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
@@ -73,7 +73,10 @@
             </div>
             <div  class="score-label"
                   v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">
-              得分：<input type="number" v-model="item.score" min="0" :max="item.qScore" style="width: 40px; height: 30px;" />分;
+              得分：<input type="number" v-model="item.score"
+                        min="0" :max="item.qScore"
+                        @blur="handleBlur($event, item.qScore)"
+                        style="width: 40px; height: 30px;" />分;
               总分：<span v-html="item.qScore"  />分
             </div>
           </div>
@@ -82,7 +85,7 @@
         <el-button class="save-btn"
                    type="primary"
                    v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER || operateType === TASK_OPERATOR_TYPE.MARK_POINT"
-                   @click="handleSubjectSubmit">提  交</el-button>
+                   @click="handleSubjectSubmit" :disabled="!canSubmit">提  交</el-button>
       </div>
     </div>
   </div>
@@ -103,6 +106,7 @@
       },
       data(){
         return{
+          canSubmit:true,
           SUBJECT_TYPE:SUBJECT_TYPE,
           TASK_OPERATOR_TYPE:TASK_OPERATOR_TYPE,
           task: new Task(),
@@ -269,6 +273,20 @@
               });
           }
         },
+        /**
+         * handleBlur 打分 分值 校验
+         * @params e
+         * @params maxScore
+         * */
+        handleBlur(e, maxScore){
+          if(+e.currentTarget.value > maxScore){
+            this.canSubmit = false;
+            this.$message.warning('当前设置分值超过最大分值，请重新设置！');
+          }
+          else {
+            this.canSubmit = true;
+          }
+        }
       },
     }
 </script>

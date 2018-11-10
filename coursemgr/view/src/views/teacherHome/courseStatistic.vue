@@ -232,7 +232,7 @@
          * 任务完成情况/评阅情况统计
          * */
         taskFinishStatus(){
-          let xData = [], yData=[];
+          let xData = [], finishData=[], subData=[];
           statTaskSubmitReview({courseId: this.variables.courseId}).then(resp => {
               if (resp.status === 0) {
                 console.log(resp.msg);
@@ -242,8 +242,8 @@
               if(resp.data && resp.data.length !== 0){
                 resp.data.forEach((item)=>{
                   xData.push(item.taskName);
-                  yData.push(item.submitCnt);
-                  yData.push(item.finishedCnt);
+                  subData.push(item.submitCnt);
+                  finishData.push(item.finishedCnt);
                 });
               }
             let option = {
@@ -254,12 +254,12 @@
                 axisPointer: {
                   type: 'shadow'
                 },
-                formatter: function (a,b,c) {
-                  if(a[0].dataIndex % 2 === 0){
-                    return `<span>提交次数：` + a[0].value + `次</span>`;
-                  }
-                  return `<span>审核次数：` + a[0].value + `次</span>`;
-                }
+                // formatter: function (a,b,c) {
+                //   if(a[0].dataIndex % 2 === 0){
+                //     return `<span>提交次数：` + a[0].value + `次</span>`;
+                //   }
+                //   return `<span>审核次数：` + a[0].value + `次</span>`;
+                // }
               },
               calculable: true,
               xAxis: [
@@ -278,23 +278,20 @@
               ],
               series: [
                 {
-                  name: '次数',
+                  name: '审批次数',
                   type: 'line',
                   barGap: 0,
-                  data: yData,
+                  data: finishData,
                   symbol:'circle',
                   symbolSize:10,
-                  itemStyle: {
-                    normal: {
-                      color: function(params) {
-                        var colorList = ['#00C8B5', '#008276'];
-                        return colorList[params.dataIndex % 2]
-                      },
-                      lineStyle:{
-                        color:'#00C8B5'
-                      }
-                    },
-                  },
+                },
+                {
+                  name: '提交次数',
+                  type: 'line',
+                  barGap: 0,
+                  data: subData,
+                  symbol:'circle',
+                  symbolSize:10,
                 }
               ]
             };

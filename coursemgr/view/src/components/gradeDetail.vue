@@ -60,7 +60,8 @@
           </div>
           <div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">
             得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"
-                      type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 40px"/>
+                      type="number" min="0" :max="item.taskQuestions.questionScore"
+                      @blur="handleBlur($event, item.taskQuestions.questionScore)" style="height: 30px; width: 40px"/>
           </div>
         </div>
       </div>
@@ -158,6 +159,20 @@
             this.$message.success('评分成功')
             this.$emit('remarkSuccess');
           });
+      },
+      /**
+       * handleBlur 打分 分值 校验
+       * @params e
+       * @params maxScore
+       * */
+      handleBlur(e, maxScore){
+        if(+e.currentTarget.value > maxScore){
+          this.canSubmit = true;
+          this.$message.warning('当前设置分值超过最大分值，请重新设置！');
+        }
+        else {
+          this.canSubmit = false;
+        }
       },
 
       setStudentPaperByTask(task){
