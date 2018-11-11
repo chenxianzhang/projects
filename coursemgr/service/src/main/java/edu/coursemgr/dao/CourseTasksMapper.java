@@ -17,6 +17,8 @@ public interface CourseTasksMapper {
 
     CourseTasks selectByTaskId(Integer id);
 
+    CourseTasks selectByTaskName(String name);
+
     int updateByIdSelective(CourseTasks record);
 
     int updateByPrimaryKey(CourseTasks record);

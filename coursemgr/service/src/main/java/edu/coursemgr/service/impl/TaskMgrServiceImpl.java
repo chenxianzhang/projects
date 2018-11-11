@@ -63,6 +63,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
         }
         CourseTasks tmpTask = taskDetail.getTask();
+        if (CommonUtils.isEmpty(tmpTask.getName())) {
+            throw new Exception(Constant.ExceptionMessage.TASK_NAME_EMPTY);
+        }
         if (tmpTask.getStartTime() == null || tmpTask.getDeadline() == null) {
             throw new Exception(Constant.ExceptionMessage.TASK_DATE_EMPTY);
         }
@@ -76,6 +79,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
         // 如果不存在则插入一条新的记录
         if (taskId == null) {
+            // 判断是否有重名的任务名称
+            CourseTasks task = courseTasksMapper.selectByTaskName(taskDetail.getTask().getName());
+            if (task != null) {
+                throw new Exception(Constant.ExceptionMessage.TASK_NAME_UNIQUE);
+            }
             courseTasksMapper.insert(taskDetail.getTask());
             taskId = taskDetail.getTask().getId();
         } else {

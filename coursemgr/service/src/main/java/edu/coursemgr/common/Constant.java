@@ -80,5 +80,9 @@ public interface Constant {
 
         public static final String TASK_DATE_EXCEPTION = "任务截止日期不能小于开始日期";
 
+        public static final String TASK_NAME_EMPTY = "任务名称不能为空";
+
+        public static final String TASK_NAME_UNIQUE = "已经存在该任务名称";
+
     }
 }
