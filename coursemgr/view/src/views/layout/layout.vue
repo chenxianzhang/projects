@@ -6,10 +6,13 @@
       <div class="container">
         <tags-view></tags-view>
         <el-scrollbar wrap-class="container-scrollbar" ref="routerScrollbar">
+            <transition name="fade-transform" mode="out-in" >
+              <keep-alive>
+                <router-view v-if="$route.meta.keepAlive" />
+              </keep-alive>
+            </transition>
           <transition name="fade-transform" mode="out-in">
-            <keep-alive>
-              <router-view :key="key" />
-            </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive" />
           </transition>
         </el-scrollbar>
       </div>
