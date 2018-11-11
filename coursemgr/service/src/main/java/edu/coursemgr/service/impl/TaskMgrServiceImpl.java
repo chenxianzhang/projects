@@ -62,6 +62,13 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (illegal) {
             throw new Exception(Constant.ExceptionMessage.PARAM_EXCEPTION);
         }
+        CourseTasks tmpTask = taskDetail.getTask();
+        if (tmpTask.getStartTime() == null || tmpTask.getDeadline() == null) {
+            throw new Exception(Constant.ExceptionMessage.TASK_DATE_EMPTY);
+        }
+        if (tmpTask.getStartTime().compareTo(tmpTask.getDeadline()) > 0) {
+            throw new Exception(Constant.ExceptionMessage.TASK_DATE_EXCEPTION);
+        }
         // 保存task任务信息，并返回任务id
         Integer taskId = taskDetail.getTask().getId();
         if (!hasSubject(taskDetail)) {

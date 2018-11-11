@@ -76,5 +76,9 @@ public interface Constant {
 
         public static final String EXCEL_EMPTY = "空Excel文件";
 
+        public static final String TASK_DATE_EMPTY = "任务开始或截止日期不能为空";
+
+        public static final String TASK_DATE_EXCEPTION = "任务截止日期不能小于开始日期";
+
     }
 }
