@@ -185,6 +185,8 @@ public class ExcelReader {
         HSSFCell cell1 = row1.createCell(0);// 创建标题第一列
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0,
                 columnList.size() - 1)); // 合并列标题
+        sheet.autoSizeColumn(1, true);
+        sheet.setDefaultColumnWidth(15);
         cell1.setCellValue(titleName); // 设置值标题
         cell1.setCellStyle(style2); // 设置标题样式
 
@@ -194,7 +196,7 @@ public class ExcelReader {
 
         // 第四步，创建表头单元格样式 以及表头的字体样式
         HSSFCellStyle style = wb.createCellStyle();
-        style.setWrapText(true);// 设置自动换行
+//        style.setWrapText(true);// 设置自动换行
         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); // 创建一个居中格式
 
@@ -218,9 +220,9 @@ public class ExcelReader {
             cell.setCellStyle(style);
         }
 
-        HSSFDataFormat df = wb.createDataFormat();
-        HSSFCellStyle contextStyle = wb.createCellStyle();
-        contextStyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));
+//        HSSFDataFormat df = wb.createDataFormat();
+//        HSSFCellStyle contextStyle = wb.createCellStyle();
+//        contextStyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));
 
         // 第五步，创建单元格，并设置值
         for (int i = 0; i < dataList.size(); i++)
@@ -256,10 +258,13 @@ public class ExcelReader {
             {
                 datacell = row.createCell(j);
                 String value = dataList.get(i).get(j);
-                datacell.setCellValue(value);
+
                 datacell.setCellStyle(zidonghuanhang2);
-                if (CommonUtils.isNumber(value)) {
-                    datacell.setCellStyle(contextStyle);
+                if (CommonUtils.isNumber(value) && j > 2) {
+//                    datacell.setCellStyle(contextStyle);
+                    datacell.setCellValue(Double.valueOf(value));
+                } else {
+                    datacell.setCellValue(value);
                 }
             }
         }

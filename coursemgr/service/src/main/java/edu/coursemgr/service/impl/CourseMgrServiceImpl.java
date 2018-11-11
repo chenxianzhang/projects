@@ -322,6 +322,10 @@ public class CourseMgrServiceImpl implements CourseMgrService {
 //            columnList.add(String.format("%s(%s%%)", taskInfo.getTaskName(),
 //                    taskInfo.getTaskWeight().toString()));
             columnList.add(taskInfo.getTaskName());
+            if (taskInfo.getScore() == null) {
+                arrayList.add(taskInfo.getStatus());
+                continue;
+            }
             arrayList.add(taskInfo.getScore().toString());
         }
         arrayList.add(detail.getTotalScore().toString());
