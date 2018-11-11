@@ -498,7 +498,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                     student.getSerialNo());
             String status = taskDetail.get("status").toString();
             if (!status.equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
-                return;
+                continue;
             }
 //            html += transfer2Html(taskDetail);
 //            if (html == null) {
