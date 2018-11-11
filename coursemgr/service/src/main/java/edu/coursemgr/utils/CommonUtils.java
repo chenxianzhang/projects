@@ -123,4 +123,9 @@ public final class CommonUtils {
 //        return encoder.encode(data);
         return encoder.encodeToString(data);
     }
+
+    public static boolean isNumber(String str) {
+        String regex = "^[0-9]+(.[0-9]+)?$";
+        return str.matches(regex);
+    }
 }

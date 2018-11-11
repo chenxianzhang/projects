@@ -218,6 +218,10 @@ public class ExcelReader {
             cell.setCellStyle(style);
         }
 
+        HSSFDataFormat df = wb.createDataFormat();
+        HSSFCellStyle contextStyle = wb.createCellStyle();
+        contextStyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));
+
         // 第五步，创建单元格，并设置值
         for (int i = 0; i < dataList.size(); i++)
         {
@@ -251,8 +255,12 @@ public class ExcelReader {
             for (int j = 0; j < columnList.size(); j++)
             {
                 datacell = row.createCell(j);
-                datacell.setCellValue(dataList.get(i).get(j));
+                String value = dataList.get(i).get(j);
+                datacell.setCellValue(value);
                 datacell.setCellStyle(zidonghuanhang2);
+                if (CommonUtils.isNumber(value)) {
+                    datacell.setCellStyle(contextStyle);
+                }
             }
         }
 

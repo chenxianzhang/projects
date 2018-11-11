@@ -3,7 +3,8 @@
     <task-info-new ref="taskInfo"></task-info-new>
     <el-row :gutter="60">
       <el-col :span="8">
-        <el-button type="primary" class="save-btn" @click="handleSaveTask">保 存</el-button>
+        <el-button type="primary" v-if="saveDisabled" class="save-btn" disabled>保 存</el-button>
+        <el-button type="primary" v-else class="save-btn" @click="handleSaveTask">保 存</el-button>
       </el-col>
       <el-col :span="8">
         <el-button type="primary" class="save-btn" @click="handleViewTask">预 览</el-button>
@@ -33,7 +34,8 @@ export default {
       operate: TASK_OPERATOR_TYPE.PRE_VIEW,
       showTaskInfoDialog: false,
       SUBJECT_TYPE: SUBJECT_TYPE,
-      task: {}
+      task: {},
+      saveDisabled: false
     }
   },
   // beforeRouteLeave(to, from, next) {
@@ -54,9 +56,11 @@ export default {
       if (!this.$refs.taskInfo.taskVerify()) {
         return
       }
+      this.saveDisabled = true;
       this.task = this.$refs.taskInfo.task;
       let saveData = this.getSaveData();
       saveTask(saveData).then(response => {
+        this.saveDisabled = false
         if (response.status === 0) {
           this.$message({
             showClose: true,

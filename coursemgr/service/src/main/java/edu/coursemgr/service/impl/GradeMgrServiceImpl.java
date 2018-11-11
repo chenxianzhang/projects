@@ -360,6 +360,8 @@ public class GradeMgrServiceImpl implements GradeMgrService {
         } else {
             List<Integer> keyList = new ArrayList<>();
             keyList.addAll(memberMap.keySet());
+            // 随机打乱顺序
+            Collections.shuffle(keyList);
             for (int i = 0; i < keyList.size(); i++) {
                 if (i == (keyList.size() - 1)) {
                     gradeRelateList.addAll(groupInterBlockEva(
@@ -378,7 +380,7 @@ public class GradeMgrServiceImpl implements GradeMgrService {
 
     private List<GradeRelate> groupInnerEva(List<GroupMember> groupMembers) {
         List<GradeRelate> resultList = new ArrayList<>();
-
+        Collections.shuffle(groupMembers);
         for (int i = 0; i < groupMembers.size(); i++) {
             GradeRelate relate = new GradeRelate();
             relate.setCourseId(groupMembers.get(i).getCourseId());
@@ -401,7 +403,8 @@ public class GradeMgrServiceImpl implements GradeMgrService {
     private List<GradeRelate> groupInterBlockEva(List<GroupMember> prevList, List<GroupMember> lastList) {
 
         List<GradeRelate> resultList = new ArrayList<>();
-
+        Collections.shuffle(prevList);
+        Collections.shuffle(lastList);
         for (int i = 0; i < prevList.size(); i++) {
             if (i == lastList.size()) {
                 break;
