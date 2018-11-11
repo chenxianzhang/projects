@@ -41,8 +41,8 @@
       </el-form-item>
 
       <div class="register-operator">
-        <el-button type="primary" @click="handleSubmit()" style="background-color: #00574F;">提 交</el-button>
         <el-button type="primary" @click="handleCancel()" style="background-color: #009285" >取 消</el-button>
+        <el-button type="primary" @click="handleSubmit()" style="background-color: #00574F;">提 交</el-button>
       </div>
 
       <!-- <el-row :gutter="20">
@@ -236,4 +236,19 @@
   .registery-form .el-form-item__label{
     color: #fff;
   }
+</style>
+<style lang="scss">
+  .registery-form{
+    .el-button--primary {
+      padding: 8px 30px;
+      background-color: #009788 !important;
+      border: 1px solid #009788;
+      color: #fff !important;
+      &:hover {
+        background-color: #008B7D !important;
+        color: #fff !important;
+      }
+    }
+  }
+
 </style>

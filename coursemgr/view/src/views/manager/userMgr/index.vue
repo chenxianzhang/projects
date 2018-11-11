@@ -25,7 +25,10 @@
       </div>
     </drag-dialog>
 
-    <upload-student-comp :showUploadDialog="showUploadDialog" @hideUploadDialog="hideUploadDialog" :uploadAction="uploadAction"></upload-student-comp>
+    <upload-student-comp :showUploadDialog="showUploadDialog"
+                         @hideUploadDialog="hideUploadDialog"
+                         :uploadAction="uploadAction">
+    </upload-student-comp>
 
     <div class="operation">
       <div class="left">

@@ -110,7 +110,7 @@ export default {
             .then(data => {
               self.loading = false
               if (!data.hasLogin || data.hasLogin === 0) {
-                self.$router.push('/login/resetpwd') 
+                self.$router.push('/login/resetpwd')
               } else {
                 self.$router.push('/')
               }
@@ -185,6 +185,16 @@ export default {
   .el-step {
     .el-step__arrow {
       display: none;
+    }
+  }
+  .el-button--primary {
+    padding: 8px 30px;
+    background-color: #009788 !important;
+    border: 1px solid #009788;
+    color: #fff !important;
+    &:hover {
+      background-color: #008B7D !important;
+      color: #fff !important;
     }
   }
 }
