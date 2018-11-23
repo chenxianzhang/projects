@@ -42,9 +42,9 @@
 
             <el-tooltip content="答题" placement="top">
               <el-button v-if="isStudent"
-                         :disabled="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false'"
+                         :disabled="scope.row.finishStatus!=='UNCOMMITTED' || !scope.row.canAnswer"
                          @click="handleAnswerClick(scope.row)" type="text" size="small">
-                <i :class="scope.row.finishStatus!=='UNCOMMITTED' || scope.row.canAnswer==='false' ? 'operator-icon-answer-not' : 'operator-icon-answer'"></i>
+                <i :class="scope.row.finishStatus!=='UNCOMMITTED' || !scope.row.canAnswer ? 'operator-icon-answer-not' : 'operator-icon-answer'"></i>
               </el-button>
             </el-tooltip>
 

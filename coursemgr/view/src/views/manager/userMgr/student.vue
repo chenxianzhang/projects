@@ -34,6 +34,7 @@ export default {
     this.getUserData()
   },
   mounted() {
+    this.$emit("updateRole", "student")
    this.$on('query', (nameOrNo) => {
       this.nameOrNo = nameOrNo
       this.currPage = 1

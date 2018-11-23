@@ -70,6 +70,7 @@ export default {
           return
         }
         // this.task.id = response.data.taskId;
+        this.handleReset()
         this.$message({
           showClose: true,
           type: 'success',

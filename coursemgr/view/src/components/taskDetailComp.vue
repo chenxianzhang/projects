@@ -246,6 +246,22 @@
             };
             for(let item of this.task.subjects){
               if(item.questionType === SUBJECT_TYPE.SUBJECTIVE){
+                if (item.score < 0) {
+                  this.$message.warning('评分不能小于0');
+                  return
+                }
+                var scoreStr = '' + item.score 
+                if (scoreStr.indexOf('.') > 0) {
+                  var tmpArr = scoreStr.split('.');
+                  if (tmpArr.length > 2) {
+                    this.$message.warning('主观题评分异常，请检查输入内容');
+                    return
+                  }
+                  if (tmpArr[1].length > 1) {
+                    this.$message.warning('评分只能保留一位小数');
+                    return
+                  }
+                }
                 updateScoreObj.subjectList.push(
                   {
                     taskId:this.taskId,

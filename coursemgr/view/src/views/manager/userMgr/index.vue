@@ -42,7 +42,7 @@
         </el-input>
       </div>
     </div>
-    <router-view ref="child" @handleCommond="handleCommond" />
+    <router-view ref="child" @handleCommond="handleCommond" @updateRole="updateRole"/>
   </div>
 </template>
 
@@ -106,6 +106,9 @@ export default {
     }
   },
   methods: {
+    updateRole(role) {
+      this.role = role
+    },
     queryChange() {
       this.$refs.child.$emit('query', this.nameOfNo)
     },
