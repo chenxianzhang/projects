@@ -124,7 +124,7 @@ export default {
           }
           if (!hasInitCol) {
             this.columns.push({prop:task.taskId + "_score",
-              label: task.taskName + "(" + task.taskWeight + "%)", type:'link', taskId: task.taskId});
+              label: task.taskName, type:'link', taskId: task.taskId});
           }
         });
         hasInitCol = true;
@@ -214,7 +214,8 @@ export default {
 
 <style lang="scss">
 .course-container {
-  .el-input {
+  .operation{
+    .el-input {
       .el-input__inner {
         height: 40px !important;
         border: 1px solid #ccc;
@@ -229,6 +230,7 @@ export default {
         border: 1px solid #009788;
       }
     }
+  }
 }
 </style>
 
@@ -259,4 +261,10 @@ export default {
     justify-content: center;
   }
 }
+</style>
+
+<style>
+  .user-table .el-input .el-input__inner{
+    height: 30px !important;
+  }
 </style>

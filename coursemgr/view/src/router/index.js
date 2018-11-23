@@ -192,6 +192,7 @@ export const asyncRouterMap = [
         title: '用户管理',
         isGroup: true,
         icon: 'custom-icon-admin',
+        menuActiveIcon:'menu-active-icon-admin',
         roles: ['admin']
       },
       children: [{
@@ -202,6 +203,7 @@ export const asyncRouterMap = [
           title: '教师用户',
           icon: 'custom-icon-teacher',
           activeIcon: 'custom-icon-teacher-active',
+          menuActiveIcon: 'menu-custom-icon-teacher-active',
           roles: ['admin']
         }
       }, {
@@ -212,6 +214,7 @@ export const asyncRouterMap = [
           title: '学生用户',
           icon: 'custom-icon-student',
           activeIcon: 'custom-icon-student-active',
+          menuActiveIcon: 'menu-custom-icon-student-active',
           roles: ['admin']
         }
       }]

@@ -267,6 +267,7 @@ export default {
 
 <style lang="scss">
 .user-container {
+  .operation {
     .el-input {
       .el-input__inner {
         border: 1px solid #ccc;
@@ -282,6 +283,7 @@ export default {
         border: 1px solid #009788;
       }
     }
+  }
 }
 </style>
 

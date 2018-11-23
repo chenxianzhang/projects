@@ -1,5 +1,5 @@
 <template>
-    <drag-dialog :title="title" width="36%" :dialogVisible="visible" @close="handleClose" @confirm="handleConfirm">
+    <drag-dialog :title="title" width="36%" :dialogVisible="visible" @close="handleClose" @confirm="handleConfirm" class="user-edit-dlg">
         <el-form ref="editForm" :model="user" :rules="rules" label-position="right" label-width="80px">
             <el-form-item label="用户名" prop="name">
                 <el-input v-model="user.name" placeholder="请输入姓名"></el-input>
@@ -132,5 +132,13 @@ export default {
 }
 </script>
 
+<style scoped>
+  .user-edit-dlg .el-form .el-form-item {
+    margin-bottom: 20px;
+  }
+</style>
 <style>
+  .user-edit-dlg .el-dialog__body{
+    padding-bottom: 0px;
+  }
 </style>

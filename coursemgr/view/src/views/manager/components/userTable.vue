@@ -112,7 +112,7 @@ export default {
 <style lang="scss" scoped>
 .user-table {
   .el-table {
-    margin-top: 15px;
+    /*margin-top: 15px;*/
   }
   .el-pagination {
     margin-top: 10px;
@@ -123,3 +123,9 @@ export default {
   }
 }
 </style>
+<style>
+  .user-table .el-input .el-input__inner{
+    height: 30px !important;
+  }
+</style>
+

@@ -69,7 +69,7 @@ export default {
           })
           return
         }
-        this.task.id = response.data.taskId;
+        // this.task.id = response.data.taskId;
         this.$message({
           showClose: true,
           type: 'success',

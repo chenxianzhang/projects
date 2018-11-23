@@ -8,7 +8,7 @@
         <span v-if="task.markType !== '自动评分' && task.markType !== '' && TASK_OPERATOR_TYPE.PRE_VIEW !== operateType" style="margin-left: 30px; display: inline-block;">评分方式：
           <span style="color: #ee5134;">{{task.markType}}</span>
         </span>
-        <span v-if="TASK_OPERATOR_TYPE.PRE_VIEW === operateType" style="margin-left: 30px; display: inline-block;">评分方式：
+        <span v-if="TASK_OPERATOR_TYPE.PRE_VIEW === operateType && task.markType !== ''" style="margin-left: 30px; display: inline-block;">评分方式：
           <span style="color: #ee5134;">{{task.markType === 'GROUP_INNER_EVA' ? '组内互评' : (task.markType === 'SELF_EVA' ? '自主评分' : '组间互评')}}</span>
         </span>
       </div>

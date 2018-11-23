@@ -141,6 +141,16 @@
     background: url('../../static/img/icons/custom-icon-teacher-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-teacher-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/icons/custom-icon-teacher-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+.menu-custom-icon-teacher-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/Y2-2.png') no-repeat;
+  background-size: 100% 100%;
+}
 .custom-icon-course-active {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-course-active.png') no-repeat;
@@ -151,15 +161,20 @@
     background: url('../../static/img/icons/custom-icon-student-active.png') no-repeat;
     background-size: 100% 100%;
 }
-.custom-icon-teacher-active {
+.menu-custom-icon-student-active {
     @extend .custom-menu-icon;
-    background: url('../../static/img/icons/custom-icon-teacher-active.png') no-repeat;
+    background: url('../../static/img/nav/Y3-2.png') no-repeat;
     background-size: 100% 100%;
 }
 .custom-icon-admin {
     @extend .custom-menu-icon;
-    background: url('../../static/img/login/role-icon-admin.png') no-repeat;
+    background: url('../../static/img/nav/admin-default.png') no-repeat;
     background-size: 100% 100%;
+}
+.menu-active-icon-admin{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/admin-active.png') no-repeat;
+  background-size: 100% 100%;
 }
 .custom-icon-protrait {
     @extend .custom-icon;

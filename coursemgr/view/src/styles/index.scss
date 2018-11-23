@@ -112,6 +112,7 @@ div:focus{
   &:hover {
     background-color: #009788 !important;
     color: #fff !important;
+    border: 1px solid #009788;
   }
 }
 
@@ -137,6 +138,7 @@ div:focus{
   &:hover {
     background-color: rgba(0, 146, 133, 0.8) !important;
     color: white !important;
+    border: 1px solid #009788;
   }
 }
 

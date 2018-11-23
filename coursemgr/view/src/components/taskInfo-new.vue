@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 29px 22px 65px 22px; ">
+  <div style="margin: 29px 22px 65px 22px; " class="task-new-container">
     <div class="task-name">
       <el-row :gutter="20">
         <el-col :span="12" style="height: 35px;">
@@ -7,17 +7,25 @@
           <el-input v-model="task.name" placeholder="请输入任务名称" style="width: calc(100% - 100px);"></el-input>
         </el-col>
         <el-col :span="12">
-          <el-row :gutter="20">
-            <el-col :span="12" style="height: 35px">
-              <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">开始日期：</span>
-              <el-date-picker v-model="task.startDate" type="date" placeholder="选择开始日期" style="width: calc(100% - 100px)">
-              </el-date-picker>
-            </el-col>
-            <el-col :span="12" style="height: 35px">
-              <span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">截止日期：</span>
-              <el-date-picker v-model="task.inspireDate" type="date" placeholder="选择结束日期" style="width: calc(100% - 100px)">
-              </el-date-picker>
-            </el-col>
+          <el-row :gutter="20" style="height: 35px">
+            <!--<el-col :span="12" style="height: 35px">-->
+              <!--<span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">开始日期：</span>-->
+              <!--<el-date-picker v-model="task.startDate" type="date" placeholder="选择开始日期" style="width: calc(100% - 100px)">-->
+              <!--</el-date-picker>-->
+            <!--</el-col>-->
+            <!--<el-col :span="12" style="height: 35px">-->
+              <!--<span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">截止日期：</span>-->
+              <!--<el-date-picker v-model="task.inspireDate" type="date" placeholder="选择结束日期" style="width: calc(100% - 100px)">-->
+              <!--</el-date-picker>-->
+            <!--</el-col>-->
+            <el-date-picker
+              style="width: calc(100% - 80px);"
+              v-model="taskDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
           </el-row>
         </el-col>
       </el-row>
@@ -150,6 +158,7 @@ export default {
   },
   data() {
     return {
+      taskDate:[],
       emptyContent: '',
       editContent: '',
       SUBJECT_TYPE: SUBJECT_TYPE,
@@ -481,13 +490,13 @@ export default {
   }
 </style>
 <style>
-  .el-input .el-input__inner {
+  .task-new-container .el-input__inner {
     height: 35px;
     line-height: 35px;
     border-radius: 0;
   }
 
-  .task-name .el-input__icon{
+  task-new-container .task-name .el-input__icon{
     line-height: 35px !important;
   }
 </style>

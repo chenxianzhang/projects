@@ -7,10 +7,11 @@
       class="upload-demo"
       name="file"
       drag
-      accept=".xlsx"
+      accept=".xlsx, .xls"
       multiple="true"
       :auto-upload="false"
       :action="uploadAction"
+      :before-upload="handleBeforeUpload"
       :on-remove="handleRemove"
       :before-remove="beforeRemove"
       :on-success="handleUploadSuccess"
@@ -69,6 +70,14 @@ import dragDialog from '@/components/dragDialog';
       methods: {
         handleDialogClose(){
           this.$emit('hideUploadDialog', false);
+        },
+        handleBeforeUpload(file){
+          let fileType = file.name.substr(file.name.lastIndexOf('.') + 1, 4);
+          if(fileType !== 'xls' && fileType !== 'xlsx'){
+            this.$message.warning('只能上传xls或者xlsx的文件！');
+            this.progress = 0;
+            return;
+          }
         },
         handleRemove(file, fileList) {
           console.log(file, fileList);
