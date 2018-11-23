@@ -116,6 +116,7 @@
             taskId:'',
             questionList:[]
           },
+          stuSubmit: false
         }
       },
       created(){
@@ -228,14 +229,21 @@
           this.setStudentPaperByTask(this.task);
           //学生答题
           if(this.operateType === this.TASK_OPERATOR_TYPE.STUDENT_ANSWER){
+            if (this.stuSubmit) {
+              return
+            }
+            this.stuSubmit = true
             submitTaskPaper(this.taskStudent)
               .then(resp=>{
+                this.stuSubmit = false
               if(resp.status === 0){
                 this.$message.warning('上传答案失败');
                 return;
               }
                 this.$message.success('上传答案成功');
                 this.$emit('answerEmit');
+            }).catch(err => {
+              this.stuSubmit = false
             });
           }
           else {

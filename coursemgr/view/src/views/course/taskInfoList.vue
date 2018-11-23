@@ -244,7 +244,8 @@
                   publishTime:item.publishTime,
                   startTime:item.startTime,
                   deadline:item.deadline,
-                  finishStatus:item.finishStatus
+                  finishStatus:item.finishStatus,
+                  canAnswer: item.canAnswer
                 });
               }
             });

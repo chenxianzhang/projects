@@ -337,6 +337,15 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         studentTasks.setStudentNo(stuPaperAnswer.getStudentNo());
         studentTasks.setSubmitTime(new Date());
         studentTasks.setTaskId(stuPaperAnswer.getTaskId());
+
+        Map params = new HashMap();
+        params.put("taskId", studentTasks.getTaskId());
+        params.put("studentNo", studentTasks.getStudentNo());
+        StudentTasks st = studentTasksMapper.selectByStudent(params);
+        if (st != null) {
+            // 存在则不重复插入
+            return true;
+        }
         studentTasksMapper.insertSelective(studentTasks);
         return true;
     }
