@@ -108,6 +108,11 @@ export default {
   methods: {
     updateRole(role) {
       this.role = role
+      if (role === 'student') {
+        this.courseTitle = '参与课程'
+      } else {
+        this.courseTitle = '开设课程'
+      }
     },
     queryChange() {
       this.$refs.child.$emit('query', this.nameOfNo)

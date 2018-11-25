@@ -115,6 +115,9 @@
   .gtask-panel .el-button--primary{
     float: right;
   }
+  .gtask-panel {
+      margin-top: -20px;
+  }
   .container-scrollbar{
     background-color: #F2F2F2;
   }

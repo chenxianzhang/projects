@@ -151,4 +151,7 @@ export default {
   .el-dialog__close{
    color: white !important;
   }
+  .new-task-container {
+    margin-top: -25px;
+  }
 </style>

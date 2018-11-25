@@ -164,6 +164,13 @@ export default {
   }
   .el-button--primary {
     width: calc(50% - 8px);
+    background-color: #009788 !important;
+    border: 1px solid #009788;
+    color: #fff !important;
+    &:hover {
+      background-color: #008B7D !important;
+      color: #fff !important;
+    }
   }
 }
 </style>
