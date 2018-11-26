@@ -5,11 +5,11 @@
         任务名称：<span>{{task.name}}</span>
       </div>
       <div class="subjectStatic">总题数 {{task.subjects.length}} 道，总分值 {{task.totalScore}} 分。
-        <span v-if="task.markType !== '自动评分' && task.markType !== '' && TASK_OPERATOR_TYPE.PRE_VIEW !== operateType" style="margin-left: 30px; display: inline-block;">评分方式：
+        <span v-if="TASK_OPERATOR_TYPE.PRE_VIEW !== operateType" style="margin-left: 30px; display: inline-block;">评分方式：
           <span style="color: #ee5134;">{{task.markType}}</span>
         </span>
-        <span v-if="TASK_OPERATOR_TYPE.PRE_VIEW === operateType && task.markType !== ''" style="margin-left: 30px; display: inline-block;">评分方式：
-          <span style="color: #ee5134;">{{task.markType === 'GROUP_INNER_EVA' ? '组内互评' : (task.markType === 'SELF_EVA' ? '自主评分' : '组间互评')}}</span>
+        <span v-if="TASK_OPERATOR_TYPE.PRE_VIEW === operateType" style="margin-left: 30px; display: inline-block;">评分方式：
+          <span style="color: #ee5134;">{{task.markType === '' ? '系统智评' : (task.markType === 'GROUP_INNER_EVA' ? '组内互评' : (task.markType === 'SELF_EVA' ? '自主评分' : '组间互评'))}}</span>
         </span>
       </div>
       <div class="subject-container">
@@ -205,7 +205,7 @@
               this.task.markType = '组间互评';
               break;
             default:
-              this.task.markType = '自动评分';
+              this.task.markType = '系统智评';
           }
           for(let item of taskDetailInfo.questionList){
             let subject_c = new Subject();
@@ -258,7 +258,7 @@
                   this.$message.warning('评分不能小于0');
                   return
                 }
-                var scoreStr = '' + item.score 
+                var scoreStr = '' + item.score
                 if (scoreStr.indexOf('.') > 0) {
                   var tmpArr = scoreStr.split('.');
                   if (tmpArr.length > 2) {

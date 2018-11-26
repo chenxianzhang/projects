@@ -50,7 +50,7 @@
         <!--题干设置区域-->
         <div style="display: flex; align-items: center; width: 100%">
           <span>{{index + 1}}.</span>
-          <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem" placeholder="请设置题干" style="width: calc(100% - 430px)"></el-input>
+          <el-input v-if="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem" placeholder="请设置题干" style="width: calc(100% - 430px)"></el-input>
           <el-input v-if="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem" style="width: calc(100% - 430px)"></el-input>
 
           <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 122px; margin-left: 15px">
@@ -170,10 +170,10 @@ export default {
   created() {
     checkCourseGrouped({ courseId: this.variables.courseId }).then(res => {
       if (res.data.status === 0) {
-        this.$msg.warning(res.data.msg)
+        this.$msg.warning(res.data.msg);
         return
       }
-      this.courseGroupStatus = res.data
+      this.courseGroupStatus = res.data;
       if (this.courseGroupStatus === 0) {
         this.tipinfo =
           '当前尚有学生未进行分组，请先设置分组或者采用其他评分方式'
@@ -182,7 +182,7 @@ export default {
       } else {
         this.tipinfo = ''
       }
-    })
+    });
 
     //获取任务详情
     if (!this.taskId || this.taskId === '') {
@@ -190,7 +190,7 @@ export default {
     }
     getTaskDetailByTaskId({ taskId: this.taskId }).then(resp => {
       if (resp.status === 0) {
-        this.$message.warning('获取任务信息失败')
+        this.$message.warning('获取任务信息失败');
         return
       }
       //根据结果设置subject值
@@ -218,7 +218,8 @@ export default {
   mounted() {
     this.$on('reset', () => {
       // debugger
-      this.task = new Task()
+      this.task = new Task();
+      this.taskDate = [];
     })
   },
   methods: {
@@ -231,32 +232,33 @@ export default {
       if (!taskDetailInfo) {
         return
       }
-      this.task.id = this.taskId
-      this.task.name = taskDetailInfo.task.name
-      this.task.weight = taskDetailInfo.task.weight
-      this.task.totalScore = taskDetailInfo.task.totalScore
-      this.task.inspireDate = taskDetailInfo.task.deadline
-      this.task.startDate = taskDetailInfo.task.startTime
-      this.task.markType = taskDetailInfo.task.markType
+      this.task.id = this.taskId;
+      this.task.name = taskDetailInfo.task.name;
+      this.task.weight = taskDetailInfo.task.weight;
+      this.task.totalScore = taskDetailInfo.task.totalScore;
+      this.task.inspireDate = taskDetailInfo.task.deadline;
+      this.task.startDate = taskDetailInfo.task.startTime;
+      this.taskDate = [taskDetailInfo.task.startTime, taskDetailInfo.task.deadline];
+      this.task.markType = taskDetailInfo.task.markType;
       for (let item of taskDetailInfo.questionList) {
-        let subject_c = new Subject()
-        subject_c.id = item.taskQuestions.id
-        subject_c.edit = false
-        subject_c.selections = item.optionList
+        let subject_c = new Subject();
+        subject_c.id = item.taskQuestions.id;
+        subject_c.edit = false;
+        subject_c.selections = item.optionList;
         subject_c.selections &&
           subject_c.selections.forEach(item => {
             item.edit = false
-          })
-        subject_c.answer = item.taskQuestions.answers
-        subject_c.score = item.taskQuestions.score
-        subject_c.stem = item.taskQuestions.stems
-        subject_c.questionType = item.taskQuestions.questionType
-        this.task.subjects.push(subject_c)
+          });
+        subject_c.answer = item.taskQuestions.answers;
+        subject_c.score = item.taskQuestions.score;
+        subject_c.stem = item.taskQuestions.stems;
+        subject_c.questionType = item.taskQuestions.questionType;
+        this.task.subjects.push(subject_c);
       }
     },
     addSubject() {
-      let subject = new Subject()
-      subject.type = SUBJECT_TYPE.CHOOSE
+      let subject = new Subject();
+      subject.type = SUBJECT_TYPE.CHOOSE;
       this.task.subjects.push(subject)
     },
     /**
@@ -282,7 +284,7 @@ export default {
      * handleSubjectFinish 完成题干编辑
      * */
     handleSubjectFinish(index, item) {
-      if (item.stem && item.stem.indexOf('img') < 0) {
+      if (item.stem && item.stem.indexOf('img') !== -1) {
         item.stem = item.stem.substring(3, item.stem.length - 4)
       }
       this.$set(this.task.subjects[index], 'edit', false)
@@ -298,7 +300,7 @@ export default {
      * */
     handleRemoveSelection(cIndex, selections) {
       if (selections.length === 1) {
-        this.$message.warning('至少需要一个选项！')
+        this.$message.warning('至少需要一个选项！');
         return
       }
       selections.splice(cIndex, 1)
@@ -340,39 +342,38 @@ export default {
      * return null
      **/
     taskVerify() {
+      this.task.startDate = this.taskDate[0];
+      this.task.inspireDate = this.taskDate[1];
+      debugger
       //题目校验--选项是否存在、题干是否存在、分值是否存在、总分值是否存在
       if (this.task.name === '') {
-        this.$message.warning('请填写任务名称！')
-        return false
+        this.$message.warning('请填写任务名称！');
+        return false;
       }
-      if (this.task.inspireDate === '') {
-        this.$message.warning('请设置截止日期！')
-        return false
+      if (this.taskDate == [] || this.taskDate[0] == this.taskDate[1]) {
+        this.$message.warning('请设置日期！');
+        return false;
       }
-      // if (this.task.weight === '') {
-      //   this.$message.warning('请设置任务权重！')
-      //   return false
-      // }
       if (this.task.subjects.length === 0) {
-        this.$message.warning('请添加相关题目！')
-        return false
+        this.$message.warning('请添加相关题目！');
+        return false;
       }
       for (let subject of this.task.subjects) {
         if (subject.questionType === '') {
-          this.$message.warning('请选择题目类型！')
-          return false
+          this.$message.warning('请选择题目类型！');
+          return false;
         }
         if (subject.score == 0) {
-          this.$message.warning('请设置分数！')
-          return false
+          this.$message.warning('请设置分数！');
+          return false;
         }
         if (subject.questionType === this.SUBJECT_TYPE.CHOOSE) {
-          let validSelection = true
+          let validSelection = true;
           subject.selections.forEach((v, k) => {
-            console.log(v + '  ' + k)
+            console.log(v + '  ' + k);
             if (v.optionDes === '') {
-              validSelection = false
-              return
+              validSelection = false;
+              return;
             }
           })
 

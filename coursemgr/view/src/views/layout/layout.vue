@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <page-title :homePage="false"></page-title>
+    <page-title class="page-title" :homePage="false"></page-title>
     <div class="main">
       <sidebar class="sidebar-container"></sidebar>
       <div class="container">
@@ -64,6 +64,9 @@ export default {
 
 <style lang="scss">
 .layout {
+  .page-title{
+    min-width: 1520px;
+  }
   .main {
     .container {
       .container-scrollbar {
@@ -98,6 +101,7 @@ export default {
       transition: margin-left 0.28s;
       margin-left: 240px;
       position: relative;
+      min-width: 1280px;
       overflow: hidden;
       .is-horizontal {
         display: none;

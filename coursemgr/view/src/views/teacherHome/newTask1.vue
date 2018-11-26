@@ -123,7 +123,7 @@ export default {
       if (!this.$refs.taskInfo.taskVerify()) {
         return
       }
-      this.task = this.$refs.taskInfo.task
+      this.task = this.$refs.taskInfo.task;
       this.showTaskInfoDialog = true
     },
     /**
