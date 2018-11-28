@@ -86,6 +86,11 @@
     background: url('../../static/img/icons/custom-icon-uncheck-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-uncheck-active {
+    @extend .custom-menu-icon;
+    background: url('../../static/img/icons/custom-icon-uncheck-active.jpg') no-repeat;
+    background-size: 100% 100%;
+}
 .custom-icon-schedule {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-schedule-default.png') no-repeat;
@@ -123,7 +128,7 @@
 }
 .custom-icon-new-active {
     @extend .custom-menu-icon;
-    background: url('../../static/img/icons/custom-icon-new-default.png') no-repeat;
+    background: url('../../static/img/icons/custom-icon-new-active.jpg') no-repeat;
     background-size: 100% 100%;
 }
 .custom-icon-course {

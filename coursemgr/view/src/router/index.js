@@ -128,6 +128,7 @@ export const asyncRouterMap = [
           meta: {
             title: '未分组',
             icon: 'custom-icon-uncheck',
+            activeIcon: 'custom-icon-uncheck-active',
             roles: ['teacher']
           }
         }
