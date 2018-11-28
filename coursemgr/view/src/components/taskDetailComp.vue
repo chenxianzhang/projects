@@ -18,7 +18,7 @@
           <!--题干设置区域-->
           <div style="margin-bottom:10px; line-height: 32px; display: flex">
             <span style="display: inline-block; width: 20px">{{index + 1}}.</span>
-            <el-input v-html="item.stem" style="width: calc(100% - 20px)"></el-input>
+            <el-input v-html="item.stem" style="width: calc(100% - 20px); overflow: auto;"></el-input>
           </div>
           <!--单选题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
@@ -30,14 +30,6 @@
                 <span v-html="cItem.optionDes"></span>
               </el-radio>
             </el-radio-group>
-            <!--<div  class="score-label"-->
-                  <!--v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">-->
-              <!--得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分-->
-            <!--</div>-->
-            <!--<div  class="score-label"-->
-                  <!--v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">-->
-              <!--总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分-->
-            <!--</div>-->
           </div>
           <!--判断题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.JUDGE">
@@ -48,14 +40,6 @@
               <el-radio label="否" style="margin: 5px;">
               </el-radio>
             </el-radio-group>
-            <!--<div  class="score-label"-->
-                  <!--v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER && operateType!==TASK_OPERATOR_TYPE.MARK_POINT">-->
-              <!--得分：<el-input v-html="item.score" style="width: 20px; height: 30px;" />分-->
-            <!--</div>-->
-            <!--<div  class="score-label"-->
-                  <!--v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT">-->
-              <!--总分：<el-input v-html="item.qScore" style="width: 20px; height: 30px;" />分-->
-            <!--</div>-->
           </div>
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">

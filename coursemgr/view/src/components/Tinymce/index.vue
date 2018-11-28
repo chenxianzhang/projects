@@ -72,6 +72,7 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
+        forced_root_block:' ',//空格--解决获取结果中包含P标签的bug
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,

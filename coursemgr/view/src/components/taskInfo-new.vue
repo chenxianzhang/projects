@@ -50,8 +50,10 @@
         <!--题干设置区域-->
         <div style="display: flex; align-items: center; width: 100%">
           <span>{{index + 1}}.</span>
-          <el-input v-if="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem" placeholder="请设置题干" style="width: calc(100% - 430px)"></el-input>
-          <el-input v-if="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem" style="width: calc(100% - 430px)"></el-input>
+          <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem"
+                    placeholder="请设置题干" style="width: calc(100% - 430px)" @change="handleTextChange"></el-input>
+          <el-input v-show="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem"
+                    style="width: calc(100% - 430px); overflow: auto;"></el-input>
 
           <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 122px; margin-left: 15px">
             <el-option label="单选题" :value="SUBJECT_TYPE.CHOOSE"></el-option>
@@ -69,7 +71,7 @@
                  style="cursor: pointer; margin-left: 10px;"/>
           </el-tooltip>
         </div>
-        <div v-if="item.edit" style="width: calc(100% - 422px); margin-left: 8px;">
+        <div v-show="item.edit" style="width: calc(100% - 422px); margin-left: 8px;">
           <Tinymce :height=100 v-model="item.stem" style="margin-top: 5px; margin-bottom: 5px" />
           <el-button type="primary" @click="editConfirm(index, item, task.subjects)">确定</el-button>
         </div>
@@ -131,7 +133,7 @@
           <Tinymce :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
         </div>
         <!--编辑和完成编辑按钮-->
-        <el-button type="primary" v-if="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
+        <el-button type="primary" v-show="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
       </div>
       <!--添加按钮-->
       <div class="add-sub-container">
@@ -223,6 +225,15 @@ export default {
     })
   },
   methods: {
+    /**
+     * handleTextChange
+     * */
+    handleTextChange(val){
+      debugger
+      if (val.indexOf('<p>') !== -1) {
+        val = val.substring(3, val.length - 4)
+      }
+    },
     /**
      * 根据接口返回的任务信息结果，构造subject对象的值
      * params taskDetailInfo
@@ -346,7 +357,7 @@ export default {
       this.task.inspireDate = this.taskDate[1];
       debugger
       //题目校验--选项是否存在、题干是否存在、分值是否存在、总分值是否存在
-      if (this.task.name === '') {
+      if (this.task.name.trim() === '') {
         this.$message.warning('请填写任务名称！');
         return false;
       }
@@ -377,21 +388,21 @@ export default {
             }
           })
 
-          if (subject.answer === '' || subject.stem === '' || !validSelection) {
+          if (subject.answer.trim() === '' || subject.stem.trim() === '' || !validSelection) {
             this.$message.warning('请设置单选题相关内容！')
             return false
           }
         }
         if (subject.questionType === this.SUBJECT_TYPE.JUDGE) {
-          if (subject.answer === '' || subject.stem === '') {
+          if (subject.answer.trim() === '' || subject.stem.trim() === '') {
             this.$message.warning('请设置判断题题干或答案！')
             return false
           }
         }
         if (subject.questionType === this.SUBJECT_TYPE.SUBJECTIVE) {
           if (
-            subject.answer === '' ||
-            subject.stem === '' ||
+            subject.answer.trim() === '' ||
+            subject.stem.trim() === '' ||
             this.task.markType === ''
           ) {
             this.$message.warning('请设置主观题题干或答案或评分方式！')
