@@ -139,8 +139,6 @@
         window.onresize = ()=>{
           setTimeout(()=>{
             this.calcTableHeight();
-            // this.taskStaticChart && this.taskStaticChart.resize();
-            // this.sortChart && this.sortChart.resize();
           }, 100);
         }
       }
@@ -311,7 +309,7 @@
             this.taskStaticChart = this.$echarts.init(this.$refs.statisticTaskScoreEl);
             this.taskStaticChart.setOption(option, true);
             window.onresize = () => {
-              this.sortChart.resize();
+              this.taskStaticChart.resize();
             }
           });
       },
