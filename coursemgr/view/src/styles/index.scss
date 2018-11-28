@@ -198,6 +198,15 @@ div:focus{
     }
   }
 }
+.el-button:active {
+  color: #009788 !important;
+  border-color: #009788 !important;
+}
+.el-button:focus{
+  color: #009788 !important;
+  border-color: #009788 !important;
+  background-color: #ecfff4 !important;
+}
 
 ::-webkit-scrollbar-track-piece {
   background: #d3dce6;
