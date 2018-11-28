@@ -72,11 +72,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (tmpTask.getStartTime().compareTo(tmpTask.getDeadline()) > 0) {
             throw new Exception(Constant.ExceptionMessage.TASK_DATE_EXCEPTION);
         }
-        // 判断是否有重名的任务名称
-        CourseTasks task = courseTasksMapper.selectByTaskName(taskDetail.getTask().getName());
-        if (task != null) {
-            throw new Exception(Constant.ExceptionMessage.TASK_NAME_UNIQUE);
-        }
+
         // 保存task任务信息，并返回任务id
         Integer taskId = taskDetail.getTask().getId();
         if (!hasSubject(taskDetail)) {
@@ -84,6 +80,11 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         }
         // 如果不存在则插入一条新的记录
         if (taskId == null) {
+            // 判断是否有重名的任务名称
+            CourseTasks task = courseTasksMapper.selectByTaskName(taskDetail.getTask().getName());
+            if (task != null) {
+                throw new Exception(Constant.ExceptionMessage.TASK_NAME_UNIQUE);
+            }
             courseTasksMapper.insert(taskDetail.getTask());
             taskId = taskDetail.getTask().getId();
         } else {
