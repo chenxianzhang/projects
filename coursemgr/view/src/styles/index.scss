@@ -208,6 +208,18 @@ div:focus{
   background-color: #ecfff4 !important;
 }
 
+.cell{
+  .el-button:active {
+    color: #009788 !important;
+    border-color: #FFF !important;
+  }
+  .el-button:focus{
+    color: #009788 !important;
+    border-color:#fff !important;
+    background-color: #fff !important;
+  }
+}
+
 ::-webkit-scrollbar-track-piece {
   background: #d3dce6;
 }
