@@ -94,8 +94,9 @@ export const asyncRouterMap = [
       name: 'backlog',
       meta: {
         title: '我的待办',
-        icon: 'custom-icon-schedule',
-        activeIcon: 'custom-icon-schedule-active',
+        icon: 'custom-icon-schedule-active',
+        activeIcon: 'custom-icon-schedule',
+        menuActiveIcon: 'custom-icon-schedule-active',
         roles: ['student']
       }
     }, {        // 教师
@@ -226,6 +227,7 @@ export const asyncRouterMap = [
         title: '课程管理',
         icon: 'custom-icon-course',
         activeIcon: 'custom-icon-course-active',
+        menuActiveIcon: 'custom-icon-course',
         roles: ['admin']
       }
     }]
