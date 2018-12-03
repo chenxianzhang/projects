@@ -46,7 +46,7 @@
             <!--主观题 答题-->
             <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                       v-html="item.answer"
-                      style="min-height: 78px; overflow-y: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
+                      style="min-height: 78px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
             <Tinymce v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                      :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
 

@@ -14,7 +14,7 @@
         <!--题干设置区域-->
         <div style="margin-bottom:10px; line-height: 32px; display: flex">
           <span style="display: inline-block; width: 20px">{{index + 1}}.</span>
-          <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 20px)"></el-input>
+          <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 20px);overflow: auto;"></el-input>
         </div>
         <!--单选题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.CHOOSE">
@@ -45,13 +45,7 @@
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">
           <!--主观题 答题-->
           <el-input v-html="item.taskQuestions.answers"
-                    style="min-height: 78px; overflow-y: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
-          <!--<div>得分：{{item.taskQuestions.score}} <span style="color: orangered;" v-if="item.taskQuestions.teacherScore !== ''">作废</span></div>-->
-          <!--<div>评阅人：{{task.markUser && task.markUser.name}}</div>-->
-          <!--<div style="margin-top: 10px" v-if="showCxdfInput || item.taskQuestions.teacherScore !== ''">-->
-          <!--得分：<input v-model="item.taskQuestions.teacherScore" :disabled="!showCxdfInput"-->
-          <!--type="number" min="0" :max="item.taskQuestions.questionScore" style="height: 30px; width: 30px"/>-->
-          <!--</div>-->
+                    style="min-height: 78px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
           <div class="score-label">
             <span v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">满分：{{item.taskQuestions.questionScore}} 分</span>
             <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</span>

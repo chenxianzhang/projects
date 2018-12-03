@@ -8,16 +8,6 @@
         </el-col>
         <el-col :span="12">
           <el-row :gutter="20" style="height: 35px">
-            <!--<el-col :span="12" style="height: 35px">-->
-              <!--<span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">开始日期：</span>-->
-              <!--<el-date-picker v-model="task.startDate" type="date" placeholder="选择开始日期" style="width: calc(100% - 100px)">-->
-              <!--</el-date-picker>-->
-            <!--</el-col>-->
-            <!--<el-col :span="12" style="height: 35px">-->
-              <!--<span style="width: 100px; display: inline-block; float: left; text-align: center; line-height: 35px">截止日期：</span>-->
-              <!--<el-date-picker v-model="task.inspireDate" type="date" placeholder="选择结束日期" style="width: calc(100% - 100px)">-->
-              <!--</el-date-picker>-->
-            <!--</el-col>-->
             <el-date-picker
               style="width: calc(100% - 80px);"
               v-model="taskDate"
