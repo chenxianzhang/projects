@@ -5,7 +5,7 @@
           <div class="card-title-span">
             <span style="display: flex; align-items: center; justify-content: center;">
               <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
-              <div style="height: 22px; line-height: 22px; margin:0 4px">成绩统计</div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">学生得分统计</div>
               <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">GRADE STATISTIC</div>
             </span>
             <span>
@@ -23,10 +23,13 @@
         <el-col :span="12" class="statistic-task-finish">
           <div class="card-title-span">
             <span style="display: flex; align-items: center; justify-content: center;">
-              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #00C8B5; margin-right: 10px;"></div>
-              <span style=" margin-right: 15px;">提交次数</span>
-              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #008276; margin-right: 10px;"></div>
-              <span>审批次数</span>
+              <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">任务完成情况统计</div>
+              <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">TASK FINISH STATUS STATISTIC</div>
+              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #00C8B5; margin-right: 10px;"></div>-->
+              <!--<span style=" margin-right: 15px;">提交次数</span>-->
+              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #008276; margin-right: 10px;"></div>-->
+              <!--<span>审批次数</span>-->
             </span>
           </div>
           <div ref="task_static" class="grade-item">
@@ -146,7 +149,7 @@
                   name:'成绩',
                   type: 'value',
                   min:0,
-                  max:100
+                  // max:100
                 }
               ],
               dataZoom: [

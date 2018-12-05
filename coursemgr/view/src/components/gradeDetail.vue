@@ -26,7 +26,7 @@
                       :key="cIndex"
                       style="margin: 5px;">
               <span>{{cItem.optionTag}}. </span>
-              <span v-html="cItem.optionDes"></span>
+              <span v-html="cItem.optionDes" style="overflow: auto;"></span>
             </el-radio>
           </el-radio-group>
           <div class="score-label">得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</div>

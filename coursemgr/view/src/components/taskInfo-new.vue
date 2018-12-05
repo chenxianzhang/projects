@@ -41,7 +41,7 @@
         <div style="display: flex; align-items: center; width: 100%">
           <span>{{index + 1}}.</span>
           <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem"
-                    placeholder="请设置题干" style="width: calc(100% - 430px)" @change="handleTextChange"></el-input>
+                    placeholder="请设置题干" style="width: calc(100% - 430px); overflow: auto;" @change="handleTextChange"></el-input>
           <el-input v-show="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem"
                     style="width: calc(100% - 430px); overflow: auto;"></el-input>
 
@@ -92,10 +92,10 @@
             <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit"
                       v-model="item.selections[cIndex].optionDes"
                       placeholder="请设置选项"
-                      style="width: calc(100% - 430px)"></el-input>
+                      style="width: calc(100% - 430px); overflow: auto;"></el-input>
             <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit"
                       v-html="item.selections[cIndex].optionDes"
-                      style="width: calc(100% - 430px)"></el-input>
+                      style="width: calc(100% - 430px); overflow: auto;"></el-input>
 
               <el-tooltip content="添加选项" placement="top">
                 <div class="icon-option-add" @click="handleAddSelection(cIndex, item.selections)"></div>

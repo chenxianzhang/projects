@@ -34,10 +34,13 @@
       <div class="left">
         <div class="card-title-span">
             <span style="display: flex; align-items: center; justify-content: center;">
-              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #FE9226; margin-right: 10px;"></div>
-              <span style=" margin-right: 15px;">得分</span>
-              <div style="height: 20px; width: 35px; border-radius: 10px; background-color: #7266BA; margin-right: 10px;"></div>
-              <span>总分</span>
+              <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">任务得分统计</div>
+              <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">TASK SCORE STATISTIC</div>
+              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #FE9226; margin-right: 10px;"></div>-->
+              <!--<span style=" margin-right: 15px;">得分</span>-->
+              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #7266BA; margin-right: 10px;"></div>-->
+              <!--<span>总分</span>-->
             </span>
         </div>
         <div style="height: calc(100% - 54px); width: 100%; background-color: white;" ref="statisticTaskScoreEl"></div>
@@ -47,7 +50,7 @@
         <div class="card-title-span">
             <span style="display: flex; align-items: center; justify-content: center;">
               <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
-              <div style="height: 22px; line-height: 22px; margin:0 4px">统计图</div>
+              <div style="height: 22px; line-height: 22px; margin:0 4px">排名-总分-得分率统计</div>
               <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">THE STATISTICAL FIGURE</div>
           </span>
         </div>

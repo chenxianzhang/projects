@@ -27,7 +27,7 @@
                              :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
               <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionTag" :key="cIndex" style="margin: 5px;">
                 <span>{{cItem.optionTag}}. </span>
-                <span v-html="cItem.optionDes"></span>
+                <el-input v-html="cItem.optionDes" style="min-height: 78px; overflow: auto;"></el-input>
               </el-radio>
             </el-radio-group>
           </div>
