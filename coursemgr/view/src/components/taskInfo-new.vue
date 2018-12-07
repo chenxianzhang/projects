@@ -41,9 +41,9 @@
         <div style="display: flex; align-items: center; width: 100%">
           <span>{{index + 1}}.</span>
           <el-input v-show="item.stem.indexOf('img') === -1 && !item.edit" v-model="item.stem"
-                    placeholder="请设置题干" style="width: calc(100% - 430px); overflow: auto;" @change="handleTextChange"></el-input>
+                    placeholder="请设置题干" style="width: calc(100% - 430px); max-height: 300px; overflow: auto;"></el-input>
           <el-input v-show="item.stem.indexOf('img') !== -1 || item.edit" v-html="item.stem"
-                    style="width: calc(100% - 430px); overflow: auto;"></el-input>
+                    style="width: calc(100% - 430px); max-height: 300px; overflow: auto;"></el-input>
 
           <el-select v-model="item.questionType" placeholder="请选择题型" style="width: 122px; margin-left: 15px">
             <el-option label="单选题" :value="SUBJECT_TYPE.CHOOSE"></el-option>
@@ -61,7 +61,7 @@
                  style="cursor: pointer; margin-left: 10px;"/>
           </el-tooltip>
         </div>
-        <div v-show="item.edit" style="width: calc(100% - 422px); margin-left: 8px;">
+        <div v-if="item.edit" style="width: calc(100% - 422px); margin-left: 8px;">
           <Tinymce :height=100 v-model="item.stem" style="margin-top: 5px; margin-bottom: 5px" />
           <el-button type="primary" @click="editConfirm(index, item, task.subjects)">确定</el-button>
         </div>
@@ -92,10 +92,10 @@
             <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit"
                       v-model="item.selections[cIndex].optionDes"
                       placeholder="请设置选项"
-                      style="width: calc(100% - 430px); overflow: auto;"></el-input>
+                      style="width: calc(100% - 430px); max-height: 300px; overflow: auto;"></el-input>
             <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') !== -1 || item.selections[cIndex].edit"
                       v-html="item.selections[cIndex].optionDes"
-                      style="width: calc(100% - 430px); overflow: auto;"></el-input>
+                      style="width: calc(100% - 430px); max-height: 300px; overflow: auto;"></el-input>
 
               <el-tooltip content="添加选项" placement="top">
                 <div class="icon-option-add" @click="handleAddSelection(cIndex, item.selections)"></div>
@@ -218,12 +218,12 @@ export default {
     /**
      * handleTextChange
      * */
-    handleTextChange(val){
-      debugger
-      if (val.indexOf('<p>') !== -1) {
-        val = val.substring(3, val.length - 4)
-      }
-    },
+    // handleTextChange(val){
+    //   debugger
+    //   if (val.indexOf('<p>') !== -1) {
+    //     val = val.substring(3, val.length - 4)
+    //   }
+    // },
     /**
      * 根据接口返回的任务信息结果，构造subject对象的值
      * params taskDetailInfo

@@ -14,19 +14,19 @@
         <!--题干设置区域-->
         <div style="margin-bottom:10px; line-height: 32px; display: flex">
           <span style="display: inline-block; width: 20px">{{index + 1}}.</span>
-          <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 20px);overflow: auto;"></el-input>
+          <el-input v-html="item.taskQuestions.stems" style="width: calc(100% - 20px); max-height: 300px; overflow: auto;"></el-input>
         </div>
         <!--单选题 选项设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.CHOOSE">
           <el-radio-group v-model="item.taskQuestions.answers"
-                          style="display: grid"
+                          style="display: grid; overflow:hidden;"
                           :disabled="true">
             <el-radio v-for="(cItem, cIndex) in item.optionList"
                       :label="cItem.optionTag"
                       :key="cIndex"
-                      style="margin: 5px;">
+                      style="margin: 5px; width: calc(100% - 430px)">
               <span>{{cItem.optionTag}}. </span>
-              <span v-html="cItem.optionDes" style="overflow: auto;"></span>
+              <el-input v-html="cItem.optionDes" style="width: calc(100% - 470px);max-height: 300px; overflow: auto;"></el-input>
             </el-radio>
           </el-radio-group>
           <div class="score-label">得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</div>
@@ -45,7 +45,7 @@
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">
           <!--主观题 答题-->
           <el-input v-html="item.taskQuestions.answers"
-                    style="min-height: 78px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
+                    style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
           <div class="score-label">
             <span v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">满分：{{item.taskQuestions.questionScore}} 分</span>
             <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</span>

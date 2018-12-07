@@ -1,6 +1,5 @@
 <template>
   <div class="main-frame">
-    <div>
       <div class="task-name-label">
         任务名称：<span>{{task.name}}</span>
       </div>
@@ -18,16 +17,17 @@
           <!--题干设置区域-->
           <div style="margin-bottom:10px; line-height: 32px; display: flex">
             <span style="display: inline-block; width: 20px">{{index + 1}}.</span>
-            <el-input v-html="item.stem" style="width: calc(100% - 20px); overflow: auto;"></el-input>
+            <el-input v-html="item.stem" style="width: calc(100% - 20px); max-height: 300px; overflow: auto;"></el-input>
           </div>
           <!--单选题 选项设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.CHOOSE">
             <el-radio-group  v-model="item.answer"
-                             style="display: grid"
+                             style="display: grid; overflow: hidden"
                              :disabled="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER">
-              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionTag" :key="cIndex" style="margin: 5px;">
+              <el-radio v-for="(cItem, cIndex) in item.selections" :label="cItem.optionTag" :key="cIndex"
+                        style="margin: 5px; width: calc(100% - 430px)">
                 <span>{{cItem.optionTag}}. </span>
-                <el-input v-html="cItem.optionDes" style="min-height: 78px; overflow: auto;"></el-input>
+                <el-input v-html="cItem.optionDes" style="width: calc(100% - 470px);max-height: 300px; overflow: auto;"></el-input>
               </el-radio>
             </el-radio-group>
           </div>
@@ -46,7 +46,7 @@
             <!--主观题 答题-->
             <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                       v-html="item.answer"
-                      style="min-height: 78px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
+                      style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
             <Tinymce v-if="operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                      :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
 
@@ -71,7 +71,6 @@
                    v-if="operateType === TASK_OPERATOR_TYPE.STUDENT_ANSWER || operateType === TASK_OPERATOR_TYPE.MARK_POINT"
                    @click="handleSubjectSubmit" :disabled="!canSubmit">提  交</el-button>
       </div>
-    </div>
   </div>
 </template>
 
