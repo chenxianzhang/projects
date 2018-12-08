@@ -441,7 +441,7 @@
                   center: ['72%', '50%'],    // 默认全局居中
                   radius: '50%',
                   min: 0,
-                  max: 1,
+                  max: 100,
                   startAngle: 135,
                   endAngle: 45,
                   axisLine: {            // 坐标轴线
@@ -481,7 +481,7 @@
                   detail : {
                     show: false
                   },
-                  data:[{value: resp.data.objectiveItemScoreRate, name: '客观题得分率'}]
+                  data:[{value: (+resp.data.objectiveItemScoreRate).toFixed(2), name: '客观题得分率'}]
                 },
                 {
                   name: '主观题得分率',
@@ -489,7 +489,7 @@
                   center : ['72%', '50%'],    // 默认全局居中
                   radius : '50%',
                   min: 0,
-                  max: 1,
+                  max: 100,
                   startAngle: 315,
                   endAngle: 225,
                   axisLine: {            // 坐标轴线
@@ -525,7 +525,7 @@
                   detail: {
                     show: false
                   },
-                  data:[{value: resp.data.subjectScoreRate, name: '主观题得分率'}]
+                  data:[{value: (+resp.data.subjectScoreRate).toFixed(2), name: '主观题得分率'}]
                 }
               ]
             };
