@@ -124,7 +124,7 @@
           <Tinymce :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
         </div>
         <!--编辑和完成编辑按钮-->
-        <el-button type="primary" v-show="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>
+        <!--<el-button type="primary" v-show="item.edit" @click="handleSubjectFinish(index, item)">完成编辑</el-button>-->
       </div>
       <!--添加按钮-->
       <div class="add-sub-container">
@@ -285,12 +285,12 @@ export default {
     /**
      * handleSubjectFinish 完成题干编辑
      * */
-    handleSubjectFinish(index, item) {
-      if (item.stem && item.stem.indexOf('img') !== -1) {
-        item.stem = item.stem.substring(3, item.stem.length - 4)
-      }
-      this.$set(this.task.subjects[index], 'edit', false)
-    },
+    // handleSubjectFinish(index, item) {
+    //   if (item.stem && item.stem.indexOf('img') !== -1) {
+    //     item.stem = item.stem.substring(3, item.stem.length - 4)
+    //   }
+    //   this.$set(this.task.subjects[index], 'edit', false)
+    // },
     /**
      * handleAddSelection 添加选项
      * */
