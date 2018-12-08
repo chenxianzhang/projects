@@ -118,8 +118,9 @@
           </div>
         </div>
         <!--主观题  答题设置-->
+        <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE" class="answer-title">参考答案</div>
         <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE"
-             style="width: calc(100% - 422px); margin-left: 8px; margin-top: 20px;">
+             style="width: calc(100% - 422px); margin-left: 8px;">
           <Tinymce :height=100 v-model="item.answer" placeholder="请填写主观题答案" style="margin: 5px" />
         </div>
         <!--编辑和完成编辑按钮-->
@@ -490,6 +491,15 @@ export default {
     cursor: pointer;
     background-image: url("../../static/img/newTask/icon-pic.png");
   }
+  .answer-title{
+    color: #009788;
+    width: 80px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    border: 1px solid #009788;
+  }
 </style>
 <style>
   .task-new-container .el-input__inner {
@@ -501,4 +511,5 @@ export default {
   task-new-container .task-name .el-input__icon{
     line-height: 35px !important;
   }
+
 </style>

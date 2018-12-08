@@ -44,8 +44,14 @@
         <!--主观题 答题 设置区域-->
         <div v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">
           <!--主观题 答题-->
+          <div class="answer-title">参考答案</div>
+          <el-input v-html="item.taskQuestions.standardAnswer"
+                    style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;">
+          </el-input>
+          <div class="answer-title">学生答案</div>
           <el-input v-html="item.taskQuestions.answers"
-                    style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
+                    style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;">
+          </el-input>
           <div class="score-label">
             <span v-if="item.taskQuestions.questionType === SUBJECT_TYPE.SUBJECTIVE">满分：{{item.taskQuestions.questionScore}} 分</span>
             <span>得分：<el-input v-html="item.taskQuestions.score" style="width: 20px; height: 30px;"/>分</span>
@@ -247,6 +253,15 @@
   .score-label > span{
     display: inline-block;
     margin-right: 20px;
+  }
+
+  .answer-title{
+    color: #009788;
+    width: 80px;
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    border: 1px solid #009788;
   }
 </style>
 

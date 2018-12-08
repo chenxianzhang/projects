@@ -44,6 +44,14 @@
           <!--主观题 答题 设置区域-->
           <div v-if="item.questionType === SUBJECT_TYPE.SUBJECTIVE">
             <!--主观题 答题-->
+            <div v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" class="answer-title">参考答案</div>
+            <el-input v-if="operateType===TASK_OPERATOR_TYPE.MARK_POINT" v-html="item.sAnswer"
+                      style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
+            <div class="answer-title">
+              {{operateType===TASK_OPERATOR_TYPE.STUDENT_ANSWER || operateType===TASK_OPERATOR_TYPE.STUDENT_VIEW_DETAIL || operateType===TASK_OPERATOR_TYPE.MARK_POINT
+              ? '学生答案'
+              : '参考答案'}}
+            </div>
             <el-input v-if="operateType!==TASK_OPERATOR_TYPE.STUDENT_ANSWER"
                       v-html="item.answer"
                       style="min-height: 78px; max-height: 300px; overflow: auto; border: 1px solid #DFDFDF; background-color: #F6F6F6;"></el-input>
@@ -341,5 +349,13 @@
     margin-top: 10px;
     background-color: #FEF4EA;
     border: 1px solid #FE9226;
+  }
+  .answer-title{
+    color: #009788;
+    width: 80px;
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    border: 1px solid #009788;
   }
 </style>
