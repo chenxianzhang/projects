@@ -41,6 +41,7 @@
     background: url('../../static/img/icons/custom-icon-books-default.png') no-repeat;
     background-size: 100% 100%;
 }
+
 .custom-icon-tickets {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-tickets-default.png') no-repeat;
@@ -51,6 +52,12 @@
     background: url('../../static/img/icons/custom-icon-tickets-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-basic-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-basicinfo-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-paper {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-paper-default.png') no-repeat;
@@ -61,6 +68,12 @@
     background: url('../../static/img/icons/custom-icon-paper-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-paper-active{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-paper-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-group {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-group-default.png') no-repeat;
@@ -71,6 +84,12 @@
     background: url('../../static/img/icons/custom-icon-group-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-group-active{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-group-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-check {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-check-default.png') no-repeat;
@@ -81,6 +100,12 @@
     background: url('../../static/img/icons/custom-icon-check-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-check-active{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-check-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-uncheck {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-uncheck-default.png') no-repeat;
@@ -91,6 +116,12 @@
     background: url('../../static/img/icons/custom-icon-uncheck-active.jpg') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-uncheck-active{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-uncheck-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-schedule {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-schedule-default.png') no-repeat;
@@ -101,6 +132,13 @@
     background: url('../../static/img/icons/custom-icon-schedule-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-schedule-active{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-schedule-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+
 .custom-icon-stat {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-stat-default.png') no-repeat;
@@ -111,6 +149,12 @@
     background: url('../../static/img/icons/custom-icon-stat-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-stat-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-stat-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-task {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-task-default.png') no-repeat;
@@ -121,6 +165,12 @@
     background: url('../../static/img/icons/custom-icon-task-active.png') no-repeat;
     background-size: 100% 100%;
 }
+.menu-custom-icon-task-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-task-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-new {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-new-default.png') no-repeat;
@@ -131,16 +181,28 @@
     background: url('../../static/img/icons/custom-icon-new-active.jpg') no-repeat;
     background-size: 100% 100%;
 }
-.custom-icon-course {
-    @extend .custom-menu-icon;
-    background: url('../../static/img/icons/custom-icon-course-default.png') no-repeat;
-    background-size: 100% 100%;
+.menu-custom-icon-new-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/menu-custom-icon-new-active.png') no-repeat;
+  background-size: 100% 100%;
 }
+
 .custom-icon-student {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-student-default.png') no-repeat;
     background-size: 100% 100%;
 }
+.custom-icon-student-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/icons/custom-icon-student-active.png') no-repeat;
+  background-size: 100% 100%;
+}
+.menu-custom-icon-student-active {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/Y3-2.png') no-repeat;
+  background-size: 100% 100%;
+}
+
 .custom-icon-teacher {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-teacher-default.png') no-repeat;
@@ -156,21 +218,23 @@
   background: url('../../static/img/nav/Y2-2.png') no-repeat;
   background-size: 100% 100%;
 }
+
+.custom-icon-course {
+  @extend .custom-menu-icon;
+  background: url('../../static/img/icons/custom-icon-course-default.png') no-repeat;
+  background-size: 100% 100%;
+}
 .custom-icon-course-active {
     @extend .custom-menu-icon;
     background: url('../../static/img/icons/custom-icon-course-active.png') no-repeat;
     background-size: 100% 100%;
 }
-.custom-icon-student-active {
-    @extend .custom-menu-icon;
-    background: url('../../static/img/icons/custom-icon-student-active.png') no-repeat;
-    background-size: 100% 100%;
+.menu-custom-icon-course-active{
+  @extend .custom-menu-icon;
+  background: url('../../static/img/nav/Y4-2.png') no-repeat;
+  background-size: 100% 100%;
 }
-.menu-custom-icon-student-active {
-    @extend .custom-menu-icon;
-    background: url('../../static/img/nav/Y3-2.png') no-repeat;
-    background-size: 100% 100%;
-}
+
 .custom-icon-admin {
     @extend .custom-menu-icon;
     background: url('../../static/img/nav/admin-default.png') no-repeat;
@@ -181,6 +245,7 @@
   background: url('../../static/img/nav/admin-active.png') no-repeat;
   background-size: 100% 100%;
 }
+
 .custom-icon-protrait {
     @extend .custom-icon;
     width: 96px;

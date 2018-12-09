@@ -56,6 +56,7 @@ export const asyncRouterMap = [
         title: '基本信息',
         icon: 'custom-icon-tickets',
         activeIcon: 'custom-icon-tickets-active',
+        menuActiveIcon: 'menu-custom-icon-basic-active',
         roles: ['teacher', 'student']
       }
     }, {
@@ -66,6 +67,7 @@ export const asyncRouterMap = [
         title: '我的分组',
         icon: 'custom-icon-group',
         activeIcon: 'custom-icon-group-active',
+        menuActiveIcon: 'menu-custom-icon-group-active',
         roles: ['student']
       }
     }, {
@@ -76,6 +78,7 @@ export const asyncRouterMap = [
         title: '我的任务',
         icon: 'custom-icon-task',
         activeIcon: 'custom-icon-task-active',
+        menuActiveIcon: 'menu-custom-icon-task-active',
         roles: ['student']
       }
     }, {
@@ -86,6 +89,7 @@ export const asyncRouterMap = [
         title: '我的成绩',
         icon: 'custom-icon-paper',
         activeIcon: 'custom-icon-paper-active',
+        menuActiveIcon: 'menu-custom-icon-paper-active',
         roles: ['student']
       }
     }, {
@@ -96,7 +100,7 @@ export const asyncRouterMap = [
         title: '我的待办',
         icon: 'custom-icon-schedule-active',
         activeIcon: 'custom-icon-schedule',
-        menuActiveIcon: 'custom-icon-schedule-active',
+        menuActiveIcon: 'menu-custom-icon-schedule-active',
         roles: ['student']
       }
     }, {        // 教师
@@ -118,6 +122,7 @@ export const asyncRouterMap = [
             title: '已分组',
             icon: 'custom-icon-check',
             activeIcon: 'custom-icon-check-active',
+            menuActiveIcon: 'menu-custom-icon-check-active',
             roles: ['teacher']
           }
         },
@@ -129,6 +134,7 @@ export const asyncRouterMap = [
             title: '未分组',
             icon: 'custom-icon-uncheck',
             activeIcon: 'custom-icon-uncheck-active',
+            menuActiveIcon: 'menu-custom-icon-uncheck-active',
             roles: ['teacher']
           }
         }
@@ -151,6 +157,7 @@ export const asyncRouterMap = [
           title: '任务列表',
           icon: 'custom-icon-task',
           activeIcon: 'custom-icon-task-active',
+          menuActiveIcon: 'menu-custom-icon-task-active',
           roles: ['teacher']
         }
       }, {
@@ -161,6 +168,7 @@ export const asyncRouterMap = [
           title: '新建任务',
           icon: 'custom-icon-new',
           activeIcon: 'custom-icon-new-active',
+          menuActiveIcon: 'menu-custom-icon-new-active',
           roles: ['teacher'],
           keepAlive: true
         }
@@ -173,6 +181,7 @@ export const asyncRouterMap = [
         title: '所有成绩',
         icon: 'custom-icon-paper',
         activeIcon: 'custom-icon-paper-active',
+        menuActiveIcon: 'menu-custom-icon-paper-active',
         roles: ['teacher']
       }
     }, {
@@ -183,9 +192,11 @@ export const asyncRouterMap = [
         title: '统计分析',
         icon: 'custom-icon-stat',
         activeIcon: 'custom-icon-stat-active',
+        menuActiveIcon: 'menu-custom-icon-stat-active',
         roles: ['teacher']
       }
-    }, {  // 管理员模块
+    },
+      {  // 管理员模块
       path: 'userMgr',
       component: () => import('@/views/manager/userMgr/index'),
       name: 'userMgr',
@@ -220,7 +231,8 @@ export const asyncRouterMap = [
           roles: ['admin']
         }
       }]
-    }, {
+    },
+      {
       path: 'courseMgr',
       component: () => import('@/views/manager/courseMgr/index'),
       name: 'courseMgr',
@@ -228,7 +240,7 @@ export const asyncRouterMap = [
         title: '课程管理',
         icon: 'custom-icon-course',
         activeIcon: 'custom-icon-course-active',
-        menuActiveIcon: 'custom-icon-course',
+        menuActiveIcon: 'menu-custom-icon-course-active',
         roles: ['admin']
       }
     }]

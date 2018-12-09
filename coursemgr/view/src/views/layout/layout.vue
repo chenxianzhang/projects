@@ -64,9 +64,9 @@ export default {
 
 <style lang="scss">
 .layout {
-  .page-title{
-    min-width: 1520px;
-  }
+  /*.page-title{*/
+    /*min-width: 1520px;*/
+  /*}*/
   .main {
     .container {
       .container-scrollbar {
@@ -101,8 +101,9 @@ export default {
       transition: margin-left 0.28s;
       margin-left: 240px;
       position: relative;
-      min-width: 1280px;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 720px;
       .is-horizontal {
         display: none;
       }

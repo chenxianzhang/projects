@@ -61,18 +61,18 @@ export default {
   },
   methods: {
     getIcon(tag) {
-      if (tag.meta.activeIcon) {
+      if (tag.meta.menuActiveIcon) {
         if (tag.path.indexOf('userMgr') >= 0
           || tag.path.indexOf('courseMgr') >= 0
           || tag.path.indexOf('backlog') >= 0) {
-          return !this.isActive(tag) ? tag.meta.menuActiveIcon : tag.meta.icon
+          return this.isActive(tag) ? tag.meta.menuActiveIcon : tag.meta.icon
         }
         return this.isActive(tag) ? tag.meta.menuActiveIcon : tag.meta.icon
       }
       return tag.meta.icon
     },
     isActive(route) {
-      return route.path === this.$route.path
+      return route.name === this.$route.name
     },
     resolvePath(...paths) {
       return path.resolve(this.basePath, ...paths)
