@@ -441,7 +441,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         List<User> userList = userMapper.selectSomeByCourseId(Integer.valueOf(courseId));
         Course course = courseMapper.selectById(Integer.valueOf(courseId));
         String unpackDir = CommonUtils.combinePath(request.getRealPath("/"), Constant.Common.DOWNLOAD_TEMP_DIR,
-                course.getName());
+                course.getName() + String.format("(%s)", course.getCreatorNo()));
         CommonUtils.deleteDir(unpackDir);
         CommonUtils.createDir(unpackDir);
 //        for (CourseTasks task : tasksList) {
@@ -474,7 +474,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         User user = userMapper.selectBySerialNo(studentNo);
         Course course = courseMapper.selectById(Integer.valueOf(courseId));
         String unpackDir = CommonUtils.combinePath(request.getRealPath("/"), Constant.Common.DOWNLOAD_TEMP_DIR,
-                course.getName());
+                course.getName() + String.format("(%s)", user.getSerialNo()));
         CommonUtils.deleteDir(unpackDir);
         CommonUtils.createDir(unpackDir);
 //        List<User> userList = new ArrayList<>();

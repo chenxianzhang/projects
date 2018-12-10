@@ -4,10 +4,7 @@ import edu.coursemgr.utils.CommonUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -163,26 +160,26 @@ public class ExcelReader {
     public void export(String sheetName, String fileName, List<String> columnList,
                        List<ArrayList<String>> dataList, String titleName,
                        HttpServletResponse response) throws Exception {
-        HSSFWorkbook wb = new HSSFWorkbook();
+        XSSFWorkbook wb = new XSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet(sheetName);
+        XSSFSheet sheet = wb.createSheet(sheetName);
 
         // 创建第0行 也就是标题
-        HSSFRow row1 = sheet.createRow((int) 0);
+        XSSFRow row1 = sheet.createRow((int) 0);
         row1.setHeightInPoints(50);// 设备标题的高度
         // 第三步创建标题的单元格样式style2以及字体样式headerFont1
-        HSSFCellStyle style2 = wb.createCellStyle();
+        XSSFCellStyle style2 = wb.createCellStyle();
         style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
         style2.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
         style2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        HSSFFont headerFont1 = (HSSFFont) wb.createFont(); // 创建字体样式
-        headerFont1.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); // 字体加粗
+        XSSFFont headerFont1 =  wb.createFont(); // 创建字体样式
+        headerFont1.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD); // 字体加粗
         headerFont1.setFontName("黑体"); // 设置字体类型
         headerFont1.setFontHeightInPoints((short) 15); // 设置字体大小
         style2.setFont(headerFont1); // 为标题样式设置字体样式
 
-        HSSFCell cell1 = row1.createCell(0);// 创建标题第一列
+        XSSFCell cell1 = row1.createCell(0);// 创建标题第一列
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0,
                 columnList.size() - 1)); // 合并列标题
         sheet.autoSizeColumn(1, true);
@@ -191,23 +188,23 @@ public class ExcelReader {
         cell1.setCellStyle(style2); // 设置标题样式
 
         // 创建第1行 也就是表头
-        HSSFRow row = sheet.createRow((int) 1);
+        XSSFRow row = sheet.createRow((int) 1);
         row.setHeightInPoints(37);// 设置表头高度
 
         // 第四步，创建表头单元格样式 以及表头的字体样式
-        HSSFCellStyle style = wb.createCellStyle();
+        XSSFCellStyle style = wb.createCellStyle();
 //        style.setWrapText(true);// 设置自动换行
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); // 创建一个居中格式
+        style.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER); // 创建一个居中格式
 
         style.setBottomBorderColor(HSSFColor.BLACK.index);
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(XSSFCellStyle.BORDER_THIN);
+        style.setBorderTop(XSSFCellStyle.BORDER_THIN);
 
-        HSSFFont headerFont = (HSSFFont) wb.createFont(); // 创建字体样式
-        headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); // 字体加粗
+        XSSFFont headerFont = wb.createFont(); // 创建字体样式
+        headerFont.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD); // 字体加粗
         headerFont.setFontName("黑体"); // 设置字体类型
         headerFont.setFontHeightInPoints((short) 10); // 设置字体大小
         style.setFont(headerFont); // 为标题样式设置字体样式
@@ -215,7 +212,7 @@ public class ExcelReader {
         // 第四.一步，创建表头的列
         for (int i = 0; i < columnList.size(); i++)
         {
-            HSSFCell cell = row.createCell(i);
+            XSSFCell cell = row.createCell(i);
             cell.setCellValue(columnList.get(i));
             cell.setCellStyle(style);
         }
@@ -229,31 +226,31 @@ public class ExcelReader {
         {
             row = sheet.createRow((int) i + 2);
             // 为数据内容设置特点新单元格样式1 自动换行 上下居中
-            HSSFCellStyle zidonghuanhang = wb.createCellStyle();
+            XSSFCellStyle zidonghuanhang = wb.createCellStyle();
             zidonghuanhang.setWrapText(true);// 设置自动换行
-            zidonghuanhang.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); // 创建一个居中格式
+            zidonghuanhang.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER); // 创建一个居中格式
 
             // 设置边框
             zidonghuanhang.setBottomBorderColor(HSSFColor.BLACK.index);
-            zidonghuanhang.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-            zidonghuanhang.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-            zidonghuanhang.setBorderRight(HSSFCellStyle.BORDER_THIN);
-            zidonghuanhang.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            zidonghuanhang.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+            zidonghuanhang.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+            zidonghuanhang.setBorderRight(XSSFCellStyle.BORDER_THIN);
+            zidonghuanhang.setBorderTop(XSSFCellStyle.BORDER_THIN);
 
             // 为数据内容设置特点新单元格样式2 自动换行 上下居中左右也居中
-            HSSFCellStyle zidonghuanhang2 = wb.createCellStyle();
+            XSSFCellStyle zidonghuanhang2 = wb.createCellStyle();
             zidonghuanhang2.setWrapText(true);// 设置自动换行
             zidonghuanhang2
-                    .setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); // 创建一个上下居中格式
-            zidonghuanhang2.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+                    .setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER); // 创建一个上下居中格式
+            zidonghuanhang2.setAlignment(XSSFCellStyle.ALIGN_CENTER);// 左右居中
 
             // 设置边框
             zidonghuanhang2.setBottomBorderColor(HSSFColor.BLACK.index);
-            zidonghuanhang2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-            zidonghuanhang2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-            zidonghuanhang2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-            zidonghuanhang2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-            HSSFCell datacell = null;
+            zidonghuanhang2.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+            zidonghuanhang2.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+            zidonghuanhang2.setBorderRight(XSSFCellStyle.BORDER_THIN);
+            zidonghuanhang2.setBorderTop(XSSFCellStyle.BORDER_THIN);
+            XSSFCell datacell = null;
             for (int j = 0; j < columnList.size(); j++)
             {
                 datacell = row.createCell(j);
@@ -270,7 +267,7 @@ public class ExcelReader {
         }
 
         // 第六步，将文件存到浏览器设置的下载位置
-        String filename = fileName + ".xls";
+        String filename = fileName + ".xlsx";
 //        response.setContentType("application/ms-excel;charset=UTF-8");
         response.setContentType("application/x-download");
         response.setHeader("Content-Disposition", "attachment;filename="
@@ -279,8 +276,5 @@ public class ExcelReader {
         wb.write(out);// 将数据写出去
         out.flush();
         out.close();
-
     }
-
-
 }
