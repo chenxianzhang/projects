@@ -1,5 +1,9 @@
 <template>
   <div class="login-container">
+    <div class="login-bk">
+      <div class="top"></div>
+      <div class="bottom"></div>
+    </div>
     <div class="content">
       <div class="title">
         <div class="logo">
@@ -118,8 +122,24 @@ export default {
   height: 100%;
   width: 100%;
   color: #fff;
-  background: url('../../../static/img/login/register_bg.png') no-repeat;
+  position: relative;
+  // background: url('../../../static/img/login/register_bg.png') no-repeat;
   background-size: 100% 100%;
+  .login-bk {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    .top {
+      background-color: #009788;
+      width: 100%;
+      height: 50%;
+    }
+    .bottom {
+      top: 50%;
+
+    }
+  }
   .content {
     width: 520px;
     // margin-top: -120px;

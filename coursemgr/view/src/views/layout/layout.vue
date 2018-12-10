@@ -101,9 +101,9 @@ export default {
       transition: margin-left 0.28s;
       margin-left: 240px;
       position: relative;
-      overflow-x: hidden;
-      overflow-y: auto;
-      min-height: 720px;
+      // min-width: 1280px;
+      // width: calc(100% - 240px);
+      overflow: hidden;
       .is-horizontal {
         display: none;
       }

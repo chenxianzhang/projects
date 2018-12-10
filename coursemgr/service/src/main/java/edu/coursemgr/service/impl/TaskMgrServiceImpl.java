@@ -442,6 +442,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         Course course = courseMapper.selectById(Integer.valueOf(courseId));
         String unpackDir = CommonUtils.combinePath(request.getRealPath("/"), Constant.Common.DOWNLOAD_TEMP_DIR,
                 course.getName());
+        CommonUtils.deleteDir(unpackDir);
         CommonUtils.createDir(unpackDir);
 //        for (CourseTasks task : tasksList) {
 //            generateWord(task.getId(), userList, unpackDir);
@@ -474,6 +475,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         Course course = courseMapper.selectById(Integer.valueOf(courseId));
         String unpackDir = CommonUtils.combinePath(request.getRealPath("/"), Constant.Common.DOWNLOAD_TEMP_DIR,
                 course.getName());
+        CommonUtils.deleteDir(unpackDir);
         CommonUtils.createDir(unpackDir);
 //        List<User> userList = new ArrayList<>();
 //        userList.add(user);
