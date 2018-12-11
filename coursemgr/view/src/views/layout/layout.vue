@@ -72,7 +72,7 @@ export default {
       .container-scrollbar {
         overflow-x: hidden;
         .el-scrollbar__view {
-          padding: 20px;
+          padding: 20px 20px 60px 20px;
         }
       }
     }
