@@ -168,6 +168,22 @@ public class CommonEnum {
         public String getText() {
             return text;
         }
+
+        public static String getText(String value) {
+            if (value == null || value.isEmpty()) {
+                return "";
+            }
+            if (value.equals(SINGLE_CHOICE.getValue())) {
+                return SINGLE_CHOICE.getText();
+            }
+            if (value.equals(JUDGE.getValue())) {
+                return JUDGE.getText();
+            }
+            if (value.equals(SUBJECTIVE_ITEM.getValue())) {
+                return SUBJECTIVE_ITEM.getText();
+            }
+            return "";
+        }
     }
 
 }

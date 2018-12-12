@@ -447,9 +447,9 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 //        for (CourseTasks task : tasksList) {
 //            generateWord(task.getId(), userList, unpackDir);
 //        }
-
+        User teacher = userMapper.selectBySerialNo(course.getCreatorNo());
         for (User user : userList) {
-            generateWord(user, tasksList, unpackDir, request);
+            generateWord(user, tasksList, unpackDir, request, course, teacher.getName());
         }
 
         // 压缩
@@ -482,8 +482,8 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 //        for (CourseTasks task : tasksList) {
 //            generateWord(task.getId(), userList, unpackDir);
 //        }
-
-        generateWord(user, tasksList, unpackDir, request);
+        User teacher = userMapper.selectBySerialNo(course.getCreatorNo());
+        generateWord(user, tasksList, unpackDir, request, course, teacher.getName());
 
         // 压缩
         String zipName = String.format("%s（%s）%s任务过程文件包.zip", user.getName(),
@@ -501,23 +501,25 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
 
     private void generateWord(User student, List<CourseTasks> taskList,
-                              String unpackDir, HttpServletRequest request) {
-//        String html = "";
+                              String unpackDir, HttpServletRequest request,
+                              Course course, String teacherName) {
         List<Map<String, Object>> resultList = new ArrayList<>();
         Map<String, Object> temp = null;
+        Integer courseTotalScore = 0;
+        Float studentTotalScore = 0f;
         for (CourseTasks task : taskList) {
+            if (task.getTotalScore() != null) {
+                courseTotalScore += task.getTotalScore();
+            }
             Map taskDetail = getStuTaskDetail(task.getId().toString(),
                     student.getSerialNo());
             String status = taskDetail.get("status").toString();
             if (!status.equals(CommonEnum.StudentTaskStatus.FINISHED.getValue())) {
                 continue;
             }
-//            html += transfer2Html(taskDetail);
-//            if (html == null) {
-//                continue;
-//            }
-//            html += "<br/>";
-
+            if (taskDetail.containsKey("studentTotalScore") && taskDetail.get("studentTotalScore") != null) {
+                studentTotalScore += (Float)taskDetail.get("studentTotalScore");
+            }
             temp = transferTemplateData(taskDetail, request.getServletContext().getRealPath("/"));
             if (temp == null) {
                 continue;
@@ -527,12 +529,14 @@ public class TaskMgrServiceImpl implements TaskMgrService {
 
         Map<String, Object> root = new HashMap<>();
         root.put("taskList", resultList);
-//        if (html == null) {
-//            return;
-//        }
+        root.put("courseTotalScore", courseTotalScore);
+        root.put("studentTotalScore", studentTotalScore);
+        root.put("studentName", student.getName());
+        root.put("studentNo", student.getSerialNo());
+        root.put("teacher", teacherName);
+        root.put("courseName", course.getName());
+
         String fileName = String.format("%s(%s)", student.getName(), student.getSerialNo());
-//        String fileName = String.format("%s/%s(%s).doc", unpackDir, student.getName(), student.getSerialNo());
-//        new JsoupWordOper().html2Word(html, unpackDir, fileName);
 
         // 生成word文档
         WordExportUtil.generatorWord(request, WordExportUtil.WORD_2003, fileName, "wordTemplate.ftl",
@@ -553,8 +557,15 @@ public class TaskMgrServiceImpl implements TaskMgrService {
             // 题干
             String questionNo = "" + (i + 1);
             SubjectMarkModel markModel = questionList.get(i).getTaskQuestions();
-            String questionStems = String.format("%s、%s   (分数：%s)", questionNo, markModel.getStems(),
-                    markModel.getScore().toString());
+            String studentScore = markModel.getScore().toString();
+            if (markModel.getTeacherScore() != null) {
+                studentScore = markModel.getTeacherScore().toString();
+            }
+            String questionStems = String.format("%s、(%s %s分) %s (得分：%s)", questionNo,
+                    CommonEnum.QuestionType.getText(markModel.getQuestionType()),
+                    markModel.getQuestionScore().toString(),
+                    markModel.getStems(),
+                    studentScore);
 
             temp.put("questionStemsList", transferImgContent(questionStems, rootPath));
             if (markModel.getQuestionType().equals(CommonEnum.QuestionType.JUDGE.getValue())) {
@@ -609,7 +620,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         Map<String, Object> stems = new HashMap<>();
         if (!content.contains("img")) {
             stems.put("type", "text");
-            stems.put("content", content);
+            stems.put("content", content.replaceAll("&nbsp;", " "));
             stemsList.add(stems);
             return stemsList;
         }
@@ -621,7 +632,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
                 content = content.substring(content.indexOf("<img"));
                 stems = new HashMap<>();
                 stems.put("type", "text");
-                stems.put("content", partText);
+                stems.put("content", partText.replaceAll("&nbsp;", " "));
                 stemsList.add(stems);
             }
             content = content.replace(img, "");
@@ -645,7 +656,7 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         if (!content.isEmpty()) {
             stems = new HashMap<>();
             stems.put("type", "text");
-            stems.put("content", content);
+            stems.put("content", content.replaceAll("&nbsp;", " "));
             stemsList.add(stems);
         }
 
