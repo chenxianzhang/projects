@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="course-student-title">
+    <div class="course-student-title" style=" margin: -10px 0 10px 0;">
       <div style="display: flex; align-items: center; justify-content: center;">
         <i class="custom-icon-course-info"></i>
         <span style="display: inline-block; margin-right: 10px; margin-left: 10px">课程信息</span>
@@ -101,10 +101,6 @@
         <span> 的待办事项</span>
         <div style="max-height: 300px; overflow: auto;">
           <el-tree ref="gtaskTree" :data="curHandleUsergTasks" show-checkbox>
-            <!--<span class="custom-tree-node" slot-scope="{ node, data }">-->
-              <!--审阅<span style="color: #009687"> {{data.targetSerialName}} </span>关于“<span style="color: #009687"> {{data.taskName}} </span>”任务主观题-->
-            <!--</span>-->
-
             <div class="grouped-item" slot-scope="{ node, data }">
               <div style="margin-left: 10px">
                 审阅
@@ -112,7 +108,6 @@
                 关于<span class="span-hight-light"> {{data.taskName}} </span>任务的主观题
               </div>
              </div>
-
           </el-tree>
         </div>
         <el-row :scutter="10" v-if="curHandleUsergTasks && curHandleUsergTasks.length !== 0" style="height: 40px; margin-top: 10px">
@@ -202,6 +197,11 @@ export default {
       this.editable = true
     } else if (this.$store.state.user.roles.in_array('student')) {
       this.editable = false
+    }
+  },
+  mounted(){
+    window.onresize = ()=>{
+      this.calcTableHeight();
     }
   },
   methods: {
@@ -485,16 +485,15 @@ export default {
 .main-container {
   height: 100%;
   width: 100%;
-  /* padding: 10px; */
-  margin-top: -25px;
+  overflow: auto;
 }
 
 .main-container .course-info {
-  height: 20%;
-  /* width: calc(100% - 60px); */
+  height: 100px;
+  width: calc(100% - 8px);
   box-shadow: 0px 0px 4px 2px rgb(84, 92, 100);
   border-radius: 3px;
-  /* margin: 30px; */
+  margin-left: 4px;
   padding: 10px;
 }
 

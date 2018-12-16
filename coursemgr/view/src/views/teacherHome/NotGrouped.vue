@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="not-group-container">
     <el-table
       ref="multipleTable"
       :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}"
@@ -214,12 +214,6 @@
               if(leaderName === ''){
                 this.$message.warning('请设置组长！');
                 return;
-                // for(let item of this.zdGroupData){
-                //   if(item.key === this.zdGroupMembers[0]){
-                //     leaderName = item.label;
-                //   }
-                // }
-                // this.groupLeader = this.zdGroupMembers[0];
               }
               let assignGroupObj = {
                 courseId: this.variables.courseId,
@@ -273,6 +267,10 @@
 </script>
 
 <style scoped>
+  .not-group-container{
+    height: 100%;
+    overflow: auto;
+  }
   .btn-group{
     display: flex;
     align-items: center;

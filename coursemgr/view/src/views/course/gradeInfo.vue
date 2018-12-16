@@ -1,11 +1,7 @@
 <template>
-  <div>
+  <div style="height: 100%; overflow: auto">
     <div style="display: flex; align-items: center; justify-content: space-between">
       <div style="display: flex; align-items: center; justify-content: center;">
-        <!--<i class="custom-icon-course-info"></i>-->
-        <!--<span class="title">当前课程：{{courseName}}</span>-->
-        <!--<span style="margin-left: 10px; font-weight: bold; color: #009589">THE CURRENT COURSE</span>-->
-
       </div>
       <div class="buttons">
         <el-button size="small" @click="download()">导出为excel</el-button>
@@ -13,7 +9,7 @@
       </div>
     </div>
 
-    <el-table :data="tableData" :height="tableHeight"
+    <el-table :data="tableData"
               :header-cell-style="{background:'rgba(28, 77, 125, 0.8)', color:'white', fontWeight:'bold'}" >
       <el-table-column v-for="(task,index) in columns"
                        :label="task.label"
@@ -37,10 +33,6 @@
               <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
               <div style="height: 22px; line-height: 22px; margin:0 4px">任务得分统计</div>
               <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">TASK SCORE STATISTIC</div>
-              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #FE9226; margin-right: 10px;"></div>-->
-              <!--<span style=" margin-right: 15px;">得分</span>-->
-              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #7266BA; margin-right: 10px;"></div>-->
-              <!--<span>总分</span>-->
             </span>
         </div>
         <div style="height: calc(100% - 54px); width: 100%; background-color: white;" ref="statisticTaskScoreEl"></div>
@@ -87,7 +79,6 @@
     components:{gradeDetail},
     data(){
       return {
-        tableHeight:'100%',
         taskStaticChart:null,
         sortChart:null,
         showAnswer: false,
@@ -135,15 +126,16 @@
       this.getGradeByCourse(cId);
     },
     mounted(){
+      window.onresize = ()=>{
+        setTimeout(()=>{
+          this.calcTableHeight();
+          this.taskStaticChart && this.taskStaticChart.resize();
+          this.sortChart && this.sortChart.resize();
+        }, 50);
+      }
       if(this.isStudent){
         this.statisticTaskScore();
         this.statisticSort();
-
-        window.onresize = ()=>{
-          setTimeout(()=>{
-            this.calcTableHeight();
-          }, 100);
-        }
       }
     },
     destroyed(){
@@ -156,7 +148,7 @@
         this.getGradeByCourse(this.variables.courseId );
       },
       calcTableHeight(){
-        let subHeight = 230;
+        let subHeight = 250;
         if(this.isStudent){
           subHeight = 510;
         }
@@ -167,7 +159,7 @@
           let totalHeight = document.body.getBoundingClientRect().height;
           let headHeight = document.getElementsByClassName('el-table__header-wrapper')[0].clientHeight;
           document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight - headHeight + 'px';
-          document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
+          document.getElementsByClassName('el-table__body-wrapper')[0].style.overflow = 'auto';
         }, 100);
       },
       transferData(data) {
@@ -311,9 +303,6 @@
             };
             this.taskStaticChart = this.$echarts.init(this.$refs.statisticTaskScoreEl);
             this.taskStaticChart.setOption(option, true);
-            window.onresize = () => {
-              this.taskStaticChart.resize();
-            }
           });
       },
       statisticSort(){
@@ -531,9 +520,6 @@
             };
             this.sortChart = this.$echarts.init(this.$refs.statisticSortEl);
             this.sortChart.setOption(option,true);
-            window.onresize = () => {
-              this.sortChart.resize();
-            }
           });
       },
     },

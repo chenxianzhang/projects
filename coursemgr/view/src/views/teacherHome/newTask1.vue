@@ -1,7 +1,7 @@
 <template>
   <div class="new-task-container">
     <task-info-new ref="taskInfo"></task-info-new>
-    <el-row :gutter="60">
+    <el-row :gutter="40">
       <el-col :span="8">
         <el-button type="primary" v-if="saveDisabled" class="save-btn" disabled>保 存</el-button>
         <el-button type="primary" v-else class="save-btn" @click="handleSaveTask">保 存</el-button>

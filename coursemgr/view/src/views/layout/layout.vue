@@ -1,23 +1,52 @@
 <template>
-  <div class="layout">
-    <page-title class="page-title" :homePage="false"></page-title>
-    <div class="main">
-      <sidebar class="sidebar-container"></sidebar>
-      <div class="container">
-        <tags-view></tags-view>
-        <el-scrollbar wrap-class="container-scrollbar" ref="routerScrollbar">
-            <transition name="fade-transform" mode="out-in" >
+  <!--<div class="layout" style="height: 100%;">-->
+    <!--<page-title class="page-title" :homePage="false"></page-title>-->
+    <!--<div class="main">-->
+      <!--<sidebar class="sidebar-container"></sidebar>-->
+      <!--<div class="container">-->
+        <!--<tags-view></tags-view>-->
+        <!--<el-scrollbar wrap-class="container-scrollbar" ref="routerScrollbar">-->
+            <!--<transition name="fade-transform" mode="out-in" >-->
+              <!--<keep-alive>-->
+                <!--<router-view v-if="$route.meta.keepAlive" />-->
+              <!--</keep-alive>-->
+            <!--</transition>-->
+          <!--<transition name="fade-transform" mode="out-in">-->
+            <!--<router-view v-if="!$route.meta.keepAlive" />-->
+          <!--</transition>-->
+        <!--</el-scrollbar>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <el-container class="main">
+
+      <el-header style="height: 70px;">
+        <page-title class="page-title" :homePage="false"></page-title>
+      </el-header>
+
+      <el-container>
+
+        <el-aside width="240px">
+          <sidebar style="height: 100%"></sidebar>
+        </el-aside>
+
+        <el-main style="padding: 0; background-color: #f3f4f8">
+          <tags-view></tags-view>
+          <div style="overflow: auto; padding: 20px; height: calc(100% - 50px);">
+            <transition name="fade-transform" mode="out-in">
               <keep-alive>
-                <router-view v-if="$route.meta.keepAlive" />
+                <router-view v-if="$route.meta.keepAlive"/>
               </keep-alive>
             </transition>
-          <transition name="fade-transform" mode="out-in">
-            <router-view v-if="!$route.meta.keepAlive" />
-          </transition>
-        </el-scrollbar>
-      </div>
-    </div>
-  </div>
+            <transition name="fade-transform" mode="out-in">
+              <router-view v-if="!$route.meta.keepAlive"/>
+            </transition>
+          </div>
+        </el-main>
+
+      </el-container>
+    </el-container>
+  <!--</div>-->
 </template>
 <script>
 import tagsView from '@/components/tagsView'
@@ -47,50 +76,23 @@ export default {
   },
   created() {},
   mounted() {
-    this.$refs.routerScrollbar.$el.style.height =
-      window.innerHeight - 100 + 'px'
-
-    let self = this
-    window.onresize = () => {
-      return (() => {
-        self.$refs.routerScrollbar.$el.style.height =
-          window.innerHeight - 100 + 'px'
-      })()
-    }
   },
   methods: {}
 }
 </script>
 
-<style lang="scss">
-.layout {
-  /*.page-title{*/
-    /*min-width: 1520px;*/
-  /*}*/
-  .main {
-    .container {
-      .container-scrollbar {
-        overflow-x: hidden;
-        .el-scrollbar__view {
-          padding: 20px 20px 60px 20px;
-        }
-      }
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
-.layout {
   .main {
-    position: relative;
+    height: 100%;
+    .el-header{
+      padding: 0;
+    }
     .sidebar-container {
       transition: width 0.28s;
       width: 240px !important;
-      height: calc(100% - 70px);
+      height: 100%;
       position: fixed;
       font-size: 0px;
-      top: 70px;
       bottom: 0;
       left: 0;
       z-index: 1001;
@@ -101,13 +103,10 @@ export default {
       transition: margin-left 0.28s;
       margin-left: 240px;
       position: relative;
-      // min-width: 1280px;
-      // width: calc(100% - 240px);
       overflow: hidden;
       .is-horizontal {
         display: none;
       }
     }
   }
-}
 </style>

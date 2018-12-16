@@ -41,12 +41,15 @@ export default {
       this.pageSize = 10
       this.queryAction()
     })
+    window.onresize = ()=>{
+      this.calcTableHeight()
+    }
   },
   methods: {
     calcTableHeight(){
       setTimeout(()=>{
         let totalHeight = document.body.getBoundingClientRect().height;
-        let subHeight = 270;
+        let subHeight = 290;
         document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
         document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
       }, 50);

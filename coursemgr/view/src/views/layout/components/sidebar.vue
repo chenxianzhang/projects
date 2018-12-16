@@ -46,6 +46,7 @@ export default {
 </script>
 <style lang="scss">
 .scrollbar-wrapper {
+  height: 100%;
   overflow-x: hidden !important;
   background: url('../../../../static/img/menu-bg.png');
   .el-scrollbar__view {

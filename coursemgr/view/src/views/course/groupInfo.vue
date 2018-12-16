@@ -138,7 +138,7 @@
     height: 100%;
     width: 100%;
     /* padding: 10px; */
-    margin-top: -25px;
+    /*margin-top: -25px;*/
   }
 
   .grouped-item {

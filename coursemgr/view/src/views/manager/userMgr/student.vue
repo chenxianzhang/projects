@@ -35,18 +35,21 @@ export default {
   },
   mounted() {
     this.$emit("updateRole", "student")
-   this.$on('query', (nameOrNo) => {
+    this.$on('query', (nameOrNo) => {
       this.nameOrNo = nameOrNo
       this.currPage = 1
       this.pageSize = 10
       this.queryAction()
-    })
+    });
+    window.onresize = ()=>{
+      this.calcTableHeight()
+    }
   },
   methods: {
     calcTableHeight(){
       setTimeout(()=>{
         let totalHeight = document.body.getBoundingClientRect().height;
-        let subHeight = 270;
+        let subHeight = 290;
         document.getElementsByClassName('el-table__body-wrapper')[0].style.height = totalHeight - subHeight + 'px';
         document.getElementsByClassName('el-table__body-wrapper')[0].style.overflowY = 'auto';
       }, 50);

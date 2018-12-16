@@ -1,31 +1,5 @@
 <template>
-  <div style="height: 100%; overflow: auto;margin-top: -25px;">
-    <!--<div v-if="hasGroup" class="grouped-item" v-for="(gItem, index) in groups"-->
-         <!--@mousemove="showDismissBtn($event, index)" @mouseleave="hideDIsmissBtn($event, index)">-->
-      <!--<el-row>-->
-        <!--<el-col :span="22">-->
-          <!--<div>组长：{{gItem.groupLeaderName}}（学号：{{gItem.groupLeaderNo}}）</div>-->
-          <!--<div>-->
-            <!--<span>组员列表：</span>-->
-            <!--<span v-for="mItem in gItem.groupMemberList">-->
-            <!--{{mItem.name}}（学号：{{mItem.serialNo}}）-->
-          <!--</span>-->
-          <!--</div>-->
-          <!--<span>分组方式：{{gItem.groupedType}}</span>-->
-        <!--</el-col>-->
-        <!--<el-col :span="2" v-show="gItem.show">-->
-          <!--<el-button type="primary" size="small" round-->
-                     <!--style="margin-top: 10px;"-->
-                     <!--@click.stop="dismissGroup(gItem)">-->
-            <!--解散分组-->
-          <!--</el-button>-->
-          <!--<el-button type="primary" size="small" round-->
-                     <!--style="margin-top: 10px; margin-left: 0"-->
-                     <!--@click.stop="handleChangeLeader(gItem)">变更组长</el-button>-->
-        <!--</el-col>-->
-      <!--</el-row>-->
-    <!--</div>-->
-
+  <div class="grouped-container">
     <div v-if="hasGroup" class="grouped-item" v-for="(groupInfo, index) in groups"
          @mousemove="showDismissBtn($event, index)" @mouseleave="hideDIsmissBtn($event, index)">
       <el-row>
@@ -213,6 +187,10 @@
 </script>
 
 <style scoped>
+  .grouped-container{
+    height: 100%;
+    overflow: auto;
+  }
   .grouped-item{
     padding: 10px;
     line-height: 30px;

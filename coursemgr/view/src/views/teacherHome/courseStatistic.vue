@@ -1,5 +1,5 @@
 <template>
-    <div :style="{height: containerHeight}">
+    <div style="height: 100%;">
       <el-row class="statistic-all-grade">
         <el-col :span="24" class="grade-item">
           <div class="card-title-span">
@@ -15,7 +15,7 @@
             </span>
           </div>
           <div ref="grade_static" class="grade-item">
-            所有成绩统计
+
           </div>
         </el-col>
       </el-row>
@@ -26,14 +26,10 @@
               <div style="height: 22px; width: 4px; background-color: #009687; margin:0 4px"></div>
               <div style="height: 22px; line-height: 22px; margin:0 4px">任务完成情况统计</div>
               <div style="height: 22px; line-height: 22px; color: #ADADAD; margin:0 4px">TASK FINISH STATUS STATISTIC</div>
-              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #00C8B5; margin-right: 10px;"></div>-->
-              <!--<span style=" margin-right: 15px;">提交次数</span>-->
-              <!--<div style="height: 20px; width: 35px; border-radius: 10px; background-color: #008276; margin-right: 10px;"></div>-->
-              <!--<span>审批次数</span>-->
             </span>
           </div>
           <div ref="task_static" class="grade-item">
-            任务完成情况统计
+            <!--任务完成情况统计数据加载中...-->
           </div>
         </el-col>
         <el-col :span="12" class="statistic-task-finish">
@@ -45,7 +41,7 @@
           </span>
           </div>
           <div ref="stem_static" class="grade-item">
-            题型数目统计
+            <!--题型数目统计数据加载中...-->
           </div>
         </el-col>
       </el-row>
@@ -60,7 +56,6 @@
       data(){
           return{
             sortType:'desc',
-            containerHeight:0,
             scoreStaticChart:null,
             taskStaticChart:null,
             stemStaticChart:null,
@@ -70,7 +65,6 @@
       mounted(){
           let self = this;
           this.$nextTick(()=>{
-            this.containerHeight = document.getElementsByClassName('container')[0].clientHeight - 94 + 'px';
             setTimeout(()=>{
               this.lineGroup();
               this.taskFinishStatus();
@@ -466,7 +460,6 @@
 
 
   .statistic-all-grade-bottom{
-    margin-top: 20px;
     height: calc(50% - 10px);
   }
 

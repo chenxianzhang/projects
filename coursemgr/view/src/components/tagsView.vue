@@ -53,7 +53,7 @@ export default {
   methods: {
     getIcon(tag) {
       if (tag.meta.activeIcon) {
-        if (tag.path.indexOf('userMgr') >= 0 
+        if (tag.path.indexOf('userMgr') >= 0
         || tag.path.indexOf('courseMgr') >= 0
         || tag.path.indexOf('backlog') >= 0) {
           return !this.isActive(tag) ? tag.meta.activeIcon : tag.meta.icon
@@ -127,6 +127,8 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .tags-view-container {
+  position: relative;
+  z-index: 2000;
   .tags-view-wrapper {
     background: #fff;
     height: 50px;
