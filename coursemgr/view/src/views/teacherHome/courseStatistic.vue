@@ -448,7 +448,7 @@
     border-bottom: 0px;
   }
   .statistic-all-grade{
-    height: calc(50% - 10px);
+    height: 50%;
   }
 
   .grade-item{
@@ -460,7 +460,7 @@
 
 
   .statistic-all-grade-bottom{
-    height: calc(50% - 10px);
+    height: 50%;
   }
 
   .statistic-task-finish{
