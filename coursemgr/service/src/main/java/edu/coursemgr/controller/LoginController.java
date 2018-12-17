@@ -24,6 +24,10 @@ public class LoginController extends BaseController {
         String code = getParam(requestMap, "verificationCode");
         String sessionCode = findSession(Constant.SessionKey.SESSION_KEY_OF_RAND_CODE);
 
+        if (sessionCode == null) {
+            throw new Exception("验证码已失效，请重新输入");
+        }
+
         boolean illegal = code == null || code.isEmpty()
                 || !code.toUpperCase().equals(sessionCode.toUpperCase());
         if (illegal) {
