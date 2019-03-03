@@ -58,11 +58,11 @@
     from course_tasks
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByTaskName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByTaskName" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select
     <include refid="Base_Column_List" />
     from course_tasks
-    where name = #{name,jdbcType=VARCHAR}
+    where courseId=#{courseId,jdbcType=INTEGER} and name = #{name,jdbcType=VARCHAR}
   </select>
   <select id="selectSomeByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select

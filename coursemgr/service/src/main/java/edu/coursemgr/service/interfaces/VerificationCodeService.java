@@ -13,5 +13,10 @@ public interface VerificationCodeService {
         RESULT_CODE
     }
 
+    /**
+     * 生成验证码
+     * @return
+     * @throws IOException
+     */
     EnumMap<VerCodeProperty, Object> generateVerCode() throws IOException;
 }

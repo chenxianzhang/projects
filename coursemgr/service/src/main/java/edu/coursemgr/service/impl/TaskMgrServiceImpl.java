@@ -81,7 +81,10 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         // 如果不存在则插入一条新的记录
         if (taskId == null) {
             // 判断是否有重名的任务名称
-            CourseTasks task = courseTasksMapper.selectByTaskName(taskDetail.getTask().getName());
+            Map<String, Object> params = new HashMap<>();
+            params.put("courseId", tmpTask.getCourseId());
+            params.put("name", tmpTask.getName());
+            CourseTasks task = courseTasksMapper.selectByTaskName(params);
             if (task != null) {
                 throw new Exception(Constant.ExceptionMessage.TASK_NAME_UNIQUE);
             }
