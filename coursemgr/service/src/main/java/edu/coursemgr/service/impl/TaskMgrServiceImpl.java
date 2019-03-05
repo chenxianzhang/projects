@@ -110,8 +110,20 @@ public class TaskMgrServiceImpl implements TaskMgrService {
         taskDetail.getQuestionList().forEach(question -> {
             if (question.getTaskQuestions() != null) {
                 question.getTaskQuestions().setTaskId(taskDetail.getTask().getId());
+                // 应在新增之前先删除问题及问题选项所加
+                question.getTaskQuestions().setId(null);
+                List<QuestionOptions> options = question.getOptionList();
+                if (options != null) {
+                    options.forEach(option -> {
+                        option.setId(null);
+                    });
+                }
             }
         });
+        // 删除当前任务下所有关联的问题及问题选项
+        questionOptionsMapper.deleteByTaskId(taskDetail.getTask().getId());
+        taskQuestionsMapper.deleteByTaskId(taskDetail.getTask().getId());
+
         updateBatch(taskDetail.getQuestionList());
 
         Map<String, Object> resultMap = new HashMap<>(1);
