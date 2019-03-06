@@ -89,7 +89,7 @@
           <div v-for="(cItem, cIndex) in item.selections" style="margin-bottom: 5px; margin-left: -3px; ">
             <span v-show="false">{{setOptionTag(cItem, cIndex)}}</span>
             <span>{{String.fromCharCode((65+cIndex))}}. </span>
-            <el-input v-show="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit"
+            <el-input v-if="item.selections[cIndex].optionDes.indexOf('img') === -1 && !item.selections[cIndex].edit"
                       v-model="item.selections[cIndex].optionDes"
                       placeholder="请设置选项"
                       style="width: calc(100% - 430px); max-height: 300px; overflow: auto;"></el-input>

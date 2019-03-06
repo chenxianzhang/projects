@@ -1,5 +1,5 @@
 <template>
-  <div class="main-frame">
+  <div class="main-frame-task-detail">
       <div class="task-name-label">
         任务名称：<span>{{task.name}}</span>
       </div>
@@ -307,10 +307,18 @@
 </script>
 
 <style scoped>
-  .main-frame{
+  .main-frame-task-detail{
     width: 1200px;
     margin: 0 auto;
     border: 1px solid #EBEBEB;
+  }
+
+  .main-frame-task-detail .el-radio-group{
+    line-height: unset;
+  }
+
+  .main-frame-task-detail .el-radio{
+    line-height: unset;
   }
 
   .task-name-label{
